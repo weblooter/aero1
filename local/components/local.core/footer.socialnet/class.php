@@ -14,7 +14,7 @@ class FooterSocialNetComponent extends \CBitrixComponent
 
         $obCache = \Bitrix\Main\Application::getInstance()
             ->getCache();
-        if ($obCache->startDataCache(60 * 60 * 12)) {
+        if ($obCache->startDataCache(60 * 60 * 12, __FILE__.__LINE__)) {
 
             try {
                 $classSocial = \Local\Core\HighloadBlock\Entity::getInstance(\Local\Core\HighloadBlock\Entity::SettingsSocailnet);

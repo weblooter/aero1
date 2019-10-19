@@ -14,7 +14,7 @@ class AboutHistoryComponent extends \CBitrixComponent
 
         $obCache = \Bitrix\Main\Application::getInstance()
             ->getCache();
-        if ($obCache->startDataCache(60 * 60 * 24)) {
+        if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__)) {
             $rsSections = \CIBlockSection::GetList(['SORT' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'about-history'), 'ACTIVE' => 'Y'], false, ['ID', 'CODE', 'NAME']);
             while ($ar = $rsSections->Fetch()) {
                 $arResult[$ar['ID']] = [
