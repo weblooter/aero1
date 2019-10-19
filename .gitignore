@@ -1,0 +1,14 @@
+.idea/
+.idea/copyright/
+.idea/deployment.xml
+upload
+bitrix/wizards
+bitrix/cache
+bitrix/backup
+bitrix/managed_cache
+bitrix/php_interface/dbconn.php
+bitrix/.settings.php
+page.php
+*.txt
+*.log
+logs/*
