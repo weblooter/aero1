@@ -1,3 +1,13 @@
+import Axios from 'axios';
+LocalCore.Client.Axios.setDefaultConfig(Axios);
+LocalCore.Client.Axios.instance = Axios;
+
+import Qs from 'qs';
+LocalCore.Client.Qs.instance = Qs;
+
+import Swal from "sweetalert2";
+LocalCore.Client.Swal.instance = Swal;
+
 import $ from 'jquery';
 import './js/jquery-fix.js';
 import 'imagesloaded';
@@ -21,6 +31,8 @@ import './js/viewportchecker_init.js';
 
 import './css/jquery.jscrollpane.css';
 import './css/sass/css.scss';
+
+import './localJs/consult-short-form';
 
 export {
     $

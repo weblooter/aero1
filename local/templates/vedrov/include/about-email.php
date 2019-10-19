@@ -1,0 +1,1 @@
+<a href="mailto:<?=tplvar('email')?>"><?=tplvar('email')?></a>
