@@ -1,0 +1,67 @@
+.advantages {
+	&.container {
+		margin: 80px auto;
+		@include breakpoint(tablet-windows) {
+			margin: 130px auto;
+		}		
+		@include breakpoint(tablet-small-portrait1) {					
+			margin: 50px auto;
+		}
+	}	
+
+		ul {
+			list-style: none;
+			margin: 0 -15px;
+			@include box-sizing(border-box);
+			padding:0;
+			@include display-flex;
+			@include flex-wrap(wrap);
+			&:before,&:after {
+				display: none;
+			}
+
+				li {
+					position: relative;
+					@include align-content(center);
+					@include align-items(center);
+					@include display-flex;
+					@include flex-wrap(wrap);
+					padding: 5px 15px;
+					@include box-sizing(border-box);
+					width: 25%;
+					@include breakpoint(tablet-portrait) {
+						width: 50%;
+						margin-bottom: 15px;
+					}
+					@include breakpoint(phone-landscape) {
+						width: 100%;
+					}
+
+						&:before {
+							@include twins;
+							left: 15px;
+							width: 2px;
+							height: 100%;
+							top: 0;
+							background: $color_h;
+						}
+						h3 {
+							color:$color_h;
+							margin: 0 0 3px;
+							display:block;
+							padding-left: 20px;
+							@include font(16,24);
+							@include box-sizing(border-box);
+							width: 100%;
+							strong {
+								@include font(36,24,400);
+							}
+						}
+						p {
+							margin: 0;
+							padding-left: 20px;
+						}
+				}
+		}
+}
+

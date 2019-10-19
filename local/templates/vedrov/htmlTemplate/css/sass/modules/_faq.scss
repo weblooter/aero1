@@ -1,0 +1,156 @@
+.faq {	
+	&.container {
+		margin: 50px auto;
+		position: relative;
+		@include breakpoint(tablet-windows) {
+			margin: 80px auto;
+		}
+		h2,.h2 {
+			margin-top: 0;
+		}
+	}	
+	&__item {
+		padding: 15px;
+		border-bottom: 1px solid #979797;
+		background: #fff;
+		position: relative;
+		overflow: hidden;
+		@include transition(all .25s ease);
+		h3,a {
+			position: relative;
+			margin: 0;
+			@include font(18,20,400);
+			color: #000;	
+			padding: 0 30px 0 0;
+			cursor: pointer;
+			display: block;
+			&:before {
+				@include twins;
+				width: 6px;
+				height: 2px;
+				background: $color_link;
+				@include transform(rotate(45deg));
+				@include transition(all .25s ease);
+				top: 10px;
+				right: 19px;
+			}
+			&:after {
+				@include twins;
+				width: 6px;
+				height: 2px;
+				background: $color_link;
+				@include transform(rotate(-45deg));
+				@include transition(all .25s ease);
+				top: 10px;
+				right: 15px;
+			}
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		.answer {
+			color: #5E5D5B;
+			font-weight: 300;
+			@include opacity(0);
+			height: 0;
+			overflow: hidden;
+			@include transition(all .4s ease-out);
+			p {
+				margin: 0;
+			}
+		}
+		&.active {
+			background: #EDF1F3;
+			h3 {
+				&:before {
+					@include transform(rotate(-45deg));
+				}
+				&:after {
+					@include transform(rotate(45deg));
+				}
+			}
+			.answer {				
+				@include opacity(1);
+				height: auto;
+				margin: 15px 0 5px;				
+			}
+		}
+	}	
+}
+
+.form-faq {
+	margin: 50px auto;
+	position: relative;
+	@include breakpoint(tablet-windows) {
+		margin: 80px auto;
+	}
+	@include breakpoint(phone-landscape) {
+		margin-top: 0;
+	}
+	background: url(#{$img}bg-form.jpg) no-repeat;
+	background-position: center;
+	background-size: cover;
+	padding: 35px 0;	
+		&:before {
+			@include twins;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(241,246,250,.61);
+			z-index: 0;
+		}
+		.container {
+			position: relative;
+			z-index: 1;
+		}
+		.row {
+			@include display-flex;
+			@include flex-wrap(wrap);
+			&:before,&:after { display: none;}
+			.col-xs-12 {
+				padding: 0 45px 0 15px;
+				@include align-content(center);
+				@include align-items(center);
+				@include breakpoint(tablet-portrait) {	
+					padding: 0 15px;
+				}
+
+				&.title {
+					padding: 0 15px 0 45px;
+					@include breakpoint(tablet-portrait) {	
+						padding: 0 15px;
+						margin: 0 0 15px;
+					}
+				}
+				p {
+					@include font(13,16);
+					color: #000;
+					margin: 20px 0 0;
+				}
+			}
+		}
+		.title {
+			color: #00A9E3;
+			@include font(20,26,600);
+			@include breakpoint(phone-landscape) {
+				text-align: center;
+			}
+		}
+		.formField {
+			@include display-flex;
+			input[type="text"] {				
+				width: calc(100% - 121px);
+				@include flex-all(1 1 auto);
+			}
+			button {
+				width: 121px;
+				@include flex-all(0 0 121px);
+				padding: 0;
+				margin: 0 0 0 10px;
+				@include breakpoint(phone-landscape) {
+					margin: 0 0 0 0px;
+				}
+			}
+		}
+}

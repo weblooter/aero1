@@ -1,0 +1,400 @@
+.content {
+	.infoMedia {
+		&.container {
+			margin: 60px auto 80px;
+			position: relative;
+			padding: 0;
+			@include breakpoint(tablet-windows) {
+				margin: 60px auto 80px;
+			}
+			@include breakpoint(tablet-portrait) {
+				margin: 50px auto 70px;
+			}
+			@include breakpoint(tablet-small-portrait) {
+				margin: 50px auto 70px;
+			}
+		}
+		.more {
+			margin: 25px 0 0!important;
+			border:none!important;
+			padding: 0!important;
+			@include breakpoint(tablet-small-portrait) {
+				margin: 20px 0 0!important;
+			}
+		}
+	}
+}
+.infoMedia {
+	&.container {
+		margin: 80px auto;
+		position: relative;
+		@include breakpoint(tablet-windows) {
+			margin: 130px auto;
+		}
+		@include breakpoint(tablet-portrait) {
+			margin: 50px auto 50px;
+		}
+		@include breakpoint(tablet-small-portrait) {					
+			margin: 20px auto 20px;
+		}
+	}
+	&__item {
+		margin-top:80px;
+		@include breakpoint(tablet-windows) {
+			margin-top:130px;
+		}
+		@include breakpoint(tablet-small-portrait) {
+			margin-top: 50px;
+		}
+		.title-preview {
+			@include font(18,20,700);
+			color: $color_h;
+			text-transform: none;
+				&:before {
+					height: 2px;
+					background: $color_h;
+				}
+		}
+		.more {
+			margin: 25px 0 0!important;
+			border:none!important;
+			padding: 0!important;
+			@include breakpoint(tablet-small-portrait) {
+				margin: 20px 0 0!important;
+			}
+		}
+	}
+}
+.reviews {
+	&__text {
+		padding-top: 95px;
+		padding-bottom: 95px;
+		@include breakpoint(tablet-portrait) {
+			padding-top: 35px;
+			padding-bottom: 35px;
+		}
+		@include breakpoint(tablet-small-portrait) {
+			margin: 0 0 30px;
+			padding: 0 15px;
+		}
+		h2,.h2 {
+			margin-bottom: 40px;
+			@include breakpoint(tablet-small-portrait) {
+				margin: 0 0 20px;
+			}
+		}
+	}
+	&__gallery {
+		position: relative;
+		&__container {
+			position: absolute;
+			top: 50%;
+			left: 15px;
+			@include transform (translate(0,-50%));
+			width: calc(50vw + 200px);
+			@include breakpoint(tablet-windows) {
+				width: calc(50vw + 100px);
+			}
+			@include breakpoint(tablet-portrait) {
+				width: calc(50vw + 300px);
+			}
+			@include breakpoint(tablet-small-portrait) {
+				width: 100%;
+				position: relative;
+				left: auto;
+				top: auto;
+				right: auto;
+				@include transform (translate(0,0));
+			}
+		}
+		&__item {
+			a {
+				display: block;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				position: relative;
+				overflow: hidden;
+				height: 280px;
+				@include breakpoint(tablet-windows) {
+					height: 340px;
+				}
+				@include breakpoint(tablet-portrait) {
+					height: 250px;
+					color: #fff;
+					text-decoration: none;
+				}
+					&:before {
+						height: 90%;
+						@include transition(all .25s ease);
+						left:0;
+						right: 0;
+						bottom: 0;
+						z-index: 1;
+						@include simple-gradient(to top, $color_blue, 0%, transparent, 100%);
+						@include twins;
+						//@include opacity(.8);
+						@include opacity(0);
+						@include breakpoint(tablet-portrait) {
+							@include opacity(.8);
+						}
+					}
+					.arrow {
+						@include transform(translate(0,50px));
+						position: absolute;
+						left: 15px;
+						right: 15px;
+						text-align: center;
+						bottom: 20px;
+						z-index: 2;
+						text-transform: uppercase;
+						@include transition(all .3s ease);
+						color: #fff;
+						@include breakpoint(tablet-portrait) {
+							@include transform(translate(0,0px));
+							z-index: 2;
+						}
+						&:after {
+							color: $color_link;
+						}
+						&:hover {
+							color: $color_link;
+						}
+					}
+					&:hover {
+						color: #fff;
+						text-decoration: none;
+						&:before {
+							@include opacity(.8);
+						}						
+						.arrow {
+							@include transform(translate(0,0px));
+							z-index: 2;
+						}
+					}
+			}
+		}
+		.sliderGallery {
+			overflow: hidden;
+			margin: 0 -5px;
+			padding-bottom: 40px;
+			@include box-sizing(border-box);
+				.slide {
+					padding: 0 5px;
+				}
+				.slick-prev {
+					left: 5px;
+					@include breakpoint(tablet-small-portrait) {
+						left: auto;
+						right: 75px;
+					}
+				}
+				.slick-next {
+					left: 75px;
+					@include breakpoint(tablet-small-portrait) {
+						left: auto;
+						right: 5px;
+					}
+				}
+		}
+	}
+}
+
+.gallerySlider {
+	margin-top: 100px;
+	position: relative;
+	margin-bottom:60px;
+	@include breakpoint(tablet-windowscape) {
+		margin-top: 80px;
+		margin-bottom:50px;
+	}
+	&.galleryPatients {
+		.gallery {
+			padding-top: 50px;
+			.slick-prev {
+				left: 15px;
+				top: 0px;
+				bottom: auto;				
+				@include breakpoint(phone-landscape) {
+					left: auto;
+					right: 75px;
+				}
+			}
+			.slick-next {
+				left: 85px;
+				top: 0px;
+				bottom: auto;
+				@include breakpoint(phone-landscape) {
+					left: auto;
+					right: 5px;
+				}
+			}
+		}
+	}
+	.title-preview {
+		padding-left: 0;
+		&:before {
+			display: none;
+		}
+	}
+	.gallery-container {
+			width: 900px;
+			@include breakpoint(tablet-windowscape) {
+				width: 700px;
+			}
+			@include breakpoint(tablet-small-portrait) {
+				width: 80%;
+			}
+			@include breakpoint(phone-landscape) {
+				width: 100%;
+			}
+			.slick-track {
+				@include display-flex;
+			}
+			.slide {
+				width: auto!important;
+				img {
+					height: 600px;
+					width: auto;
+					max-width:inherit;
+					@include breakpoint(tablet-portrait) {
+						height: 400px;
+					}
+					@include breakpoint(tablet-small-portrait) {
+						height: 250px;
+					}
+				}
+			}
+	}
+	.gallery {
+		margin: 0 -5px;
+		@include box-sizing(border-box);
+			.slide {
+				padding: 0 5px;
+				//width: auto!important;
+				img {
+				}
+			}
+			.slick-prev {
+				left: 170px;
+				top: -50px;
+				bottom: auto;
+				@include breakpoint(tablet-small-portrait) {
+					top: -37px;
+				}
+				@include breakpoint(phone-landscape) {
+					left: auto;
+					right: 75px;
+				}
+			}
+			.slick-next {
+				left: 240px;
+				top: -50px;
+				bottom: auto;
+				@include breakpoint(tablet-small-portrait) {
+					top: -37px;
+				}
+				@include breakpoint(phone-landscape) {
+					left: auto;
+					right: 5px;
+				}
+			}
+	}
+}
+.gallerySquare {
+	@include display-flex;
+	@include flex-wrap(wrap);
+	margin: 100px 0 0;
+	@include breakpoint(tablet-windowscape) {
+		margin: 70px 0 0;
+	}
+	@include breakpoint(tablet-portrait) {
+		margin: 50px 0 0;
+	}
+		&__item {
+			width: 20%;
+			@include breakpoint(tablet-windowscape) {
+				width: 25%;
+			}
+			@include breakpoint(tablet-portrait) {
+				width: 33.3333%;
+			}
+			@include breakpoint(tablet-small-portrait) {
+				width: 33.3333%;
+			}
+			@include breakpoint(phone-landscape) {
+				width: 50%;
+			}
+			@include breakpoint(phone-landscape1) {
+				width: 100%;
+			}
+			a {
+				display: block;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				position: relative;
+				overflow: hidden;
+
+				@include breakpoint(tablet-portrait) {
+					color: #fff;
+					text-decoration: none;
+				}
+				
+					&:before {
+						height: 90%;
+						@include transition(all .25s ease);
+						left:0;
+						right: 0;
+						bottom: 0;
+						z-index: 1;
+						@include simple-gradient(to top, $color_blue, 0%, transparent, 100%);
+						@include twins;
+						//@include opacity(.8);
+						@include opacity(0);
+						@include breakpoint(tablet-portrait) {
+							@include opacity(.8);
+						}
+					}
+					.arrow {
+						@include transform(translate(0,50px));
+						position: absolute;
+						left: 15px;
+						right: 15px;
+						text-align: center;
+						bottom: 20px;
+						z-index: 2;
+						text-transform: uppercase;
+						@include transition(all .3s ease);
+						color: #fff;
+						@include breakpoint(tablet-portrait) {
+							@include transform(translate(0,0px));
+							z-index: 2;
+						}
+						&:after {
+							color: $color_link;
+						}
+						&:hover {
+							color: $color_link;
+						}
+					}
+					&:hover {
+						color: #fff;
+						text-decoration: none;
+						&:before {
+							@include opacity(.8);
+						}						
+						.arrow {
+							@include transform(translate(0,0px));
+							z-index: 2;
+						}
+					}
+			}
+		}
+}
+
+.title-preview {
+	+.grid {
+		margin-top:0;
+	}
+}

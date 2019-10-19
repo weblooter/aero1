@@ -1,0 +1,71 @@
+.stages {
+	background: url(#{$img}stages.jpg) no-repeat;
+	background-position: center;
+	background-size: cover;
+	position: relative;
+	padding: 40px 0;
+	color: #fff;
+	@include breakpoint(tablet-windows) {
+		padding: 50px 0;
+	}
+	@include breakpoint(tablet-small-portrait1) {
+		padding: 40px 0 10px;
+	}
+		&:before {
+			@include twins;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(1,21,39,.7);
+		}
+		.container {
+			z-index: 1;
+			position: relative;
+		}
+		h2 {
+			color: #7BDDFF;
+			margin-top: 0;
+			text-align: left;
+		}
+		h3 {
+			margin: 0 0 10px;
+			text-transform: uppercase;
+			@include font(18,20,600);
+			color: #7BDDFF;
+		}
+		ol {
+			list-style: none;
+			counter-reset: li1;
+			margin: 40px 0 0;
+			padding: 0;			
+			li {
+				padding: 0;
+				position: relative;
+				margin: 0 0 30px;
+				padding: 0 0 0 85px;
+				@include font(16,26,300);
+				@include breakpoint(tablet-small-portrait1) {
+					padding: 0px;
+				}
+				&:before {
+					display: inline-block;
+					position: absolute;
+					@include font(100,80,700);
+					color: #fff;
+					left: 0;
+					top: 0;
+					counter-increment: li1;
+					content: counter(li1);
+					@include breakpoint(tablet-small-portrait1) {
+						display: none;
+					}
+				}			
+				p {
+					margin: 0;
+				}	
+			}
+		}
+
+
+}

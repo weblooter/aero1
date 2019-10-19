@@ -1,0 +1,97 @@
+html,
+body {
+	height: auto;
+}
+
+.menuTop {
+	height: 5px;
+	background: #666;
+	position: relative!important;
+	left: auto!important;
+	top: auto!important;
+	.container {
+		display: none;
+	}
+}
+
+h1,
+.h1,
+.articleItem__Author {
+	color: #000;
+}
+
+.bannerLong {
+	display: none;
+}
+
+#header {
+	.bannerLong {
+		display: none;
+	}
+	.top {
+		display: block;
+		.logo {
+			display: block;
+			float: none;
+			position: relative;
+			left: auto;
+			top: auto;
+			margin: 0;
+		}
+		.login,
+		.searchBox {
+			display: none;
+		}
+	}
+}
+
+.bannerSmall,
+#toTop,
+.more-btn,
+.bannerInner,
+.reviews-collapse,
+.nonprint,
+#panel,
+.bx-context-toolbar-empty-area {
+	display: none!important;
+}
+
+#body {
+	min-height: inherit!important;
+}
+
+.ravno {
+	height: auto!important;
+}
+
+footer {
+	border-top: 2px solid #888;
+	background: #fff;
+	color: #777!important;
+	.menuBottom,
+	.infoBlock {
+		display: none;
+	}
+	.copyRight {
+		color: #777!important;
+		p {
+			&:last-child {
+				display: none;
+			}
+		}
+	}
+}
+
+.content {
+	.imageBig {
+		height: auto!important;
+		img {
+			position: relative;
+			left: auto;
+			top: auto;
+			right: auto;
+			bottom: auto;
+			height: auto!important;
+		}
+	}
+}

@@ -1,0 +1,108 @@
+.actions {
+	@include display-flex;
+	@include flex-wrap(wrap);
+	&:before,&:after {
+		display: none;
+	}
+	&__item {
+		margin: 0 0 40px;
+		position: relative;
+		@include breakpoint(tablet-windows) {
+			margin: 0 0 50px;
+		}	
+		@include breakpoint(phone-landscape1) {
+			width: 100%;
+		}
+		&:before {
+			@include twins;
+			top: -10px;
+			right: 5px;
+			left: 5px;
+			bottom: -10px;
+			z-index: 0;
+			@include transition(all .25s ease);
+		}
+		.image {
+			margin: 0 0 10px;
+			position: relative;
+			z-index: 1;
+			a {
+				display: block;
+				height: 85px;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border: 1px solid #dcdcdc;
+				@include breakpoint(phone-landscape1) {
+					height: 130px;
+				}
+			}
+		}
+		.title {
+			@include font(14,20);
+			position: relative;
+			z-index: 1;
+			a {
+				text-transform: uppercase;
+				text-decoration: none;
+				&:hover {
+					text-decoration: none;
+					color: #000;
+				}
+			}
+		}
+		.price {
+			@include font(23,26,700);
+				color: #333;
+				text-transform: uppercase;
+				text-align: center;
+				margin: 10px 0;
+				@include breakpoint(tablet-portrait) {
+					@include font(20,22,700);
+					margin: 5px 0;
+				}
+				s {
+					font-weight: 600;
+					color: #999;
+				}
+				span {
+					@include font(13,26);
+					@include breakpoint(tablet-portrait) {
+						@include font(12,22);
+					}
+				}
+		}
+		.buy {
+			position: relative;
+			z-index: 1;
+		}
+		.article {
+			@include font(14,24,600);
+			color: #333;
+			@include breakpoint(tablet-portrait) {
+				@include font(12,22,600);
+			}
+		}
+		.btn {
+			width: 100%;
+		}
+		&:hover {
+			z-index: 2;
+			&:before {
+				@include box-shadow(0px 0px 5px rgba(0, 0, 0, .5));
+			}
+			.image {
+				a {
+					border-color: $color_red;
+				}
+			}
+			/*.title {
+				a {
+					text-decoration: none;
+					color: #000;
+				}
+			}*/
+		}
+		
+	}
+}

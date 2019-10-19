@@ -1,0 +1,433 @@
+.navigator {
+	@include font(14, 15);
+	color: $color_grey;
+	margin: 25px 0 75px;
+	padding: 0;
+	position: relative;		
+	animation: fadeInLeft .8s alternate ease-in-out;
+	@include breakpoint(tablet-windowscape) {
+		margin: 20px 0 45px;
+	}
+	a,span {
+		display: inline-block;
+		position: relative;
+		color: $color_blue;
+		text-decoration: none;
+		&:hover {
+			color: $color_link;
+			text-decoration: none;
+		}		
+	}
+	span {
+		margin: 0 3px;
+		&:hover {color: $color_blue;}
+	}
+}
+.line {
+	//padding: 0 0 70px;
+	margin-top:70px;
+	margin-bottom:50px;
+	border-bottom: 1px solid $color_border;
+	clear: both;
+	@include breakpoint(tablet-windowscape) {
+		//padding: 0 0 50px;
+		margin-top:50px;
+	}
+}
+.back {
+	padding: 0 0px 70px;
+	border-bottom: 1px solid $color_border;
+	margin: 130px 0 0;
+	@include breakpoint(tablet-windowscape) {
+		margin: 80px 0 0;
+		padding: 0 0px 50px;
+	}
+	@include breakpoint(tablet-portrait) {
+		margin: 50px 0 0;
+	}
+	&:after {
+		@include clear;
+	}
+	a {
+		color:$color_link!important;
+		@include breakpoint(tablet-small-portrait) {
+			font-size: 14px;
+		}
+		@include breakpoint(phone-landscape1) {
+		/*	width: 20px;
+			height: 7px;
+			overflow: hidden;
+			text-indent:-9999px;
+			background-image: url("data:image/svg+xml,%3Csvg width='20' height='7' viewBox='0 0 20 7' fill='%23b39253' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M18.304 3.866H0v-.967h18.07L15.816.645l.683-.683 2.938 2.937h.323v.324l.232.232-.044.045.044.045-.232.232v.089h-.089L16.5 7.038l-.683-.683 2.488-2.489z'%3E%3C/path%3E%3C/svg%3E");*/
+		}
+		&:before,&:after {
+		/*	@include breakpoint(phone-landscape1) {
+				display: none;
+			}*/
+		}
+		&.next {
+			float: right;
+		}
+		&.prev {
+			float: left;			
+			/*@include breakpoint(phone-landscape1) {
+				@include transform(rotate(180deg));
+			}*/
+			&:after {
+				display: none;
+			}			
+			&:before {
+				content:"";
+				width:20px;
+				height: 7px;
+				background-image: url("data:image/svg+xml,%3Csvg width='20' height='7' viewBox='0 0 20 7' fill='%23b39253' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M18.304 3.866H0v-.967h18.07L15.816.645l.683-.683 2.938 2.937h.323v.324l.232.232-.044.045.044.045-.232.232v.089h-.089L16.5 7.038l-.683-.683 2.488-2.489z'%3E%3C/path%3E%3C/svg%3E");
+				vertical-align: middle;
+				display: inline-block;
+				margin: 4px 10px 0 0;
+				@include opacity(.7);
+				@include transition(all .25s ease);
+				@include transform(translate(0,0) rotate(180deg));
+			}
+			&:hover {				
+				&:before {
+					@include transform(translate(-10px,0) rotate(180deg));
+					@include opacity(1);
+				}
+			}
+		}
+		&:hover {
+			color:$color_link_hover!important;
+		}
+	}
+}
+.icon {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: inherit;
+	position: relative;
+	&.icon-social {
+		@include transition(all .3s ease);
+		width: 30px;
+		height: 30px;
+		fill:$color_link;
+		path,circle {
+			fill:$color_link;
+		}
+		&:hover {
+			fill:$color_link_hover;
+			path,circle {
+				fill:$color_link_hover;
+			}
+		}
+	}
+	&.icon-award {
+		width: 23px;
+		height: 24px;
+		@include transition(all .3s ease);
+		fill:$color_h;
+		&:hover {			
+			//fill:$color_link_hover;
+		}
+	}
+}
+.main {
+	.icon {
+		&.icon-award {
+			fill:#ffffff;
+		}
+	}
+	header {
+		.header__inner {
+			&:hover {
+				.icon {
+					&.icon-award {
+						fill:$color_h;
+						&:hover {			
+							//fill:$color_link_hover;
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	&.stickTop {
+		.icon {
+			&.icon-award {
+				fill:$color_h;
+			}
+		}
+	}
+}
+
+#nav_dropdown {
+	display: none;
+	z-index: 1;
+	@include breakpoint(tablet-portrait) {
+		position: absolute;
+	left: 15px;
+	top: 12px;
+	display: block;
+	padding-left: 45px;
+	padding-top: 4px;
+	height: 23px;
+	@include box-sizing(border-box);
+	@include font(16,16);
+	color: $color_h;
+	}
+	&:hover {
+		color: $color_h;
+		span {
+			width: 23px;
+		@include transition(all .25s ease);
+		}
+	}
+	&.active {	
+		
+		span {			
+			width: 20px;
+			&:before,&:after{background: $color_h!important;width: 20px;height: 2px;}
+		}
+		&:hover {
+			span {
+				width: 20px;
+			}
+		}
+	}
+	span {
+		width: 18px;
+		margin: 0 15px 0 0;
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+
+
+
+
+
+
+
+$button-width: 18px; // The width of the button area
+$button-height: 23px; // The height of the button area
+$bar-thickness: 1px; // The thickness of the button bars
+$button-pad: 5px; // The left/right padding between button area and bars.
+$button-bar-space: 5px; // The spacing between button bars
+$button-transistion-duration: 0.3s; // The transition duration
+.c-hamburger,
+#nav_dropdown {
+	display: none;
+	//z-index: 20;
+	@include breakpoint(tablet-portrait) {
+		display: block;
+	}
+	//position: relative;
+	//overflow: hidden;
+	//padding: 0;
+	/*width: $button-width;
+	height: $button-height;*/
+	//font-size: 0;
+	//text-indent: -9999px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-shadow: none;
+	border-radius: 0;
+	border: none;
+	cursor: pointer;
+	transition: background $button-transistion-duration;
+}
+
+.c-hamburger:focus,
+#nav_dropdown:focus {
+	outline: none;
+}
+
+.c-hamburger span,
+#nav_dropdown span {
+	display: block;
+	position: absolute;
+	top: ($button-height / 2) - ($bar-thickness / 2);
+	left: $button-pad;
+	right: $button-pad;
+	height: $bar-thickness;
+	background: $color_h;
+	
+	&:hover {
+		
+		&:before,&:after {
+			//width: calc(100% - 5px);
+		}
+	}
+}
+.main {
+	.c-hamburger span,
+#nav_dropdown span {
+	background: #fff;
+}
+.header {
+	&__inner {
+		&:hover {
+			.c-hamburger span,
+#nav_dropdown span {
+	background: $color_h;
+}
+		}
+	}
+}
+&.stickTop {
+	.c-hamburger span,
+#nav_dropdown span {
+	background: $color_h;
+}
+}
+}
+
+.c-hamburger span::before,
+.c-hamburger span::after,
+#nav_dropdown span::before,
+#nav_dropdown span::after {
+	position: absolute;
+	display: block;
+	left: 0;
+	width: 23px;
+	height: $bar-thickness;
+	background-color: $color_h;
+	content: "";
+}
+.main {
+	.c-hamburger span::before,
+.c-hamburger span::after,
+#nav_dropdown span::before,
+#nav_dropdown span::after {
+	background-color: #fff;
+}
+.header {
+	&__inner {
+		&:hover {
+			.c-hamburger span::before,
+			.c-hamburger span::after,
+			#nav_dropdown span::before,
+			#nav_dropdown span::after {
+				background-color: $color_h;
+			}
+		}
+	}
+}
+&.stickTop {
+	.c-hamburger span::before,
+.c-hamburger span::after,
+#nav_dropdown span::before,
+#nav_dropdown span::after {
+	background-color: $color_h;
+}
+}
+}
+
+.c-hamburger span::before,
+#nav_dropdown span::before {
+	top: -$bar-thickness - $button-bar-space;
+}
+
+.c-hamburger span::after,
+#nav_dropdown span::after {
+	bottom: -$bar-thickness - $button-bar-space;
+}
+
+
+/**
+ * Style 2
+ *
+ * Hamburger to "x" (htx). Takes on a hamburger shape, bars slide
+ * down to center and transform into an "x".
+ */
+
+.c-hamburger--htx,
+#nav_dropdown {
+	background: none;
+}
+
+.c-hamburger--htx span,
+#nav_dropdown span {
+	@include transition(background 0s $button-transistion-duration);
+}
+
+.c-hamburger--htx span::before,
+.c-hamburger--htx span::after,
+#nav_dropdown span::before,
+#nav_dropdown span::after {
+	transition-duration: $button-transistion-duration, $button-transistion-duration;
+	transition-delay: $button-transistion-duration, 0s;
+}
+
+.c-hamburger--htx span::before,
+#nav_dropdown span::before {
+	transition-property: top, transform;
+}
+
+.c-hamburger--htx span::after,
+#nav_dropdown span::after {
+	transition-property: bottom, transform;
+}
+
+
+/* active state, i.e. menu open */
+
+.c-hamburger--htx.is-active,
+#nav_dropdown.active {
+	//background-color: #4f699b;
+}
+
+.c-hamburger--htx.is-active span,
+#nav_dropdown.active span {
+	background: none;
+}
+.stickTop {
+	.c-hamburger--htx.is-active span,
+#nav_dropdown.active span {
+	background: none;
+}
+}
+.header {
+	&__inner {
+		&:hover {
+			.c-hamburger--htx.is-active span,
+#nav_dropdown.active span {
+	background: none;
+}
+		}
+	}
+}
+
+.c-hamburger--htx.is-active span::before,
+#nav_dropdown.active span::before {
+	top: -1px;
+	@include transform(rotate(45deg));
+	background: $color_h;
+}
+.main {
+	.c-hamburger--htx.is-active span::before,
+	#nav_dropdown.active span::before {
+		background: $color_h;
+	}	
+}
+
+.c-hamburger--htx.is-active span::after,
+#nav_dropdown.active span::after {
+	bottom: 0;
+	@include transform(rotate(-45deg));
+	background: $color_h;
+}
+.main {
+	.c-hamburger--htx.is-active span::after,
+	#nav_dropdown.active span::after {
+		background: $color_h;
+	}	
+}
+
+.c-hamburger--htx.is-active span::before,
+.c-hamburger--htx.is-active span::after,
+#nav_dropdown.active span::before,
+#nav_dropdown.active span::after {
+	transition-delay: 0s, $button-transistion-duration;
+}

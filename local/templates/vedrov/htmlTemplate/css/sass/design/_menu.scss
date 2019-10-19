@@ -1,0 +1,548 @@
+.dropdown-menu-active {
+	position: fixed;
+	overflow: hidden;
+	width: 100%;
+	.header {
+		z-index: 100;
+		&__inner {
+			&:before {
+				height: 48px;
+				@include twins;
+				left: 0;
+				right: 0;
+				top: 0;
+				position: fixed;
+				background: #fff;
+				z-index: 0;
+			}
+		}
+	}
+}
+.callbackFormActive {
+	position: fixed;
+	overflow: hidden;
+	width: 100%;
+}
+
+.menuTop {
+	@include display-flex;
+	height:120px;
+	@include transition(all .25s ease);
+	@include breakpoint(tablet-portrait) {
+		//height: calc(100vh - 48px);
+		top: 48px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		min-height: calc(100% - 48px);
+		@include box-sizing(border-box);
+		position: fixed;
+		background: #fff;
+		display: block;		
+		overflow: hidden;
+		overflow-y: auto;
+		@include transform(translate(-150%,0px));
+	}	
+	&.nav-active {
+		@include breakpoint(tablet-portrait) {
+			@include transform(translate(0,0));
+		}
+	}
+
+	ul.nav_menu {
+		width: calc(50% + 15px);
+		@include justify-content(flex-end);
+		text-align: right;
+		margin: 0 -20px 0 0;
+		padding: 0;
+		list-style: none;
+		@include display-flex;
+		@include align-items(center);
+		@include box-sizing(border-box);
+		@include transition(all .25s ease);
+		@include breakpoint(tablet-windowscape) {
+			margin: 0 -15px 0 0;
+		}
+		@include breakpoint(tablet-portrait) {
+			width: 100%;
+			display: block;
+			margin: 0 0 15px;
+			padding: 0;
+			text-align: left;
+		}
+		&:first-child {
+			@include justify-content(flex-start);
+			text-align: left;
+			margin: 0 0 0 -20px;
+			@include breakpoint(tablet-windowscape) {
+				margin: 0 0 0 -15px;
+			}
+			@include breakpoint(tablet-portrait) {
+				margin: 0;
+				padding: 0;
+				text-align: left;
+				padding-top: 15px;
+			}
+		}
+		&:last-child {
+			margin:0;
+			li {
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+		}
+
+		li {
+			margin: 0 20px;
+			@include breakpoint(tablet-windowscape) {
+				margin: 0 15px;
+			}
+			@include breakpoint(tablet-portrait) {
+				//margin: 0;
+				border-bottom: 1px solid $color_border;
+			}
+			a,span {
+				display: block;
+				text-decoration: none;
+				@include font(16, 16);
+				@include transition(all .25s ease);
+				text-transform: uppercase;
+				position: relative;
+				cursor: pointer;
+				@include breakpoint(tablet-windowscape) {
+					@include font(14, 14);
+				}
+				@include breakpoint(tablet-portrait) {
+					padding: 10px 15px;
+					color: $color_blue;
+					@include font(16, 16);
+				}
+				&:before {
+					height: 100px;
+					@include twins;
+					left: -35px;
+					right: -35px;
+					top:calc(50% - 20px);
+					display: none;
+					z-index: 20;
+					@include breakpoint(tablet-windowscape) {
+						left: -15px;
+					right: -15px;
+					}
+					@include breakpoint(tablet-portrait) {
+						display: none!important;
+					}
+				}
+			}
+			&.clicked {
+				>a,>span {
+					@include breakpoint(tablet-portrait) {
+						background: $color_border!important;
+					}
+				}
+				.submenu {
+					@include breakpoint(tablet-portrait) {
+						display: block;
+					}
+				}
+			}
+			.submenu {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				right: 0;
+				overflow: hidden;
+				margin-top: 1px;
+				@include breakpoint(tablet-portrait) {
+					position: relative;
+					top:auto;
+					left: auto;
+					right: auto;
+					display: none;
+				}
+				&__item {
+					padding: 25px 0;
+					background: #fff;
+					position: absolute;
+					top: 0;
+					left: 0px;
+					right: 0px;
+					@include opacity(0);
+					@include transition(all .25s ease);
+					text-align: center;
+					margin: 0;
+					list-style: none;
+					height: auto;
+					@include breakpoint(tablet-portrait) {
+						position: relative;
+						top: auto;
+						left: auto;
+						right: auto;
+						@include opacity(1);
+						text-align: left;
+						padding: 0;
+						margin: 10px 0 15px;
+					}
+					&:before {
+						@include twins;
+						background: #fff;
+						right: 100%;
+						top: 0;
+						bottom: 0;
+						width: 1000px;
+						@include breakpoint(tablet-portrait) {
+							display: none;
+						}
+					}
+					&:after {
+						@include twins;
+						background: #fff;
+						left: 100%;
+						top: 0;
+						bottom: 0;
+						width: 1000px;
+						@include breakpoint(tablet-portrait) {
+							display: none;
+						}
+					}
+					a {
+						&:before {
+							display: none!important;
+						}
+					}
+					li {
+						margin: 0 15px;
+						display: inline-block;
+						@include breakpoint(tablet-portrait) {
+							display: block;
+							margin: 0;
+							padding: 0 15px;
+						}
+						&:last-child {
+							@include breakpoint(tablet-portrait) {
+								border:none;
+							}
+						}
+						a,span {
+							color: $color_h;
+							text-decoration: none;
+							@include font(14,18);
+							@include transition(all .25s ease);
+							@include breakpoint(tablet-windowscape) {
+								@include font(13, 16);
+							}
+							@include breakpoint(tablet-portrait) {
+								padding: 7px 15px;
+								display: block;
+								@include font(14,18);
+								text-transform: transform;
+							}
+							&:before {
+								display: none!important;
+							}
+							&.title {
+								display: block;
+								@include font(20,20);
+								text-transform: uppercase;
+								color: $color_blue!important;
+								position: relative;
+								text-decoration: none;
+								@include breakpoint(tablet-windowscape) {
+									@include font(18, 18);
+								}
+								@include breakpoint(tablet-portrait) {
+									@include font(14, 18);
+								}
+								&:after {
+									content:"";
+									width: 38px;
+									height: 1px;
+									background: $color_blue;
+									display: inline-block;
+									margin: 0 0 0 10px;
+									@include breakpoint(tablet-portrait) {
+										display: none;
+									}
+								}
+								&:hover {
+									color: $color_link!important;
+								}
+							}
+						}
+					}
+					&.cols {
+						@include display-flex;
+						@include breakpoint(tablet-portrait) {
+							display: block;
+							padding: 0 15px;
+						}
+						li {
+							width: 20%;
+							padding: 0 15px;
+							margin: 0;
+							list-style: none;
+							text-align: left;
+							@include box-sizing(border-box);
+							@include breakpoint(tablet-portrait) {
+								width: 100%;
+								padding: 0;
+							}
+							&:nth-of-type(1) {
+								width: 40%;
+								@include breakpoint(tablet-portrait) {
+									width: 100%;
+								}
+								ul {
+									-webkit-columns: 2;
+									columns: 2;
+									-webkit-column-width: 50%;
+									column-width: 50%;
+									-webkit-column-gap: 30px;
+									column-gap: 30px;
+									margin: 20px 0 0;
+									padding: 0;
+									@include breakpoint(tablet-portrait) {
+										-webkit-column-gap: 0px;
+										column-gap: 0px;
+										margin: 0 0 15px 15px;
+									}
+									@include breakpoint(phone-landscape1) {
+										-webkit-columns: 1;
+									columns: 1;
+									-webkit-column-width: 100%;
+									column-width: 100%;									
+									}
+									li {
+										margin: 10px 0 0px;
+										padding: 0;
+										width: auto;
+										@include breakpoint(tablet-portrait) {
+											border:none;
+											margin: 0;
+										}
+									}
+								}
+							}
+							&.clicked {
+								>a {
+									@include breakpoint(tablet-portrait) {
+										background: none!important;
+										color: $color_link!important;
+										border-bottom:1px solid $color_border;
+									}
+								}
+								ul{
+									@include breakpoint(tablet-portrait) {
+										display: block;
+									}
+									li {
+										&.clicked {
+											ul {
+												display: block;
+											}
+										}
+									}
+								}
+							}
+							ul {
+								padding: 0;
+								margin: 20px 0 0;
+								@include breakpoint(tablet-portrait) {
+									margin: 0 0 15px 15px;
+									display: none;
+								}
+								li {
+									width: auto;
+									margin: 10px 0 0px;
+									padding: 0;
+									text-transform: none;
+									@include breakpoint(tablet-portrait) {
+										margin:0;
+										border:none;
+									}
+									&:nth-of-type(1) {
+										width: auto;
+									}
+									a,span {
+										text-transform: none;
+										color:$color_grey!important;
+										@include breakpoint(tablet-windowscape) {
+											@include font(13,16);
+										}
+										&:hover {
+											color:$color_blue!important;
+										}
+									}
+								}
+							}
+						}
+					}
+					&.row {
+						.text {
+							@include align-content(center);
+							@include display-flex;
+							@include flex-wrap(wrap);
+							text-align: left;
+							@include font(14,26);
+							color:$color_grey;
+							@include breakpoint(tablet-portrait) {
+								margin-top: 10px;
+							}
+							h3,.h3 {
+								margin: 0 0 15px;
+								@include font(18,20);
+								color: $color_h;
+								width: 100%;
+								@include breakpoint(tablet-portrait) {
+									margin: 0 0 10px;
+								}
+								a {
+									color: $color_h!important;
+									text-decoration: none;
+									&:hover {
+										color: $color_link_hover!important;
+										text-decoration: none;
+									}
+								}
+							}
+							p {
+								margin: 0 0 10px;
+							}
+							.more {
+								margin:20px 0 0;
+								width: 100%;
+								@include font(16,26);
+								@include breakpoint(tablet-portrait) {
+									margin:0 0 15px;
+								}
+									a {
+										color: $color_link!important;
+										@include breakpoint(tablet-portrait) {
+											padding: 0;
+										}
+										&:hover {
+											color: $color_link_hover!important;
+										}
+									}
+							}
+					}
+					.form {
+						.formField {
+							margin:0 0 10px;
+						}
+						button,.btn {
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+		&.act {
+			& > a,& > span {
+				color:$color_link;
+			}
+		}	
+		
+		&:hover {
+			a,span {
+				color: $color_link;
+				background: #fff;
+				text-decoration: none;
+				&:before {
+					display: block;
+				}
+			}
+			.submenu {
+				overflow: visible;
+				&__item {
+					@include opacity(1);
+						li {
+							a,span {
+								&:before {
+									display: none;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.stickTop {
+	.menuTop ul.nav_menu li a:before, .menuTop ul.nav_menu li span:before {
+		height:70px;
+	}
+}
+
+#body {
+	.submenu {
+		position: relative;
+		overflow: hidden;
+		margin-top: 1px;
+		margin-bottom: 60px;
+		@include breakpoint(tablet-windowscape) {
+			margin-bottom: 40px;
+		}
+		@include breakpoint(tablet-portrait) {
+			display: none;
+		}
+		&__item {
+			padding: 30px 0;
+			@include transition(all .25s ease);
+			text-align: center;
+			margin: 0;
+			list-style: none;
+			height: auto;
+			a {
+				&:before {
+					display: none!important;
+				}
+			}
+			li {
+				margin: 0 15px;
+				display: inline-block;
+				position: relative;
+				a,span {
+					color: $color_h;
+					text-decoration: none;
+					text-transform: uppercase;
+					position: relative;
+					@include font(14,18);
+					@include transition(all .25s ease);
+					@include breakpoint(tablet-windowscape) {
+						@include font(13, 16);
+					}
+					&:before {
+						@include twins;
+						display: block!important;
+						top: -27px;
+						right: -5px;
+						left: -5px;
+						height: 1px;
+						background-color: $color_link;
+						@include opacity(0);
+						@include transition(all .3s ease);
+						@include breakpoint(tablet-windowscape) {
+							top: -28px;
+						}
+					}
+				}
+				&:hover,&.act {
+					a,span {
+						color: $color_link;
+					}
+				}
+				&.act {
+					a,span {
+						&:before {
+							@include opacity(1)
+						}
+					}
+				}
+			}
+
+	}
+}
+}

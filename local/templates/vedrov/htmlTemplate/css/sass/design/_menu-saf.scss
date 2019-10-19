@@ -1,0 +1,8 @@
+.safari {
+	#body .submenu__item li a::before, #body .submenu__item li span::before {
+		top: -29px;
+		@include breakpoint(tablet-windowscape) {
+			top: -30px;
+		}
+	}
+}

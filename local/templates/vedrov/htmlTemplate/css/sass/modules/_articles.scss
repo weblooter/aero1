@@ -1,0 +1,86 @@
+.articles {
+	//margin: 150px 0 0;
+	@include breakpoint(tablet-windowscape) {
+		//margin: 80px 0 0;
+	}
+	@include breakpoint(tablet-small-portrait) {
+		margin: 0;
+	}
+	&__item {
+		@include display-flex;
+		margin: 90px auto;
+		max-width: 935px;
+		@include breakpoint(tablet-portrait) {
+			margin: 65px auto;
+		}
+		@include breakpoint(tablet-small-portrait) {
+			margin: 50px auto;
+			@include flex-wrap(wrap);
+		}
+
+		.image,.text {
+			width: 50%;
+			@include flex-all(0 0 50%);
+			text-align: center;
+			@include align-items (center);
+			@include align-content (center);
+			@include display-flex;
+			@include flex-wrap(wrap);
+			@include justify-content(center);
+			@include order(1);
+			@include breakpoint(tablet-small-portrait) {
+				width: 100%;
+				@include flex-all(0 0 100%);
+			}
+		}		
+		h2,.h2 {
+			margin-top: 0;
+			@include breakpoint(tablet-small-portrait) {
+				margin-top: 20px;
+			}
+		}
+		.more {
+			padding: 0!important;
+			border: none!important;
+			margin: 30px 0 0!important;
+			@include breakpoint(tablet-small-portrait) {
+				margin-top: 20px!important;
+			}
+			a {
+				margin:0!important;
+			}
+		}
+		&:nth-of-type(2n) {
+			.text {
+				@include order(0);
+				@include breakpoint(tablet-small-portrait) {
+					@include order(2);
+				}
+			}
+		}
+	}
+}
+
+.grid {
+	margin:60px -8px -10px;
+	@include box-sizing(border-box);
+	@include breakpoint(tablet-small-portrait) {
+		margin:40px -8px -10px;
+	}
+	&__item {
+		width:33.3333%;
+		padding:0 8px;
+		margin:0 0 15px;
+		@include box-sizing(border-box);
+		@include transition(all .25s ease);
+		@include breakpoint(tablet-small-portrait) {
+			width:50%;
+		}
+			img {
+				display:block;
+			}
+			&:hover {
+				@include transform(scale(1.02));
+			}
+	}
+}

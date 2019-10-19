@@ -1,0 +1,244 @@
+@mixin inline-block {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+
+@mixin opacity($opacity) {
+	opacity: $opacity;
+}
+
+@mixin group {
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+	& {
+		*zoom: 1;
+	}
+}
+
+@mixin icons {
+	background-image: $icons;
+	background-repeat: no-repeat;
+}
+
+@mixin twins {
+	display: block;
+	position: absolute;
+	content: "";
+}
+
+@mixin clear {
+	@include twins;
+	position: relative;
+	clear: both;
+}
+
+@mixin font($size: $base-font-size, $height: $base-line-height, $weight: 400, $font: $font1) {
+	font-weight: $weight;
+	font-size: $size + px;
+	line-height: $height + px;
+	font-family: $font;
+}
+
+
+@mixin box-shadow($box-shadow...) {
+	box-shadow: $box-shadow;
+}
+
+@mixin box-sizing($box-sizing) {
+	box-sizing: $box-sizing;
+}
+
+@mixin gradient($gradient, $fallback, $pie: false) {
+	background: $fallback;
+	background: -webkit-linear-gradient($gradient);
+	background: linear-gradient($gradient);
+}
+
+@mixin simple-gradient($direction, $color1, $color1pos, $color2, $color2pos) {
+	background: $color1;
+	background: -webkit-linear-gradient($direction, $color1 $color1pos, $color2 $color2pos);
+	background: linear-gradient($direction, $color1 $color1pos, $color2 $color2pos);
+}
+
+//transition
+@mixin transition($transition...) {
+	transition: $transition;
+}
+@mixin transition-duration ($times...) {
+  transition-duration: $times;
+}
+@mixin transition-delay ($times...) {
+  transition-delay: $times;
+}
+@mixin transition-property ($property...) {
+  transition-property: $property;
+}
+@mixin transition-transform( $args... ) {
+  transition: transform $args;
+}
+
+//transform
+@mixin transform($transform...) {
+	-ms-transform: $transform;
+	-webkit-transform: $transform;
+	transform: $transform;
+}
+@mixin transform-origin ($origin) {
+  -ms-transform-origin: $origin;
+  -webkit-transform-origin: $origin;
+  transform-origin: $origin;
+}
+
+
+
+@mixin grayscale {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	@include transition(all .25s ease);
+	&:hover {
+		filter: none;
+		-webkit-filter: grayscale(0);
+	}
+}
+
+
+// Flex box model
+@mixin flex-wrap($flex-wrap) {
+	-ms-flex-wrap: $flex-wrap;
+	-webkit-flex-wrap: $flex-wrap;
+	flex-wrap: $flex-wrap;
+}
+
+@mixin flex-all($flex-all) {
+	-ms-flexbox: $flex-all;
+	-webkit-flex: $flex-all;
+	flex: $flex-all;
+}
+
+@mixin flex-basis($flex-basis) {
+	-ms-flex-basis: $flex-basis;
+	-webkit-flex-basis: $flex-basis;
+	flex-basis: $flex-basis;
+}
+
+@mixin align-items($align-items) {
+	-ms-flex-align-items: $align-items;
+	-webkit-align-items: $align-items;
+	align-items: $align-items;
+}
+@mixin align-self($align-self) {
+	-ms-flex-align-self: $align-self;
+	-webkit-align-self: $align-self;
+	align-self: $align-self;
+}
+
+@mixin align-content($align-content) {
+	-ms-flex-align-content: $align-content;
+	-webkit-align-content: $align-content;
+	align-content: $align-content;
+}
+
+@mixin justify-content($justify-content) {
+	-ms-flex-pack: $justify-content;
+	-webkit-justify-content: $justify-content;
+	justify-content: $justify-content;
+}
+
+@mixin order($order) {
+	-ms-order: $order;
+	-webkit-order: $order;
+	order: $order;
+}
+
+@mixin display-flex {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+@mixin display-inline-flex {
+	display: -ms-inline-flexbox;
+	display: -webkit-inline-flex;
+	display: inline-flex;
+}
+
+// Adaptive breakpoints
+@mixin breakpoint($point) {
+	@if $point==tablet-windows {
+		@media (min-width: 1400px) {
+			@content;
+		}
+	}
+	@if $point==tablet-windowscape0 {
+		@media (min-width: 1181px) {
+			@content;
+		}
+	}
+	@if $point==tablet-windowscape {
+		@media (max-width: 1180px) {
+			@content;
+		}
+	}
+	@if $point==tablet-windowscape1 {
+		@media (max-width: 1080px) {
+			@content;
+		}
+	}
+	@if $point==tablet-landscape1 {
+		@media (min-width: 1000px) {
+			@content;
+		}
+	}
+	@if $point==tablet-landscape {
+		@media (max-width: 1024px) {
+			@content;
+		}
+	}
+	@else if $point==tablet-portrait {
+		@media (max-width: 990px) {
+			@content;
+		}
+	}
+	@else if $point==tablet-portrait1 {
+		@media (max-width: 900px) {
+			@content;
+		}
+	}
+	@else if $point==tablet-portrait2 {
+		@media (max-width: 830px) {
+			@content;
+		}
+	}
+	@else if $point==tablet-small-portrait {
+		@media (max-width: 700px) {
+			@content;
+		}
+	}
+	@else if $point==tablet-small-portrait1 {
+		@media (max-width: 600px) {
+			@content;
+		}
+	}
+	@else if $point==phone-landscape {
+		@media (max-width: 480px) {
+			@content;
+		}
+	}
+	@else if $point==phone-landscape1 {
+		@media (max-width: 415px) {
+			@content;
+		}
+	}
+}
+
+@mixin custom-device($min, $max) {
+	@include mq($media-type: 'screen', $min-width: $min, $max-width: $max) {
+		@content;
+	}
+}

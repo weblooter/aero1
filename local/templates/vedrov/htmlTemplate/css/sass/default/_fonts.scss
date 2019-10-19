@@ -1,0 +1,59 @@
+﻿$font:"../fonts/cerapro/";
+$font-a:"../fonts/aquarelle/";
+
+@font-face {
+	font-family: 'Aquarelle';	
+	src: url('#{$font-a}aquarelle.eot');
+	src: local('Aquarelle'),
+	url('#{$font-a}aquarelle.eot?#iefix') format('embedded-opentype'),
+	url('#{$font-a}aquarelle.woff') format('woff'),
+	url('#{$font-a}aquarelle.ttf') format('truetype'),
+	url('#{$font-a}aquarelle.svg#aquarelle') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Cera Pro';	
+	src: url('#{$font}CeraPro-Regular.eot');
+	src: local('Cera Pro Regular'),
+	url('#{$font}CeraPro-Regular.eot?#iefix') format('embedded-opentype'),
+	url('#{$font}CeraPro-Regular.woff') format('woff'),
+	url('#{$font}CeraPro-Regular.ttf') format('truetype'),
+	url('#{$font}CeraPro-Regular.svg#CeraPro-Regular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Cera Pro';	
+	src: url('#{$font}CeraPro-RegularItalic.eot');
+	src: local('Cera Pro Regular Italic'),
+	url('#{$font}CeraPro-RegularItalic.eot?#iefix') format('embedded-opentype'),
+	url('#{$font}CeraPro-RegularItalic.woff') format('woff'),
+	url('#{$font}CeraPro-RegularItalic.ttf') format('truetype'),
+	url('#{$font}CeraPro-RegularItalic.svg#CeraPro-RegularItalic') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('#{$font}CeraPro-Bold.eot');
+	src: local('Cera Pro Bold'),
+	url('#{$font}CeraPro-Bold.eot?#iefix') format('embedded-opentype'),
+	url('#{$font}CeraPro-Bold.woff') format('woff'),
+	url('#{$font}CeraPro-Bold.ttf') format('truetype'),
+	url('#{$font}CeraPro-Bold.svg#CeraPro-Bold') format('svg');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('#{$font}CeraPro-BoldItalic.eot');
+	src: local('Cera Pro Bold Italic'),
+	url('#{$font}CeraPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+	url('#{$font}CeraPro-BoldItalic.woff') format('woff'),
+	url('#{$font}CeraPro-BoldItalic.ttf') format('truetype'),
+	url('#{$font}CeraPro-BoldItalic.svg#CeraPro-BoldItalic') format('svg');
+	font-weight: 700;
+	font-style: italic;
+}

@@ -1,0 +1,71 @@
+.events {
+	width: 50%;
+	float: right;
+	margin: 10px 0 0px 30px;
+	@include breakpoint(tablet-portrait) {
+		//margin: 0 0 30px;
+		float: none;
+		width: auto;
+		overflow: hidden;
+		margin: 0;
+	}
+		&__item {
+			@include display-flex;
+			@include flex-wrap(wrap);
+			margin: 0 -15px 20px;
+			@include box-sizing(border-box);
+			&:before,&:after {
+				display: none;
+			}
+				.image {
+					background-size: cover;
+					background-position: center center;
+					background-repeat: no-repeat;
+					a,span {
+						width: 100%;
+						height: 100%;
+						background-size: cover;
+						background-position: center center;
+						background-repeat: no-repeat;
+						@include display-flex;
+					}
+				}
+				.text {
+					@include box-sizing(border-box);
+					padding: 20px 0 15px;
+					position: relative;
+					@include font(14,20);
+					color: #424242;
+					@include breakpoint(tablet-windowscape) {
+						@include font(13,19);
+					}
+						&:before {
+							@include twins;
+							height: 10px;
+							background: $color_red;
+							left: 0;
+							right: 0;
+							top: 0;
+						}
+						&:after {
+							@include twins;
+							height: 4px;
+							background: $color_red;
+							left: 0;
+							right: 0;
+							bottom: 0;
+						}
+						h3 {
+							margin: 0 0 10px;
+							@include font(16,18,700);
+							text-transform: none;
+							@include breakpoint(tablet-windowscape) {
+								@include font(14,16,700);
+							}
+						}
+						p {
+							margin: 10px 0 0px;
+						}
+				}
+		}
+}

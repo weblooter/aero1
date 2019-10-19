@@ -1,0 +1,227 @@
+.prices {
+	&__item {
+		margin-bottom: 60px;
+		h3 {
+			margin: 0 0 30px;
+			@include font(18,20,700);
+			text-transform: uppercase;
+		}
+		.price {
+			@include justify-content(flex-end);
+			@include align-items(center);
+			@include align-content(center);
+			@include display-flex;
+			text-align: right;
+			&__link {
+				@include font(30,30,700);
+				color: $color_h;
+				border-bottom: 1px dotted $color_h;
+				display: inline-block;
+				cursor: pointer;
+				transition: all .25s ease;
+					&:hover {
+						border-bottom-color: transparent;
+					}
+			}
+			&__text {
+				display: block;
+				position: absolute;
+				width: 285px;
+				//top: 0;
+				right: 100%;
+				margin-right: 25px;
+				transition: all .25s ease;
+				opacity: 0;
+				@include breakpoint(tablet-windowscape) {
+					width: 255px;
+				}
+				@include breakpoint(tablet-portrait) {
+					position: relative;
+					right: auto;
+					margin: 10px 0 0;
+					width: 100%;
+					display: none;
+				}
+				&.active {
+					opacity: 1;
+					display: block;
+				}
+					table {
+						width: 100%;
+						border:none;
+						margin: 0;
+						@include breakpoint(tablet-small-portrait) {
+							display: table;
+						}
+						tr {
+							@include breakpoint(tablet-small-portrait) {
+								display: table-row;
+							}
+							td {
+								border: none;
+								padding: 2px;
+								@include font(14,16);
+								color: $color_grey;
+								text-align: left;
+								vertical-align: bottom;
+								@include breakpoint(tablet-small-portrait) {
+									display: table-cell;
+								}
+								&:last-child {
+									text-align: right;
+									width: 35%;
+									@include breakpoint(tablet-windowscape) {
+										width: 45%;
+									}
+								}
+							}
+							&:last-child {
+								td {
+									padding-top: 10px;
+									color: $color_h;
+								}
+							}
+						}
+					}
+			}
+			&__item {
+				@include display-flex;
+				height: 100%;
+				@include align-items(center);
+				@include align-content(center);
+				position: relative;
+				@include breakpoint(tablet-portrait) {
+					@include flex-wrap(wrap);
+					height: auto;
+					@include justify-content(flex-end);
+				}
+			}
+		}
+		
+
+		.more {
+			padding: 25px 0;
+			border-top:1px solid #e5e5e5;
+			border-bottom:1px solid #e5e5e5;
+			text-align: right;
+			margin-top: 50px;
+				a,span {
+					margin-left: 70px;
+					@include breakpoint(tablet-small-portrait1) {
+						margin-left: 15px;
+					}
+					@include breakpoint(phone-landscape1) {
+						margin-left: 10px;
+					}
+				}
+		}
+	}
+}
+
+#callbackForm {
+	width: 100%;
+	max-width: 700px;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	transition: all 1s ease;
+	@include transform(translateX(-100%));
+	@include display-flex;
+	@include align-items(center);
+	@include opacity(0);
+	background: #fff;
+	overflow-y: auto;
+	&.active {
+		@include transform(translateX(0));
+		@include opacity(1);
+		+.shadow {
+			opacity: 0.5;
+			z-index: 50;
+			pointer-events: auto;
+			display: block!important;
+		}
+	}
+	.close {
+		background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23000000' fill-rule='evenodd' d='M9.546 8.839L18.385 0l.707.707-8.839 8.839 8.839 8.839-.707.707-8.84-8.839-8.838 8.839L0 18.385l8.839-8.84L0 .708.707 0l8.839 8.839z'%3E%3C/path%3E%3C/svg%3E");
+		width: 20px;
+		height: 20px;
+		opacity: 0;
+		top:15px;
+		right: 15px;
+		z-index: 2;
+		position: absolute;
+		text-indent: -9999px;
+		overflow: hidden;
+		cursor: pointer;
+		transition: all .6s ease;
+		transition-delay: .0s;
+		@include transform(rotate(0deg));
+		
+		
+		&:hover {
+			transition-delay: .6s;
+			opacity: .7;
+			@include transform(rotate(180deg));
+		}
+		&.active {
+			transition-delay: .6s;
+			opacity: .3;
+			@include transform(rotate(180deg));
+			&:hover {
+				transition-delay: .2s;
+				opacity: .7;
+				@include transform(rotate(0deg));
+			}
+		}
+	}
+	.form {
+		padding: 60px;
+		height: 100%;
+		overflow: hidden;
+		overflow-y: auto;
+		box-sizing: border-box;
+		@include breakpoint(tablet-small-portrait) {
+			padding:30px;
+		}
+		.h1-title {
+			margin-top: 0px;
+			padding-top: 30px;
+		}
+		.h1 {
+			margin-bottom: 30px;
+		}
+		p {
+			text-align: center;
+			margin: 0 0 75px;
+			line-height: 30px;
+			@include breakpoint(tablet-small-portrait) {
+				margin: 0 0 40px;
+				line-height: 24px;
+			}
+		}
+		.btn {
+			width: 100%;
+			margin-bottom: 30px;
+		}
+	}
+	.after-text {
+		text-align:center;
+		margin:30px auto;
+		@include font(30, 40, 700);
+		color: $color_h;
+		position: relative;
+		text-align: center;
+		width: 80%;
+		animation: fadeInDown .8s alternate ease-in-out;
+		transition-delay: .2s;
+		@include breakpoint(tablet-portrait) {
+			@include font(24, 30, 700);
+			width: 90%;
+		}
+		@include breakpoint(tablet-small-portrait1) {
+			@include font(20, 24, 700);
+		}
+	}
+}

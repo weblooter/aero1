@@ -1,0 +1,416 @@
+a {
+	color: $color_link;
+	text-decoration: none;
+	@include transition(all .25s ease);
+	&:hover {
+		color: $color_link_hover;
+		text-decoration: underline;
+	}
+	&:hover,
+	&:focus,
+	&:active {
+		outline: none;
+		outline: 0;
+	}
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+h1,
+h2,
+h3,
+.h1,
+.h2,
+.h3 {
+	font-family: $font1;
+	color: $color_h;
+	font-weight: normal;
+	line-height: 100%;
+	margin: 0.3rem 0 0.4rem 0;
+}
+
+h1,
+.h1 {
+	@include font(36, 48, 700);
+	color: $color_h;
+	margin: 0px auto 90px;
+	position: relative;
+	text-align: center;
+	width: 80%;	
+	max-width: 800px;
+	animation: fadeInDown .8s alternate ease-in-out;
+	@include transition-delay(.2s);
+	@include breakpoint(tablet-portrait) {
+		@include font(30, 32, 700);
+		margin: 0px auto 30px;
+		max-width: inherit;
+		width: 90%;
+	}
+	@include breakpoint(tablet-small-portrait1) {
+		@include font(24, 26, 700);
+		margin: 0px auto 20px;
+	}
+	a {
+		text-decoration: none;
+		color: $color_h;
+	}	
+}
+.h1-title {
+	text-align: center;
+	margin: 30px 0;
+	color: $color_link;
+	@include font(16,18);
+	text-transform: uppercase;
+	@include transition-delay(.1s);
+	animation: fadeInDown .8s alternate ease-in-out;
+		&:before {
+			content: "-";
+			display: inline-block;
+			margin-right: 10px;
+		}
+		&:after {
+			content: "-";
+			display: inline-block;
+			margin-left: 10px;
+		}
+}
+
+
+
+h2,
+.h2 {
+	@include font(36, 38, 700);
+	color: $color_h;
+	margin: 40px 0 30px;
+	@include breakpoint(tablet-portrait) {
+		@include font(30, 32, 700);
+		margin: 30px 0 30px;
+	}
+	@include breakpoint(phone-landscape) {
+		@include font(24, 26, 700);
+		margin: 30px 0 20px;
+	}
+	a {
+		text-decoration: none;
+		color: $color_h;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+
+h3,
+.h3 {
+	@include font(21, 25, 600);
+	color: $color_h;
+	margin: 30px 0 15px;
+	@include breakpoint(tablet-portrait) {
+		
+	}
+	@include breakpoint(phone-landscape) {
+		@include font(18, 22, 600);
+	}
+	a {
+		text-decoration: none;
+		color: $color_h;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+h4,
+.h4 {
+	@include font(20, 24, 400);
+	color: $color_h;
+	margin: 60px 0px;
+	overflow: hidden;
+	@include breakpoint(tablet-portrait) {
+		margin: 40px 0px;
+		@include font(18, 22, 400);
+	}
+	@include breakpoint(phone-landscape) {
+		@include font(16, 20, 400);
+		margin: 30px 0px;
+	}
+	a {
+		text-decoration: none;
+		color: $color_h;
+		&:hover {
+			text-decoration: none;
+		}
+	}	
+}
+.info {
+	padding-left: 98px;
+	position: relative;
+	@include font(20, 24, 400);
+	color: $color_h;
+	margin: 60px 0px;
+	@include breakpoint(tablet-portrait) {
+		margin: 40px 0px;
+		@include font(18, 22, 400);
+		padding-left: 66px;
+	}
+	@include breakpoint(phone-landscape) {
+		@include font(16, 20, 400);
+		margin: 30px 0px;
+	}
+	&:before {
+		@include twins;
+		width: 40px;
+		height: 40px;
+		left: 15px;
+		top: calc(50% - 20px);
+		background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='40px' height='40px' viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'%3E%3Ccircle fill='none' stroke='%23dcbe84' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' cx='20.047' cy='20.046' r='18.904'/%3E%3Crect x='0.355' y='0.355' fill='none' width='39.383' height='39.383'/%3E%3Cpath fill='%23dcbe84' d='M19.085,13.148c-0.171,0-0.281-0.113-0.281-0.283v-2.062c0-0.17,0.111-0.283,0.281-0.283h1.919 c0.172,0,0.285,0.113,0.285,0.283v2.062c0,0.169-0.115,0.283-0.285,0.283H19.085z M19.143,29.729c-0.169,0-0.282-0.11-0.282-0.281 V16.481c0-0.17,0.114-0.283,0.282-0.283h1.807c0.171,0,0.283,0.112,0.283,0.283v12.966c0,0.171-0.113,0.281-0.283,0.281H19.143z'/%3E%3C/svg%3E");
+		background-repeat:no-repeat;
+		@include breakpoint(phone-landscape) {
+			left: 0px;
+		}
+	}
+	a {
+		text-decoration: none;
+		color: $color_h;
+		&:hover {
+			text-decoration: none;
+		}
+	}	
+}
+.doc {
+	display: block;
+	float: right;
+	margin:5px 0 5px 30px;
+	width: 69px;
+	height: 78px;
+	background: url(#{$img}icons/pdf.png) no-repeat;
+	@include breakpoint(tablet-portrait) {
+		width: 40px;
+		height: 45px;
+		background-size: 40px auto;
+	}
+	@include breakpoint(tablet-small-portrait) {
+		margin:5px 0 5px 15px;
+	}
+}
+
+h5,
+.h5 {
+	@include font(18, 22, 600);
+	color: #000;
+	margin: 0px 0 15px;
+	a {
+		text-decoration: none;
+		color: $color_h;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+h6,
+.h6 {}
+
+.span1 {
+	width: 847px;
+	width: 48.7%;
+}
+
+.span2 {
+	width: 555px;
+	width: 48.7%;
+}
+
+.span4 {
+	width: 265px;
+	width: 22.6%;
+}
+
+.text {
+	/*overflow: hidden;*/
+}
+
+.fleft {
+	float: left;
+}
+
+.fright {
+	float: right;
+}
+
+.hidden {
+	opacity: 0;
+}
+.displaynone {
+	display: none;
+}
+
+.visible {
+	opacity: 1;
+}
+
+.row {
+	@include box-sizing(border-box);
+	* {
+		@include box-sizing(border-box);
+	}
+	
+	&.row-f {
+		@include display-flex;
+		@include flex-wrap(wrap);
+		//@include flex-basis(100%);
+		&:before,&:after {
+			display: none;
+		}
+	}
+}
+
+abbr {
+	cursor: help;
+}
+
+.group {
+	@include group;
+}
+
+.inline {
+	display: inline;
+}
+
+.block {
+	display: block;
+}
+
+.inline-block {
+	@include inline-block;
+}
+
+.relative,
+.rel {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.left,
+.leftalign,
+.tleft {
+	text-align: left;
+}
+
+.center,
+.centeralign,
+.tcenter {
+	text-align: center;
+}
+
+.right,
+.rightalign,
+.tright {
+	text-align: right;
+}
+
+.topvalign,
+.vtop {
+	vertical-align: top;
+}
+
+.middlevalign,
+.vmiddle {
+	vertical-align: middle;
+}
+
+.bottomvalign,
+.vbottom {
+	vertical-align: bottom;
+}
+
+.fleft {
+	float: left;
+}
+
+.fright {
+	float: right;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.italic {
+	font-weight: italic;
+}
+
+.big,
+.big a {
+	font-size: 1.25em;
+}
+
+.small,
+.small a {
+	font-size: .8em;
+}
+
+.darkred,
+.darkred a {
+	color: #800000;
+}
+
+.black,
+.black a {
+	color: black;
+}
+
+.red,
+.red a {
+	color: $color_red;
+}
+
+.grey,
+.grey a {
+	color: $color_grey;
+}
+
+.bold,
+.bold a {
+	font-weight: bold;
+}
+
+.star,
+.error,
+.req {
+	color: $color_red;
+}
+
+.clear {
+	clear: both;
+}
+
+.clearfix::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+p.indent {
+	text-indent: 1.25cm;
+}
+
+
+.scroll-pane {
+	//width: 100%;
+	max-height: calc(100vh - 200px);
+	overflow: hidden;
+	overflow-y: auto;
+	&.custom-scroll_container {
+		margin-right: -15px;
+		.custom-scroll_inner {
+			padding-right: 30px!important;
+		}
+	}
+}
