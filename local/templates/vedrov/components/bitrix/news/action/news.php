@@ -65,5 +65,3 @@ $this->setFrameMode(true);
     ),
     $component
 );?>
-
-<? $APPLICATION->IncludeComponent('local.core:consult.short-form', '.default', [])?>

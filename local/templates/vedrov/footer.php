@@ -3,6 +3,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 ?>
+<? $APPLICATION->IncludeComponent('local.core:consult.short-form', '.default', [], false, ['HIDE_ICONS' => 'Y'])?>
 <footer class="footer post-up">
     <div class="container">
         <div class="footer__logos">
@@ -95,19 +96,26 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
                 </ul>
             </div>
             <div class="col-xs-12 col-md-9">
-                <ul class="menu">
-                    <li><a href="">О докторе</a></li>
-                    <li><a href="">Цены</a></li>
-                    <li><a href="">Фото работ</a></li>
-                    <li><a href="">Акции</a></li>
-                    <li><a href="">Полезное</a></li>
-                    <li><a href="">Консультации</a></li>
-                    <li><a href="">Контакты</a></li>
-                </ul>
+                <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-3", Array(
+                    "ALLOW_MULTI_SELECT" => "N",
+                    "CHILD_MENU_TYPE" => "left",
+                    "DELAY" => "N",
+                    "MAX_LEVEL" => "1",
+                    "MENU_CACHE_GET_VARS" => array(
+                        0 => "",
+                    ),
+                    "MENU_CACHE_TIME" => "3600",
+                    "MENU_CACHE_TYPE" => "N",
+                    "MENU_CACHE_USE_GROUPS" => "Y",
+                    "ROOT_MENU_TYPE" => "top",
+                    "USE_EXT" => "N",
+                ),
+                    false
+                ); ?>
             </div>
             <div class="col-xs-12 col-md-3">
                 <?
-                $GLOBALS['APPLICATION']->IncludeComponent('local.core:footer.socialnet', '.default', [])
+                $GLOBALS['APPLICATION']->IncludeComponent('local.core:footer.socialnet', '.default', [], false, ['HIDE_ICONS' => 'Y'])
                 ?>
             </div>
 
@@ -119,7 +127,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
                 <?$APPLICATION->IncludeFile('include/footer-copy.php');?>
             </div>
             <div class="col-xs-3 col-sm-2 col-md-2 logo">
-                <a href=""><img src="/img/logo-wht.png" alt="" /></a>
+                <a href="/"><img src="/img/logo-wht.png" alt="" /></a>
             </div>
             <div class="col-xs-12 col-sm-5 col-md-3 col-md-offset-2 links">
                 <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-2", Array(

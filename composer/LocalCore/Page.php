@@ -49,11 +49,11 @@ class Page
     public function footerInit(): void
     {
 
-        if (is_null($this->canonical)) {
+        if (empty($this->canonical)) {
             $this->canonical = Application::getInstance()
                 ->getContext()
                 ->getRequest()
-                ->getRequestUri();
+                ->getRequestedPageDirectory().'/';
         }
 
         Asset::getInstance()

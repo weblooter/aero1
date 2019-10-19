@@ -22,7 +22,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
         </script>
 
     </head>
-	<body class="inner">
+	<body class="<?=( defined('MAIN_PAGE') ? 'main' : 'inner' )?>">
 		<div id="panel">
 			<?$APPLICATION->ShowPanel();?>
 		</div>
@@ -69,15 +69,25 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                     </div>
                 </div>
                 <div class="shadow"></div>
+                <?
+                switch ( \Bitrix\Main\Application::getInstance()->getContext()->getRequest()->getRequestedPageDirectory() )
+                {
+                    case '/kontakty':
+                        $APPLICATION->ShowViewContent("contacts_header");
+                        break;
+                }
+                ?>
             </header>
-            <div class="container">
-                <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array(
-                    "PATH" => "",
-                    "SITE_ID" => "s1",
-                    "START_FROM" => "0",
-                ),
-                    false
-                );?>
-            </div>
+            <?if( !defined('DISABLE_BREADCRUMBS') ):?>
+                <div class="container">
+                    <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array(
+                        "PATH" => "",
+                        "SITE_ID" => "s1",
+                        "START_FROM" => "0",
+                    ),
+                        false
+                    );?>
+                </div>
+            <?endif;?>
 	
 						

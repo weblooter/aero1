@@ -5,7 +5,7 @@
 <? foreach ($arResult as $arBatch): ?>
     <ul class="nav_menu">
         <? foreach ($arBatch as $arItem): ?>
-            <li>
+            <li class="<?=$arItem['SELECTED'] ? 'act' : ''?>">
                 <?
                 switch ($arItem['LINK']) {
                     case '/uslugi/':
