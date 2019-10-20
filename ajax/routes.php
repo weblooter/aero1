@@ -20,4 +20,22 @@ return [
         'handler' => \Local\Core\Ajax\Handler\Consult::class.'::shortForm',
         'methods' => ['POST']
     ],
+
+    /**
+     * @see \Local\Core\Ajax\Handler\Consult::createAnswer()
+     */
+    'consult_form_send_ask' => [
+        'path' => '/consult/form-send-ask/',
+        'handler' => \Local\Core\Ajax\Handler\Consult::class.'::createAnswer',
+        'methods' => ['POST']
+    ],
+
+    /**
+     * @see \Local\Core\Ajax\Handler\Consult::createAnswer()
+     */
+    'consult_free_consult' => [
+        'path' => '/consult/free-consult/',
+        'handler' => \Local\Core\Ajax\Handler\Consult::class.'::freeConsult',
+        'methods' => ['POST']
+    ],
 ];

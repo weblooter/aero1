@@ -15,6 +15,8 @@ return array(
     'Local\\Core\\Assistant\\Iblock' => $baseDir . '/LocalCore/Assistant/Iblock.php',
     'Local\\Core\\HighloadBlock\\Entity' => $baseDir . '/LocalCore/HighloadBlock/Entity.php',
     'Local\\Core\\HighloadBlock\\FieldEnumTable' => $baseDir . '/LocalCore/HighloadBlock/FieldEnumTable.php',
+    'Local\\Core\\Inner\\BxModified\\CBitrixComponent' => $baseDir . '/LocalCore/Inner/BxModified/CBitrixComponent.php',
+    'Local\\Core\\Inner\\BxModified\\CFile' => $baseDir . '/LocalCore/Inner/BxModified/CFile.php',
     'Local\\Core\\Inner\\BxModified\\HttpResponse' => $baseDir . '/LocalCore/Inner/BxModified/HttpResponse.php',
     'Local\\Core\\Inner\\Logger' => $baseDir . '/LocalCore/Inner/Logger.php',
     'Local\\Core\\Inner\\Result' => $baseDir . '/LocalCore/Inner/Result.php',

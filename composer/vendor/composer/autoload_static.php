@@ -70,6 +70,8 @@ class ComposerStaticInit73ce08e6b9ba2b72ef01c3a5d083983d
         'Local\\Core\\Assistant\\Iblock' => __DIR__ . '/../..' . '/LocalCore/Assistant/Iblock.php',
         'Local\\Core\\HighloadBlock\\Entity' => __DIR__ . '/../..' . '/LocalCore/HighloadBlock/Entity.php',
         'Local\\Core\\HighloadBlock\\FieldEnumTable' => __DIR__ . '/../..' . '/LocalCore/HighloadBlock/FieldEnumTable.php',
+        'Local\\Core\\Inner\\BxModified\\CBitrixComponent' => __DIR__ . '/../..' . '/LocalCore/Inner/BxModified/CBitrixComponent.php',
+        'Local\\Core\\Inner\\BxModified\\CFile' => __DIR__ . '/../..' . '/LocalCore/Inner/BxModified/CFile.php',
         'Local\\Core\\Inner\\BxModified\\HttpResponse' => __DIR__ . '/../..' . '/LocalCore/Inner/BxModified/HttpResponse.php',
         'Local\\Core\\Inner\\Logger' => __DIR__ . '/../..' . '/LocalCore/Inner/Logger.php',
         'Local\\Core\\Inner\\Result' => __DIR__ . '/../..' . '/LocalCore/Inner/Result.php',

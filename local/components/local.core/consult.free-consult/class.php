@@ -1,6 +1,6 @@
 <?
 
-class EmptyComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
+class ConsultFreeConsultComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 {
     public function executeComponent()
     {

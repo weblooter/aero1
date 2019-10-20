@@ -33,6 +33,7 @@ import './css/jquery.jscrollpane.css';
 import './css/sass/css.scss';
 
 import './localJs/consult-short-form';
+import './localJs/form-send-ask';
 
 export {
     $

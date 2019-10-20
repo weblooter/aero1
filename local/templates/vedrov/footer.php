@@ -150,6 +150,12 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         </div>
     </div>
 </footer>
+
+
+<div id="text" class="mfp-text mfp-hide">
+    <? $APPLICATION->IncludeFile('include/footer-license.php', false, ['MODE' => 'html'])?>
+</div>
+
 <div id="toTop"></div>
 <div class="mobile-bar">
     <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>" class="mobile-bar__item" title="Позвонить в клинику">

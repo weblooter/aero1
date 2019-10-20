@@ -99,7 +99,7 @@
 
                     case '/konsultatsii/':
                         ?>
-                        <a href="">Консультации</a>
+                        <a href="<?=$arItem['LINK']?>"><?=$arItem['TEXT']?></a>
                         <div class="submenu">
                             <div class="submenu__item row row-f">
                                 <div class="text col-xs-12 col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
