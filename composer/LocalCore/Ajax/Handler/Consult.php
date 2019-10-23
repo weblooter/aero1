@@ -2,6 +2,8 @@
 
 namespace Local\Core\Ajax\Handler;
 
+use Local\Core\Text\Format;
+
 /**
  * Class Consult
  *
@@ -25,9 +27,11 @@ class Consult
                 throw new \Exception('Не полный данные!');
             }
 
-            $strMsg = 'Заказан звонок.'.PHP_EOL;
-            $strMsg .= 'Имя: '.$obRequest->getPost('NAME').PHP_EOL;
+            $strMsg = 'Имя: '.$obRequest->getPost('NAME').PHP_EOL;
             $strMsg .= 'Телефон: '.$obRequest->getPost('PHONE').PHP_EOL;
+            if (!empty(trim($obRequest->getPost('MSG')))) {
+                $strMsg .= 'Сообщение: '.(new Format\FormatTrim(new Format\FormatStripTags()))->format($obRequest->getPost('MSG')).PHP_EOL;
+            }
 
             $el = new \CIBlockElement();
             $arLoadProductArray = [
@@ -77,7 +81,7 @@ class Consult
                 ],
                 "NAME" => date('Y-m-d H:i').' | '.$obRequest->getPost('NAME'),
                 "ACTIVE" => "N",
-                "PREVIEW_TEXT" => $obRequest->getPost('MSG'),
+                "PREVIEW_TEXT" => ( new Format\FormatTrim(new Format\FormatStripTags()) )->format($obRequest->getPost('MSG')),
                 "PREVIEW_TEXT_TYPE" => "text",
             ];
 
@@ -92,6 +96,8 @@ class Consult
                 \Local\Core\TriggerMail\Consult::createAnswer([
                     'FIO' => trim($obRequest->getPost('NAME')),
                     'EMAIL' => trim($obRequest->getPost('EMAIL')),
+                    'MSG' => ( new Format\FormatTrim(new Format\FormatStripTags()) )->format($obRequest->getPost('MSG')),
+                    'ELEM_ID' => $PRODUCT_ID
                 ]);
 
             } else {
@@ -101,5 +107,20 @@ class Consult
         } catch (\Exception $e) {
             $obResponse->setErrorAjaxResult([], [$e->getMessage()]);
         }
+    }
+
+    /**
+     * Обработчик формы "Беслатная консультация". Выезжает сбоку на страницах консультации.<br/>
+     * Отдает на обработку shortForm();
+     *
+     *
+     * @see \Local\Core\Ajax\Handler\Consult::shortForm();
+     * @param \Bitrix\Main\HttpRequest                  $obRequest
+     * @param \Local\Core\Inner\BxModified\HttpResponse $obResponse
+     * @param                                           $args
+     */
+    public static function freeConsult(\Bitrix\Main\HttpRequest $obRequest, \Local\Core\Inner\BxModified\HttpResponse $obResponse, $args)
+    {
+        self::shortForm($obRequest, $obResponse, $args);
     }
 }

@@ -31,7 +31,7 @@ return [
     ],
 
     /**
-     * @see \Local\Core\Ajax\Handler\Consult::createAnswer()
+     * @see \Local\Core\Ajax\Handler\Consult::freeConsult()
      */
     'consult_free_consult' => [
         'path' => '/consult/free-consult/',

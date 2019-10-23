@@ -18,23 +18,23 @@
         <p>
             <?$GLOBALS['APPLICATION']->IncludeFile('include/consult-free-consult.php', false, ['MODE' => 'text'])?>
         </p>
-        <form>
+        <form action="" id="consult-free-consult" name="consult-free-consult">
             <div class="row">
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" placeholder="Ваше имя*"/>
+                    <input type="text" name="NAME" placeholder="Ваше имя*"/>
                 </div>
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" placeholder="Номер телефона*"/>
+                    <input type="text" name="PHONE" placeholder="Номер телефона*"/>
                 </div>
                 <div class="formField col-xs-12">
-                    <textarea placeholder="Комментарий"></textarea>
+                    <textarea placeholder="Комментарий" name="MSG"></textarea>
                 </div>
                 <div class="formbutton col-xs-12">
-                    <button class="btn">Отправить</button>
+                    <button class="btn" type="submit">Отправить</button>
                 </div>
             </div>
         </form>
-        <div class="after-text">Спасибо за обращение!<br/>Мы скоро свяжемся с вами.</div>
+        <div class="after-text" data-consult-free-consult-result></div>
 
     </div>
 </div>

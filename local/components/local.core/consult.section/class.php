@@ -27,9 +27,9 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
             ->initFromUri();
 
 
-        $obCache = \Bitrix\Main\Application::getInstance()->getCache();
-        if( $obCache->startDataCache(60*60*24, __FILE__.__LINE__.'#'.$nav->getCurrentPage()) )
-        {
+        $obCache = \Bitrix\Main\Application::getInstance()
+            ->getCache();
+        if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__.'#'.$nav->getCurrentPage())) {
             $ipropValues = new \Bitrix\Iblock\InheritedProperty\SectionValues(
                 \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
                 $this->arSectionData['ID']
@@ -108,9 +108,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
                 }
             }
 
-        }
-        else
-        {
+        } else {
             $arResult = $obCache->getVars();
         }
         $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'ID' => 'DESC'], [
@@ -130,35 +128,53 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
         $arResult['NAV'] = $nav;
 
         $this->arResult = $arResult;
+        $this->setSeo();
+
     }
 
     protected function is404()
     {
         $return = false;
-        if (
-        empty(\Bitrix\Main\Application::getInstance()
-            ->getContext()
-            ->getRequest()
-            ->get('SECTION_CODE'))
-        ) {
-            $return = true;
-        }
 
-        $rsSection = \CIBlockSection::GetList([], [
-            'CODE' => \Bitrix\Main\Application::getInstance()
+        try {
+            if (
+            empty(\Bitrix\Main\Application::getInstance()
                 ->getContext()
                 ->getRequest()
-                ->get('SECTION_CODE'),
-            'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
-            'DEPTH_LEVEL' => 1,
-            'ACTIVE' => 'Y'
-        ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
-        if ($rsSection->SelectedRowsCount() < 1) {
+                ->get('SECTION_CODE'))
+            ) {
+                throw new \Exception();
+            }
+
+            $rsSection = \CIBlockSection::GetList([], [
+                'CODE' => \Bitrix\Main\Application::getInstance()
+                    ->getContext()
+                    ->getRequest()
+                    ->get('SECTION_CODE'),
+                'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
+                'DEPTH_LEVEL' => 1,
+                'ACTIVE' => 'Y'
+            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            if ($rsSection->SelectedRowsCount() < 1) {
+                throw new \Exception();
+            }
+
+            $this->arSectionData = $rsSection->GetNext();
+        } catch (\Exception $e) {
             $return = true;
         }
 
-        $this->arSectionData = $rsSection->GetNext();
 
         return $return;
+    }
+
+    protected function setSeo()
+    {
+        $GLOBALS['APPLICATION']->SetPageProperty('h1', htmlspecialchars_decode($this->arResult['SECTION']['SEO_VALUES']['SECTION_PAGE_TITLE']));
+        $GLOBALS['APPLICATION']->AddChainItem($this->arResult['SECTION']['NAME']);
+        $GLOBALS['APPLICATION']->SetTitle($this->arResult['SECTION']['SEO_VALUES']['SECTION_META_TITLE'].($this->arResult['NAV']->getCurrentPage() > 1 ? ' - страница '.$this->arResult['NAV']->getCurrentPage() : ''));
+        $GLOBALS['APPLICATION']->SetPageProperty('title', $this->arResult['SECTION']['SEO_VALUES']['SECTION_META_TITLE'].($this->arResult['NAV']->getCurrentPage() > 1 ? ' - страница '.$this->arResult['NAV']->getCurrentPage() : ''));
+        $GLOBALS['APPLICATION']->SetPageProperty('description', (new Local\Core\Text\Format\FormatStripTags())->format($this->arResult['SECTION']['SEO_VALUES']['SECTION_META_DESCRIPTION']));
+        $GLOBALS['APPLICATION']->SetPageProperty('keywords', $this->arResult['SECTION']['SEO_VALUES']['SECTION_META_KEYWORDS']);
     }
 }

@@ -30,6 +30,7 @@
         </div>
     </div>
     <div class="more">
+        <?// TODO Сделать ссылку на операцию когда она будет закончена ?>
         <a href="" class="arrow">Об операции</a>
         <span class="arrow js-open-callback-form">Бесплатная консультация</span>
     </div>
@@ -42,7 +43,19 @@
                     <p><?=$arItem['PREVIEW_TEXT']?></p>
                 </div>
                 <div class="answer">
-                    <p><?=$arItem['DETAIL_TEXT']?></p>
+                    <?
+                    switch (mb_strtoupper($arItem['DETAIL_TEXT_TYPE']))
+                    {
+                        case 'HTML':
+                            echo $arItem['DETAIL_TEXT'];
+                            break;
+                        case 'TEXT':
+                            ?>
+                            <p><?=$arItem['DETAIL_TEXT']?></p>
+                            <?
+                            break;
+                    }
+                    ?>
                     <div class="author">
                         <div class="image"><a href=""><img src="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['IMG']?>" alt="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?>"/></a></div>
                         <div class="title"><a href=""><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>

@@ -34,6 +34,7 @@ import './css/sass/css.scss';
 
 import './localJs/consult-short-form';
 import './localJs/form-send-ask';
+import './localJs/consult-free-consult';
 
 export {
     $
