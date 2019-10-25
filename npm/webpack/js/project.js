@@ -144,7 +144,7 @@ const jQuery = qq;
 
 		if ($.mask) {
 			$("#phone").mask("+7 (999) 999-99-99");
-			$("input.phone, .phone input").mask("+7(999)999-99-99");
+			$("input[name=PHONE], input[type=tel], .phone input").mask("+7 (999) 999-99-99");
 		} else {
 			console.log("$.mask is not defined!");
 		}

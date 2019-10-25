@@ -6108,7 +6108,7 @@ body {
       top: -30px; } }
 
 input[type="text"],
-input[type="password"], input[type="tel"], input[type="number"], input[type="email"],
+input[type="password"], input[type="tel"], input[type="pnone"], input[type="number"], input[type="email"],
 textarea, .input {
   border: 1px solid #f1f1f1;
   height: 48px;
@@ -6125,27 +6125,27 @@ textarea, .input {
   background: #fff;
   display: inline-block; }
   input[type="text"]::-webkit-input-placeholder,
-  input[type="password"]::-webkit-input-placeholder, input[type="tel"]::-webkit-input-placeholder, input[type="number"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder,
+  input[type="password"]::-webkit-input-placeholder, input[type="tel"]::-webkit-input-placeholder, input[type="pnone"]::-webkit-input-placeholder, input[type="number"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder,
   textarea::-webkit-input-placeholder, .input::-webkit-input-placeholder {
     color: #747d87;
     opacity: 1; }
   input[type="text"]::-moz-placeholder,
-  input[type="password"]::-moz-placeholder, input[type="tel"]::-moz-placeholder, input[type="number"]::-moz-placeholder, input[type="email"]::-moz-placeholder,
+  input[type="password"]::-moz-placeholder, input[type="tel"]::-moz-placeholder, input[type="pnone"]::-moz-placeholder, input[type="number"]::-moz-placeholder, input[type="email"]::-moz-placeholder,
   textarea::-moz-placeholder, .input::-moz-placeholder {
     color: #747d87;
     opacity: 1; }
   input[type="text"]:-moz-placeholder,
-  input[type="password"]:-moz-placeholder, input[type="tel"]:-moz-placeholder, input[type="number"]:-moz-placeholder, input[type="email"]:-moz-placeholder,
+  input[type="password"]:-moz-placeholder, input[type="tel"]:-moz-placeholder, input[type="pnone"]:-moz-placeholder, input[type="number"]:-moz-placeholder, input[type="email"]:-moz-placeholder,
   textarea:-moz-placeholder, .input:-moz-placeholder {
     color: #747d87;
     opacity: 1; }
   input[type="text"]:-ms-input-placeholder,
-  input[type="password"]:-ms-input-placeholder, input[type="tel"]:-ms-input-placeholder, input[type="number"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder,
+  input[type="password"]:-ms-input-placeholder, input[type="tel"]:-ms-input-placeholder, input[type="pnone"]:-ms-input-placeholder, input[type="number"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder,
   textarea:-ms-input-placeholder, .input:-ms-input-placeholder {
     color: #747d87;
     opacity: 1; }
   input[type="text"]:focus,
-  input[type="password"]:focus, input[type="tel"]:focus, input[type="number"]:focus, input[type="email"]:focus,
+  input[type="password"]:focus, input[type="tel"]:focus, input[type="pnone"]:focus, input[type="number"]:focus, input[type="email"]:focus,
   textarea:focus, .input:focus {
     color: #000;
     border-color: #dcbe84; }
