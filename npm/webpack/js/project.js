@@ -129,32 +129,7 @@ const jQuery = qq;
 			console.log("$.liMarquee is not defined");
 		}
 
-		// внутристраничное меню с плавной прокруткой
-		/*$('.js-menu-item').on('click', function(event) {
-			event.preventDefault();
-			var $self = $(this),
-				target = $("#" + $self.attr('href').split("#").pop());
-			$(".js-menu-item").removeClass("active");
-			$self.addClass("active");
-			$('html, body').animate({ scrollTop: (target.offset() || { top: 0 }).top - 80 }, 500);
-		});*/
-
-		/*var $curHoveredSubmenu = null;
-		$(".js-header-menu-item").on("mouseover", function(){
-			var submenuClassName = $(this).data("submenu");
-			if ($curHoveredSubmenu !== null && $curHoveredSubmenu.length !== 0 && !$curHoveredSubmenu.hasClass(submenuClassName)) {
-				$curHoveredSubmenu.removeClass("hover");
-			}
-			if ($curHoveredSubmenu === null || $curHoveredSubmenu.lenght === 0 || !$curHoveredSubmenu.hasClass(submenuClassName)) {
-				$curHoveredSubmenu = $(".submenu").filter("." + submenuClassName).addClass("hover");
-			}
-		});
-		$(".js-header-menu").on("mouseleave", function(){
-			$curHoveredSubmenu.removeClass("hover");
-			$curHoveredSubmenu = null;
-		});*/
-
-
+		
 		// Form styler
 		if ($.fn.styler) {
 			$('input, select').not(".styler-ignore").styler({
@@ -167,25 +142,12 @@ const jQuery = qq;
 			console.log("$.styler is not defined");
 		}
 
-		// Tabs
-		/*if ($.fn.tabs) {
-			$('.js-tabs').each(function(){
-				$(this).tabs({tabs: ".tab-nav > .tab", boxes: "> .box"});
-			});
-			$('.js-tabs-outer').each(function(){
-				$(this).tabs({tabs: ".tab-nav-outer > .tab", boxes: "> .box-outer"});
-			});
-			$('.js-tabs-inner').each(function(){
-				$(this).tabs({tabs: ".tab-nav-inner > .tab, .js-zone-tab", boxes: "> .box-inner"});
-			});
-
+		if ($.mask) {
+			$("#phone").mask("+7 (999) 999-99-99");
+			$("input[name=PHONE], input[type=tel], .phone input").mask("+7 (999) 999-99-99");
 		} else {
-			console.log("$.tabs is not defined");
-		}*/
-
-		/*$(".faq__item").click(function () {
-			$(this).toggleClass("active");
-		});*/
+			console.log("$.mask is not defined!");
+		}
 
 		if ($.fn.autocolumnlist) {
 			$('.col2').autocolumnlist({
