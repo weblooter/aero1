@@ -15,88 +15,77 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
     protected function fillResult()
     {
         $arResult = [];
+
         $obRequest = \Bitrix\Main\Application::getInstance()
             ->getContext()
             ->getRequest();
 
-
-        # elem
-        $rsElem = \CIBlockElement::GetList([], [
-            'ID' => $obRequest->get('ELEMENT_ID'),
-            'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
-            'SECTION_CODE' => $obRequest->get('SECTION_CODE'),
-            'INCLUDE_SUBSECTIONS' => 'Y'
-        ], false, false, [
-            'ID',
-            'IBLOCK_ID',
-            'ACTIVE_FROM',
-            'NAME',
-            'PREVIEW_TEXT',
-            'PREVIEW_TEXT_TYPE',
-            'DETAIL_TEXT',
-            'DETAIL_TEXT_TYPE',
-            'PROPERTY_ASKER_NAME',
-            'PROPERTY_CONSULTANT',
-        ]);
-        $arResult['ITEM'] = $rsElem->GetNext();
-
-        # user
-        if ($arResult['ITEM']['PROPERTY_CONSULTANT_VALUE'] > 0) {
-            $rsUser = \Bitrix\Main\UserTable::getList([
-                'filter' => [
-                    'ID' => $arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']
-                ],
-                'select' => [
-                    'ID',
-                    'LAST_NAME',
-                    'NAME',
-                    'SECOND_NAME',
-                    'WORK_POSITION',
-                    'PERSONAL_PHOTO',
-                ]
+        $obCache = \Bitrix\Main\Application::getInstance()->getCache();
+        if( $obCache->startDataCache(60*60*24, __FILE__.__LINE__.'#'.$obRequest->get('ELEMENT_ID')) )
+        {
+            # elem
+            $rsElem = \CIBlockElement::GetList([], [
+                'ID' => $obRequest->get('ELEMENT_ID'),
+                'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
+                'SECTION_CODE' => $obRequest->get('SECTION_CODE'),
+                'INCLUDE_SUBSECTIONS' => 'Y'
+            ], false, false, [
+                'ID',
+                'IBLOCK_ID',
+                'ACTIVE_FROM',
+                'NAME',
+                'PREVIEW_TEXT',
+                'PREVIEW_TEXT_TYPE',
+                'DETAIL_TEXT',
+                'DETAIL_TEXT_TYPE',
+                'PROPERTY_ASKER_NAME',
+                'PROPERTY_CONSULTANT',
             ]);
-            while ($ar = $rsUser->fetch()) {
-                $arImage = \CFile::ResizeImageGet($ar['PERSONAL_PHOTO'], ['width' => 128, 'height' => 128], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
-                $arResult['USER'][$ar['ID']] = [
-                    'FIO' => $ar['LAST_NAME'].' '.substr($ar['NAME'], 0, 1).'. '.substr($ar['SECOND_NAME'], 0, 1).'.',
-                    'IMG' => $arImage['src'],
-                    'WORK_POSITION' => $ar['WORK_POSITION']
+            $arResult['ITEM'] = $rsElem->GetNext();
+
+            # user
+            if ($arResult['ITEM']['PROPERTY_CONSULTANT_VALUE'] > 0) {
+                $arResult['USER'] = \Local\Core\Assistant\Consult::getConsultantsData([$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]);
+            }
+
+            # tags
+            $rsElemSections = \CIBlockElement::GetElementGroups($arResult['ITEM']['ID'], false, ['ID']);
+            while ($ar = $rsElemSections->Fetch()) {
+                $arResult['ITEM']['SECTIONS'][] = $ar['ID'];
+            }
+
+            $intMainSection = 0;
+            $rsSectionChain = \CIBlockSection::GetNavChain(\Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'), $arResult['ITEM']['SECTIONS'][0], ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            while ($ar = $rsSectionChain->GetNext()) {
+                $intMainSection = $ar['ID'];
+                $arResult['ITEM']['MAIN_SECTION'] = $ar;
+                break;
+            }
+
+            $rsSections = \CIBlockSection::GetList([], [
+                'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
+                'SECTION_ID' => $intMainSection,
+            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            while ($ar = $rsSections->GetNext()) {
+                $arResult['TAGS'][$ar['ID']] = [
+                    'NAME' => $ar['NAME'],
+                    'SECTION_PAGE_URL' => $ar['SECTION_PAGE_URL'],
                 ];
             }
+
+            $ipropValues = new \Bitrix\Iblock\InheritedProperty\ElementValues(
+                $arResult['ITEM']["IBLOCK_ID"],
+                $arResult['ITEM']["ID"]
+            );
+            $arResult['SEO'] = $ipropValues->getValues();
+
+            $obCache->endDataCache($arResult);
+            $this->arResult = $arResult;
         }
-
-        # tags
-        $rsElemSections = \CIBlockElement::GetElementGroups($arResult['ITEM']['ID'], false, ['ID']);
-        while ($ar = $rsElemSections->Fetch()) {
-            $arResult['ITEM']['SECTIONS'][] = $ar['ID'];
+        else
+        {
+            $this->arResult = $obCache->getVars();
         }
-
-        $intMainSection = 0;
-        $rsSectionChain = \CIBlockSection::GetNavChain(\Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'), $arResult['ITEM']['SECTIONS'][0], ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
-        while ($ar = $rsSectionChain->GetNext()) {
-            $intMainSection = $ar['ID'];
-            $arResult['ITEM']['MAIN_SECTION'] = $ar;
-            break;
-        }
-
-        $rsSections = \CIBlockSection::GetList([], [
-            'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
-            'SECTION_ID' => $intMainSection,
-        ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
-        while ($ar = $rsSections->GetNext()) {
-            $arResult['TAGS'][$ar['ID']] = [
-                'NAME' => $ar['NAME'],
-                'SECTION_PAGE_URL' => $ar['SECTION_PAGE_URL'],
-            ];
-        }
-
-        $ipropValues = new \Bitrix\Iblock\InheritedProperty\ElementValues(
-            $arResult['ITEM']["IBLOCK_ID"],
-            $arResult['ITEM']["ID"]
-        );
-        $arResult['SEO'] = $ipropValues->getValues();
-
-        $this->arResult = $arResult;
         $this->setSeo();
     }
 
