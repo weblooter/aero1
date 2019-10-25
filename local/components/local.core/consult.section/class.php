@@ -61,8 +61,8 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
 
             # tag mode format
             if ($this->_mode === self::MODE_TAG) {
-                $arResult['SECTION']['DESCRIPTION'] = (new Format\FormatConsult())->format($arResult['SECTION']['DESCRIPTION']);
-                $arResult['SECTION']['SEO_VALUES']['SECTION_META_DESCRIPTION'] = (new Format\FormatTrim(new Format\FormatStripTags((new Format\FormatConsult()))))->format($arResult['SECTION']['DESCRIPTION']);
+                $arResult['SECTION']['DESCRIPTION'] = (new Format\FormatCommon())->format($arResult['SECTION']['DESCRIPTION']);
+                $arResult['SECTION']['SEO_VALUES']['SECTION_META_DESCRIPTION'] = (new Format\FormatTrim(new Format\FormatStripTags((new Format\FormatCommon()))))->format($arResult['SECTION']['DESCRIPTION']);
 
                 if ($arResult['SECTION']['UF_VIDEO_IMG'] > 0) {
                     $arResult['SECTION']['UF_VIDEO_IMG'] = \CFile::ResizeImageGet($arResult['SECTION']['UF_VIDEO_IMG'], ['width' => 570, 'height' => 570], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75);
@@ -122,7 +122,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
             }
 
             # consultants
-            if (sizeof($arConsultants) > 0) {
+            if (!empty($arConsultants)) {
                 $arResult['USER'] = \Local\Core\Assistant\Consult::getConsultantsData($arConsultants);
             }
 

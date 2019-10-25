@@ -52,7 +52,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                                 "ALLOW_MULTI_SELECT" => "N",
                                 "CHILD_MENU_TYPE" => "left",
                                 "DELAY" => "N",
-                                "MAX_LEVEL" => "1",
+                                "MAX_LEVEL" => "2",
                                 "MENU_CACHE_GET_VARS" => array(
                                     0 => "",
                                 ),
@@ -88,6 +88,40 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
                         false
                     );?>
                 </div>
+            <?endif;?>
+
+            <? if (preg_match('/^\/poleznoe($|\/)/', \Bitrix\Main\Application::getInstance()
+                ->getContext()
+                ->getRequest()
+                ->getRequestedPageDirectory()) === 1): ?>
+                <section id="body" class="container">
+                    <div class="submenu">
+                        <? $APPLICATION->IncludeComponent("bitrix:menu", "poleznoe-menu", Array(
+                            "ALLOW_MULTI_SELECT" => "N",
+                            "CHILD_MENU_TYPE" => "left",
+                            "DELAY" => "N",
+                            "MAX_LEVEL" => "1",
+                            "MENU_CACHE_GET_VARS" => array(
+                                0 => "",
+                            ),
+                            "MENU_CACHE_TIME" => "3600",
+                            "MENU_CACHE_TYPE" => "N",
+                            "MENU_CACHE_USE_GROUPS" => "Y",
+                            "ROOT_MENU_TYPE" => "left",
+                            "USE_EXT" => "N",
+                        ),
+                            false
+                        ); ?>
+                    </div>
+                    <div class="mobile-nav">
+                        <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array(
+                            "PATH" => "",
+                            "SITE_ID" => "s1",
+                            "START_FROM" => "0",
+                        ),
+                            false
+                        );?>
+                    </div>
             <?endif;?>
 	
 						

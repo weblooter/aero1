@@ -85,13 +85,10 @@
                         <span>Полезное</span>
                         <div class="submenu">
                             <ul class="submenu__item">
-                                <li><a href="">Спецпроекты</a></li>
-                                <li><a href="">Советы</a></li>
-                                <li><a href="">Истории пациентов</a></li>
-                                <li><a href="">Видео</a></li>
-                                <li><a href="">Довольные пациенты</a></li>
-                                <li><a href="">Блог</a></li>
-                                <li><a href="">Новости</a></li>
+                                <?
+                                foreach ($arItem['CHILDS'] as $arChild):?>
+                                    <li class="<?=$arChild['SELECTED'] ? 'act' : ''?>"><a href="<?=$arChild['LINK']?>"><?=$arChild['TEXT']?></a></li>
+                                <?endforeach; ?>
                             </ul>
                         </div>
                         <?
@@ -102,22 +99,7 @@
                         <a href="<?=$arItem['LINK']?>"><?=$arItem['TEXT']?></a>
                         <div class="submenu">
                             <div class="submenu__item row row-f">
-                                <div class="text col-xs-12 col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
-                                    <div class="h3">Консультация онлайн</div>
-                                    <p>Вы можете задать свой вопрос онлай и хирург в течение 3 дней ответит на него.</p>
-                                    <div class="more"><a href="" class="arrow">Задать вопрос онлайн</a></div>
-                                </div>
-                                <div class="form col-xs-12 col-sm-6 col-md-5 col-lg-4">
-                                    <form>
-                                        <div class="formField">
-                                            <input type="text" placeholder="Ваше имя*" />
-                                        </div>
-                                        <div class="formField">
-                                            <input type="text" placeholder="Номер телефона*" />
-                                        </div>
-                                        <button class="btn">Перезвоните мне</button>
-                                    </form>
-                                </div>
+                                <? $APPLICATION->IncludeComponent('local.core:consult.short-form', 'header-menu', [], false, ['HIDE_ICONS' => 'Y']) ?>
                             </div>
                         </div>
                         <?

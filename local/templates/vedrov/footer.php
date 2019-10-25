@@ -3,7 +3,14 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 ?>
-<? $APPLICATION->IncludeComponent('local.core:consult.short-form', '.default', [], false, ['HIDE_ICONS' => 'Y'])?>
+<? if (preg_match('/^\/poleznoe($|\/)/', \Bitrix\Main\Application::getInstance()
+        ->getContext()
+        ->getRequest()
+        ->getRequestedPageDirectory()) === 1
+): ?>
+    </section>
+<? endif; ?>
+<? $APPLICATION->IncludeComponent('local.core:consult.short-form', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 <footer class="footer post-up">
     <div class="container">
         <div class="footer__logos">
@@ -124,7 +131,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 
         <div class="row row-f footer__bottom">
             <div class="col-xs-12 col-sm-5 col-md-5 copyright">
-                <?$APPLICATION->IncludeFile('include/footer-copy.php');?>
+                <? $APPLICATION->IncludeFile('include/footer-copy.php'); ?>
             </div>
             <div class="col-xs-3 col-sm-2 col-md-2 logo">
                 <a href="/"><img src="/img/logo-wht.png" alt="" /></a>
@@ -153,25 +160,25 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 
 
 <div id="text" class="mfp-text mfp-hide">
-    <? $APPLICATION->IncludeFile('include/footer-license.php', false, ['MODE' => 'html'])?>
+    <? $APPLICATION->IncludeFile('include/footer-license.php', false, ['MODE' => 'html']) ?>
 </div>
 
 <div id="toTop"></div>
 <div class="mobile-bar">
     <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>" class="mobile-bar__item" title="Позвонить в клинику">
-        <img src="/img/svg/foot-phone.svg" width="20" height="20" alt=""/>
+        <img src="/img/svg/foot-phone.svg" width="20" height="20" alt="" />
         Позвонить
     </a>
     <a href="/aktsii/" class="mobile-bar__item" title="Специальные предложения">
-        <img src="/img/svg/percent.svg" width="20" height="20" alt=""/>
+        <img src="/img/svg/percent.svg" width="20" height="20" alt="" />
         Акции
     </a>
     <a href="<?=tplvar('watsapp_link')?>" class="mobile-bar__item" title="Написать в WhatsApp">
-        <img src="/img/svg/whatsup.svg" width="20" height="20" alt=""/>
+        <img src="/img/svg/whatsup.svg" width="20" height="20" alt="" />
         WhatsApp
     </a>
     <a href="<?=tplvar('viber_link')?>" class="mobile-bar__item" title="Написать в Viber">
-        <img src="/img/svg/viber.svg" width="20" height="20" alt=""/>
+        <img src="/img/svg/viber.svg" width="20" height="20" alt="" />
         Viber
     </a>
 </div>
@@ -182,7 +189,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 </script>
 
 <?
-\Local\Core\Page::getInstance()->footerInit();
+\Local\Core\Page::getInstance()
+    ->footerInit();
 ?>
 </body>
 </html>

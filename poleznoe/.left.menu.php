@@ -1,0 +1,60 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Спецпроекты", 
+		"/poleznoe/spetsproekty/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Советы", 
+		"/poleznoe/sovety/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Истории пациентов", 
+		"/poleznoe/istorii-patsientov/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Видео", 
+		"/poleznoe/video/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Довольные пациенты", 
+		"/poleznoe/dovolnye-patsienty/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Блог", 
+		"/poleznoe/blog/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Новости", 
+		"/poleznoe/novosti/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Интервью", 
+		"/poleznoe/intervyu/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>
