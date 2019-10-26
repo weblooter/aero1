@@ -7,6 +7,7 @@ namespace Local\Core\HighloadBlock;
 class Entity
 {
     const SettingsSocailnet = 'SettingsSocailnet';
+    const Opetationprops = 'Opetationprops';
 
     private static $instance = [];
 

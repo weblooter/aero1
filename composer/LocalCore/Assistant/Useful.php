@@ -25,4 +25,35 @@ class Useful
         </div>
         <?
     }
+
+    /**
+     * @param int $intIblockId
+     * @param iny $intElemId
+     *
+     * @return array
+     */
+    public static function getPrevNexPages($intIblockId, $intElemId)
+    {
+        $arResult = [];
+        $rsElems = \CIBlockElement::GetList(
+            ['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'],
+            [
+                'IBLOCK_ID' => $intIblockId,
+                'ACTIVE' => 'Y'
+            ],
+            false,
+            false,
+            ['ID', 'NAME', 'IBLOCK_ID', 'DETAIL_PAGE_URL']
+        );
+        while ($ar = $rsElems->GetNext()) {
+            if ($ar['ID'] < $intElemId) {
+                $arResult['PREV'] = $ar['DETAIL_PAGE_URL'];
+                break;
+            } elseif ($ar['ID'] > $intElemId) {
+                $arResult['NEXT'] = $ar['DETAIL_PAGE_URL'];
+            }
+        }
+
+        return $arResult;
+    }
 }

@@ -1,6 +1,13 @@
 <?
 $arUrlRewrite = array(
 	array(
+		"CONDITION" => "#^/poleznoe/dovolnye-patsienty/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/dovolnye-patsienty/index.php",
+		"SORT" => "100",
+	),
+	array(
 		"CONDITION" => "#^\\/?\\/mobileapp/jn\\/(.*)\\/.*#",
 		"RULE" => "componentName=\$1",
 		"ID" => "",
@@ -33,6 +40,13 @@ $arUrlRewrite = array(
 		"RULE" => "",
 		"ID" => "bitrix:news",
 		"PATH" => "/poleznoe/novosti/index.php",
+		"SORT" => "100",
+	),
+	array(
+		"CONDITION" => "#^/poleznoe/sovety/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/sovety/index.php",
 		"SORT" => "100",
 	),
 	array(

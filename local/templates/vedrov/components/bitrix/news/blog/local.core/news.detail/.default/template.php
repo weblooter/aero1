@@ -30,7 +30,7 @@ $this->setFrameMode(true);
     ?>
     <div class="back">
         <? if ($arResult['PREV']): ?>
-            <a href="<?=$arResult['PREV']?>" class="prev arrow">ППредыдущая запись</a>
+            <a href="<?=$arResult['PREV']?>" class="prev arrow">Предыдущая запись</a>
         <? endif; ?>
         <? if ($arResult['NEXT']): ?>
             <a href="<?=$arResult['NEXT']?>" class="next arrow">Следующая запись</a>

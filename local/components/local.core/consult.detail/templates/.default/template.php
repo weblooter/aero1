@@ -36,8 +36,8 @@
                     }
                     ?>
                     <div class="author">
-                        <div class="image"><a href=""><img src="<?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['IMG']?>" alt="<?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['FIO']?>"/></a></div>
-                        <div class="title"><a href=""><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
+                        <div class="image"><a href="/o-doktore/"><img src="<?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['IMG']?>" alt="<?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['FIO']?>"/></a></div>
+                        <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
                 <div class="consult-tags">

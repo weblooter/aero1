@@ -6,7 +6,7 @@ $APPLICATION->SetPageProperty("h1", "Интервью");
 $APPLICATION->SetPageProperty("pre-h1", "Интервью");
 ?><?$APPLICATION->IncludeComponent(
 	"bitrix:news",
-	"blog",
+	"interview",
 	Array(
 		"ADD_ELEMENT_CHAIN" => "Y",
 		"ADD_SECTIONS_CHAIN" => "N",

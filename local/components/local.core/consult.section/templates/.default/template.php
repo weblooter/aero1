@@ -128,8 +128,8 @@
                     }
                     ?>
                     <div class="author">
-                        <div class="image"><a href=""><img src="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['IMG']?>" alt="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?>" /></a></div>
-                        <div class="title"><a href=""><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
+                        <div class="image"><a href="/o-doktore/"><img src="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['IMG']?>" alt="<?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?>" /></a></div>
+                        <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
                 <div class="consult-tags">

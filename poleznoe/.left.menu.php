@@ -15,13 +15,6 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Истории пациентов", 
-		"/poleznoe/istorii-patsientov/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
 		"Видео", 
 		"/poleznoe/video/", 
 		Array(), 
