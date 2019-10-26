@@ -1,1 +1,8 @@
-{{COLUMN_DOUBLE}}{{COLUMN}}<p>Текст колонки 1</p>{{/COLUMN}}{{COLUMN}}<p>Текст колонки 2</p>{{/COLUMN}}{{/COLUMN_DOUBLE}}
+{{COLUMN_DOUBLE}}
+{{COLUMN}}
+<p>Текст колонки 1</p>
+{{/COLUMN}}
+{{COLUMN}}
+<p>Текст колонки 2</p>
+{{/COLUMN}}
+{{/COLUMN_DOUBLE}}

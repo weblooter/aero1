@@ -22,10 +22,31 @@ $arUrlRewrite = array(
 		"SORT" => "100",
 	),
 	array(
+		"CONDITION" => "#^/poleznoe/intervyu/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/intervyu/index.php",
+		"SORT" => "100",
+	),
+	array(
 		"CONDITION" => "#^/poleznoe/novosti/#",
 		"RULE" => "",
 		"ID" => "bitrix:news",
 		"PATH" => "/poleznoe/novosti/index.php",
+		"SORT" => "100",
+	),
+	array(
+		"CONDITION" => "#^/poleznoe/video/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/video/index.php",
+		"SORT" => "100",
+	),
+	array(
+		"CONDITION" => "#^/poleznoe/blog/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/blog/index.php",
 		"SORT" => "100",
 	),
 	array(

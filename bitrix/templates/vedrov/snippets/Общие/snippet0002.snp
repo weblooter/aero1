@@ -1,0 +1,14 @@
+{{VIDEOBLOCK}}
+{{TITLE}}
+Заголовок
+{{/TITLE}}
+{{HEADER}}
+Название
+{{/HEADER}}
+{{IMG}}
+/upload/image.jpg
+{{/IMG}}
+{{LINK}}
+https://www.youtube.com/watch?v=CW5oGRx9CLM
+{{/LINK}}
+{{/VIDEOBLOCK}}

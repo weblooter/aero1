@@ -1,0 +1,5 @@
+{{PHOTOGALLERY}}
+{{IMG}}/upload/img1.jpg{{/IMG}}
+{{IMG}}/upload/img2.jpg{{/IMG}}
+{{IMG}}/upload/img3.jpg{{/IMG}}
+{{/PHOTOGALLERY}}

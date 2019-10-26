@@ -17,7 +17,7 @@ class FormatCommon extends BaseFormat
     {
         $strText = parent::format($strText);
 
-        $strText = (new FormatTwoColumn())->format($strText);
+        $strText = (new FormatSnippetPhotoGallery(new FormatSnippetTwoColumn(new FormatSnippetVideoBlock(new FormatNewLine()))))->format($strText);
 
         return $strText;
     }
