@@ -90,9 +90,11 @@
                         break;
                 }
                 ?>
-                <? // TODO Сделать ссылку на операцию когда она будет закончена
-                ?>
-                <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<a href=""><?=$arResult['MAIN_SECTION']['NAME']?></a>". </p>
+                <?if( !empty( $arResult['OPERATION'] ) ):?>
+                    <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>"><?=$arResult['OPERATION']['NAME']?></a>". </p>
+                <?else:?>
+                    <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<?=$arResult['MAIN_SECTION']['NAME']?>". </p>
+                <?endif;?>
             </div>
             <?
             break;
@@ -101,8 +103,9 @@
 
 
     <div class="more">
-        <? // TODO Сделать ссылку на операцию когда она будет закончена ?>
-        <a href="" class="arrow">Об операции</a>
+        <?if( !empty( $arResult['OPERATION'] ) ):?>
+            <a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>" class="arrow">Об операции</a>
+        <?endif;?>
         <span class="arrow js-open-callback-form">Бесплатная консультация</span>
     </div>
 

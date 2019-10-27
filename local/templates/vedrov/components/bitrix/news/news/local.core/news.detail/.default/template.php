@@ -21,16 +21,7 @@ $this->setFrameMode(true);
         <div class="date"><?=$arResult['DISPLAY_ACTIVE_FROM']?></div>
         <h1><?=$arResult['NAME']?></h1>
     </div>
-    <?
-    switch (mb_strtoupper($arResult['DETAIL_TEXT_TYPE'])) {
-        case 'HTML':
-            echo $arResult['DETAIL_TEXT'];
-            break;
-        case 'TEXT':
-            echo '<p>'.$arResult['DETAIL_TEXT'].'</p>';
-            break;
-    }
-    ?>
+    <?=$arResult['DETAIL_TEXT'];?>
     <? if (!empty($arResult['PROPERTIES']['PHOTO']['VALUE'])): ?>
         <div class="gallerySlider post-up">
             <div class="title-preview">Фотогалерея</div>

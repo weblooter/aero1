@@ -2,6 +2,10 @@
 use Local\Core\Text\Format;
 
 $arResult['DETAIL_TEXT'] = (new Format\FormatCommon())->format($arResult['DETAIL_TEXT']);
+if( mb_strtoupper($arResult['DETAIL_TEXT_TYPE']) == 'TEXT' )
+{
+    $arResult['DETAIL_TEXT'] = '<p>'.$arResult['DETAIL_TEXT'].'</p>';
+}
 
 $arResult = array_merge($arResult, \Local\Core\Assistant\Useful::getPrevNexPages($arParams['IBLOCK_ID'], $arResult['ID']));
 

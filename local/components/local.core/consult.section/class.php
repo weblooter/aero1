@@ -24,11 +24,13 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
 
     protected function fillResult()
     {
+
         # section & main section
         $arResult = [
             'MODE' => $this->_mode,
             'MAIN_SECTION' => $this->arMainSectionData
         ];
+
         switch ($this->_mode) {
             case self::MODE_SECTION:
                 $arResult['SECTION'] = $this->arMainSectionData;
@@ -37,6 +39,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
                 $arResult['SECTION'] = $this->arTagData;
                 break;
         }
+
         $obRequest = \Bitrix\Main\Application::getInstance()
             ->getContext()
             ->getRequest();
@@ -52,6 +55,15 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
         $obCache = \Bitrix\Main\Application::getInstance()
             ->getCache();
         if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__.'#'.$obRequest->get('SECTION_CODE').'#'.$obRequest->get('TAG_CODE').'#'.$nav->getCurrentPage())) {
+
+            # operation
+            if (!empty($arResult['MAIN_SECTION']['UF_OPERATION'])) {
+                $rsElems = \CIBlockElement::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y', 'ID' => $arResult['MAIN_SECTION']['UF_OPERATION']], false, false, ['ID', 'IBLOCK_ID', 'NAME', 'DETAIL_PAGE_URL']);
+                while ($ar = $rsElems->GetNext()) {
+                    $arResult['OPERATION'] = $ar;
+                }
+            }
+
             # section seo
             $ipropValues = new \Bitrix\Iblock\InheritedProperty\SectionValues(
                 \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
@@ -170,7 +182,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
                 'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
                 'DEPTH_LEVEL' => 1,
                 'ACTIVE' => 'Y'
-            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL', 'UF_OPERATION']);
             if ($rsSection->SelectedRowsCount() < 1) {
                 throw new \Exception();
             }

@@ -55,7 +55,7 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
             }
 
             $intMainSection = 0;
-            $rsSectionChain = \CIBlockSection::GetNavChain(\Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'), $arResult['ITEM']['SECTIONS'][0], ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            $rsSectionChain = \CIBlockSection::GetNavChain(\Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'), $arResult['ITEM']['SECTIONS'][0], ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL', 'UF_OPERATION']);
             while ($ar = $rsSectionChain->GetNext()) {
                 $intMainSection = $ar['ID'];
                 $arResult['ITEM']['MAIN_SECTION'] = $ar;
@@ -65,7 +65,7 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
             $rsSections = \CIBlockSection::GetList([], [
                 'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
                 'SECTION_ID' => $intMainSection,
-            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            ], false, ['ID', 'NAME', 'IBLOCK_ID', 'SECTION_PAGE_URL', 'UF_OPERATION']);
             while ($ar = $rsSections->GetNext()) {
                 $arResult['TAGS'][$ar['ID']] = [
                     'NAME' => $ar['NAME'],
@@ -73,6 +73,25 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                 ];
             }
 
+            # operation
+            $intOperationId = 0;
+            $rsSections = \CIBlockSection::GetList([], [
+                'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
+                'ID' => $intMainSection,
+            ], false, ['ID', 'IBLOCK_ID', 'UF_OPERATION']);
+            while ($ar = $rsSections->GetNext())
+            {
+                $intOperationId = $ar['UF_OPERATION'];
+            }
+
+            if ($intOperationId > 0) {
+                $rsElems = \CIBlockElement::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y', 'ID' => $intOperationId], false, false, ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL']);
+                while ($ar = $rsElems->GetNext()) {
+                    $arResult['OPERATION'] = $ar['DETAIL_PAGE_URL'];
+                }
+            }
+
+            # seo
             $ipropValues = new \Bitrix\Iblock\InheritedProperty\ElementValues(
                 $arResult['ITEM']["IBLOCK_ID"],
                 $arResult['ITEM']["ID"]

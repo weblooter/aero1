@@ -18,16 +18,7 @@ $this->setFrameMode(true);
 <div class="content">
     <div class="h1-title"><?=$GLOBALS['APPLICATION']->GetPageProperty('pre-h1')?></div>
     <h1><?=$arResult['NAME']?></h1>
-    <?
-    switch (mb_strtoupper($arResult['DETAIL_TEXT_TYPE'])) {
-        case 'HTML':
-            echo $arResult['DETAIL_TEXT'];
-            break;
-        case 'TEXT':
-            echo '<p>'.$arResult['DETAIL_TEXT'].'</p>';
-            break;
-    }
-    ?>
+    <?=$arResult['DETAIL_TEXT'];?>
     <div class="back">
         <? if ($arResult['PREV']): ?>
             <a href="<?=$arResult['PREV']?>" class="prev arrow">Предыдущее видео</a>

@@ -16,17 +16,7 @@ $this->setFrameMode(true);
 <?\Local\Core\Assistant\Useful::showMobileHead(true, false)?>
 <div class="content">
     <div class="h1-bg" style="background-image:url(<?=$arResult['DETAIL_PICTURE']['SRC']?>);"><h1><?=$arResult['NAME']?></h1></div>
-    <?
-    switch (mb_strtoupper($arResult['DETAIL_TEXT_TYPE']))
-    {
-        case 'HTML':
-            echo $arResult['DETAIL_TEXT'];
-            break;
-        case 'TEXT':
-            echo '<p>'.$arResult['DETAIL_TEXT'].'</p>';
-            break;
-    }
-    ?>
+    <?=$arResult['DETAIL_TEXT'];?>
     <?if( !empty($arResult['PROPERTIES']['PHOTO']['VALUE']) ):?>
         <div class="grid gallery">
             <?
