@@ -28,7 +28,7 @@
                     <div class="ico ico-phone"></div>
                     <div class="header__contacts__item__text">
                         <span class="title">Телефон</span>
-                        <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
+                        <a href="tel:+<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
                     </div>
                 </div>
                 <div class="header__contacts__item col-xs-12 col-sm-6">

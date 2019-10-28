@@ -85,6 +85,13 @@ $arUrlRewrite = array(
 		"SORT" => "100",
 	),
 	array(
+		"CONDITION" => "#^/uslugi/([a-zA-Z\\-\\_0-9]+)/([a-zA-Z\\-\\_0-9]+)/([a-zA-Z0-9\\-\\_]+)?\\/?(\\?[^\\/]*)?\$#",
+		"RULE" => "SECTION_CODE=\$1&ELEMENT_CODE=\$2&PAGE_TAB=\$3&TMP=\$4",
+		"ID" => "",
+		"PATH" => "/uslugi/index.php",
+		"SORT" => "1000",
+	),
+	array(
 		"CONDITION" => "#^/konsultatsii/([a-zA-Z\\-\\_0-9]+)/(\\?[^\\/]*)?\$#",
 		"RULE" => "SECTION_CODE=\$1&TMP=\$2",
 		"ID" => "",

@@ -2,6 +2,10 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
+
+$obRequest = \Bitrix\Main\Application::getInstance()
+    ->getContext()
+    ->getRequest();
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +42,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
                     </a>
                 </div>
                 <div class="phone">
-                    <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
+                    <a href="tel:+<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
                     <span class="name">Ведров Олег<br /> Вячеславович</span>
                     <div class="awards">
                         <a href="">
@@ -71,13 +75,13 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         </div>
         <div class="shadow"></div>
         <?
-        switch (\Bitrix\Main\Application::getInstance()
-            ->getContext()
-            ->getRequest()
-            ->getRequestedPageDirectory()) {
-            case '/kontakty':
-                $APPLICATION->ShowViewContent("contacts_header");
-                break;
+        if( $obRequest->getRequestedPageDirectory() == '/kontakty' )
+        {
+            $APPLICATION->ShowViewContent("contacts_header");
+        }
+        elseif( preg_match('/^\/uslugi\//', $obRequest->getRequestedPageDirectory()) === 1 )
+        {
+            $APPLICATION->ShowViewContent("services_header");
         }
         ?>
     </header>

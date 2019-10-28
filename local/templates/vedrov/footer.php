@@ -29,7 +29,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
                 <div class="ico ico-phone"></div>
                 <div class="footer__contacts__item__text">
                     <span class="title">Телефон</span>
-                    <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
+                    <a href="tel:+<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
                 </div>
             </div>
             <div class="footer__contacts__item col-xs-12 col-sm-6">
@@ -165,7 +165,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 
 <div id="toTop"></div>
 <div class="mobile-bar">
-    <a href="tel:<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>" class="mobile-bar__item" title="Позвонить в клинику">
+    <a href="tel:+<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>" class="mobile-bar__item" title="Позвонить в клинику">
         <img src="/img/svg/foot-phone.svg" width="20" height="20" alt="" />
         Позвонить
     </a>
