@@ -48,8 +48,9 @@ class ServicesPriceComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                     $arResult['SECTIONS'][$ar['ID']] = $ar;
                 }
 
-                $arResult['ABOUT_OPERATION'] = $arData['DETAIL_PAGE_URL'];
             }
+            
+            $arResult['ABOUT_OPERATION'] = $arData['DETAIL_PAGE_URL'];
             $obCache->endDataCache($arResult);
         } else {
             $arResult = $obCache->getVars();

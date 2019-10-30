@@ -1,4 +1,4 @@
-{{VIDEOBLOCK}}<br/>
+{{SERVICEVIDEO}}<br/>
 {{TITLE}}
 Заголовок
 {{/TITLE}}<br/>
@@ -11,4 +11,7 @@
 {{LINK}}
 https://www.youtube.com/watch?v=CW5oGRx9CLM
 {{/LINK}}<br/>
-{{/VIDEOBLOCK}}
+{{DESCRIPTION}}
+Описание под видео
+{{/DESCRIPTION}}<br/>
+{{/SERVICEVIDEO}}

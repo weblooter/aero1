@@ -34,6 +34,7 @@ return array(
     'Local\\Core\\Text\\Format\\FormatNewLine' => $baseDir . '/LocalCore/Text/Format/FormatNewLine.php',
     'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlock' => $baseDir . '/LocalCore/Text/Format/FormatSnippetAnatationBlock.php',
     'Local\\Core\\Text\\Format\\FormatSnippetPhotoGallery' => $baseDir . '/LocalCore/Text/Format/FormatSnippetPhotoGallery.php',
+    'Local\\Core\\Text\\Format\\FormatSnippetServiceVideo' => $baseDir . '/LocalCore/Text/Format/FormatSnippetServiceVideo.php',
     'Local\\Core\\Text\\Format\\FormatSnippetTwoColumn' => $baseDir . '/LocalCore/Text/Format/FormatSnippetTwoColumn.php',
     'Local\\Core\\Text\\Format\\FormatSnippetVideoBlock' => $baseDir . '/LocalCore/Text/Format/FormatSnippetVideoBlock.php',
     'Local\\Core\\Text\\Format\\FormatStripTags' => $baseDir . '/LocalCore/Text/Format/FormatStripTags.php',

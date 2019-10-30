@@ -1,5 +1,5 @@
-{{PHOTOGALLERY}}
-{{IMG}}/upload/img1.jpg{{/IMG}}
-{{IMG}}/upload/img2.jpg{{/IMG}}
-{{IMG}}/upload/img3.jpg{{/IMG}}
+{{PHOTOGALLERY}}<br/>
+{{IMG}}/upload/img1.jpg{{/IMG}}<br/>
+{{IMG}}/upload/img2.jpg{{/IMG}}<br/>
+{{IMG}}/upload/img3.jpg{{/IMG}}<br/>
 {{/PHOTOGALLERY}}

@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-video
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.video', '.default', ['DATA'=>$arResult])?>

@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-photo
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.photo', '.default', ['DATA'=>$arResult])?>

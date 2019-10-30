@@ -17,14 +17,14 @@ $this->setFrameMode(true);
 <? \Local\Core\Assistant\Useful::showMobileHead() ?>
 <div class="content">
     <div class="useful row row-f fadeup">
-        <?foreach ($arResult['ITEMS'] as $arItem):?>
-        <article class="col-xs-12 col-sm-6">
-            <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="useful__item">
-                <span class="image"><span style="background-image:url(<?=$arItem['PREVIEW_PICTURE']['SRC']?>);"></span><i class="video-ico"></i></span>
-                <span class="title"><?=$arItem['NAME']?></span>
-            </a>
-        </article>
-        <?endforeach;?>
+        <? foreach ($arResult['ITEMS'] as $arItem): ?>
+            <article class="col-xs-12 col-sm-6">
+                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="useful__item">
+                    <span class="image"><span style="background-image:url(<?=$arItem['PREVIEW_PICTURE']['SRC']?>);"></span><i class="video-ico"></i></span>
+                    <span class="title"><?=$arItem['NAME']?></span>
+                </a>
+            </article>
+        <? endforeach; ?>
     </div>
 </div>
 <?=$arResult["NAV_STRING"]?>

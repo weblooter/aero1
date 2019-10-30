@@ -89,6 +89,7 @@ class ComposerStaticInit73ce08e6b9ba2b72ef01c3a5d083983d
         'Local\\Core\\Text\\Format\\FormatNewLine' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatNewLine.php',
         'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlock' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetAnatationBlock.php',
         'Local\\Core\\Text\\Format\\FormatSnippetPhotoGallery' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetPhotoGallery.php',
+        'Local\\Core\\Text\\Format\\FormatSnippetServiceVideo' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetServiceVideo.php',
         'Local\\Core\\Text\\Format\\FormatSnippetTwoColumn' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetTwoColumn.php',
         'Local\\Core\\Text\\Format\\FormatSnippetVideoBlock' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetVideoBlock.php',
         'Local\\Core\\Text\\Format\\FormatStripTags' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatStripTags.php',
