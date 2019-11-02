@@ -49,7 +49,7 @@ class ServicesPriceComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                 }
 
             }
-            
+
             $arResult['ABOUT_OPERATION'] = $arData['DETAIL_PAGE_URL'];
             $obCache->endDataCache($arResult);
         } else {

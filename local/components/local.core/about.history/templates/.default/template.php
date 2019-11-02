@@ -40,5 +40,5 @@
 <? endforeach; ?>
 <div class="title-preview">Проводимые операции <span class="ico ico-hand"></span></div>
 <div class="balls">
-    <? $GLOBALS['APPLICATION']->IncludeFile('include/about-operations.php', false, ['MODE' => 'html'])?>
+    <? $GLOBALS['APPLICATION']->IncludeFile('include/about-operations.php', false, ['MODE' => 'html']) ?>
 </div>

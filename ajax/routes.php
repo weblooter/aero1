@@ -38,4 +38,14 @@ return [
         'handler' => \Local\Core\Ajax\Handler\Consult::class.'::freeConsult',
         'methods' => ['POST']
     ],
+
+
+    /**
+     * @see \Local\Core\Ajax\Handler\Services::createReview()
+     */
+    'services_form_review' => [
+        'path' => '/services/form-review/',
+        'handler' => \Local\Core\Ajax\Handler\Services::class.'::createReview',
+        'methods' => ['POST']
+    ],
 ];

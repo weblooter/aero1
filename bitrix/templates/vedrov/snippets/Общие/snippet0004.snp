@@ -1,0 +1,14 @@
+{{BLOCKQUOTE}}<br/>
+{{TEXT}}
+<p>Текст цитаты</p>
+{{/TEXT}}<br/>
+{{USER_IMG}}<br/>
+/upload/img1.png<br/>
+{{/USER_IMG}}<br/>
+{{USER_NAME}}<br/>
+Ведров О. В.<br/>
+{{/USER_NAME}}<br/>
+{{USER_DESC}}<br/>
+пластический хирург<br/>
+{{/USER_DESC}}<br/>
+{{/BLOCKQUOTE}}

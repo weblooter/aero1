@@ -16,15 +16,15 @@
         <div class="h1-title">Консультация</div>
         <div class="h1">Бесплатная консультация</div>
         <p>
-            <?$GLOBALS['APPLICATION']->IncludeFile('include/consult-free-consult.php', false, ['MODE' => 'text'])?>
+            <? $GLOBALS['APPLICATION']->IncludeFile('include/consult-free-consult.php', false, ['MODE' => 'text']) ?>
         </p>
         <form action="" id="consult-free-consult" name="consult-free-consult">
             <div class="row">
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" name="NAME" placeholder="Ваше имя*"/>
+                    <input type="text" name="NAME" placeholder="Ваше имя*" />
                 </div>
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" name="PHONE" placeholder="Номер телефона*"/>
+                    <input type="text" name="PHONE" placeholder="Номер телефона*" />
                 </div>
                 <div class="formField col-xs-12">
                     <textarea placeholder="Комментарий" name="MSG"></textarea>

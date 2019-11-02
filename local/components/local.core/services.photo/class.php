@@ -44,7 +44,7 @@ class ServicesPhotoComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                         {
                             $arTmp = [
                                 'BIG' => \CFile::ResizeImageGet($v, ['width' => 600, 'height' => 400], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75),
-                                'THUMB' => \CFile::ResizeImageGet($v, ['width' => 75, 'height' => 50], BX_RESIZE_IMAGE_EXACTfalse, false, false, 75)
+                                'THUMB' => \CFile::ResizeImageGet($v, ['width' => 75, 'height' => 50], BX_RESIZE_IMAGE_EXACT, false, false, false, 75)
                             ];
                             $arTmp['BIG'] = $arTmp['BIG']['src'];
                             $arTmp['THUMB'] = $arTmp['THUMB']['src'];

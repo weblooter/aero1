@@ -1,4 +1,6 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -12,50 +14,50 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 
-if(!$arResult["NavShowAlways"])
-{
-	if ($arResult["NavRecordCount"] == 0 || ($arResult["NavPageCount"] == 1 && $arResult["NavShowAll"] == false))
-		return;
+if (!$arResult["NavShowAlways"]) {
+    if ($arResult["NavRecordCount"] == 0 || ($arResult["NavPageCount"] == 1 && $arResult["NavShowAll"] == false)) {
+        return;
+    }
 }
 
 $strNavQueryString = ($arResult["NavQueryString"] != "" ? $arResult["NavQueryString"]."&amp;" : "");
 $strNavQueryStringFull = ($arResult["NavQueryString"] != "" ? "?".$arResult["NavQueryString"] : "");
 ?>
 
-<?if($arResult["bDescPageNumbering"] === true):?>
+<? if ($arResult["bDescPageNumbering"] === true): ?>
 
 
     <div class="paging">
-        <?while($arResult["nStartPage"] >= $arResult["nEndPage"]):?>
-            <?$NavRecordGroupPrint = $arResult["NavPageCount"] - $arResult["nStartPage"] + 1;?>
+        <? while ($arResult["nStartPage"] >= $arResult["nEndPage"]): ?>
+            <? $NavRecordGroupPrint = $arResult["NavPageCount"] - $arResult["nStartPage"] + 1; ?>
 
-            <?if ($arResult["nStartPage"] == $arResult["NavPageNomer"]):?>
+            <? if ($arResult["nStartPage"] == $arResult["NavPageNomer"]): ?>
                 <strong><?=$NavRecordGroupPrint?></strong>
-            <?elseif($arResult["nStartPage"] == $arResult["NavPageCount"] && $arResult["bSavePage"] == false):?>
+            <? elseif ($arResult["nStartPage"] == $arResult["NavPageCount"] && $arResult["bSavePage"] == false): ?>
                 <a href="<?=$arResult["sUrlPath"]?><?=$strNavQueryStringFull?>"><?=$NavRecordGroupPrint?></a>
-            <?else:?>
+            <? else: ?>
                 <a href="<?=$arResult["sUrlPath"]?>?<?=$strNavQueryString?>PAGEN_<?=$arResult["NavNum"]?>=<?=$arResult["nStartPage"]?>"><?=$NavRecordGroupPrint?></a>
-            <?endif?>
+            <? endif ?>
 
-            <?$arResult["nStartPage"]--?>
-        <?endwhile?>
+            <? $arResult["nStartPage"]-- ?>
+        <? endwhile ?>
     </div>
 
-<?else:?>
+<? else: ?>
     <div class="paging">
 
-        <?while($arResult["nStartPage"] <= $arResult["nEndPage"]):?>
+        <? while ($arResult["nStartPage"] <= $arResult["nEndPage"]): ?>
 
-            <?if ($arResult["nStartPage"] == $arResult["NavPageNomer"]):?>
+            <? if ($arResult["nStartPage"] == $arResult["NavPageNomer"]): ?>
                 <strong><?=$arResult["nStartPage"]?></strong>
-            <?elseif($arResult["nStartPage"] == 1 && $arResult["bSavePage"] == false):?>
+            <? elseif ($arResult["nStartPage"] == 1 && $arResult["bSavePage"] == false): ?>
                 <a href="<?=$arResult["sUrlPath"]?><?=$strNavQueryStringFull?>"><?=$arResult["nStartPage"]?></a>
-            <?else:?>
+            <? else: ?>
                 <a href="<?=$arResult["sUrlPath"]?>?<?=$strNavQueryString?>PAGEN_<?=$arResult["NavNum"]?>=<?=$arResult["nStartPage"]?>"><?=$arResult["nStartPage"]?></a>
-            <?endif?>
-            <?$arResult["nStartPage"]++?>
-        <?endwhile?>
+            <? endif ?>
+            <? $arResult["nStartPage"]++ ?>
+        <? endwhile ?>
 
     </div>
 
-<?endif?>
+<? endif ?>

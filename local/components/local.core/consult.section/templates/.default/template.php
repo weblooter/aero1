@@ -80,8 +80,7 @@
                 <?
                 endif; ?>
                 <?
-                switch (mb_strtoupper($arResult['SECTION']['DESCRIPTION_TYPE']))
-                {
+                switch (mb_strtoupper($arResult['SECTION']['DESCRIPTION_TYPE'])) {
                     case 'HTML':
                         echo $arResult['SECTION']['DESCRIPTION'];
                         break;
@@ -90,11 +89,12 @@
                         break;
                 }
                 ?>
-                <?if( !empty( $arResult['OPERATION'] ) ):?>
+                <?
+                if (!empty($arResult['OPERATION'])):?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>"><?=$arResult['OPERATION']['NAME']?></a>". </p>
-                <?else:?>
+                <? else:?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<?=$arResult['MAIN_SECTION']['NAME']?>". </p>
-                <?endif;?>
+                <?endif; ?>
             </div>
             <?
             break;
@@ -103,9 +103,9 @@
 
 
     <div class="more">
-        <?if( !empty( $arResult['OPERATION'] ) ):?>
+        <? if (!empty($arResult['OPERATION'])): ?>
             <a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>" class="arrow">Об операции</a>
-        <?endif;?>
+        <? endif; ?>
         <span class="arrow js-open-callback-form">Бесплатная консультация</span>
     </div>
 

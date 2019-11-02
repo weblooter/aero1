@@ -5,6 +5,7 @@ use Local\Core\Text\Format;
 
 class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 {
+
     public function executeComponent()
     {
         if ($this->is404()) {
@@ -107,9 +108,9 @@ class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
     protected function extractSeo()
     {
         return [
-            'TITLE' => $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_TITLE']['VALUE'],
-            'DESCRIPTION' => $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_DESCRIPTION']['VALUE'],
-            'KEYWORDS' => $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_KEYWORDS']['VALUE'],
+            'TITLE' => \Local\Core\Register\ServicesComponent::getTitle() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_TITLE']['VALUE'],
+            'DESCRIPTION' => \Local\Core\Register\ServicesComponent::getDescription() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_DESCRIPTION']['VALUE'],
+            'KEYWORDS' => \Local\Core\Register\ServicesComponent::getKeyword() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_KEYWORDS']['VALUE'],
         ];
     }
 
@@ -137,23 +138,15 @@ class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
             'SECOND_BLOCK' => '',
         ];
 
-        if (!empty((new Format\FormatTrim(new Format\FormatStripTags(new Format\FormatNewLine())))->format($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT']))) {
-            if ($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TYPE'] === 'TEXT') {
-                $arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT'] = str_replace("\n", '<br/>', $arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT']);
-            }
-
-            $arResult['FIRST_BLOCK'] = htmlspecialchars_decode((new Format\FormatCommon())->format($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT']));
+        if (!empty((new Format\FormatTrim(new Format\FormatStripTags(new Format\FormatNewLine())))->format(htmlspecialchars_decode($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT'])))) {
+            $arResult['FIRST_BLOCK'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TEXT']));
             if (mb_strtoupper($arData['PROPERTIES'][$action.'_FIRST_BLOCK']['VALUE']['TYPE']) === 'TEXT') {
                 $arResult['FIRST_BLOCK'] = '<p>'.$arResult['FIRST_BLOCK'].'</p>';
             }
         }
 
-        if (!empty((new Format\FormatTrim(new Format\FormatStripTags(new Format\FormatNewLine())))->format($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT']))) {
-            if ($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TYPE'] === 'TEXT') {
-                $arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT'] = str_replace("\n", '<br/>', $arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT']);
-            }
-
-            $arResult['SECOND_BLOCK'] = htmlspecialchars_decode((new Format\FormatCommon())->format($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT']));
+        if (!empty((new Format\FormatTrim(new Format\FormatStripTags(new Format\FormatNewLine())))->format(htmlspecialchars_decode($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT'])))) {
+            $arResult['SECOND_BLOCK'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TEXT']));
             if (mb_strtoupper($arData['PROPERTIES'][$action.'_SECOND_BLOCK']['VALUE']['TYPE']) === 'TEXT') {
                 $arResult['SECOND_BLOCK'] = '<p>'.$arResult['SECOND_BLOCK'].'</p>';
             }

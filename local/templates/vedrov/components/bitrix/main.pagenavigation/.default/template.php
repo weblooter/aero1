@@ -24,9 +24,9 @@ $this->setFrameMode(true);
         $page = $arResult["START_PAGE"] - 1;
         while ($page >= $arResult["END_PAGE"] + 1):
             ?>
-            <? if ($page == $arResult["CURRENT_PAGE"]):?>
+            <? if ($page == $arResult["CURRENT_PAGE"]): ?>
             <strong><?=($arResult["PAGE_COUNT"] - $page + 1)?></strong>
-        <? else:?>
+        <? else: ?>
             <a href="<?=htmlspecialcharsbx($component->replaceUrlTemplate($page))?>"><?=($arResult["PAGE_COUNT"] - $page + 1)?></a>
         <? endif ?>
 
@@ -55,9 +55,9 @@ $this->setFrameMode(true);
         $page = $arResult["START_PAGE"] + 1;
         while ($page <= $arResult["END_PAGE"] - 1):
             ?>
-            <? if ($page == $arResult["CURRENT_PAGE"]):?>
+            <? if ($page == $arResult["CURRENT_PAGE"]): ?>
             <strong><?=$page?></strong>
-        <? else:?>
+        <? else: ?>
             <a href="<?=htmlspecialcharsbx($component->replaceUrlTemplate($page))?>"><?=$page?></a>
         <? endif ?>
             <? $page++ ?>

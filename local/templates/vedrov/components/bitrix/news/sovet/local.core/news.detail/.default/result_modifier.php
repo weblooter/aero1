@@ -1,9 +1,9 @@
 <?
+
 use Local\Core\Text\Format;
 
 $arResult['DETAIL_TEXT'] = (new Format\FormatCommon())->format($arResult['DETAIL_TEXT']);
-if( mb_strtoupper($arResult['DETAIL_TEXT_TYPE']) == 'TEXT' )
-{
+if (mb_strtoupper($arResult['DETAIL_TEXT_TYPE']) == 'TEXT') {
     $arResult['DETAIL_TEXT'] = '<p>'.$arResult['DETAIL_TEXT'].'</p>';
 }
 

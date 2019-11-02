@@ -268,19 +268,19 @@ import 'jquery';
 				}
 			]});
 
-			$(".js-slider-gal")	.slick({
-				autoplay: true,
-				autoplaySpeed: 6000,
+			$(".js-slider-consult")	.slick({
+				infinite: false,
 				fade: true,
-				infinite: true,
 				pauseOnHover: false,
 				slidesToShow: 1,
 				slidesToScroll: 1,
 			});
 
-			$(".js-slider-consult")	.slick({
-				infinite: false,
+			$(".js-slider-gal")	.slick({
+				autoplay: true,
+				autoplaySpeed: 6000,
 				fade: true,
+				infinite: true,
 				pauseOnHover: false,
 				slidesToShow: 1,
 				slidesToScroll: 1,

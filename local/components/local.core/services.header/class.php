@@ -69,12 +69,11 @@ class ServicesHeaderComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
     protected function extractH1()
     {
         $arH1 = [
-            'H1' => $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_H1']['VALUE'],
-            'AFTER_H1' => $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_AFTER_H1']['VALUE'],
+            'H1' => \Local\Core\Register\ServicesComponent::getH1() ?? $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_H1']['VALUE'],
+            'AFTER_H1' => \Local\Core\Register\ServicesComponent::getAfterH1() ?? $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_AFTER_H1']['VALUE'],
         ];
 
-        if( $this->arParams['ACTIVE'] === 'contacts' )
-        {
+        if ($this->arParams['ACTIVE'] === 'contacts') {
             $arH1['AFTER_H1'] = tplvar('address');
         }
 

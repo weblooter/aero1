@@ -29,7 +29,7 @@ $this->SetViewTarget('services_header');
             <p><?=$arResult['MENU_ACTIVE']['AFTER_H1']?></p>
         </div>
 
-        <?if( $arResult['ACTIVE_TYPE'] === 'contacts' ):?>
+        <? if ($arResult['ACTIVE_TYPE'] === 'contacts'): ?>
             <div class="header__contacts row row-f">
                 <div class="header__contacts__item col-xs-12 col-sm-6">
                     <div class="ico ico-phone"></div>
@@ -46,7 +46,7 @@ $this->SetViewTarget('services_header');
                     </div>
                 </div>
             </div>
-        <?endif;?>
+        <? endif; ?>
 
     </div>
 </section>

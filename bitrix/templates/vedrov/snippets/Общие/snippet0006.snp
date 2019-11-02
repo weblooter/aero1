@@ -1,0 +1,12 @@
+{{ANATATIONBLOCK}}<br/>
+{{TITLE}}
+Краткий заголовок
+{{/TITLE}}<br/>
+{{COLUMN1}}
+<h2>Заголовок в колонке 1</h2>
+<p>Текст колонки 1</p>
+{{/COLUMN1}}<br/>
+{{COLUMN2}}
+<p>Текст колонки 2</p>
+{{/COLUMN2}}<br/>
+{{/ANATATIONBLOCK}}

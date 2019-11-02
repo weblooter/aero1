@@ -13,16 +13,18 @@
                         <span>Услуги</span>
                         <div class="submenu">
                             <ul class="submenu__item cols">
-                                <?foreach ($arResult['SERVICES'] as $arSection):?>
-                                <li>
-                                    <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="title"><?=$arSection['NAME']?></a>
-                                    <ul>
-                                        <?foreach ($arSection['CHILD'] as $arItem):?>
-                                        <li><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></li>
-                                        <?endforeach;?>
-                                    </ul>
-                                </li>
-                                <?endforeach;?>
+                                <?
+                                foreach ($arResult['SERVICES'] as $arSection):?>
+                                    <li>
+                                        <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="title"><?=$arSection['NAME']?></a>
+                                        <ul>
+                                            <?
+                                            foreach ($arSection['CHILD'] as $arItem):?>
+                                                <li><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></li>
+                                            <?endforeach; ?>
+                                        </ul>
+                                    </li>
+                                <?endforeach; ?>
                             </ul>
                         </div>
                         <?
@@ -37,7 +39,7 @@
                                 <?
                                 foreach ($arItem['CHILDS'] as $arChild):?>
                                     <li class="<?=$arChild['SELECTED'] ? 'act' : ''?>"><a href="<?=$arChild['LINK']?>"><?=$arChild['TEXT']?></a></li>
-                                <?endforeach; ?>
+                                <? endforeach; ?>
                             </ul>
                         </div>
                         <?

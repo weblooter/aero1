@@ -20,9 +20,9 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
             ->getContext()
             ->getRequest();
 
-        $obCache = \Bitrix\Main\Application::getInstance()->getCache();
-        if( $obCache->startDataCache(60*60*24, __FILE__.__LINE__.'#'.$obRequest->get('ELEMENT_ID')) )
-        {
+        $obCache = \Bitrix\Main\Application::getInstance()
+            ->getCache();
+        if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__.'#'.$obRequest->get('ELEMENT_ID'))) {
             # elem
             $rsElem = \CIBlockElement::GetList([], [
                 'ID' => $obRequest->get('ELEMENT_ID'),
@@ -79,8 +79,7 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                 'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'consult'),
                 'ID' => $intMainSection,
             ], false, ['ID', 'IBLOCK_ID', 'UF_OPERATION']);
-            while ($ar = $rsSections->GetNext())
-            {
+            while ($ar = $rsSections->GetNext()) {
                 $intOperationId = $ar['UF_OPERATION'];
             }
 
@@ -100,9 +99,7 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
 
             $obCache->endDataCache($arResult);
             $this->arResult = $arResult;
-        }
-        else
-        {
+        } else {
             $this->arResult = $obCache->getVars();
         }
         $this->setSeo();

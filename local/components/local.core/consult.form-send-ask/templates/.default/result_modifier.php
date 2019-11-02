@@ -1,6 +1,5 @@
 <?
-if( $arParams['SECTION_ID'] < 1 )
-{
+if ($arParams['SECTION_ID'] < 1) {
     $obCache = \Bitrix\Main\Application::getInstance()
         ->getCache();
     if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__)) {

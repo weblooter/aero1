@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-index
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.index', '.default', ['DATA' => $arResult]) ?>

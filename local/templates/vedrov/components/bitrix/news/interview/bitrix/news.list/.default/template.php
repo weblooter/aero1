@@ -17,15 +17,15 @@ $this->setFrameMode(true);
 <? \Local\Core\Assistant\Useful::showMobileHead() ?>
 <div class="content">
     <div class="row row-f blog">
-        <?foreach ($arResult['ITEMS'] as $arItem):?>
-        <div class="col-xs-12 col-sm-6 col-md-4">
-            <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="blog__item">
-                <span class="image"><img src="<?=( !empty( $arItem['PREVIEW_PICTURE']['SRC'] ) ) ? $arItem['PREVIEW_PICTURE']['SRC'] : '/img/logo-grey-s.png'?>" /></span>
-                <span class="title"><?=$arItem['NAME']?></span>
-                <span class="author">Ведров О. В.</span>
-            </a>
-        </div>
-        <?endforeach;?>
+        <? foreach ($arResult['ITEMS'] as $arItem): ?>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="blog__item">
+                    <span class="image"><img src="<?=(!empty($arItem['PREVIEW_PICTURE']['SRC'])) ? $arItem['PREVIEW_PICTURE']['SRC'] : '/img/logo-grey-s.png'?>" /></span>
+                    <span class="title"><?=$arItem['NAME']?></span>
+                    <span class="author">Ведров О. В.</span>
+                </a>
+            </div>
+        <? endforeach; ?>
     </div>
 </div>
 <?=$arResult["NAV_STRING"]?>

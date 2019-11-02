@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-contacts
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.contacts', '.default', ['DATA' => $arResult]) ?>

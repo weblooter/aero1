@@ -33,10 +33,10 @@ $this->setFrameMode(true);
     </div>
     <div class="interview">
         <div class="interview__text">
-            <?foreach ($arResult['PROPERTIES']['FAQ_TEXT']['VALUE'] as $key=>$arFaq):?>
-            <h3><?=$arResult['PROPERTIES']['FAQ_TEXT']['DESCRIPTION'][$key]?></h3>
-            <?=$arFaq['TEXT']?>
-            <?endforeach;?>
+            <? foreach ($arResult['PROPERTIES']['FAQ_TEXT']['VALUE'] as $key => $arFaq): ?>
+                <h3><?=$arResult['PROPERTIES']['FAQ_TEXT']['DESCRIPTION'][$key]?></h3>
+                <?=$arFaq['TEXT']?>
+            <? endforeach; ?>
         </div>
         <div class="author">
             <div class="image"><a href="/o-doktore/"><img src="<?=$arResult['PROPERTIES']['FAQ_USER_PHOTO']['VALUE']?>" /></a></div>

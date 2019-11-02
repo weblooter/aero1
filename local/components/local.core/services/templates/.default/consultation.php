@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-consultation
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.consultation', '.default', ['DATA' => $arResult]) ?>

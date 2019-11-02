@@ -26,8 +26,8 @@ class FormatSnippetAnatationBlock extends BaseFormat
 
             foreach ($arAnatationBlockMatches[0] as $arAnatationBlockMatch) {
                 preg_match('/{{TITLE}}([^{]+){{\/TITLE}}/', $arAnatationBlockMatch, $arTitleMatch);
-                preg_match('/{{COLUMN1}}([^{]+){{\/COLUMN1}}/', $arAnatationBlockMatch, $arColumn1);
-                preg_match('/{{COLUMN2}}([^{]+){{\/COLUMN2}}/', $arAnatationBlockMatch, $arColumn2);
+                preg_match('/{{COLUMN1}}(.*?){{\/COLUMN1}}/', $arAnatationBlockMatch, $arColumn1);
+                preg_match('/{{COLUMN2}}(.*?){{\/COLUMN2}}/', $arAnatationBlockMatch, $arColumn2);
 
                 $arTmp = [
                     $arTitleMatch[1],

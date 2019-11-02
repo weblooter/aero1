@@ -10,4 +10,4 @@
  * @global CMain                 $APPLICATION
  */
 ?>
-<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.photo', '.default', ['DATA'=>$arResult])?>
+<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.photo', '.default', ['DATA' => $arResult]) ?>

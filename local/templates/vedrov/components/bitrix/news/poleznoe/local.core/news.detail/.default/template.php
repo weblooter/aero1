@@ -1,4 +1,6 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -13,26 +15,26 @@
 $this->setFrameMode(true);
 ?>
 
-<?\Local\Core\Assistant\Useful::showMobileHead(true, false)?>
+<? \Local\Core\Assistant\Useful::showMobileHead(true, false) ?>
 <div class="content">
     <div class="h1-bg" style="background-image:url(<?=$arResult['DETAIL_PICTURE']['SRC']?>);"><h1><?=$arResult['NAME']?></h1></div>
     <?=$arResult['DETAIL_TEXT'];?>
-    <?if( !empty($arResult['PROPERTIES']['PHOTO']['VALUE']) ):?>
+    <? if (!empty($arResult['PROPERTIES']['PHOTO']['VALUE'])): ?>
         <div class="grid gallery">
             <?
             foreach ($arResult['PROPERTIES']['PHOTO']['VALUE'] as $intId):
-                $arThumb = \CFile::ResizeImageGet($intId, ['width' => 600, 'height' => 1000], BX_RESIZE_IMAGE_PROPORTIONAL, false,false,false,75);
-            ?>
-            <div class="grid__item gallery__item"><a href="<?=\CFile::GetPath($intId)?>"><img src="<?=$arThumb['src']?>"/></a></div>
-            <?endforeach;?>
+                $arThumb = \CFile::ResizeImageGet($intId, ['width' => 600, 'height' => 1000], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75);
+                ?>
+                <div class="grid__item gallery__item"><a href="<?=\CFile::GetPath($intId)?>"><img src="<?=$arThumb['src']?>" /></a></div>
+            <? endforeach; ?>
         </div>
-    <?endif;?>
+    <? endif; ?>
     <div class="back">
-        <?if( $arResult['PREV'] ):?>
+        <? if ($arResult['PREV']): ?>
             <a href="<?=$arResult['PREV']?>" class="prev arrow">Предыдущая статья</a>
-        <?endif;?>
-        <?if( $arResult['NEXT'] ):?>
+        <? endif; ?>
+        <? if ($arResult['NEXT']): ?>
             <a href="<?=$arResult['NEXT']?>" class="next arrow">Следующая статья</a>
-        <?endif;?>
+        <? endif; ?>
     </div>
 </div>
