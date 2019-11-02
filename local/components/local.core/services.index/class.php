@@ -78,43 +78,37 @@ class ServicesIndexComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
     protected function extractPatients(& $arData, & $arResult)
     {
         if (!empty($arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE']) && preg_match('/\{\{SERVICES_INDEX_PATIENTS\}\}(.*?)\{\{\/SERVICES_INDEX_PATIENTS\}\}/', $arResult['SECOND_BLOCK'], $arPatientMatch) === 1) {
-            $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'), 'ACTIVE' => 'Y', 'ID' => $arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE']]);
+            $rsElems = \CIBlockElement::GetList(
+                [
+                    'ACTIVE_FROM' => 'DESC',
+                    'SORT' => 'ASC'
+                ],
+                [
+                    'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'),
+                    'ACTIVE' => 'Y',
+                    'ID' => $arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE'],
+                    '!PREVIEW_PICTURE' => false
+                ]);
 
             $strHtmlPatientBlock = '';
             if ($rsElems->SelectedRowsCount() > 0) {
                 $arPatients = [];
                 while ($obElem = $rsElems->GetNextElement()) {
                     $arElem = $obElem->GetFields();
-                    $arElem['PROPERTIES'] = $obElem->GetProperties();
 
                     $arElem['DETAIL_PAGE_URL'] = $arData['DETAIL_PAGE_URL'].'review/'.$arElem['ID'].'/';
 
-                    $arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT']));
-                    if (mb_strtoupper($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TYPE']) == 'TEXT') {
-                        $arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'] = '<p>'.$arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'].'</p>';
-                    }
+                    $arElem['PREVIEW_PICTURE'] = \CFile::ResizeImageGet($arElem['PREVIEW_PICTURE'] , ['width' => 510, 'height' => 340], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
+                    $arElem['PREVIEW_PICTURE'] = $arElem['PREVIEW_PICTURE']['src'];
 
-                    if (!empty($arElem['PROPERTIES']['PHOTOS']['VALUE'])) {
-                        $arElem['PROPERTIES']['PHOTOS']['VALUE'] = array_map(function ($v)
-                            {
-                                $arTmp = [
-                                    'BIG' => \CFile::ResizeImageGet($v, ['width' => 510, 'height' => 340], BX_RESIZE_IMAGE_EXACT, false, false, false, 75)
-                                ];
-                                ksort($arTmp);
-                                return array_combine(array_keys($arTmp), array_column($arTmp, 'src'));
-                            }, $arElem['PROPERTIES']['PHOTOS']['VALUE']);
-
-                        $arPatients['PATIENT_ITEMS'][] = $arElem;
-                    }
+                    $arPatients['PATIENT_ITEMS'][] = $arElem;
                 }
 
                 $strHtmlImgGallery = '';
                 $arPatients['PATIENT_ITEMS'] = array_splice($arPatients['PATIENT_ITEMS'], 0, 4);
                 foreach ($arPatients['PATIENT_ITEMS'] as $arItem) {
 
-                    foreach ($arItem['PROPERTIES']['PHOTOS']['VALUE'] as $arImg) {
-                        $strHtmlImgGallery .= '<div class="slide reviews__gallery__item"><a href="'.($arData['DETAIL_PAGE_URL'].'review/'.$arItem['ID']).'" style="background-image: url('.$arImg['BIG'].');"><span class="arrow">Подробнее</span></a></div>';
-                    }
+                    $strHtmlImgGallery .= '<div class="slide reviews__gallery__item"><a href="'.($arData['DETAIL_PAGE_URL'].'review/'.$arItem['ID']).'" style="background-image: url('.$arItem['PREVIEW_PICTURE'].');"><span class="arrow">Подробнее</span></a></div>';
                 }
 
                 $strLinkMorePatients = $arData['DETAIL_PAGE_URL'].'review/';

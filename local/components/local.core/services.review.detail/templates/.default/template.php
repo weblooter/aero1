@@ -50,9 +50,9 @@
             <a href="<?=$arResult['ITEM']['DETAIL_PAGE_URL']?>" class="arrow">Подробная история</a>
         </div>
 
-        <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.form-review', '.default', [], false, ['HIDE_ICON' => 'Y']) ?>
+        <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.form-review', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
         <div class="line"></div>
     </div>
 
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICON' => 'Y']) ?>
+    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

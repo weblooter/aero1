@@ -27,7 +27,7 @@
                 '.default',
                 ['SECTION_ID' => $arResult['SECTION']['ID']],
                 false,
-                ['HIDE_ICON' => 'Y']
+                ['HIDE_ICONS' => 'Y']
             );
             ?>
             <div class="tags row row-f">
@@ -155,10 +155,10 @@
             "SHOW_COUNT" => "N",
         ),
         false,
-        ['HIDE_ICON' => 'Y']
+        ['HIDE_ICONS' => 'Y']
     );
     ?>
 
     <div class="line"></div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICON' => 'Y']) ?>
+    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

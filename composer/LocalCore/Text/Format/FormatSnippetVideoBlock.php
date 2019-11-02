@@ -47,6 +47,10 @@ class FormatSnippetVideoBlock extends BaseFormat
                 $arReplaceTo[] = <<<DOCHERE
 <section class="videos container post-up">
     <div class="videos__item">
+        <div class="videoList__item__text">
+            <div class="title-preview">$strTitle</div>
+            <div class="h2">$strHeader</div>
+        </div>
         <div class="link">
             <div class="title-preview">$strTitle</div>
             <div class="h2">$strHeader</div>

@@ -31,6 +31,14 @@ $obRequest = \Bitrix\Main\Application::getInstance()
 <div id="panel">
     <? $APPLICATION->ShowPanel(); ?>
 </div>
+<?if($_SERVER['PHP_SELF'] === '/index.php'):?>
+    <div class="loaderArea" id="preloader" style="display:none" data-one-time-only="true"><!-- DEBUG ONLY, switch to "true" on prod -->
+        <div class="loader">
+            <p>Пластический хирург</p>
+            <div class="title">Ведров Олег Вячеславович</div>
+        </div>
+    </div>
+<?endif;?>
 
 <div id="outer">
     <header class="header">
@@ -82,6 +90,10 @@ $obRequest = \Bitrix\Main\Application::getInstance()
         elseif( preg_match('/^\/uslugi\//', $obRequest->getRequestedPageDirectory()) === 1 )
         {
             $APPLICATION->ShowViewContent("services_header");
+        }
+        elseif( $_SERVER['PHP_SELF'] === '/index.php' )
+        {
+            $APPLICATION->IncludeComponent('local.core:main.slide', '.default', [], false, ['HIDE_ICONS' => 'Y']);
         }
         ?>
     </header>

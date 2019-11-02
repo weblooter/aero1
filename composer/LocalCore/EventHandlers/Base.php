@@ -22,8 +22,8 @@ class Base
     {
         $eventManager = EventManager::getInstance();
 
-        /** @see \Local\Core\EventHandlers\Main\OnBeforeEventSend::executeCondition() */
-        $eventManager->addEventHandler('main', 'OnBeforeEventSend', [Main\OnBeforeEventSend::class, 'executeCondition']);
+        /** @see \Local\Core\EventHandlers\Main\OnEndBufferContentHandler::formatCommon() */
+        $eventManager->addEventHandler('main', 'OnEndBufferContent', [Main\OnEndBufferContentHandler::class, 'formatCommon']);
 
     }
 

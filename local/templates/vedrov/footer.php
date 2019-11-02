@@ -14,15 +14,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 <footer class="footer post-up">
     <div class="container">
         <div class="footer__logos">
-            <div class="h3">Отзывы о хирурге в интернете</div>
-            <div class="sliderLogos js-slider-logos str_wrap">
-                <a href=""><img src="/img/logos/logo01.png" alt="" /></a>
-                <a href=""><img src="/img/logos/logo02.png" alt="" /></a>
-                <a href=""><img src="/img/logos/logo03.png" alt="" /></a>
-                <a href=""><img src="/img/logos/logo04.png" alt="" /></a>
-                <a href=""><img src="/img/logos/logo05.png" alt="" /></a>
-                <a href=""><img src="/img/logos/logo06.png" alt="" /></a>
-            </div>
+            <? $APPLICATION->IncludeComponent('local.core:footer.review-slider', '.default', [])?>
         </div>
         <div class="footer__contacts row row-f">
             <div class="footer__contacts__item col-xs-12 col-sm-6">
@@ -41,67 +33,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             </div>
         </div>
         <div class="row footer__menu">
-            <div class="col-xs-6 col-md-3">
-                <div class="footer__title">
-                    Грудь
-                </div>
-                <ul>
-                    <li><a href="">Увеличение груди</a></li>
-                    <li><a href="">Уменьшение груди</a></li>
-                    <li><a href="">Подтяжка груди</a></li>
-                    <li><a href="">Липофилинг груди </a></li>
-                    <li><a href="">Реконструкция груди</a></li>
-                    <li><a href="">Коррекция сосков</a></li>
-                </ul>
-            </div>
-            <div class="col-xs-6 col-md-3">
-                <div class="footer__title">
-                    Тело
-                </div>
-                <ul>
-                    <li><a href="">Абдоминопластика</a></li>
-                    <li><a href="">Миниабдоминопластика</a></li>
-                    <li><a href="">Подтяжка рук </a></li>
-                    <li><a href="">Подтяжка ног</a></li>
-                    <li><a href="">Подтяжка тела после массивного похудения </a></li>
-                    <li><a href="">Липофилинг ягодиц</a></li>
-                    <li><a href="">Интимная пластика (Мпг)</a></li>
-                </ul>
-            </div>
+            <? $APPLICATION->IncludeComponent('local.core:footer.service-menu', '.default', [])?>
 
-            <div class="col-xs-6 col-md-3">
-                <div class="footer__title">
-                    Лицо
-                </div>
-                <ul>
-                    <li><a href="">Верхняя блефаропластика</a></li>
-                    <li><a href="">Нижняя блефаропластика</a></li>
-                    <li><a href="">Отопластика</a></li>
-                    <li><a href="">Удаление комков Биша</a></li>
-                    <li><a href="">Липофилинг губ (носогубных складок)</a></li>
-                </ul>
-            </div>
-
-            <div class="col-xs-6 col-md-3">
-                <div class="footer__title">
-                    Липо
-                </div>
-                <ul>
-                    <li><a href="">VASER-липосакция</a></li>
-                    <li><a href="">Липосакция лица</a></li>
-                    <li><a href="">Липосакция бедер</a></li>
-                    <li><a href="">Липосакция коленей</a></li>
-                    <li><a href="">Липосакция рук</a></li>
-                    <li><a href="">Липосакция боков</a></li>
-                    <li><a href="">Липосакция живота</a></li>
-                    <li><a href="">Липосакция у мужчин</a></li>
-                    <li><a href="">Липосакция подбородка</a></li>
-                    <li><a href="">Липосакция ягодиц</a></li>
-                    <li><a href="">Липосакция ног</a></li>
-                    <li><a href="">Липосакция щек</a></li>
-                    <li><a href="">Липосакция галифе</a></li>
-                </ul>
-            </div>
             <div class="col-xs-12 col-md-9">
                 <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-3", Array(
                     "ALLOW_MULTI_SELECT" => "N",
@@ -192,5 +125,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 \Local\Core\Page::getInstance()
     ->footerInit();
 ?>
+<?if($_SERVER['PHP_SELF'] === '/index.php'):?>
+    <script src="<?=SITE_TEMPLATE_PATH?>/assets/js/preloader.js"></script>
+<?endif;?>
 </body>
 </html>

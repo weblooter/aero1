@@ -74,7 +74,7 @@ class ComposerStaticInit73ce08e6b9ba2b72ef01c3a5d083983d
         'Local\\Core\\EventHandlers\\Base' => __DIR__ . '/../..' . '/LocalCore/EventHandlers/Base.php',
         'Local\\Core\\EventHandlers\\Iblock\\OnAfterIBlockElementUpdate' => __DIR__ . '/../..' . '/LocalCore/EventHandlers/Iblock/OnAfterIBlockElementUpdate.php',
         'Local\\Core\\EventHandlers\\Iblock\\OnBeforeIBlockElementUpdate' => __DIR__ . '/../..' . '/LocalCore/EventHandlers/Iblock/OnBeforeIBlockElementUpdate.php',
-        'Local\\Core\\EventHandlers\\Main\\OnBeforeEventSend' => __DIR__ . '/../..' . '/LocalCore/EventHandlers/Main/OnBeforeEventSend.php',
+        'Local\\Core\\EventHandlers\\Main\\OnEndBufferContentHandler' => __DIR__ . '/../..' . '/LocalCore/EventHandlers/Main/OnEndBufferContentHandler.php',
         'Local\\Core\\Exception\\Component\\Services\\Exception404' => __DIR__ . '/../..' . '/LocalCore/Exception/Component/Services/Exception404.php',
         'Local\\Core\\Exception\\Component\\Services\\ExceptionEmptyData' => __DIR__ . '/../..' . '/LocalCore/Exception/Component/Services/ExceptionEmptyData.php',
         'Local\\Core\\Exception\\Component\\Services\\ExceptionEmptyReviewId' => __DIR__ . '/../..' . '/LocalCore/Exception/Component/Services/ExceptionEmptyReviewId.php',

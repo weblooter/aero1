@@ -25,7 +25,7 @@
             '.default',
             ['SECTION_ID' => $arResult['MAIN_CONSULT_SECTION_DATA']['ID']],
             false,
-            ['HIDE_ICON' => 'Y']
+            ['HIDE_ICONS' => 'Y']
         );
         ?>
         <div class="tags row row-f">
@@ -89,5 +89,5 @@
         <? endif; ?>
 
     </div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICON' => 'Y']) ?>
+    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

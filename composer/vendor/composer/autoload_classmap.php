@@ -19,7 +19,7 @@ return array(
     'Local\\Core\\EventHandlers\\Base' => $baseDir . '/LocalCore/EventHandlers/Base.php',
     'Local\\Core\\EventHandlers\\Iblock\\OnAfterIBlockElementUpdate' => $baseDir . '/LocalCore/EventHandlers/Iblock/OnAfterIBlockElementUpdate.php',
     'Local\\Core\\EventHandlers\\Iblock\\OnBeforeIBlockElementUpdate' => $baseDir . '/LocalCore/EventHandlers/Iblock/OnBeforeIBlockElementUpdate.php',
-    'Local\\Core\\EventHandlers\\Main\\OnBeforeEventSend' => $baseDir . '/LocalCore/EventHandlers/Main/OnBeforeEventSend.php',
+    'Local\\Core\\EventHandlers\\Main\\OnEndBufferContentHandler' => $baseDir . '/LocalCore/EventHandlers/Main/OnEndBufferContentHandler.php',
     'Local\\Core\\Exception\\Component\\Services\\Exception404' => $baseDir . '/LocalCore/Exception/Component/Services/Exception404.php',
     'Local\\Core\\Exception\\Component\\Services\\ExceptionEmptyData' => $baseDir . '/LocalCore/Exception/Component/Services/ExceptionEmptyData.php',
     'Local\\Core\\Exception\\Component\\Services\\ExceptionEmptyReviewId' => $baseDir . '/LocalCore/Exception/Component/Services/ExceptionEmptyReviewId.php',

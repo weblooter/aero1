@@ -6,7 +6,8 @@ CHTTP::SetStatus("404 Not Found");
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
-$APPLICATION->SetTitle("404 Not Found");
+$APPLICATION->SetTitle("404 Страница не найдена!");
+$APPLICATION->AddChainItem('404 Страница не найдена!');
 ?>
 
     <section id="body" class="container">
@@ -15,15 +16,21 @@ $APPLICATION->SetTitle("404 Not Found");
         <div class="content">
             <div class="row row-f">
                 <div class="col-xs-12 col-md-6">
-                    <div class="title-preview">OOPS...</div>
-                    <h2>H2 - Кажется что-то пошло не так - такой страницы нет (:</h2>
-                    <p>Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах</p>
-                    <ol class="sitemap">
-                        <li><a href="/">Главная</a></li>
-                        <li><a href="/akcii.html">АКЦИИ</a></li>
-                        <li><a href="/about.html">О ХИРУРГЕ</a></li>
-                        <li><a href="/news.html">НОВОСТИ</a></li>
-                    </ol>
+                    <div class="title-preview"><? $APPLICATION->IncludeFile('include/404-title.php', false, ['MODE' => 'text'])?></div>
+                    <h2><? $APPLICATION->IncludeFile('include/404-header.php', false, ['MODE' => 'text'])?></h2>
+                    <? $APPLICATION->IncludeFile('include/404-text.php', false, ['MODE' => 'html'])?>
+                    <? $APPLICATION->IncludeComponent("bitrix:main.map", "sitemap", Array(
+                        "COMPONENT_TEMPLATE" => ".default",
+                        "CACHE_TYPE" => "A",
+                        "CACHE_TIME" => "3600",
+                        "SET_TITLE" => "Y",
+                        "LEVEL" => "3",
+                        "COL_NUM" => "1",
+                        "SHOW_DESCRIPTION" => "N",
+                    ),
+                        false,
+                        ['HIDE_ICONS' => 'Y']
+                    ); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p class="center"><img src="/img/404.jpg" alt="" /></p>
