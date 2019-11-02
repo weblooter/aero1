@@ -21,10 +21,10 @@
         <form action="" id="consult-free-consult" name="consult-free-consult">
             <div class="row">
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" name="NAME" placeholder="Ваше имя*" />
+                    <input type="text" name="NAME" placeholder="Ваше имя*" required />
                 </div>
                 <div class="formField col-xs-12 col-sm-6">
-                    <input type="text" name="PHONE" placeholder="Номер телефона*" />
+                    <input type="text" name="PHONE" placeholder="Номер телефона*" required />
                 </div>
                 <div class="formField col-xs-12">
                     <textarea placeholder="Комментарий" name="MSG"></textarea>

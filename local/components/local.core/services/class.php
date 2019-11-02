@@ -39,6 +39,11 @@ class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
         $obCache = \Bitrix\Main\Application::getInstance()
             ->getCache();
 
+        if( empty(trim($obRequest->get('SECTION_CODE'))) )
+        {
+            throw new Services\Exception404();
+        }
+
         if ($obCache->startDataCache(60 * 60 * 24, __FILE__.'#'.$obRequest->get('SECTION_CODE').'#'.$obRequest->get('ELEMENT_CODE'))) {
             # section
             $rsSection = \CIBlockSection::GetList([], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'CODE' => $obRequest->get('SECTION_CODE'), 'ACTIVE' => 'Y'], false, ['ID', 'NAME']);

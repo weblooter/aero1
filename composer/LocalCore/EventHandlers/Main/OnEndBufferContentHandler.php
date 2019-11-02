@@ -7,7 +7,7 @@ class OnEndBufferContentHandler
 {
     public static function formatCommon(&$content)
     {
-        if($_SERVER['PHP_SELF'] == '/index.php')
+        if(preg_match('/^\/bitrix\//', \Bitrix\Main\Application::getInstance()->getContext()->getRequest()->getRequestUri()) !== 1)
         {
             $content = (new \Local\Core\Text\Format\FormatCommon())->format($content);
         }

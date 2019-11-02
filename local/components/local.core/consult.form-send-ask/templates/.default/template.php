@@ -16,7 +16,7 @@
             <div class="col-xs-12 col-md-4">
                 <div class="row">
                     <div class="formField col-xs-12 col-sm-4 col-md-12">
-                        <input type="text" placeholder="Ваше имя*" name="NAME" />
+                        <input type="text" placeholder="Ваше имя*" name="NAME" required />
                     </div>
                     <div class="formField col-xs-12 col-sm-4 col-md-12">
                         <input type="email" placeholder="Ваша почта*" id="mail" name="EMAIL" required />

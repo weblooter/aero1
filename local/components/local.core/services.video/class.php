@@ -31,7 +31,7 @@ class ServicesVideoComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
             if (!empty($arData['PROPERTIES']['VIDEO_VIDEOS']['VALUE'])) {
                 foreach ($arData['PROPERTIES']['VIDEO_VIDEOS']['VALUE'] as $arVideoSnippet) {
                     if (!empty((new Format\FormatTrim(new Format\FormatStripTags()))->format(htmlspecialchars_decode($arVideoSnippet['TEXT'])))) {
-                        $arResult['ITEMS'][] = (new Format\FormatSnippetServiceVideo())->format($arVideoSnippet['TEXT']);
+                        $arResult['ITEMS'][] = (new Format\FormatSnippetServiceVideo())->format(htmlspecialchars_decode($arVideoSnippet['TEXT']));
                     }
                 }
             }

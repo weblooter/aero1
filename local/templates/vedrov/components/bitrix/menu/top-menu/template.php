@@ -16,7 +16,7 @@
                                 <?
                                 foreach ($arResult['SERVICES'] as $arSection):?>
                                     <li>
-                                        <a href="<?=$arSection['SECTION_PAGE_URL']?>" class="title"><?=$arSection['NAME']?></a>
+                                        <a href="javascript:void(0)" class="title"><?=$arSection['NAME']?></a>
                                         <ul>
                                             <?
                                             foreach ($arSection['CHILD'] as $arItem):?>

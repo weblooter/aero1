@@ -17,6 +17,6 @@ class FormatTrim extends BaseFormat
     {
         $strText = parent::format($strText);
 
-        return trim($strText);
+        return trim(str_replace('&nbsp;', ' ', $strText));
     }
 }
