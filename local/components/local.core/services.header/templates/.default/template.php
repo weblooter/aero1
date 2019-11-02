@@ -42,7 +42,7 @@ $this->SetViewTarget('services_header');
                     <div class="ico ico-mail"></div>
                     <div class="header__contacts__item__text">
                         <span class="title">Почта</span>
-                        <a href="mailto:<?=tplvar('phone')?>"><?=tplvar('email')?></a>
+                        <a href="mailto:<?=tplvar('email')?>"><?=tplvar('email')?></a>
                     </div>
                 </div>
             </div>
