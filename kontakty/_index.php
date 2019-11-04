@@ -9,16 +9,16 @@
         </div>
         <div class="col-xs-12 col-md-6 contacts__item">
             <p>
-                <strong>Адрес</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'text'])?>
+                <strong>Адрес</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'html'])?>
             </p>
             <p>
-                <strong>Телефон</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'text'])?>
+                <strong>Телефон</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'html'])?>
             </p>
             <p>
-                <strong>Режим работы</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-work-time.php', false, ['MODE' => 'text'])?>
+                <strong>Режим работы</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-work-time.php', false, ['MODE' => 'html'])?>
             </p>
             <p>
-                <strong>Маркетинг и PR</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-emails.php', false, ['MODE' => 'text'])?>
+                <strong>Маркетинг и PR</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-emails.php', false, ['MODE' => 'html'])?>
             </p>
         </div>
     </div>

@@ -28,7 +28,7 @@
                         <div class="title-preview">Отзыв</div>
                         <div class="review__author"><?=$arItem['PROPERTIES']['REVIEW_NAME']['VALUE']?></div>
                         <div class="reviewList__item__text">
-                            <div class="text"><?=$arItem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT']?></div>
+                            <div class="text"><?=$arItem['REVIEW_TEXT']?></div>
                             <? if (!empty($arItem['PROPERTIES']['PHOTOS']['VALUE'])): ?>
                                 <div class="review__photos">
                                     <? foreach ($arItem['PROPERTIES']['PHOTOS']['VALUE'] as $strImg): ?>

@@ -30,16 +30,28 @@ class ServicesReviewComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
 
             if (!empty($arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE'])) {
 
-                $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'), 'ACTIVE' => 'Y', 'ID' => $arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE']]);
+                $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'],
+                    [
+                        'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'),
+                        'ACTIVE' => 'Y',
+                        'ID' => $arData['PROPERTIES']['REVIEW_REVIEWS']['VALUE']
+                    ]);
                 while ($obElem = $rsElems->GetNextElement()) {
                     $arElem = $obElem->GetFields();
                     $arElem['PROPERTIES'] = $obElem->GetProperties();
 
                     $arElem['DETAIL_PAGE_URL'] = $arData['DETAIL_PAGE_URL'].'review/'.$arElem['ID'].'/';
 
-                    $arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT']));
-                    if (mb_strtoupper($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TYPE']) == 'TEXT') {
-                        $arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'] = '<p>'.$arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT'].'</p>';
+                    if (!empty((new Format\FormatTrim(new Format\FormatStripTags()))->format(htmlspecialchars_decode($arElem['PROPERTIES']['REVIEW_TEXT_SERVICE']['VALUE']['TEXT'])))) {
+                        $arElem['REVIEW_TEXT'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arElem['PROPERTIES']['REVIEW_TEXT_SERVICE']['VALUE']['TEXT']));
+                        if (mb_strtoupper($arElem['PROPERTIES']['REVIEW_TEXT_SERVICE']['VALUE']['TYPE']) == 'TEXT') {
+                            $arElem['REVIEW_TEXT'] = '<p>'.$arElem['REVIEW_TEXT'].'</p>';
+                        }
+                    } else {
+                        $arElem['REVIEW_TEXT'] = (new Format\FormatCommon())->format(htmlspecialchars_decode($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TEXT']));
+                        if (mb_strtoupper($arElem['PROPERTIES']['REVIEW_TEXT']['VALUE']['TYPE']) == 'TEXT') {
+                            $arElem['REVIEW_TEXT'] = '<p>'.$arElem['REVIEW_TEXT'].'</p>';
+                        }
                     }
 
                     if (!empty($arElem['PROPERTIES']['PHOTOS']['VALUE'])) {
@@ -48,9 +60,9 @@ class ServicesReviewComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
                                 $arTmp = \CFile::ResizeImageGet($v, ['width' => 100, 'height' => 65], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
                                 return $arTmp['src'];
                             }, $arElem['PROPERTIES']['PHOTOS']['VALUE']);
-
-                        $arResult['ITEMS'][] = $arElem;
                     }
+
+                    $arResult['ITEMS'][] = $arElem;
                 }
 
             }

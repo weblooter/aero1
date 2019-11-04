@@ -2,7 +2,7 @@
 define('DISABLE_BREADCRUMBS', true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Довольные пациенты");
-$APPLICATION->SetPageProperty("h1", "Довольные пациенты");
+$APPLICATION->SetPageProperty("h1", "Пациенты хирурга всегда рады поделиться своими эмоциями");
 $APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
 ?><?$APPLICATION->IncludeComponent(
 	"bitrix:news",

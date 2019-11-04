@@ -34,7 +34,12 @@ class ServicesReviewDetailComponent extends \Local\Core\Inner\BxModified\CBitrix
 
             if ($this->arParams['REVIEW_ID'] > 0) {
 
-                $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'), 'ACTIVE' => 'Y', 'ID' => $this->arParams['REVIEW_ID']]);
+                $rsElems = \CIBlockElement::GetList(['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'],
+                    [
+                        'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_patient'),
+                        'ACTIVE' => 'Y',
+                        'ID' => $this->arParams['REVIEW_ID']
+                    ]);
                 while ($obElem = $rsElems->GetNextElement()) {
                     $arElem = $obElem->GetFields();
                     $arElem['PROPERTIES'] = $obElem->GetProperties();
@@ -50,9 +55,9 @@ class ServicesReviewDetailComponent extends \Local\Core\Inner\BxModified\CBitrix
                                 $arTmp = \CFile::ResizeImageGet($v, ['width' => 900, 'height' => 600], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
                                 return $arTmp['src'];
                             }, $arElem['PROPERTIES']['PHOTOS']['VALUE']);
-
-                        $arResult['ITEM'] = $arElem;
                     }
+                    
+                    $arResult['ITEM'] = $arElem;
                 }
 
             }

@@ -47,7 +47,9 @@
         <div class="more">
             <a href="<?=$arResult['ABOUT_OPERATION']?>" class="arrow">Об операции</a>
             <span class="arrow js-open-callback-form">Бесплатная консультация</span>
-            <a href="<?=$arResult['ITEM']['DETAIL_PAGE_URL']?>" class="arrow">Подробная история</a>
+            <? if (!empty($arResult['ITEM']['PROPERTIES']['REVIEW_LINK']['VALUE'])): ?>
+                <a href="<?=$arResult['ITEM']['PROPERTIES']['REVIEW_LINK']['VALUE']?>" target="_blank" class="arrow">Подробная история</a>
+            <? endif; ?>
         </div>
 
         <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.form-review', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>

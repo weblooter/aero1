@@ -144,8 +144,11 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
         $GLOBALS['APPLICATION']->SetPageProperty('h1', htmlspecialchars_decode($this->arResult['SEO']['ELEMENT_PAGE_TITLE']));
         $GLOBALS['APPLICATION']->AddChainItem($this->arResult['ITEM']['MAIN_SECTION']['NAME'], $this->arResult['ITEM']['MAIN_SECTION']['SECTION_PAGE_URL']);
         $GLOBALS['APPLICATION']->AddChainItem($this->arResult['ITEM']['NAME']);
-        $GLOBALS['APPLICATION']->SetTitle(htmlspecialchars_decode($this->arResult['SEO']['ELEMENT_META_TITLE']));
-        $GLOBALS['APPLICATION']->SetPageProperty('title', htmlspecialchars_decode($this->arResult['SEO']['ELEMENT_META_TITLE']));
+
+        $strTitle = 'Вопрос №'.$this->arResult['ITEM']['ID'].' по тематике '.$this->arResult['ITEM']['MAIN_SECTION']['NAME'].' | Хирург Ведров О. В. | Консультация online';
+
+        $GLOBALS['APPLICATION']->SetTitle(htmlspecialchars_decode($strTitle));
+        $GLOBALS['APPLICATION']->SetPageProperty('title', htmlspecialchars_decode($strTitle));
         $GLOBALS['APPLICATION']->SetPageProperty('description', (new Local\Core\Text\Format\FormatStripTags())->format($this->arResult['SEO']['ELEMENT_META_DESCRIPTION']));
         $GLOBALS['APPLICATION']->SetPageProperty('keywords', htmlspecialchars_decode($this->arResult['SEO']['ELEMENT_META_KEYWORDS']));
     }

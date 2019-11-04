@@ -1,11 +1,53 @@
 <?
 $aMenuLinks = Array(
-	Array(
-		"Контакты", 
-		"/kontakty/", 
-		Array(), 
-		Array(), 
-		"" 
-	)
+    Array(
+        "Услуги",
+        "/uslugi/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Цены",
+        "/tseny/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Фото работ",
+        "/foto-rabot/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Акции",
+        "/aktsii/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Полезное",
+        "/poleznoe/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Консультации",
+        "/konsultatsii/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Контакты",
+        "/kontakty/",
+        Array(),
+        Array(),
+        ""
+    )
 );
 ?>

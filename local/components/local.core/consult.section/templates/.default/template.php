@@ -69,7 +69,7 @@
                                     <div class="h2"><?=$arResult['SECTION']['UF_VIDEO_NAME']?></div>
                                 <? endif; ?>
                                 <img src="<?=$arResult['SECTION']['UF_VIDEO_IMG']?>" />
-                                <a data-mfp-src="<?=$arResult['SECTION']['UF_VIDEO_LINK']?>>" class="video-ico js-video-popup"></a>
+                                <a data-mfp-src="<?=$arResult['SECTION']['UF_VIDEO_LINK']?>" class="video-ico js-video-popup"></a>
                             </div>
                             <?
                             if (!empty($arResult['SECTION']['UF_VIDEP_DESC'])):?>

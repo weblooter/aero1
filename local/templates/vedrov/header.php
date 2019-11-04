@@ -53,7 +53,7 @@ $obRequest = \Bitrix\Main\Application::getInstance()
                     <a href="tel:+<?=preg_replace('/[^\d]/', '', tplvar('phone'))?>"><?=tplvar('phone')?></a>
                     <span class="name">Ведров Олег<br /> Вячеславович</span>
                     <div class="awards">
-                        <a href="">
+                        <a href="/o-doktore/">
                             <i class="ico ico-award"></i>
                             <span>Все награды хирурга</span>
                         </a>

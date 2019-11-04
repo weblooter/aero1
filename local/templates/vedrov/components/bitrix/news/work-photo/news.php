@@ -18,7 +18,21 @@ $arrResult = [];
 $obCache = \Bitrix\Main\Application::getInstance()
     ->getCache();
 if ($obCache->startDataCache(60 * 60 * 24, __FILE__.'#'.__LINE__)) {
-    $rsSections = \CIBlockSection::GetList(['SORT' => 'ASC', 'ID' => 'DESC'], ['IBLOCK_ID' => $arParams['IBLOCK_ID'], 'DEPTH_LEVEL' => 1, 'ACTIVE' => 'Y'], false, ['ID', 'IBLOCK_ID', 'PICTURE', 'DESCRIPTION', 'SECTION_PAGE_URL']);
+    $rsSections = \CIBlockSection::GetList(['SORT' => 'ASC', 'ID' => 'DESC'],
+        [
+            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+            'DEPTH_LEVEL' => 1,
+            'ACTIVE' => 'Y'
+        ],
+        false,
+        [
+            'ID',
+            'IBLOCK_ID',
+            'NAME',
+            'PICTURE',
+            'DESCRIPTION',
+            'SECTION_PAGE_URL'
+        ]);
 
     if ($rsSections->SelectedRowsCount() < 1) {
         $obCache->abortDataCache();

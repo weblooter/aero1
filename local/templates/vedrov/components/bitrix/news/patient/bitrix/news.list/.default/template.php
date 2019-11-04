@@ -14,18 +14,14 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 ?>
-<? \Local\Core\Assistant\Useful::showMobileHead() ?>
-<div class="content">
-    <p class="center"><? $GLOBALS['APPLICATION']->IncludeFile('include/poleznoe-patient.php', false, ['MODE' => 'text']) ?></p>
-    <div class="vw-container">
-        <div class="gallerySquare square">
-            <? foreach ($arResult['ITEMS'] as $arItem): ?>
-                <div class="gallerySquare__item">
-                    <a href="<?=$arItem['DETAIL_PAGE_URL']?>" style="background-image: url(<?=$arItem['PREVIEW_PICTURE']['SRC']?>);">
-                        <span class="arrow">Подробнее</span>
-                    </a>
-                </div>
-            <? endforeach; ?>
-        </div>
+<div class="vw-container">
+    <div class="gallerySquare square">
+        <? foreach ($arResult['ITEMS'] as $arItem): ?>
+            <div class="gallerySquare__item">
+                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" style="background-image: url(<?=$arItem['PREVIEW_PICTURE']['SRC']?>);">
+                    <span class="arrow">Подробнее</span>
+                </a>
+            </div>
+        <? endforeach; ?>
     </div>
 </div>

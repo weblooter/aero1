@@ -29,7 +29,7 @@
                                     <?
                                     $intPrice = array_sum($arItem['PROPERTIES']['PRICE']['VALUE']);
                                     ?>
-                                    <span class="price__link"><?=number_format($intPrice, 0, '.', ' ')?> руб.</span>
+                                    <span class="price__link"><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.</span>
                                     <div class="price__text">
                                         <table>
                                             <? foreach ($arItem['PROPERTIES']['PRICE']['VALUE'] as $k => $v): ?>

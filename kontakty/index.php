@@ -3,7 +3,7 @@ define('MAIN_PAGE', true);
 define('DISABLE_BREADCRUMBS', true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty("pre-h1", "Контакты");
-$APPLICATION->SetPageProperty("h1", "ЦЕНТР ПЛАСТИЧЕСКОЙ ХИРУРГИИ");
+$APPLICATION->SetPageProperty("h1", "ЦЕНТР ПЛАСТИЧЕСКОЙ<br/> ХИРУРГИИ ЭТАЛОН");
 $APPLICATION->SetTitle("Контакты");
 
 ?>
