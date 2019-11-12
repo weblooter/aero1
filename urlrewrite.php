@@ -99,6 +99,13 @@ $arUrlRewrite = array(
 		"SORT" => "1100",
 	),
 	array(
+		"CONDITION" => "#^/uslugi/([a-zA-Z\\-\\_0-9]+)/?(\\?[^\\/]*)?\$#",
+		"RULE" => "SECTION_CODE=\$1&TMP=\$2",
+		"ID" => "",
+		"PATH" => "/uslugi/section.php",
+		"SORT" => "1100",
+	),
+	array(
 		"CONDITION" => "#^/konsultatsii/([a-zA-Z\\-\\_0-9]+)/(\\?[^\\/]*)?\$#",
 		"RULE" => "SECTION_CODE=\$1&TMP=\$2",
 		"ID" => "",
