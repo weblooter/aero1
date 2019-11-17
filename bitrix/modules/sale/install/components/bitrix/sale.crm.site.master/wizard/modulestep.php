@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc;
 
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
  * Class ModuleStep
  * Show list of required modules
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class ModuleStep extends \CWizardStep
 {
@@ -26,7 +26,7 @@ class ModuleStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -43,7 +43,7 @@ class ModuleStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -95,7 +95,7 @@ class ModuleStep extends \CWizardStep
 
 		if ($this->modulesChecked["NOT_INSTALLED_MODULES"])
 		{
-			$this->SetNextStep("Bitrix\Wizard\Steps\ModuleInstallStep");
+			$this->SetNextStep("Bitrix\Sale\CrmSiteMaster\Steps\ModuleInstallStep");
 			$this->installModulesHtml();
 		}
 		elseif ($this->modulesChecked["MIN_VERSION_MODULES"])
@@ -108,8 +108,8 @@ class ModuleStep extends \CWizardStep
 			$this->SetNextCaption(Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_NEXT_BUTTON"));
 			ob_start();
 			?>
-			<div class="adm-site-master-paragraph-wrapper">
-				<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_CHECK_SUCCESS")?></div>
+			<div class="adm-crm-site-master-paragraph-wrapper">
+				<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_CHECK_SUCCESS")?></div>
 			</div>
 			<?
 			$content = ob_get_contents();
@@ -166,7 +166,7 @@ class ModuleStep extends \CWizardStep
 	 * @return bool
 	 * @throws \Bitrix\Main\ArgumentNullException
 	 */
-	function onPostForm()
+	public function onPostForm()
 	{
 		$wizard =& $this->GetWizard();
 		if ($wizard->IsPrevButtonClick())
@@ -184,7 +184,7 @@ class ModuleStep extends \CWizardStep
 
 		if (!$this->modulesChecked["NOT_INSTALLED_MODULES"] && !$this->modulesChecked["MIN_VERSION_MODULES"])
 		{
-			$this->GetWizard()->SetCurrentStep("Bitrix\Wizard\Steps\SiteInstructionStep");
+			$this->GetWizard()->SetCurrentStep("Bitrix\Sale\CrmSiteMaster\Steps\SiteInstructionStep");
 			$this->component->getModuleChecker()->deleteInstallStatus();
 		}
 
@@ -194,7 +194,7 @@ class ModuleStep extends \CWizardStep
 	/**
 	 * Prepare html content with modules to be installed
 	 */
-	protected function installModulesHtml()
+	private function installModulesHtml()
 	{
 		$rows = [];
 		foreach ($this->modulesChecked["NOT_INSTALLED_MODULES"] as $module)
@@ -220,7 +220,7 @@ class ModuleStep extends \CWizardStep
 	/**
 	 * Prepare html content with modules to be updated
 	 */
-	protected function minModulesHtml()
+	private function minModulesHtml()
 	{
 		$rows = [];
 		foreach ($this->modulesChecked["MIN_VERSION_MODULES"] as $module)
@@ -260,12 +260,12 @@ class ModuleStep extends \CWizardStep
 
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph-wrapper">
-			<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_NOTES1", [
+		<div class="adm-crm-site-master-paragraph-wrapper">
+			<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_NOTES1", [
 					"#UPDATE_SYSTEM_LINK#" => "/bitrix/admin/update_system.php?lang=".LANGUAGE_ID
 				])?>
 			</div>
-			<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_NOTES2")?></div>
+			<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_MODULESTEP_NOTES2")?></div>
 		</div>
 		<?
 		$content = ob_get_contents();
@@ -280,7 +280,7 @@ class ModuleStep extends \CWizardStep
 	 * @param $rows
 	 * @return false|string
 	 */
-	protected function includeGridComponent($id, $columns, $rows)
+	private function includeGridComponent($id, $columns, $rows)
 	{
 		/** @noinspection PhpVariableNamingConventionInspection */
 		global $APPLICATION;

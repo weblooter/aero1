@@ -1342,18 +1342,19 @@ abstract class ProviderBase
 
 			$fields = $data;
 
-			if ($productData['IS_BUNDLE_CHILD'])
-			{
-				$fields['CHECK_DISCOUNT'] = 'N';
-			}
-
 			if ($productData['IS_ORDERABLE'])
 			{
-				$fields['CHECK_COUPONS'] = 'N';
+				$fields['CHECK_COUPONS'] = 'Y';
 			}
 			else
 			{
-				$fields['CHECK_COUPONS'] = 'Y';
+				$fields['CHECK_COUPONS'] = 'N';
+			}
+
+			if ($productData['IS_BUNDLE_CHILD'])
+			{
+				$fields['CHECK_DISCOUNT'] = 'N';
+				$fields['CHECK_COUPONS'] = 'N';
 			}
 
 			$fields['PRODUCT_ID'] = $productId;

@@ -38,6 +38,7 @@ $MESS["MAIN_UI_FILTER__SINGLE"] = "Genaues Datum";
 $MESS["MAIN_UI_FILTER__THIS_MONTH"] = "Diesen Monat";
 $MESS["MAIN_UI_FILTER__THIS_WEEK"] = "Diese Woche";
 $MESS["MAIN_UI_FILTER__TODAY"] = "Heute";
+$MESS["MAIN_UI_FILTER__VALUE_REQUIRED"] = "Dieses Feld ist erforderlich";
 $MESS["MAIN_UI_FILTER__YES"] = "Ja";
 $MESS["MAIN_UI_FILTER__YESTERDAY"] = "Gestern";
 ?>

@@ -1,4 +1,8 @@
-if (!window.DOMRect)
+if (
+	!window.DOMRect
+	|| typeof DOMRect.prototype.toJSON !== 'function'
+	|| typeof DOMRect.fromRect !== 'function'
+)
 {
 	window.DOMRect = class DOMRect
 	{

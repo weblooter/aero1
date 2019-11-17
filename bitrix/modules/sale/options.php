@@ -396,7 +396,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($Update) > 0 && $SALE_RIGHT =
 
 		COption::SetOptionString("sale", "format_quantity", ($FORMAT_QUANTITY == 'AUTO' ? $FORMAT_QUANTITY: intval($FORMAT_QUANTITY)));
 
-		COption::SetOptionString("sale", "value_precision", (intval($VALUE_PRECISION) <= 0 ? 2 : intval($VALUE_PRECISION)));
+		COption::SetOptionString("sale", "value_precision", (intval($VALUE_PRECISION) < 0 ? 2 : intval($VALUE_PRECISION)));
 
 		$oldExpirationProcessingEvents = Option::get('sale', 'expiration_processing_events');
 
@@ -920,6 +920,7 @@ $tabControl->BeginNextTab();
 			$val = Main\Config\Option::get("sale", "value_precision", 2);
 			?>
 			<select name="VALUE_PRECISION">
+				<option value="0"<?if ($val == "0") echo " selected";?>><?= GetMessage("SMO_VALUE_PRECISION_0") ?></option>
 				<option value="1"<?if ($val == "1") echo " selected";?>><?= GetMessage("SMO_VALUE_PRECISION_1") ?></option>
 				<option value="2"<?if ($val == "2") echo " selected";?>><?= GetMessage("SMO_VALUE_PRECISION_2") ?></option>
 				<option value="3"<?if ($val == "3") echo " selected";?>><?= GetMessage("SMO_VALUE_PRECISION_3") ?></option>

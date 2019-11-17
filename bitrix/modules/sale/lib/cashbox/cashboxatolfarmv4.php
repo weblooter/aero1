@@ -39,25 +39,25 @@ class CashboxAtolFarmV4 extends CashboxAtolFarm
 			$serviceEmail = static::getDefaultServiceEmail();
 		}
 
-		$result = array(
+		$result = [
 			'timestamp' => $dateTime->format('d.m.Y H:i:s'),
 			'external_id' => static::buildUuid(static::UUID_TYPE_CHECK, $data['unique_id']),
-			'service' => array(
+			'service' => [
 				'callback_url' => $this->getCallbackUrl(),
-			),
-			'receipt' => array(
-				'client' => array(),
-				'company' => array(
+			],
+			'receipt' => [
+				'client' => [],
+				'company' => [
 					'email' => $serviceEmail,
 					'sno' => $this->getValueFromSettings('TAX', 'SNO'),
 					'inn' => $this->getValueFromSettings('SERVICE', 'INN'),
 					'payment_address' => $this->getValueFromSettings('SERVICE', 'P_ADDRESS'),
-				),
-				'payments' => array(),
-				'items' => array(),
+				],
+				'payments' => [],
+				'items' => [],
 				'total' => (float)$data['total_sum']
-			)
-		);
+			]
+		];
 
 		$email = $data['client_email'] ?: '';
 
@@ -65,7 +65,9 @@ class CashboxAtolFarmV4 extends CashboxAtolFarm
 		if (is_string($phone))
 		{
 			if ($phone[0] === '7')
+			{
 				$phone = substr($phone, 1);
+			}
 		}
 		else
 		{
@@ -99,10 +101,10 @@ class CashboxAtolFarmV4 extends CashboxAtolFarm
 		$paymentTypeMap = $this->getPaymentTypeMap();
 		foreach ($data['payments'] as $payment)
 		{
-			$result['receipt']['payments'][] = array(
+			$result['receipt']['payments'][] = [
 				'type' => $paymentTypeMap[$payment['type']],
 				'sum' => (float)$payment['sum']
-			);
+			];
 		}
 
 		$checkTypeMap = $this->getCheckTypeMap();
@@ -111,19 +113,28 @@ class CashboxAtolFarmV4 extends CashboxAtolFarm
 		{
 			$vat = $this->getValueFromSettings('VAT', $item['vat']);
 			if ($vat === null)
+			{
 				$vat = $this->getValueFromSettings('VAT', 'NOT_VAT');
+			}
 
-			$result['receipt']['items'][] = array(
+			$position = [
 				'name' => $item['name'],
 				'price' => (float)$item['price'],
 				'sum' => (float)$item['sum'],
 				'quantity' => $item['quantity'],
 				'payment_method' => $checkTypeMap[$check::getType()],
 				'payment_object' => $paymentObjectMap[$item['payment_object']],
-				'vat' => array(
+				'vat' => [
 					'type' => $vat
-				),
-			);
+				],
+			];
+
+			if (isset($item['nomenclature_code']))
+			{
+				$position['nomenclature_code'] = $item['nomenclature_code'];
+			}
+
+			$result['receipt']['items'][] = $position;
 		}
 
 		return $result;

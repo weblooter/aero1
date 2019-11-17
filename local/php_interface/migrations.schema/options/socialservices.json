@@ -1,0 +1,25 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "socialservices",
+            "NAME": "bitrix24net_domain",
+            "VALUE": "http:\/\/hir.local",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "socialservices",
+            "NAME": "bitrix24net_id",
+            "VALUE": "ext.5daad92cea0547.50900581",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "socialservices",
+            "NAME": "bitrix24net_secret",
+            "VALUE": "tYKo8cB6sMTbEcDfWGSDv4bAfTVzpXQlnfwWvgeN5Te1QRvCGf",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

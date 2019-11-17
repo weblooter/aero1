@@ -33,9 +33,20 @@ class YandexDirectCampaign
 			
 			try
 			{
+				self::clearData();
 				$engine->updateCampaignManual();
 			}
-			catch (YandexDirectException $e){}
+			catch (YandexDirectException $e)
+			{
+			}
 		}
+	}
+	
+	protected static function clearData()
+	{
+		global $DB;
+		$DB->Query("TRUNCATE TABLE `b_seo_adv_campaign`");
+		$DB->Query("TRUNCATE TABLE `b_seo_adv_banner`");
+		$DB->Query("TRUNCATE TABLE `b_seo_adv_group`");
 	}
 }

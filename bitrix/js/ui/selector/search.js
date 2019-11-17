@@ -487,11 +487,11 @@ BX.UI.Selector.Search.prototype.runSearch = function(params)
 						bFound = false;
 
 						searchString = searchStringAlternativesList[key];
-						partsSearchText = searchString.toLowerCase().split(" ");
+						partsSearchText = searchString.toLowerCase().split(/\s+/);
 
 						if (BX.type.isNotEmptyString(entityTypeData.items[itemCode].index))
 						{
-							partsItem = entityTypeData.items[itemCode].index.toLowerCase().split(" ");
+							partsItem = entityTypeData.items[itemCode].index.toLowerCase().split(/\s+/);
 						}
 						else
 						{
@@ -500,7 +500,7 @@ BX.UI.Selector.Search.prototype.runSearch = function(params)
 
 						if (BX.type.isNotEmptyString(entityTypeData.items[itemCode].name))
 						{
-							partsItem = partsItem.concat(entityTypeData.items[itemCode].name.toLowerCase().split(" "));
+							partsItem = partsItem.concat(entityTypeData.items[itemCode].name.toLowerCase().split(/\s+/));
 						}
 
 						if (

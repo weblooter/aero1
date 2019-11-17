@@ -1,11 +1,11 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Application,
 	Bitrix\Main\Config\Option,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools;
+	Bitrix\Sale\CrmSiteMaster\Tools;
 
 Loc::loadMessages(__FILE__);
 
@@ -13,7 +13,7 @@ Loc::loadMessages(__FILE__);
  * Class SiteStep
  * Select or create site
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class SiteStep extends \CWizardStep
 {
@@ -45,7 +45,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -62,7 +62,7 @@ class SiteStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -118,16 +118,18 @@ class SiteStep extends \CWizardStep
 
 		ob_start();
 		?>
-		<div class="adm-site-master-form">
-			<div id="select_site">
-				{#SITE_SELECT#}
+		<div class="adm-crm-site-master-form">
+			<div class="adm-crm-site-sitestep-fields">
+				<div id="select_site">
+					{#SITE_SELECT#}
+				</div>
+				<div id="create_site" style="display: none">
+					{#SITE_FORM#}
+				</div>
 			</div>
-			<div id="create_site" style="display: none">
-				{#SITE_FORM#}
-			</div>
-			<div class="adm-site-master-form-row">
-				<span class="adm-site-master-checkbox">
-					<label class="adm-site-master-checkbox-label">
+			<div class="adm-crm-site-master-form-row">
+				<span class="adm-crm-site-master-checkbox">
+					<label class="adm-crm-site-master-checkbox-label">
 						<?$wizardRewrite = (isset($this->formFieldList["WIZARD_REWRITE"])
 							? htmlspecialcharsbx($this->formFieldList["WIZARD_REWRITE"]) : '');?>
 						<input
@@ -229,11 +231,6 @@ class SiteStep extends \CWizardStep
 			$this->SetError($ex->getMessage());
 		}
 
-		if ($this->GetErrors())
-		{
-			return false;
-		}
-
 		$this->prepareSite($crmSite);
 
 		$this->component->setCrmSiteId($crmSite);
@@ -241,13 +238,18 @@ class SiteStep extends \CWizardStep
 		// set site for person types
 		$this->preparePersonTypes($crmSite);
 
+		if ($this->GetErrors())
+		{
+			return false;
+		}
+
 		return true;
 	}
 
 	/**
 	 * @throws Main\SystemException
 	 */
-	protected function checkSite()
+	private function checkSite()
 	{
 		if ($this->request->get("CRM_SITE") !== "new")
 		{
@@ -281,10 +283,37 @@ class SiteStep extends \CWizardStep
 
 		if ($missingFiles = $this->getMissingRequiredFileList($documentRoot))
 		{
-			$error = Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_REQUIRED_FILE_ERROR", [
-				"#REQUIRED_FILES#" => implode(", ", $missingFiles)
-			]);
-			throw new Main\SystemException($error);
+			foreach ($missingFiles as $key => $missingFile)
+			{
+				$pathTo = $documentRoot.$missingFile;
+				if ($missingFile === ".htaccess")
+				{
+					$missingFile = "htaccess";
+				}
+
+				if (file_exists($_SERVER["DOCUMENT_ROOT"].$this->component->getPath()."/wizard/files/".$missingFile))
+				{
+					$isCopied = CopyDirFiles(
+						$_SERVER["DOCUMENT_ROOT"].$this->component->getPath()."/wizard/files/".$missingFile,
+						$pathTo,
+						true,
+						true,
+						false
+					);
+					if ($isCopied)
+					{
+						unset($missingFiles[$key]);
+					}
+				}
+			}
+
+			if ($missingFiles)
+			{
+				$error = Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_REQUIRED_FILE_ERROR", [
+					"#REQUIRED_FILES#" => implode(", ", $missingFiles)
+				]);
+				throw new Main\SystemException($error);
+			}
 		}
 
 		if ($this->isIndexFileExists($documentRoot))
@@ -299,7 +328,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function setFields()
+	private function setFields()
 	{
 		$defaultParam = $this->getDefaultParam();
 		$serverName = $this->prepareServerName($this->request->get("SERVER_NAME"));
@@ -327,7 +356,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * @return array
 	 */
-	protected function getFields()
+	private function getFields()
 	{
 		return $this->fields;
 	}
@@ -337,7 +366,7 @@ class SiteStep extends \CWizardStep
 	 *
 	 * @throws Main\SystemException
 	 */
-	protected function checkFields()
+	private function checkFields()
 	{
 		/** @noinspection PhpVariableNamingConventionInspection */
 		global $APPLICATION;
@@ -367,7 +396,7 @@ class SiteStep extends \CWizardStep
 	 * @return array
 	 * @throws Main\SystemException
 	 */
-	protected function createNewSite()
+	private function createNewSite()
 	{
 		/** @noinspection PhpVariableNamingConventionInspection */
 		global $APPLICATION;
@@ -416,7 +445,7 @@ class SiteStep extends \CWizardStep
 	 * @param $serverName
 	 * @return mixed
 	 */
-	protected function prepareServerName($serverName)
+	private function prepareServerName($serverName)
 	{
 		$serverName = filter_var($serverName, FILTER_SANITIZE_URL);
 		$serverName = trim($serverName, " \t\n\r\0\x0B/\\");
@@ -439,7 +468,7 @@ class SiteStep extends \CWizardStep
 	 * @param $documentRoot
 	 * @return bool
 	 */
-	protected function isIndexFileExists($documentRoot)
+	private function isIndexFileExists($documentRoot)
 	{
 		if ($this->request->get("WIZARD_REWRITE"))
 		{
@@ -453,7 +482,7 @@ class SiteStep extends \CWizardStep
 	 * @param $documentRoot
 	 * @return array
 	 */
-	protected function getMissingRequiredFileList($documentRoot)
+	private function getMissingRequiredFileList($documentRoot)
 	{
 		$requiredFileList = [
 			"bitrix",
@@ -480,7 +509,7 @@ class SiteStep extends \CWizardStep
 	 * @param $documentRoot
 	 * @return bool
 	 */
-	protected function isDocumentRootExists($documentRoot)
+	private function isDocumentRootExists($documentRoot)
 	{
 		return Main\IO\Directory::isDirectoryExists($documentRoot);
 	}
@@ -490,7 +519,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ArgumentException
 	 * @throws Main\SystemException
 	 */
-	protected function prepareSite($lid)
+	private function prepareSite($lid)
 	{
 		if ($this->copyWizard(self::WIZARD_NAME) === false)
 		{
@@ -507,7 +536,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * @param $arFields
 	 */
-	protected function addTemplate(&$arFields)
+	private function addTemplate(&$arFields)
 	{
 		$arFields["TEMPLATE"][] = [
 			"TEMPLATE" => self::SITE_TEMPLATE_LOGIN,
@@ -521,18 +550,11 @@ class SiteStep extends \CWizardStep
 	 *
 	 * @return bool
 	 */
-	protected function copyTemplate()
+	private function copyTemplate()
 	{
-		$bitrixTemplateDir = $_SERVER["DOCUMENT_ROOT"].BX_PERSONAL_ROOT."/templates/";
-
-		if (Main\IO\Directory::isDirectoryExists($bitrixTemplateDir.self::SITE_TEMPLATE_LOGIN))
-		{
-			return true;
-		}
-
 		return CopyDirFiles(
 			$_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/intranet/install/templates/".self::SITE_TEMPLATE_LOGIN,
-			$bitrixTemplateDir.self::SITE_TEMPLATE_LOGIN,
+			$_SERVER["DOCUMENT_ROOT"].BX_PERSONAL_ROOT."/templates/".self::SITE_TEMPLATE_LOGIN,
 			true,
 			true,
 			false
@@ -545,17 +567,10 @@ class SiteStep extends \CWizardStep
 	 * @param $wizardName
 	 * @return bool
 	 */
-	protected function copyWizard($wizardName)
+	private function copyWizard($wizardName)
 	{
-		if (Main\IO\Directory::isDirectoryExists($_SERVER["DOCUMENT_ROOT"]."/bitrix/wizards/bitrix/".$wizardName))
-		{
-			return true;
-		}
-
-		$wizardFullPath = $_SERVER["DOCUMENT_ROOT"].'/bitrix/modules/'.self::WIZARD_PATH.$wizardName;
-
 		return CopyDirFiles(
-			$wizardFullPath,
+			$_SERVER["DOCUMENT_ROOT"].'/bitrix/modules/'.self::WIZARD_PATH.$wizardName,
 			$_SERVER["DOCUMENT_ROOT"]."/bitrix/wizards/bitrix/".$wizardName,
 			true,
 			true,
@@ -567,7 +582,7 @@ class SiteStep extends \CWizardStep
 	 * @param $siteId
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function setAuthComponentsTemplate($siteId)
+	private function setAuthComponentsTemplate($siteId)
 	{
 		Option::set("main", "auth_components_template", "", $siteId);
 	}
@@ -578,7 +593,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getSiteList()
+	private function getSiteList()
 	{
 		return Main\SiteTable::getList([
 			"select" => ["*"],
@@ -591,13 +606,13 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function showSelectSiteHtml()
+	private function showSelectSiteHtml()
 	{
 		$siteList = $this->getSiteList();
 		$siteId = (isset($this->formFieldList["CRM_SITE"]) ? htmlspecialcharsbx($this->formFieldList["CRM_SITE"]) : 'new');
 
 		$option = '';
-		$option .= '<div class="ui-ctl ui-ctl-w75 ui-ctl-after-icon ui-ctl-dropdown"><div class="ui-ctl-after ui-ctl-icon-angle"></div><select class="ui-ctl-element" name="CRM_SITE" title="">';
+		$option .= '<div class="ui-ctl ui-ctl-w75 ui-ctl-after-icon ui-ctl-dropdown"><div class="ui-ctl-after ui-ctl-icon-angle"></div><select class="ui-ctl-element" name="CRM_SITE" id="CRM_SITE" title="">';
 		$option .= '<option value="new">'.Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_NEW").'</option>';
 		foreach ($siteList as $site)
 		{
@@ -608,9 +623,9 @@ class SiteStep extends \CWizardStep
 		$option .= '</select></div>';
 
 		$content = '
-			<div class="adm-site-master-form-row">
-				<label for="LID" class="adm-site-master-form-label">'.Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_TITLE").'</label>
-				<div class="adm-site-master-form-control">'.$option.'</div>
+			<div class="adm-crm-site-master-form-row">
+				<label for="LID" class="adm-crm-site-master-form-label">'.Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_TITLE").'</label>
+				<div class="adm-crm-site-master-form-control">'.$option.'</div>
 			</div>
 		';
 
@@ -620,15 +635,15 @@ class SiteStep extends \CWizardStep
 	/**
 	 * Add html for creating new site
 	 */
-	protected function createNewSiteHtml()
+	private function createNewSiteHtml()
 	{
 		ob_start();
 		?>
-		<div class="adm-site-master-form-row">
-			<label for="LID" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="LID" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_ID")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl ui-ctl-textbox ui-ctl-w75">
 					<?
 					$lid = (isset($this->formFieldList["LID"]) ? htmlspecialcharsbx($this->formFieldList["LID"]) : '');
@@ -649,11 +664,11 @@ class SiteStep extends \CWizardStep
 			</div>
 		</div>
 
-		<div class="adm-site-master-form-row">
-			<label for="NAME" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="NAME" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_NAME")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl ui-ctl-textbox ui-ctl-w75">
 					<?$name = (isset($this->formFieldList["NAME"]) ? htmlspecialcharsbx($this->formFieldList["NAME"]) : '');?>
 					<input type="text" name="NAME" id="NAME" class="ui-ctl-element" value="<?=($name)?>">
@@ -661,11 +676,11 @@ class SiteStep extends \CWizardStep
 			</div>
 		</div>
 
-		<div class="adm-site-master-form-row">
-			<label for="SERVER_NAME" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="SERVER_NAME" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_MAIN_SERVER_URL")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl ui-ctl-textbox ui-ctl-w75">
 					<?$serverName = (isset($this->formFieldList["SERVER_NAME"]) ? htmlspecialcharsbx($this->formFieldList["SERVER_NAME"]) : '');?>
 					<input type="text" name="SERVER_NAME" id="SERVER_NAME" class="ui-ctl-element" value="<?=($serverName)?>">
@@ -673,11 +688,11 @@ class SiteStep extends \CWizardStep
 			</div>
 		</div>
 
-		<div class="adm-site-master-form-row">
-			<label for="DOC_ROOT" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="DOC_ROOT" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_MAIN_DOC_ROOT")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl ui-ctl-textbox ui-ctl-w75">
 					<?$docRoot = (isset($this->formFieldList["DOC_ROOT"]) ? htmlspecialcharsbx($this->formFieldList["DOC_ROOT"]) : '');?>
 					<input type="text" name="DOC_ROOT" id="DOC_ROOT" class="ui-ctl-element" value="<?=($docRoot)?>">
@@ -685,9 +700,9 @@ class SiteStep extends \CWizardStep
 			</div>
 		</div>
 
-		<div class="adm-site-master-form-row">
+		<div class="adm-crm-site-master-form-row">
 			<a href="javascript:void(0)"
-			   class="adm-site-master-form-action-fill"
+			   class="adm-crm-site-master-form-action-fill"
 			   id="DOC_ROOT_LINK">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_MAIN_DOC_ROOT_SET")?>
 			</a>
@@ -707,7 +722,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getRandSiteId()
+	private function getRandSiteId()
 	{
 		$id = '';
 		$idList = [];
@@ -738,7 +753,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getSort()
+	private function getSort()
 	{
 		$arSort = [];
 		$siteList = $this->getSiteList();
@@ -758,7 +773,7 @@ class SiteStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getDefaultParam()
+	private function getDefaultParam()
 	{
 		$param = [
 			"EMAIL" => "",
@@ -822,7 +837,7 @@ class SiteStep extends \CWizardStep
 	{
 		$this->SetTitle(Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_SITE_CREATE_ERROR"));
 
-		$this->SetPrevStep("Bitrix\Wizard\Steps\SiteInstructionStep");
+		$this->SetPrevStep("Bitrix\Sale\CrmSiteMaster\Steps\SiteInstructionStep");
 		$this->SetPrevCaption(Loc::getMessage("SALE_CSM_WIZARD_SITESTEP_DANGER_BACK"));
 
 		$error = [
@@ -834,16 +849,16 @@ class SiteStep extends \CWizardStep
 
 		echo $this->saveFormHiddenFields();
 		?>
-		<div class="adm-site-master-content">
-			<div class="adm-site-master-warning">
-				<img class="adm-site-master-warning-image" src="<?=$this->component->getPath()?>/wizard/images/warning.svg" alt="">
+		<div class="adm-crm-site-master-content">
+			<div class="adm-crm-site-master-warning">
+				<img class="adm-crm-site-master-warning-image" src="<?=$this->component->getPath()?>/wizard/images/warning.svg" alt="">
 			</div>
 			<div class="ui-alert ui-alert-danger ui-alert-text-center ui-alert-inline ui-alert-icon-danger">
 				<span class="ui-alert-message"><?=implode("<br>", $error)?></span>
 			</div>
 		</div>
 
-		<div class="adm-site-master-buttons">
+		<div class="adm-crm-site-master-buttons">
 			<div class="ui-btn-container ui-btn-container-center">
 				<?
 				if ($this->GetPrevStepID() !== null)
@@ -868,7 +883,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * Init form fields from wizard's var
 	 */
-	protected function initFormFields()
+	private function initFormFields()
 	{
 		foreach ($this->formFieldList as $field)
 		{
@@ -881,7 +896,7 @@ class SiteStep extends \CWizardStep
 	 *
 	 * @return string
 	 */
-	protected function saveFormHiddenFields()
+	private function saveFormHiddenFields()
 	{
 		$formFieldList = '';
 
@@ -896,7 +911,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * Save form fields to wizard's var
 	 */
-	protected function saveFormFields()
+	private function saveFormFields()
 	{
 		$prefix = $this->GetWizard()->GetVarPrefix();
 
@@ -910,7 +925,7 @@ class SiteStep extends \CWizardStep
 	/**
 	 * Delete form fields
 	 */
-	protected function deleteFormFields()
+	private function deleteFormFields()
 	{
 		foreach ($this->formFieldList as $field)
 		{

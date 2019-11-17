@@ -138,8 +138,11 @@ BXUrlPreview.prototype.initCarousel = function()
 			this.carouselImages[i] = carouselImages[i];
 		}
 		imageId = this.element.dataset.imageId ? parseInt(this.element.dataset.imageId) : 0;
-		this.setCarouselImage(imageId);
-		this.carouselElement.style.removeProperty('display');
+		if(this.carouselImages.length > 0)
+		{
+			this.setCarouselImage(imageId);
+			this.carouselElement.style.removeProperty('display');
+		}
 	}
 };
 
@@ -148,7 +151,7 @@ BXUrlPreview.prototype.setCarouselImage = function(imageId)
 	var imageUrl;
 	var imgElement;
 	var ufValue;
-	if(!(imageId >= 0 || imageId <= this.carouselImages.length-1))
+	if(!(imageId >= 0 && imageId <= this.carouselImages.length-1))
 		return null;
 
 	this.carouselImages.map(function(imageElement)

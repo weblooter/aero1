@@ -48,7 +48,7 @@ class Site extends \Bitrix\Landing\Internals\BaseTable
 	public static function getPublicUrl($id, $full = true)
 	{
 		$paths = [];
-		$bitrix24 = Manager::isB24();
+		$isB24 = Manager::isB24();
 
 		$res = self::getList(array(
 			'select' => array(
@@ -56,6 +56,7 @@ class Site extends \Bitrix\Landing\Internals\BaseTable
 				'DOMAIN_NAME' => 'DOMAIN.DOMAIN',
 				'SMN_SITE_ID',
 				'CODE',
+				'TYPE',
 				'ID'
 			),
 			'filter' => array(
@@ -67,8 +68,20 @@ class Site extends \Bitrix\Landing\Internals\BaseTable
 		while ($row = $res->fetch())
 		{
 			$pubPath = '';
+			$isB24localVar = $isB24;
 
-			if (!$bitrix24)
+			if (!$row['DOMAIN_NAME'])
+			{
+				$paths[$row['ID']] = Manager::getPublicationPath($row['ID']);
+				continue;
+			}
+
+			if ($row['TYPE'] == 'SMN')
+			{
+				$isB24localVar = false;
+			}
+
+			if (!$isB24localVar)
 			{
 				$pubPath = Manager::getPublicationPath(
 					null,
@@ -84,7 +97,7 @@ class Site extends \Bitrix\Landing\Internals\BaseTable
 			}
 
 			$paths[$row['ID']] = $row['DOMAIN_PROTOCOL'] . '://' . $row['DOMAIN_NAME'] .
-							 	$pubPath . (!$bitrix24 && $full ? $row['CODE'] : '');
+							 	$pubPath . (!$isB24localVar && $full ? $row['CODE'] : '');
 
 			unset($pubPath);
 		}

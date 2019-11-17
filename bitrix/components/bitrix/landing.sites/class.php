@@ -11,6 +11,9 @@ use \Bitrix\Landing\Rights;
 use \Bitrix\Landing\Manager;
 use \Bitrix\Landing\Zip;
 use \Bitrix\Main\Engine\UrlManager;
+use \Bitrix\Main\ModuleManager;
+use \Bitrix\Main\Loader;
+use \Bitrix\Main\Config\Option;
 
 \CBitrixComponent::includeComponentClass('bitrix:landing.base');
 \CBitrixComponent::includeComponentClass('bitrix:landing.filter');
@@ -21,6 +24,82 @@ class LandingSitesComponent extends LandingBaseComponent
 	 * Count items per page.
 	 */
 	const COUNT_PER_PAGE = 11;
+
+	/**
+	 * Returns sites of main module.
+	 * @return array
+	 */
+	protected function getSmnSites()
+	{
+		$sites = [];
+		$filter = [];
+
+		if (ModuleManager::isModuleInstalled('bitrix24'))
+		{
+			return $sites;
+		}
+		if (!Loader::includeModule('extranet'))
+		{
+			return $sites;
+		}
+
+		// prepare filter
+		$disabledSiteIds = [
+			\CExtranet::getExtranetSiteID(),
+			SITE_ID
+		];
+		$search = LandingFilterComponent::getFilterRaw(
+			LandingFilterComponent::TYPE_SITE
+		);
+		if ($search['DELETED'] == 'Y')
+		{
+			return $sites;
+		}
+		if (isset($search['FIND']) && trim($search['FIND']))
+		{
+			$filter['NAME'] = '%' . trim($search['FIND']) . '%';
+		}
+		$defaultServerName = Option::get('main', 'server_name');
+
+		// get data
+		$res = \CSite::getList(
+			$by = 'lid',
+			$order = 'desc',
+			$filter
+		);
+		while ($row = $res->fetch())
+		{
+			if (in_array($row['LID'], $disabledSiteIds))
+			{
+				continue;
+			}
+
+			$row['PUBLIC_URL'] = '//' . $defaultServerName;
+
+			if ($row['SERVER_NAME'])
+			{
+				$row['PUBLIC_URL'] = '//' . $row['SERVER_NAME'];
+				$row['PUBLIC_URL'] .= $row['DIR'];
+			}
+			elseif ($row['DOMAINS'])
+			{
+				$url = explode("\n", trim($row['DOMAINS']));
+				if ($url)
+				{
+					$url = trim(array_shift($url));
+				}
+				if ($url)
+				{
+					$row['PUBLIC_URL'] = '//' . $url;
+					$row['PUBLIC_URL'] .= $row['DIR'];
+				}
+			}
+
+			$sites[$row['LID']] = $row;
+		}
+
+		return $sites;
+	}
 
 	/**
 	 * Base executable method.
@@ -56,7 +135,20 @@ class LandingSitesComponent extends LandingBaseComponent
 			$filter = LandingFilterComponent::getFilter(
 				LandingFilterComponent::TYPE_SITE
 			);
-			$filter['=TYPE'] = $this->arParams['TYPE'];
+			if (
+				Manager::isExtendedSMN() &&
+				$this->arParams['TYPE'] == 'STORE')
+			{
+				$filter['=TYPE'] = [
+					$this->arParams['TYPE'],
+					'SMN'
+				];
+			}
+			else
+			{
+				$filter['=TYPE'] = $this->arParams['TYPE'];
+			}
+			$this->arResult['SMN_SITES'] = $this->getSmnSites();
 			$this->arResult['EXPORT_ENABLED'] = Zip\Config::serviceEnabled() ? 'Y' : 'N';
 			$this->arResult['IS_DELETED'] = LandingFilterComponent::isDeleted();
 			$this->arResult['SITES'] = $this->getSites([

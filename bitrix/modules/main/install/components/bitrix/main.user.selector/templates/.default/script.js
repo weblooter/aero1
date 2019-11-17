@@ -187,7 +187,7 @@
 			inputNode.type = 'hidden';
 			inputNode.name = this.inputName;
 			inputNode.value = value;
-			this.container.insertBefore(inputNode, this.container.firstElementChild);
+			this.container.appendChild(inputNode);
 			BX.fireEvent(inputNode, "change");
 		},
 		addInputs: function(list)
@@ -396,6 +396,16 @@
 						delete selectorInstance.itemsSelected[params.item.id];
 					}
 				}
+			}
+
+			if (
+				!userSelector.isInputMultiple
+				|| !BX.type.isNotEmptyString(params.tab)
+				|| params.tab != 'search'
+			)
+			{
+				userSelector.selector.input.style.display = 'none';
+				userSelector.selector.buttonSelect.style.display = '';
 			}
 
 			BX.onCustomEvent('BX.Main.User.SelectorController:unSelect', [ {

@@ -1,4 +1,5 @@
 import Runtime from '../../src/lib/runtime';
+import {internalClone} from '../../src/lib/runtime/clone';
 
 function shuffle(a) {
 	for (let i = a.length - 1; i > 0; i--)
@@ -142,6 +143,39 @@ describe('Runtime', () => {
 			assert.ok(result[0] === element);
 			assert.ok(result[1] === 'test');
 		});
+
+		describe('Memory leak detection', () => {
+			it('Should not retain passed params', () => {
+				let item1 = [1, 2, {test: 1}];
+				let item2 = [3, 4, {test: 2}];
+				let result = Runtime.merge(item1, item2);
+
+				let isItem1Collected = false;
+				global.weak(item1, () => {
+					isItem1Collected = true;
+				});
+
+				let isItem2Collected = false;
+				global.weak(item2, () => {
+					isItem2Collected = true;
+				});
+
+				let isResultCollected = false;
+				global.weak(result, () => {
+					isResultCollected = true;
+				});
+
+				item1 = null;
+				item2 = null;
+				result = null;
+
+				global.gc();
+
+				assert.ok(isItem1Collected, 'Memory leak detected! "item1" is not collected');
+				assert.ok(isItem2Collected, 'Memory leak detected! "item2" is not collected');
+				assert.ok(isResultCollected, 'Memory leak detected! "result" is not collected');
+			});
+		});
 	});
 
 	describe('#clone', () => {
@@ -238,6 +272,235 @@ describe('Runtime', () => {
 			assert(source !== clone);
 			assert(source instanceof MyClass);
 			assert(clone instanceof MyClass);
+		});
+
+		describe('Memory leak detection', () => {
+			it('Should not leak if clone object', () => {
+				let source = {
+					string: 'test',
+					number: 11,
+					object: {test: 1},
+					array: [1, 2, 3],
+					element: document.createElement('div'),
+				};
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone array', () => {
+				let source = ['test', 1, {test: 1}, document.createElement('div'), source];
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone element without child', () => {
+				let source = document.createElement('div');
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone element with child', () => {
+				let source = document.createElement('div');
+				let childElement = document.createElement('span');
+				let childTextNode = document.createTextNode('Hello!');
+				source.appendChild(childElement);
+				source.appendChild(childTextNode);
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				childElement = null;
+				childTextNode = null;
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone Date', () => {
+				let source = new Date();
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone Map', () => {
+				let source = new Map();
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone Set', () => {
+				let source = new Set();
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak if clone RegExp', () => {
+				let source = /\w+/;
+				let cloned = Runtime.clone(source);
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
+
+			it('Should not leak in internalClone', () => {
+				let map = new WeakMap();
+				let source = {test: 1};
+				let cloned = internalClone(source, map);
+
+				let isMapCollected = false;
+				global.weak(source, () => {
+					isMapCollected = true;
+				});
+
+				let isSourceCollected = false;
+				global.weak(source, () => {
+					isSourceCollected = true;
+				});
+
+				let isClonedCollected = false;
+				global.weak(cloned, () => {
+					isClonedCollected = true;
+				});
+
+				map = null;
+				source = null;
+				cloned = null;
+
+				global.gc();
+
+				assert.ok(isMapCollected, 'Memory leak detected! "map" not collected');
+				assert.ok(isSourceCollected, 'Memory leak detected! "Source" not collected');
+				assert.ok(isClonedCollected, 'Memory leak detected! "Cloned" not collected');
+			});
 		});
 	});
 

@@ -1719,7 +1719,7 @@ abstract class CAllMain
 		include($io->GetPhysicalName($DOC_ROOT_FROM.$path_from_dir."/.access.php"));
 
 		$FILE_PERM = $PERM[$path_from_file];
-		if(count($FILE_PERM)>0)
+		if(!empty($FILE_PERM))
 			return $this->SetFileAccessPermission(array($site_to, $path_to), $FILE_PERM, $bOverWrite);
 
 		return true;

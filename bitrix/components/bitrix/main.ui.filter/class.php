@@ -72,6 +72,7 @@ class CMainUiFilter extends CBitrixComponent
 		$this->arResult["MAIN_UI_FILTER__DATE_PREV_DAYS_LABEL"] = Loc::getMessage("MAIN_UI_FILTER__DATE_PREV_DAYS_LABEL");
 		$this->arResult["MAIN_UI_FILTER__DATE_ERROR_TITLE"] = Loc::getMessage("MAIN_UI_FILTER__DATE_ERROR_TITLE");
 		$this->arResult["MAIN_UI_FILTER__DATE_ERROR_LABEL"] = Loc::getMessage("MAIN_UI_FILTER__DATE_ERROR_LABEL");
+		$this->arResult["MAIN_UI_FILTER__VALUE_REQUIRED"] = Loc::getMessage("MAIN_UI_FILTER__VALUE_REQUIRED");
 		$this->arResult["CLEAR_GET"] = $this->prepareClearGet();
 		$this->arResult["VALUE_REQUIRED_MODE"] = $this->prepareValueRequiredMode();
 		$this->arResult["THEME"] = $this->getTheme();
@@ -984,7 +985,8 @@ class CMainUiFilter extends CBitrixComponent
 		return array_merge(
 			FieldAdapter::adapt($field),
 			array("STRICT" => $field["strict"] === true),
-			array("REQUIRED" => $field["required"] === true)
+			array("REQUIRED" => $field["required"] === true),
+			array("VALUE_REQUIRED" => $field["valueRequired"] === true)
 		);
 	}
 

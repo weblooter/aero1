@@ -227,10 +227,7 @@ CAjaxForm.prototype.AjaxHandler = function()
 		iframeDocument = this.iframe.contentWindow.document;
 
 	var response = iframeDocument.body.innerHTML;
-	if (response.length === 0
-		|| iframeDocument.getElementById("bitrix_install_template")
-		|| response.indexOf("[Error]") !== -1
-	)
+	if (response.length === 0 || iframeDocument.getElementById("bitrix_install_template"))
 	{
 		this.ShowError("Connection error. Empty response.");
 		return;
@@ -319,6 +316,8 @@ CAjaxForm.prototype.Post = function(nextStep, nextStepStage, status)
 
 CAjaxForm.prototype.StopAjax = function()
 {
+	this.UnsetEventBeforeUnloadWindow();
+
 	this.iframe.onload = null;
 	this.form.target = "_self";
 };
@@ -326,4 +325,25 @@ CAjaxForm.prototype.StopAjax = function()
 CAjaxForm.prototype.SetStatus = function(percent)
 {
 
+};
+
+/**
+ * @return {string}
+ */
+CAjaxForm.prototype.OnBeforeUnloadWindow = function(e)
+{
+	var confirmationMessage = BX.message("SALE_CSM_WIZARD_DATAINSTALLSTEP_CLOSE_CONFIRMATION");
+
+	(e || window.event).returnValue = confirmationMessage;
+	return confirmationMessage;
+};
+
+CAjaxForm.prototype.SetEventBeforeUnloadWindow = function()
+{
+	window.addEventListener("beforeunload", this.OnBeforeUnloadWindow);
+};
+
+CAjaxForm.prototype.UnsetEventBeforeUnloadWindow = function()
+{
+	window.removeEventListener("beforeunload", this.OnBeforeUnloadWindow);
 };

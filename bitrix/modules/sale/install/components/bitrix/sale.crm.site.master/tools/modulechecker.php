@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 use Bitrix\Main,
 	Bitrix\Main\Config\Option,
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
 
 /**
  * Class ModuleChecker
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class ModuleChecker
 {
@@ -115,7 +115,7 @@ class ModuleChecker
 	 * @param $moduleName
 	 * @return bool|mixed|string
 	 */
-	protected function getModuleVersion($moduleName)
+	private function getModuleVersion($moduleName)
 	{
 		$moduleName = preg_replace("/[^a-zA-Z0-9_.]+/i", "", trim($moduleName));
 		if ($moduleName == '')
@@ -148,7 +148,7 @@ class ModuleChecker
 	 *
 	 * @return array
 	 */
-	protected function getUpdatesList()
+	private function getUpdatesList()
 	{
 		$result = [
 			"MODULES" => [],

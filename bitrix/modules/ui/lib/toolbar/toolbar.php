@@ -65,7 +65,7 @@ class Toolbar
 			throw new ArgumentTypeException("button", Button::class);
 		}
 
-		if ($location === ButtonLocation::FILTER_RIGHT)
+		if ($location === ButtonLocation::AFTER_FILTER)
 		{
 			$this->filterButtons[] = $button;
 		}
@@ -87,7 +87,7 @@ class Toolbar
 
 		foreach ($this->filterButtons as $i => $button)
 		{
-			if ($closure($button, ButtonLocation::FILTER_RIGHT) === true)
+			if ($closure($button, ButtonLocation::AFTER_FILTER) === true)
 			{
 				unset($this->filterButtons[$i]);
 			}
@@ -102,7 +102,7 @@ class Toolbar
 			case ButtonLocation::RIGHT:
 				$buttonList = $this->buttons;
 				break;
-			case ButtonLocation::FILTER_RIGHT:
+			case ButtonLocation::AFTER_FILTER:
 				$buttonList = $this->filterButtons;
 				break;
 		}
@@ -120,7 +120,7 @@ class Toolbar
 				case ButtonLocation::RIGHT:
 					$this->buttons = $buttonList;
 					break;
-				case ButtonLocation::FILTER_RIGHT:
+				case ButtonLocation::AFTER_FILTER:
 					$this->filterButtons = $buttonList;
 					break;
 			}
@@ -173,11 +173,20 @@ class Toolbar
 		}, $this->buttons));
 	}
 
-	public function renderFilterRightButtons()
+	public function renderAfterFilterButtons()
 	{
 		return implode(array_map(function(Button $button) {
 			return self::processButtonRender($button);
 		}, $this->filterButtons));
+	}
+
+	/**
+	 * @deprecated
+	 * @return string
+	 */
+	public function renderFilterRightButtons()
+	{
+		return $this->renderAfterFilterButtons();
 	}
 
 	protected function processButtonRender(Button $button)

@@ -12,6 +12,7 @@ use Bitrix\Main;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentTypeException;
 use Bitrix\Main\Type;
+use Bitrix\Main\Type\Date;
 
 /**
  * Entity field class for date data type
@@ -128,5 +129,21 @@ class DateField extends ScalarField
 				"Type error in `{$this->name}` of `{$this->entity->getFullName()}`: ".$e->getMessage()
 			);
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGetterTypeHint()
+	{
+		return '\\'.Date::class;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSetterTypeHint()
+	{
+		return '\\'.Date::class;
 	}
 }

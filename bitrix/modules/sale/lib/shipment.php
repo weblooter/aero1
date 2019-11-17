@@ -1,10 +1,5 @@
 <?php
-/**
- * Bitrix Framework
- * @package bitrix
- * @subpackage sale
- * @copyright 2001-2012 Bitrix
- */
+
 namespace Bitrix\Sale;
 
 use Bitrix\Catalog\VatTable;
@@ -38,14 +33,19 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 
 	protected static $idShipment = 0;
 
-	const ENTITY_MARKER_AUTOFIX_TYPE_ACTION_RESERVE = "RESERVE";
-	const ENTITY_MARKER_AUTOFIX_TYPE_ACTION_SHIP = "SHIP";
+	/**
+	 * @return string|void
+	 */
+	public static function getRegistryEntity()
+	{
+		return Registry::ENTITY_SHIPMENT;
+	}
 
 	protected function __construct(array $fields = array())
 	{
-		$priceRoundedFields = ['BASE_PRICE_DELIVERY', 'PRICE_DELIVERY', 'DISCOUNT_PRICE'];
+		$priceFields = ['BASE_PRICE_DELIVERY', 'PRICE_DELIVERY', 'DISCOUNT_PRICE'];
 
-		foreach ($priceRoundedFields as $code)
+		foreach ($priceFields as $code)
 		{
 			if (isset($fields[$code]))
 			{
@@ -54,6 +54,9 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		}
 
 		parent::__construct($fields);
+
+		$controller = Internals\CustomFieldsController::getInstance();
+		$controller->initialize($this);
 	}
 
 	/**
@@ -101,6 +104,7 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 			"DELIVERY_NAME",
 			"COMPANY_ID",
 			"MARKED",
+			"WEIGHT",
 			"DATE_MARKED",
 			"EMP_MARKED_ID",
 			"REASON_MARKED",
@@ -122,6 +126,14 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 			"ACCOUNT_NUMBER",
 			'DISCOUNT_PRICE'
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getCustomizableFields() : array
+	{
+		return ['PRICE_DELIVERY' => 'PRICE_DELIVERY', 'WEIGHT' => 'WEIGHT'];
 	}
 
 	/**
@@ -178,12 +190,11 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	}
 
 	/**
-	 * Use ShipmentCollection::createShipment instead
-	 *
 	 * @param ShipmentCollection $collection
 	 * @param Delivery\Services\Base|null $deliveryService
 	 * @return mixed
 	 * @throws Main\ArgumentException
+	 * @throws Main\ObjectException
 	 */
 	public static function create(ShipmentCollection $collection, Delivery\Services\Base $deliveryService = null)
 	{
@@ -400,11 +411,9 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 
 		if ($affectedQuantity != 0)  // if there are reserved items among transfered
 		{
-			$result = $sourceItem->setField(
+			$sourceItem->setField(
 				"RESERVED_QUANTITY", $sourceItem->getField('RESERVED_QUANTITY') - $affectedQuantity
 			);
-//			if (!$result->isSuccess(true))
-//				return $result;
 
 			$systemShipmentItem->setFieldNoDemand(
 				'RESERVED_QUANTITY',
@@ -645,7 +654,17 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 
 		if ($name === "QUANTITY")
 		{
-			return $this->transferItem2SystemShipment($shipmentItem, $oldValue - $value);
+			$result = $this->transferItem2SystemShipment($shipmentItem, $oldValue - $value);
+
+			if (!$this->isMarkedFieldCustom('WEIGHT'))
+			{
+				$this->setField(
+					'WEIGHT',
+					$this->getShipmentItemCollection()->getWeight()
+				);
+			}
+
+			return $result;
 		}
 		elseif ($name === 'RESERVED_QUANTITY')
 		{
@@ -775,17 +794,56 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 			$value = substr($value, 0, 255);
 		}
 
-		$priceRoundedFields = array(
+		$priceFields = [
 			'BASE_PRICE_DELIVERY' => 'BASE_PRICE_DELIVERY',
 			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
 			'DISCOUNT_PRICE' => 'DISCOUNT_PRICE',
-		);
-		if (isset($priceRoundedFields[$name]))
+		];
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
 
+		if ($name === 'CUSTOM_PRICE_DELIVERY')
+		{
+			if ($value == 'Y')
+			{
+				$this->markFieldCustom('PRICE_DELIVERY');
+			}
+			else
+			{
+				$this->unmarkFieldCustom('PRICE_DELIVERY');
+			}
+		}
+
 		return parent::setField($name, $value);
+	}
+
+	/**
+	 * @param $name
+	 * @return string
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function getField($name)
+	{
+		if ($name === 'CUSTOM_PRICE_DELIVERY')
+		{
+			return $this->isMarkedFieldCustom('PRICE_DELIVERY') ? 'Y' : 'N';
+		}
+
+		return parent::getField($name);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getFieldValues()
+	{
+		$fields = parent::getFieldValues();
+
+		$fields['CUSTOM_PRICE_DELIVERY'] = $this->isMarkedFieldCustom('PRICE_DELIVERY') ? 'Y' : 'N';
+
+		return $fields;
 	}
 
 	/**
@@ -838,17 +896,30 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	 * @param $value
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\NotSupportedException
 	 */
 	public function setFieldNoDemand($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = [
 			'BASE_PRICE_DELIVERY' => 'BASE_PRICE_DELIVERY',
 			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
 			'DISCOUNT_PRICE' => 'DISCOUNT_PRICE',
-		);
-		if (isset($priceRoundedFields[$name]))
+		];
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
+		}
+
+		if ($name === 'CUSTOM_PRICE_DELIVERY')
+		{
+			if ($value === 'Y')
+			{
+				$this->markFieldCustom('PRICE_DELIVERY');
+			}
+			else
+			{
+				$this->unmarkFieldCustom('PRICE_DELIVERY');
+			}
 		}
 
 		parent::setFieldNoDemand($name, $value);
@@ -863,21 +934,39 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	public static function loadForOrder($id)
 	{
 		if (intval($id) <= 0)
+		{
 			throw new Main\ArgumentNullException("id");
+		}
 
-		$shipments = array();
+		$shipments = [];
 
-		$shipmentDataList = static::getList(
-			array(
-				'filter' => array('ORDER_ID' => $id),
-				'order' => array('SYSTEM' => 'ASC', 'DATE_INSERT' => 'ASC', 'ID' => 'ASC')
-			)
-		);
+		$shipmentDataList = static::getList([
+			'filter' => [
+				'ORDER_ID' => $id
+			],
+			'order' => [
+				'SYSTEM' => 'ASC',
+				'DATE_INSERT' => 'ASC',
+				'ID' => 'ASC'
+			]
+		]);
 		while ($shipmentData = $shipmentDataList->fetch())
+		{
 			$shipments[] = static::createShipmentObject($shipmentData);
+		}
 
 
 		return $shipments;
+	}
+
+	/**
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\NotSupportedException
+	 */
+	protected function onBeforeSave()
+	{
+		$this->setFieldNoDemand('CUSTOM_PRICE_DELIVERY', $this->isMarkedFieldCustom('PRICE_DELIVERY') ? 'Y' : 'N');
 	}
 
 	/**
@@ -901,6 +990,8 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		$id = $this->getId();
 		$isNew = ($this->getId() == 0);
 
+		$this->onBeforeSave();
+
 		if ($this->isChanged())
 		{
 			$this->callEventOnBeforeEntitySaved();
@@ -914,6 +1005,9 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		{
 			$r = $this->add();
 		}
+
+		$controller = Internals\CustomFieldsController::getInstance();
+		$controller->save($this);
 
 		if (!$r->isSuccess())
 		{
@@ -1341,10 +1435,11 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 
 	/**
 	 * @return bool
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function isCustomPrice()
 	{
-		return $this->getField('CUSTOM_PRICE_DELIVERY') === "Y";
+		return $this->isMarkedFieldCustom('PRICE_DELIVERY');
 	}
 
 	/**
@@ -1747,14 +1842,41 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		}
 		elseif ($action === EventActions::UPDATE)
 		{
-			if (!$this->isSystem())
-			{
-				return $result;
-			}
-
 			if ($name === "QUANTITY")
 			{
-				return $this->syncQuantityAfterModify($basketItem, $value, $oldValue);
+				if ($this->isSystem())
+				{
+					return $this->syncQuantityAfterModify($basketItem, $value, $oldValue);
+				}
+
+				/** @var ShipmentItemCollection $shipmentItemCollection */
+				$shipmentItemCollection = $this->getShipmentItemCollection();
+
+				$r = $shipmentItemCollection->onBasketModify($action, $basketItem, $name, $oldValue, $value);
+
+				if ($r->isSuccess())
+				{
+					/** @var Delivery\CalculationResult $deliveryCalculate */
+					$deliveryCalculate = $this->calculateDelivery();
+					if ($deliveryCalculate->isSuccess())
+					{
+						$this->setField('BASE_PRICE_DELIVERY', $deliveryCalculate->getPrice());
+					}
+					else
+					{
+						$result->addWarnings($deliveryCalculate->getErrors());
+					}
+				}
+			}
+			elseif ($name === 'WEIGHT')
+			{
+				if (!$this->isMarkedFieldCustom('WEIGHT'))
+				{
+					if ($this->getShipmentItemCollection()->isExistBasketItem($basketItem))
+					{
+						$this->setField('WEIGHT', $this->getShipmentItemCollection()->getWeight());
+					}
+				}
 			}
 		}
 
@@ -1766,7 +1888,11 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	 * @param mixed $oldValue
 	 * @param mixed $value
 	 * @return Result
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 * @throws Main\NotSupportedException
+	 * @throws Main\ObjectException
 	 */
 	protected function onFieldModify($name, $oldValue, $value)
 	{
@@ -1779,7 +1905,8 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 			if ($oldValue != "Y")
 			{
 				$this->setField('DATE_MARKED', new Main\Type\DateTime());
-				if ($USER)
+
+				if (is_object($USER))
 				{
 					$this->setField('EMP_MARKED_ID', $USER->GetID());
 				}
@@ -1788,17 +1915,14 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 			{
 				$this->setField('REASON_MARKED', '');
 			}
-
 		}
 		elseif ($name === "ALLOW_DELIVERY")
 		{
-			if ($oldValue != $value)
+			$this->setField('DATE_ALLOW_DELIVERY', new Main\Type\DateTime());
+
+			if (is_object($USER))
 			{
-				$this->setField('DATE_ALLOW_DELIVERY', new Main\Type\DateTime());
-				if ($USER)
-				{
-					$this->setField('EMP_ALLOW_DELIVERY_ID', $USER->GetID());
-				}
+				$this->setField('EMP_ALLOW_DELIVERY_ID', $USER->GetID());
 			}
 
 			if ($oldValue === 'N')
@@ -1821,13 +1945,11 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		}
 		elseif ($name === "DEDUCTED")
 		{
-			if ($oldValue != $value)
+			$this->setField('DATE_DEDUCTED', new Main\Type\DateTime());
+
+			if (is_object($USER))
 			{
-				$this->setField('DATE_DEDUCTED', new Main\Type\DateTime());
-				if ($USER)
-				{
-					$this->setField('EMP_DEDUCTED_ID', $USER->GetID());
-				}
+				$this->setField('EMP_DEDUCTED_ID', $USER->GetID());
 			}
 
 			if ($oldValue === 'N')
@@ -1847,10 +1969,22 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 					}
 				}
 			}
+
+			if ($value === 'Y')
+			{
+				/** @var ShipmentItem $shipmentItem */
+				foreach ($this->getShipmentItemCollection() as $shipmentItem)
+				{
+					$r = $shipmentItem->checkMarkingCodeOnDeducted();
+					if (!$r->isSuccess())
+					{
+						$result->addErrors($r->getErrors());
+					}
+				}
+			}
 		}
 		elseif ($name === "STATUS_ID")
 		{
-
 			$event = new Main\Event('sale', EventActions::EVENT_ON_BEFORE_SHIPMENT_STATUS_CHANGE, array(
 				'ENTITY' => $this,
 				'VALUE' => $value,
@@ -1901,9 +2035,11 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	 * @param BasketItem $basketItem
 	 * @param null $value
 	 * @param null $oldValue
-	 *
 	 * @return Result
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\NotSupportedException
 	 * @throws Main\ObjectNotFoundException
 	 */
 	protected function syncQuantityAfterModify(BasketItem $basketItem, $value = null, $oldValue = null)
@@ -2096,31 +2232,21 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	}
 
 	/**
-	 * @return float|int
-	 * @throws Main\ObjectNotFoundException
+	 * @return float
 	 */
-	public function getWeight()
+	public function getWeight() : float
 	{
-		$weight = 0;
-		/** @var ShipmentItemCollection $shipmentItemCollection */
-		if ($shipmentItemCollection = $this->getShipmentItemCollection())
-		{
-			/** @var ShipmentItem $shipmentItem */
-			foreach ($shipmentItemCollection->getShippableItems() as $shipmentItem)
-			{
-				/** @var BasketItem $basketItem */
-				if (!$basketItem = $shipmentItem->getBasketItem())
-				{
-					continue;
-				}
-
-				$weight += $basketItem->getWeight() * $shipmentItem->getQuantity();
-			}
-		}
-
-		return $weight;
+		return (float)$this->getField('WEIGHT');
 	}
 
+	/**
+	 * @param float $weight
+	 * @return string|null
+	 */
+	public function setWeight(float $weight)
+	{
+		return $this->setField('WEIGHT', $weight);
+	}
 
 	/**
 	 * @return Delivery\CalculationResult
@@ -2422,7 +2548,7 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 		/** @var DeliveryStatus $deliveryStatus */
 		$deliveryStatusClassName = $registry->getDeliveryStatusClassName();
 
-		if ($USER && $USER->isAuthorized())
+		if (is_object($USER)  && $USER->isAuthorized())
 		{
 			$statusesList = $deliveryStatusClassName::getAllowedUserStatuses($USER->getID(), $this->getField('STATUS_ID'));
 		}
@@ -2750,10 +2876,9 @@ class Shipment extends Internals\CollectableEntity implements IBusinessValueProv
 	{
 		$result = new Result();
 
-		$r = $this->setField('CUSTOM_PRICE_DELIVERY', ($custom ? 'Y' : 'N'));
-		if (!$r->isSuccess())
+		if ($custom === true)
 		{
-			$result->addErrors($r->getErrors());
+			$this->markFieldCustom('PRICE_DELIVERY');
 		}
 
 		$r = $this->setField('BASE_PRICE_DELIVERY', $value);

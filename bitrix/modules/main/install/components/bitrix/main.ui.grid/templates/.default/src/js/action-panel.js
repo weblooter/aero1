@@ -559,7 +559,7 @@
 							action.DATA.forEach(function(controlObject) {
 								if (self.validateControlObject(controlObject))
 								{
-									newElement = self.createControl(controlObject, BX.data(container, 'relative') || container.id);
+									newElement = self.createControl(controlObject, container.id || BX.data(container, 'relative'));
 
 									if (BX.type.isDomNode(newElement))
 									{

@@ -2,6 +2,7 @@ import Type from './type';
 import Event from './event';
 import encodeAttributeValue from '../internal/encode-attribute-value';
 import decodeAttributeValue from '../internal/decode-attribute-value';
+import getPageScroll from '../internal/get-page-scroll';
 
 export default class Dom
 {
@@ -581,7 +582,7 @@ export default class Dom
 		if (Type.isDomNode(element))
 		{
 			const elementRect = element.getBoundingClientRect();
-			const {scrollLeft, scrollTop} = document.documentElement;
+			const {scrollLeft, scrollTop} = getPageScroll();
 
 			return new DOMRect(
 				(elementRect.left + scrollLeft),

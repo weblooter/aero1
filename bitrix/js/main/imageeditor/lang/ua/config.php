@@ -34,7 +34,6 @@ $MESS["IMAGE_EDITOR_ERROR_IMAGE_LOADING_ERROR"] = "Не вдалося зава�
 $MESS["IMAGE_EDITOR_ERROR_LOAD_STICKER"] = "Не вдалося завантажити стікер \${path}";
 $MESS["IMAGE_EDITOR_ERROR_RENDERING_ERROR_DESCRIPTION"] = "Сталася помилка під час відтворення зображення";
 $MESS["IMAGE_EDITOR_ERROR_UNSUPPORTED_FILE_TYPE"] = "\${fileType} файли не підтримуються";
-$MESS["IMAGE_EDITOR_ERROR_WEBCAM_NOT_SUPPORTED"] = "Ваш браузер не підтримує вебкамеру";
 $MESS["IMAGE_EDITOR_ERROR_WEBCAM_UNAVAILABLE"] = "Вебкамера не доступна";
 $MESS["IMAGE_EDITOR_EXPORT"] = "Застосувати";
 $MESS["IMAGE_EDITOR_EXPORTING"] = "Експорт";

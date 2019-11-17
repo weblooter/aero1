@@ -8,6 +8,7 @@ import createSelectDecl from './fields/create-select-decl';
 import {Field} from './field/field';
 
 const errorMessages = new WeakMap();
+const errorMessagesTypes = new WeakMap();
 const values = new WeakMap();
 
 export class Fields
@@ -58,7 +59,7 @@ export class Fields
 			const controls = [...field.querySelectorAll('.main-ui-control')];
 			const squares = [...field.querySelectorAll('.main-ui-square')];
 
-			squares.forEach(square => Dom.remove(square));
+			squares.forEach((square) => Dom.remove(square));
 			controls.forEach((control) => {
 				if (Reflect.has(control, 'value'))
 				{
@@ -668,7 +669,7 @@ export class Fields
 			})();
 
 			const html = Text
-				.encode(fieldData.VALUE)
+				.decode(fieldData.VALUE)
 				.replace(
 					`name="${fieldData.NAME}"`,
 					`name="${fieldData.NAME}" value="${fieldValue}"`,
@@ -918,6 +919,7 @@ export class Fields
 					fieldData.SUB_TYPE = data;
 					fieldData.NAME = group.dataset.name;
 					fieldData.TYPE = group.dataset.type;
+					fieldData.VALUE_REQUIRED = group.dataset.valueRequired === 'true';
 
 					const presetData = this.parent.getPreset().getCurrentPresetData();
 
@@ -949,6 +951,7 @@ export class Fields
 							}
 
 							fieldData.VALUES = presetField.VALUES;
+							fieldData.REQUIRED = presetField.REQUIRED;
 						}
 					}
 
@@ -1134,6 +1137,8 @@ export class Fields
 			ENABLE_TIME = false,
 			LABEL = '',
 			TYPE,
+			VALUE_REQUIRED = false,
+			REQUIRED = false,
 		} = options;
 		const {ENABLE_LABEL} = this.parent.params;
 
@@ -1357,10 +1362,10 @@ export class Fields
 
 				const buttons = [
 					...renderedField
-						.querySelectorAll('.main-ui-item-icon-container, .main-ui-filter-icon-grab')
+						.querySelectorAll('.main-ui-item-icon-container, .main-ui-filter-icon-grab'),
 				];
 
-				buttons.forEach(button => Dom.remove(button));
+				buttons.forEach((button) => Dom.remove(button));
 
 				fieldGroup.content.push(renderedField);
 				fieldGroup.push('main-ui-filter-custom-date-group');
@@ -1390,7 +1395,7 @@ export class Fields
 					.querySelectorAll('.main-ui-item-icon-container, .main-ui-filter-icon-grab'),
 			];
 
-			buttons.forEach(button => Dom.remove(button));
+			buttons.forEach((button) => Dom.remove(button));
 
 			const lastIndex = fieldGroup.content.length - 1;
 			const lastContentItem = fieldGroup.content[lastIndex];
@@ -1444,18 +1449,88 @@ export class Fields
 				}
 			});
 
+		if (VALUE_REQUIRED)
+		{
+			renderedFieldGroup.dataset.valueRequired = true;
+
+			const allInputs = [
+				...inputs,
+				...renderedFieldGroup
+					.querySelectorAll('.main-ui-number-input'),
+			];
+
+			allInputs
+				.forEach((input) => {
+					input.addEventListener('change', this.checkRequiredDateValue.bind(this));
+					input.addEventListener('input', this.checkRequiredDateValue.bind(this));
+
+					const {parentNode} = input;
+					const clearButton = parentNode.querySelector('.main-ui-control-value-delete');
+
+					if (clearButton)
+					{
+						clearButton.addEventListener('click', () => {
+							setTimeout(() => {
+								this.checkRequiredDateValue({target: input});
+							});
+						});
+					}
+
+					Event.bindOnce(input, 'mouseout', () => {
+						this.checkRequiredDateValue({target: input});
+					});
+				});
+		}
+
+		if (REQUIRED)
+		{
+			const removeButton = renderedFieldGroup
+				.querySelector('.main-ui-filter-field-delete');
+
+			if (removeButton)
+			{
+				BX.remove(removeButton);
+			}
+		}
+
+		const currentValues = {};
+		this.parent.prepareControlDateValue(currentValues, fieldName, renderedFieldGroup);
+
+		Object.entries(currentValues).forEach(([key, value]) => {
+			currentValues[key.replace(fieldName, '')] = value;
+			delete currentValues[key];
+		});
+
 		this.parent.getEmitter().emit(
 			'BX.Filter.Field:init',
 			{
 				field: new Field({
 					parent: this.parent,
-					options: {...options},
+					options: {...options, VALUES: currentValues},
 					node: renderedFieldGroup,
 				}),
 			},
 		);
 
 		return renderedFieldGroup;
+	}
+
+	checkRequiredDateValue(event)
+	{
+		if (event.target.value === '')
+		{
+			this.showError({
+				id: 'valueError',
+				target: event.target,
+				text: this.parent.params.MAIN_UI_FILTER__VALUE_REQUIRED,
+			});
+			return;
+		}
+
+		this.hideError({
+			id: 'valueError',
+			target: event.target,
+		});
 	}
 
 	onDateChange(event)
@@ -1469,7 +1544,10 @@ export class Fields
 
 		if (event.target.value === '')
 		{
-			this.hideDateError(event.target);
+			this.hideError({
+				id: 'formatError',
+				target: event.target,
+			});
 			return;
 		}
 
@@ -1481,28 +1559,37 @@ export class Fields
 					mode: 'ajax',
 					data: {
 						value: event.target.value,
-						format: BX.message('FORMAT_DATETIME')
+						format: BX.message('FORMAT_DATETIME'),
 					},
 				},
 			)
 			.then((result) => {
 				if (!result.data.result)
 				{
-					this.showDateError(event.target);
+					this.showError({
+						id: 'formatError',
+						target: event.target,
+					});
 					return;
 				}
 
-				this.hideDateError(event.target);
+				this.hideError({
+					id: 'formatError',
+					target: event.target,
+				});
 			});
 	}
 
-	showDateError(inputField)
+	showError({id, target, text = null})
 	{
-		Dom.style(inputField, 'border-color', '#FF5752');
+		Dom.style(target, 'border-color', '#FF5752');
 
-		if (errorMessages.has(inputField))
+		if (
+			errorMessages.has(target)
+			&& errorMessagesTypes.get(target) === id
+		)
 		{
-			Dom.remove(errorMessages.get(inputField));
+			Dom.remove(errorMessages.get(target));
 		}
 
 		const {
@@ -1510,29 +1597,35 @@ export class Fields
 			MAIN_UI_FILTER__DATE_ERROR_LABEL,
 		} = this.parent.params;
 
+		const errorText = text || `${MAIN_UI_FILTER__DATE_ERROR_LABEL} ${Loc.getMessage('FORMAT_DATE')}`;
+
 		const dateErrorMessage = Tag.render`
 			<div 
 				class="main-ui-filter-error-message" 
 				title="${MAIN_UI_FILTER__DATE_ERROR_TITLE}">
-				${MAIN_UI_FILTER__DATE_ERROR_LABEL} ${Loc.getMessage('FORMAT_DATE')}
+				${errorText}
 			</div>
 		`;
 
-		errorMessages.set(inputField, dateErrorMessage);
+		errorMessages.set(target, dateErrorMessage);
+		errorMessagesTypes.set(target, id);
 
-		Dom.insertAfter(dateErrorMessage, inputField);
-		Dom.attr(inputField, 'is-valid', 'false');
+		Dom.insertAfter(dateErrorMessage, target);
+		Dom.attr(target, 'is-valid', 'false');
 	}
 
-	hideDateError(inputField)
+	hideError({id, target})
 	{
-		Dom.style(inputField, 'border-color', null);
+		Dom.style(target, 'border-color', null);
 
-		if (errorMessages.has(inputField))
+		if (
+			errorMessages.has(target)
+			&& errorMessagesTypes.get(target) === id
+		)
 		{
-			Dom.remove(errorMessages.get(inputField));
+			Dom.remove(errorMessages.get(target));
 		}
 
-		Dom.attr(inputField, 'is-valid', 'true');
+		Dom.attr(target, 'is-valid', 'true');
 	}
 }

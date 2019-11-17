@@ -433,6 +433,48 @@ class ShipmentItem
 		return parent::onFieldModify($name, $oldValue, $value);
 	}
 
+	/**
+	 * @return Result
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function checkMarkingCodeOnDeducted()
+	{
+		$result = new Result();
+
+		if (!$this->getBasketItem()->isSupportedMarkingCode())
+		{
+			return $result;
+		}
+
+		if ($this->getShipmentItemStoreCollection()->count() < $this->getQuantity())
+		{
+			return $result->addError(
+				new Main\Error(
+					Loc::getMessage(
+						'SALE_SHIPMENT_ITEM_MARKING_CODE_LESS_ITEM_QUANTITY',
+						['#PRODUCT_NAME#' => $this->getBasketItem()->getField('NAME')])
+				)
+			);
+		}
+
+		/** @var ShipmentItemStore $itemStore */
+		foreach ($this->getShipmentItemStoreCollection() as $itemStore)
+		{
+			if ($itemStore->getMarkingCode() === '')
+			{
+				return $result->addError(
+					new Main\Error(
+						Loc::getMessage(
+							'SALE_SHIPMENT_ITEM_MARKING_CODE_LESS_ITEM_QUANTITY',
+							['#PRODUCT_NAME#' => $this->getBasketItem()->getField('NAME')])
+					)
+				);
+			}
+		}
+
+		return $result;
+	}
 
 	/**
 	 * @param float $quantity
@@ -828,6 +870,14 @@ class ShipmentItem
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function getRegistryEntity()
+	{
+		return Registry::ENTITY_SHIPMENT_ITEM;
+	}
+
+	/**
 	 * @return Internals\CollectableEntity|bool
 	 * @throws Main\ObjectNotFoundException
 	 */
@@ -1120,6 +1170,20 @@ class ShipmentItem
 			);
 
 			return $result;
+		}
+
+		/** @var ShipmentItemStoreCollection $shipmentItemCollection */
+		if ($shipmentItemStoreCollection = $this->getShipmentItemStoreCollection())
+		{
+			/** @var ShipmentItemStore $shipmentItemStore */
+			foreach ($shipmentItemStoreCollection as $shipmentItemStore)
+			{
+				$r = $shipmentItemStore->verify();
+				if (!$r->isSuccess())
+				{
+					$result->addErrors($r->getErrors());
+				}
+			}
 		}
 
 		return $result;

@@ -222,6 +222,7 @@ class Sender
 					'from' => $email,
 					'host' => $config['server'],
 					'port' => $config['port'],
+					'protocol' => $config['protocol'],
 					'login' => $config['login'],
 					'password' => $config['password'],
 				));

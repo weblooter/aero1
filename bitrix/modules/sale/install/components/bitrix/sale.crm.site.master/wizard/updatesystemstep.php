@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc;
 
@@ -7,7 +7,7 @@ Loc::loadMessages(__FILE__);
 
 /**
  * Class UpdateSystemStep
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class UpdateSystemStep extends \CWizardStep
 {
@@ -21,7 +21,7 @@ class UpdateSystemStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -44,7 +44,7 @@ class UpdateSystemStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	function initStep()
+	public function initStep()
 	{
 		$this->component = $this->GetWizard()->GetVar("component");
 
@@ -57,18 +57,18 @@ class UpdateSystemStep extends \CWizardStep
 	/**
 	 * @return bool
 	 */
-	function showStep()
+	public function showStep()
 	{
 		$this->installModulesHtml();
 
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph-wrapper">
-			<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_UPDATESYSTEMSTEP_DESCR2", [
+		<div class="adm-crm-site-master-paragraph-wrapper">
+			<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_UPDATESYSTEMSTEP_DESCR2", [
 					"#UPDATE_SYSTEM_LINK#" => "/bitrix/admin/update_system.php?lang=".LANGUAGE_ID
 				])?>
 			</div>
-			<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_UPDATESYSTEMSTEP_DESCR3")?></div>
+			<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_UPDATESYSTEMSTEP_DESCR3")?></div>
 		</div>
 		<?
 		$content = ob_get_contents();
@@ -82,7 +82,7 @@ class UpdateSystemStep extends \CWizardStep
 	/**
 	 * Prepare html content with modules to be installed
 	 */
-	protected function installModulesHtml()
+	private function installModulesHtml()
 	{
 		$modules = $this->GetWizard()->GetVar("not_exist_modules");
 
@@ -164,7 +164,7 @@ class UpdateSystemStep extends \CWizardStep
 	/**
 	 * @return bool
 	 */
-	function onPostForm()
+	public function onPostForm()
 	{
 		$wizard =& $this->GetWizard();
 		if ($wizard->IsPrevButtonClick())

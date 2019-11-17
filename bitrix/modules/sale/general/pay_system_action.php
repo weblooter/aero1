@@ -538,7 +538,13 @@ class CAllSalePaySystemAction
 			{
 				$select = array();
 				foreach ($arSelectFields as $i => $field)
+				{
+					if (strpos($field, 'PT_') === 0)
+					{
+						continue;
+					}
 					$select[] = self::getAlias($field);
+				}
 			}
 			if (!in_array('ID', $select))
 				$select[] = 'ID';
@@ -548,6 +554,10 @@ class CAllSalePaySystemAction
 			{
 				foreach ($arOrder as $field => $type)
 				{
+					if (strpos($field, 'PT_') === 0)
+					{
+						continue;
+					}
 					$orderBy[self::getAlias($field)] = $type;
 				}
 			}
@@ -555,19 +565,38 @@ class CAllSalePaySystemAction
 			$filter = array();
 			foreach ($arFilter as $i => $field)
 			{
-				if (in_array($i, $ignoredFields))
+				if (strpos($i, 'PT_') === 0)
+				{
 					continue;
+				}
+
+				if (in_array($i, $ignoredFields))
+				{
+					continue;
+				}
+
 				if ($i == 'PAY_SYSTEM_ID')
+				{
 					$filter['ID'] = $field;
+				}
 				else
+				{
 					$filter[self::getAlias($i)] = $field;
+				}
 			}
 			$groupBy = array();
 			if ($arGroupBy !== false)
 			{
 				$arGroupBy = !is_array($arGroupBy) ? array($arGroupBy) : $arGroupBy;
 				foreach ($arGroupBy as $field => $order)
+				{
+					if (strpos($field, 'PT_') === 0)
+					{
+						continue;
+					}
+
 					$groupBy[self::getAlias($field)] = $order;
+				}
 			}
 			$dbRes = \Bitrix\Sale\Internals\PaySystemActionTable::getList(array(
 					'select' => $select,

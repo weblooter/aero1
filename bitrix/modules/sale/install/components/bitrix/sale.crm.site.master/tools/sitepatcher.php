@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 use Bitrix\Main,
 	Bitrix\Catalog,
@@ -8,7 +8,7 @@ use Bitrix\Main,
 
 /**
  * Class SitePatcher
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class SitePatcher
 {
@@ -17,6 +17,7 @@ class SitePatcher
 	const CRM_COMPANY_DEPARTMENT_ID = "~CRM_COMPANY_DEPARTMENT_ID";
 	const SELECTED_USER_GROUPS = "~SELECTED_USER_GROUPS";
 	const EMPLOYEE_USER_GROUP_ID = "~EMPLOYEE_USER_GROUP_ID";
+	const CONFIG_1C = "~CONFIG_1C";
 
 	private static $instance = null;
 
@@ -210,6 +211,15 @@ class SitePatcher
 				"CONDITION" => "#^\/?\/mobileapp/jn\/(.*)\/.*#",
 				"RULE" => "componentName=$1",
 				"PATH" => "/bitrix/services/mobileapp/jn.php",
+			];
+		}
+
+		if (Main\ModuleManager::isModuleInstalled("rest"))
+		{
+			$arNewUrlRewrite[] = [
+				"CONDITION" => "#^/rest/#",
+				"RULE" => "",
+				"PATH" => "/bitrix/services/rest/index.php",
 			];
 		}
 
@@ -433,7 +443,7 @@ class SitePatcher
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function initSiteFields()
+	private function initSiteFields()
 	{
 		$site = Main\SiteTable::getList([
 			"select" => ["*"],
@@ -837,6 +847,57 @@ class SitePatcher
 		}
 	}
 
+	public function patchIm()
+	{
+		if (!Main\ModuleManager::isModuleInstalled("im"))
+		{
+			return;
+		}
+
+		$desktopAppFound = false;
+		$arAppTempalate = Array(
+			"SORT" => 1,
+			"CONDITION" => "CSite::InDir('/desktop_app/')",
+			"TEMPLATE" => "desktop_app"
+		);
+
+		$pubAppFound = false;
+		$arPubTempalate = Array(
+			"SORT" => 100,
+			"CONDITION" => 'preg_match("#^/online/([\.\-0-9a-zA-Z]+)(/?)([^/]*)#", $GLOBALS[\'APPLICATION\']->GetCurPage(0))',
+			"TEMPLATE" => "pub"
+		);
+
+		$arFields = Array("TEMPLATE"=>Array());
+		$dbTemplates = \CSite::GetTemplateList($this->siteId);
+		while($template = $dbTemplates->Fetch())
+		{
+			if ($template["CONDITION"] == "CSite::InDir('/desktop_app/')")
+			{
+				$desktopAppFound = true;
+				$template = $arAppTempalate;
+			}
+			else if ($template["CONDITION"] == 'preg_match("#^/online/([\.\-0-9a-zA-Z]+)(/?)([^/]*)#", $GLOBALS[\'APPLICATION\']->GetCurPage(0))')
+			{
+				$pubAppFound = true;
+				$template = $arPubTempalate;
+			}
+			$arFields["TEMPLATE"][] = array(
+				"SORT" => $template['SORT'],
+				"CONDITION" => $template['CONDITION'],
+				"TEMPLATE" => $template['TEMPLATE'],
+			);
+		}
+		if (!$desktopAppFound)
+			$arFields["TEMPLATE"][] = $arAppTempalate;
+		if (!$pubAppFound)
+			$arFields["TEMPLATE"][] = $arPubTempalate;
+
+		$obSite = new \CSite;
+		$arFields["LID"] = $this->siteId;
+		$obSite->Update($this->siteId, $arFields);
+	}
+
 	/**
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentOutOfRangeException
@@ -858,7 +919,7 @@ class SitePatcher
 	/**
 	 * @return bool
 	 */
-	protected function isDefaultCatalogExists()
+	private function isDefaultCatalogExists()
 	{
 		$id = \CAllCrmCatalog::GetDefaultID();
 		return $id ? true : false;
@@ -870,7 +931,7 @@ class SitePatcher
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getCatalogId()
+	private function getCatalogId()
 	{
 		$catalogId = null;
 
@@ -894,7 +955,7 @@ class SitePatcher
 	 * @param $catalogId
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function setDefaultProductCatalogId($catalogId)
+	private function setDefaultProductCatalogId($catalogId)
 	{
 		Option::set('crm', 'default_product_catalog_id', $catalogId);
 	}
@@ -1067,7 +1128,7 @@ class SitePatcher
 	 * @param $iblockId
 	 * @return string|null
 	 */
-	protected function getIblockTypeID($iblockId)
+	private function getIblockTypeID($iblockId)
 	{
 		$iblockTypeId = null;
 
@@ -1109,7 +1170,7 @@ class SitePatcher
 	/**
 	 * @return int|null
 	 */
-	protected function getDepartmentIblockId()
+	private function getDepartmentIblockId()
 	{
 		$iblockCode = "departments";
 		$iblockType = "structure";
@@ -1127,7 +1188,7 @@ class SitePatcher
 	 * @param $departmentIblockId
 	 * @return int|null
 	 */
-	protected function getHeadDepartmentSectionId($departmentIblockId)
+	private function getHeadDepartmentSectionId($departmentIblockId)
 	{
 		$headDepartmentSectionId = null;
 		$rsIBlockSection = \CIBlockSection::GetList(
@@ -1179,7 +1240,7 @@ class SitePatcher
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getCrmGroupIdList($type)
+	private function getCrmGroupIdList($type)
 	{
 		$groupIdList = [];
 
@@ -1220,7 +1281,7 @@ class SitePatcher
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getCurrentUserGroupList(array $users)
+	private function getCurrentUserGroupList(array $users)
 	{
 		$result = [];
 
@@ -1234,5 +1295,86 @@ class SitePatcher
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public static function saveConfig1C()
+	{
+		$config1C = [
+			"catalog" => [
+				"1CE_ELEMENTS_PER_STEP" => Option::get("catalog", "1CE_ELEMENTS_PER_STEP", ""),
+				"1CE_GROUP_PERMISSIONS" => Option::get("catalog", "1CE_GROUP_PERMISSIONS", ""),
+				"1CE_IBLOCK_ID" => Option::get("catalog", "1CE_IBLOCK_ID", ""),
+				"1CE_INTERVAL" => Option::get("catalog", "1CE_INTERVAL", ""),
+				"1CE_USE_ZIP" => Option::get("catalog", "1CE_USE_ZIP", ""),
+				"1C_DETAIL_HEIGHT" => Option::get("catalog", "1C_DETAIL_HEIGHT", ""),
+				"1C_DETAIL_RESIZE" => Option::get("catalog", "1C_DETAIL_RESIZE", ""),
+				"1C_DETAIL_WIDTH" => Option::get("catalog", "1C_DETAIL_WIDTH", ""),
+				"1C_ELEMENT_ACTION" => Option::get("catalog", "1C_ELEMENT_ACTION", ""),
+				"1C_FILE_SIZE_LIMIT" => Option::get("catalog", "1C_FILE_SIZE_LIMIT", ""),
+				"1C_FORCE_OFFERS" => Option::get("catalog", "1C_FORCE_OFFERS", ""),
+				"1C_GENERATE_PREVIEW" => Option::get("catalog", "1C_GENERATE_PREVIEW", ""),
+				"1C_GROUP_PERMISSIONS" => Option::get("catalog", "1C_GROUP_PERMISSIONS", ""),
+				"1C_IBLOCK_TYPE" => Option::get("catalog", "1C_IBLOCK_TYPE", ""),
+				"1C_INTERVAL" => Option::get("catalog", "1C_INTERVAL", ""),
+				"1C_PREVIEW_HEIGHT" => Option::get("catalog", "1C_PREVIEW_HEIGHT", ""),
+				"1C_PREVIEW_WIDTH" => Option::get("catalog", "1C_PREVIEW_WIDTH", ""),
+				"1C_SECTION_ACTION" => Option::get("catalog", "1C_SECTION_ACTION", ""),
+				"1C_SITE_LIST" => Option::get("catalog", "1C_SITE_LIST", ""),
+				"1C_SKIP_ROOT_SECTION" => Option::get("catalog", "1C_SKIP_ROOT_SECTION", ""),
+				"1C_TRANSLIT_ON_ADD" => Option::get("catalog", "1C_TRANSLIT_ON_ADD", ""),
+				"1C_TRANSLIT_ON_UPDATE" => Option::get("catalog", "1C_TRANSLIT_ON_UPDATE", ""),
+				"1C_USE_CRC" => Option::get("catalog", "1C_USE_CRC", ""),
+				"1C_USE_IBLOCK_PICTURE_SETTINGS" => Option::get("catalog", "1C_USE_IBLOCK_PICTURE_SETTINGS", ""),
+				"1C_USE_IBLOCK_TYPE_ID" => Option::get("catalog", "1C_USE_IBLOCK_TYPE_ID", ""),
+				"1C_USE_OFFERS" => Option::get("catalog", "1C_USE_OFFERS", ""),
+				"1C_USE_ZIP" => Option::get("catalog", "1C_USE_ZIP", ""),
+			],
+			"sale" => [
+				"1C_EXPORT_ALLOW_DELIVERY_ORDERS" => Option::get("sale", "1C_EXPORT_ALLOW_DELIVERY_ORDERS", ""),
+				"1C_EXPORT_FINAL_ORDERS" => Option::get("sale", "1C_EXPORT_FINAL_ORDERS", ""),
+				"1C_EXPORT_PAYED_ORDERS" => Option::get("sale", "1C_EXPORT_PAYED_ORDERS", ""),
+				"1C_FINAL_STATUS_ON_DELIVERY" => Option::get("sale", "1C_FINAL_STATUS_ON_DELIVERY", ""),
+				"1C_REPLACE_CURRENCY" => Option::get("sale", "1C_REPLACE_CURRENCY", ""),
+				"1C_SALE_ACCOUNT_NUMBER_SHOP_PREFIX" => Option::get("sale", "1C_SALE_ACCOUNT_NUMBER_SHOP_PREFIX", ""),
+				"1C_SALE_GROUP_PERMISSIONS" => Option::get("sale", "1C_SALE_GROUP_PERMISSIONS", ""),
+				"1C_SALE_SITE_LIST" => Option::get("sale", "1C_SALE_SITE_LIST", ""),
+				"1C_SALE_USE_ZIP" => Option::get("sale", "1C_SALE_USE_ZIP", ""),
+			],
+		];
+
+		$config1C = serialize($config1C);
+		Option::set("sale", self::CONFIG_1C, $config1C);
+	}
+
+	/**
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public static function retrieveConfig1C()
+	{
+		$config1C = Option::get("sale", self::CONFIG_1C);
+		$config1C = unserialize($config1C);
+
+		foreach ($config1C as $module => $options)
+		{
+			foreach ($options as $name => $value)
+			{
+				Option::set($module, $name, $value);
+			}
+		}
+
+		Option::delete("sale", ["name" => self::CONFIG_1C]);
+	}
+
+	/**
+	 * @throws Main\ArgumentNullException
+	 */
+	public static function disableRegularArchive()
+	{
+		Option::delete("sale", ["name" => "regular_archive_active"]);
 	}
 }

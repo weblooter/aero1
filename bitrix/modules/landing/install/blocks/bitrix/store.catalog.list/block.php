@@ -161,7 +161,7 @@ if ($detailUrl)
 						'CACHE_FILTER' => 'N',
 						'CONVERT_CURRENCY' => 'Y',
 						'BASKET_URL' => '#system_cart',
-						'ACTION_VARIABLE' => $classBlock->get('ACTION_VARIABLE'),
+						'ACTION_VARIABLE' => 'action',
 						'PRODUCT_ID_VARIABLE' => 'id',
 						'PRODUCT_QUANTITY_VARIABLE' => 'quantity',
 						'ADD_PROPERTIES_TO_BASKET' => 'N',

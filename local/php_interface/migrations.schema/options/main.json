@@ -1,0 +1,606 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "main",
+            "NAME": "~cpf_map_value",
+            "VALUE": "YToxOntpOjA7czo1OiJTbWFsbCI7fQ==",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~crypto_b_user_phone_auth",
+            "VALUE": {
+                "OTP_SECRET": true
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~ft_b_sale_order",
+            "VALUE": {
+                "SEARCH_CONTENT": true
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~ft_b_sender_mailing_chain",
+            "VALUE": {
+                "SEARCH_CONTENT": true
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~ft_b_user_index",
+            "VALUE": {
+                "SEARCH_USER_CONTENT": true,
+                "SEARCH_DEPARTMENT_CONTENT": true,
+                "SEARCH_ADMIN_CONTENT": true
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~ft_b_user_index_selector",
+            "VALUE": {
+                "SEARCH_SELECTOR_CONTENT": true
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~new_license11_sign",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~new_license18_0_sign",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_COMPOSITE",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_FINISH_DATE",
+            "VALUE": "d02a85d2729fb4b0806ebfb7b584f539ca47f1a5c944d47809bd854e0b187bd2.2019-11-19",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_MAX_SERVERS",
+            "VALUE": "2",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_MAX_USERS",
+            "VALUE": "f0916b95663c487f64ed16c4134aa97d56782ecc435d494f94a6c0f06b45c2d6.0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_PARTNER_ID",
+            "VALUE": "",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~PARAM_PHONE_SIP",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~sale_converted_15",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~sale_paysystem_converted",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~support_finish_date",
+            "VALUE": "2019-11-19",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "~update_autocheck_result",
+            "VALUE": {
+                "check_date": 1573994296,
+                "result": false,
+                "error": "",
+                "modules": []
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "admin_lid",
+            "VALUE": "ru",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "admin_passwordh",
+            "VALUE": "FVkQeWYUBwYtCUVcDhcPCgsTAQ==",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "crc_code",
+            "VALUE": "TkFJeGxvMThQcQ==",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "distributive6",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_archive_size_limit",
+            "VALUE": "268435456",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_base",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_base_skip_log",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_base_skip_search",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_base_skip_stat",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_bucket_id",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_do_clouds",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_encrypt",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_file_kernel",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_file_public",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_integrity_check",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_max_exec_time",
+            "VALUE": "20",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_max_exec_time_sleep",
+            "VALUE": "3",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_max_file_size",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_site_id",
+            "VALUE": [],
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "dump_use_compression",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "email_from",
+            "VALUE": "mnlln@promaild.com",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "GROUP_DEFAULT_TASK",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "last_files_count",
+            "VALUE": "75061",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "last_mp_modules_result",
+            "VALUE": {
+                "check_date": 1573984768,
+                "update_module": [],
+                "end_update": [],
+                "new_module": []
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "mp_modules_date",
+            "VALUE": {
+                "2": {
+                    "ID": "asd.iblock",
+                    "NAME": "Информационные блоки, инструменты",
+                    "TMS": 1572043802
+                },
+                "3": {
+                    "ID": "sprint.migration",
+                    "NAME": "Миграции для разработчиков",
+                    "TMS": 1573994291
+                }
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "optimize_css_files",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "optimize_js_files",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "PARAM_MAX_SITES",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "PARAM_MAX_USERS",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_authority_group",
+            "VALUE": "4",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_authority_group_add",
+            "VALUE": "2",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_authority_group_delete",
+            "VALUE": "2",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_rating_group",
+            "VALUE": "3",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_rating_group_add",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_rating_group_delete",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_assign_type",
+            "VALUE": "auto",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_authority_rating",
+            "VALUE": "2",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_authority_weight_formula",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_community_authority",
+            "VALUE": "30",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_community_last_visit",
+            "VALUE": "90",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_community_size",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_count_vote",
+            "VALUE": "10",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_normalization",
+            "VALUE": "10",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_normalization_type",
+            "VALUE": "auto",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_self_vote",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_start_authority",
+            "VALUE": "3",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_text_like_d",
+            "VALUE": "Это нравится",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_text_like_n",
+            "VALUE": "Не нравится",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_text_like_y",
+            "VALUE": "Нравится",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_vote_show",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_vote_template",
+            "VALUE": "like",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_vote_type",
+            "VALUE": "like",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "rating_vote_weight",
+            "VALUE": "10",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "server_uniq_id",
+            "VALUE": "143d3e6efd20db8acc0530298fe9d1bb",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "signer_default_key",
+            "VALUE": "082465b90d473f840a08ee4544120c1815c39e5d979be475440c8b3915b7c007a69a0418d39e3394d51f2504e6b8a8ae4298cd979e091cc71ba4a1ff40b339d1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "skip_mask",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "skip_mask_array",
+            "VALUE": [
+                "\/.git"
+            ],
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "skip_symlinks",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "update_site",
+            "VALUE": "www.bitrixsoft.com",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "update_site_ns",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "update_system_check",
+            "VALUE": "17.11.2019 15:38:13",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "update_system_update",
+            "VALUE": "17.11.2019 15:38:16",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "main",
+            "NAME": "vendor",
+            "VALUE": "1c_bitrix",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

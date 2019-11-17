@@ -927,12 +927,11 @@ class ShipmentCollection
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
-	 * @throws Main\NotImplementedException
 	 * @throws Main\NotSupportedException
 	 * @throws Main\ObjectNotFoundException
 	 * @throws Main\SystemException
 	 */
-	public function onBasketModify($action, BasketItemBase $basketItem, $name = null, $oldValue = null, $value = null)
+	public function onBasketModify($action, BasketItemBase $basketItem, $name = null, $oldValue = null, $value = null) : Result
 	{
 		$result = new Result();
 
@@ -953,163 +952,154 @@ class ShipmentCollection
 		}
 		elseif ($action === EventActions::ADD)
 		{
-			$systemShipment = $this->getSystemShipment();
-			return $systemShipment->onBasketModify($action, $basketItem, $name, $oldValue, $value);
+			return $this->getSystemShipment()->onBasketModify($action, $basketItem, $name, $oldValue, $value);
 		}
 		elseif ($action !== EventActions::UPDATE)
 		{
 			return $result;
 		}
 
-		$currentShipment = null;
-		$allowQuantityChange = false;
-
 		if ($name == 'QUANTITY')
 		{
-			$deltaQuantity = $value - $oldValue;
-
-			if ($deltaQuantity != 0)
+			if (!$this->isAllowAutoEdit($basketItem))
 			{
-				if (count($this->collection) == 1 || (count($this->collection) == 2) && $this->isExistsSystemShipment())
+				$result = $this->checkDistributedQuantity($basketItem, $value);
+				if (!$result->isSuccess())
 				{
-					/** @var Shipment $shipment */
-					foreach ($this->collection as $shipment)
-					{
-						if ($shipment->isSystem())
-						{
-							if ($shipment->isExistBasketItem($basketItem))
-							{
-								$allowQuantityChange = false;
-								$currentShipment = null;
-								break;
-							}
-						}
-						elseif ($shipment->isExistBasketItem($basketItem))
-						{
-							$allowQuantityChange = true;
-							$currentShipment = $shipment;
-						}
-						elseif ($basketItem->getId() == 0)
-						{
-							$allowQuantityChange = true;
-							$currentShipment = $shipment;
-							break;
-						}
-					}
+					return $result;
 				}
+			}
 
-				if ($allowQuantityChange && $currentShipment)
+			$shipment = $this->getItemForAutoEdit($basketItem);
+
+			if ($value - $oldValue > 0)
+			{
+				$r = $this->getSystemShipment()->onBasketModify($action, $basketItem, $name, $oldValue, $value);
+				if (!$r->isSuccess())
 				{
-					$allowQuantityChange = (bool)(!$currentShipment->isAllowDelivery() && !$currentShipment->isCanceled() && !$currentShipment->isShipped());
+					return $result->addErrors($r->getErrors());
+				}
+			}
 
-					if ($allowQuantityChange)
+			if ($shipment)
+			{
+				$r = $shipment->onBasketModify($action, $basketItem, $name, $oldValue, $value);
+				if (!$r->isSuccess())
+				{
+					$result->addErrors($r->getErrors());
+					return $result;
+				}
+			}
+
+			if ($value - $oldValue < 0)
+			{
+				$r = $this->getSystemShipment()->onBasketModify($action, $basketItem, $name, $oldValue, $value);
+				if (!$r->isSuccess())
+				{
+					$result->addErrors($r->getErrors());
+					return $result;
+				}
+			}
+		}
+		elseif ($name === 'WEIGHT')
+		{
+			/** @var Shipment $shipment */
+			foreach ($this->getNotSystemItems() as $shipment)
+			{
+				$shipment->onBasketModify($action, $basketItem, $name, $value, $oldValue);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param BasketItem $basketItem
+	 * @return Shipment|null
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ObjectNotFoundException
+	 */
+	private function getItemForAutoEdit(BasketItem $basketItem)
+	{
+		if ($this->isAllowAutoEdit($basketItem))
+		{
+			/** @var Shipment $shipment */
+			foreach ($this->getNotSystemItems() as $shipment)
+			{
+				return $shipment;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param BasketItem $basketItem
+	 * @return bool
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ObjectNotFoundException
+	 */
+	private function isAllowAutoEdit(BasketItem $basketItem)
+	{
+		if ($this->count() === 1
+			||
+			(
+				$this->count() === 2
+				&&
+				$this->isExistsSystemShipment()
+			)
+		)
+		{
+			if (!$this->getSystemShipment()->isExistBasketItem($basketItem)
+				|| (int)$basketItem->getId() === 0
+			)
+			{
+				foreach ($this->getNotSystemItems() as $shipment)
+				{
+					if (!$shipment->isAllowDelivery()
+						&& !$shipment->isCanceled()
+						&& !$shipment->isShipped()
+					)
 					{
 						/** @var Delivery\Services\Base $deliveryService */
-						if ($deliveryService = $currentShipment->getDelivery())
+						if ($deliveryService = $shipment->getDelivery())
 						{
-							$allowQuantityChange = $deliveryService->isAllowEditShipment();
-						}
-					}
-				}
-
-				if (!$allowQuantityChange && $deltaQuantity < 0)
-				{
-					$basketItemQuantity = $this->getBasketItemDistributedQuantity($basketItem);
-					if ($basketItemQuantity > $value)
-					{
-						if (!$basketItem->isBundleChild() && !isset($this->errors[$basketItem->getBasketCode()]['SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY']))
-						{
-							$result->addError(new ResultError(
-								Loc::getMessage('SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY',
-									array(
-										'#PRODUCT_NAME#' => $basketItem->getField("NAME"),
-										'#BASKET_ITEM_QUANTITY#' => ($basketItemQuantity),
-										'#BASKET_ITEM_MEASURE#' => $basketItem->getField("MEASURE_NAME"),
-										'#QUANTITY#' => ($basketItemQuantity - $value)
-									)
-								),
-								'SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY'));
-
-							$this->errors[$basketItem->getBasketCode()]['SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY'] = $basketItemQuantity - $value;
-						}
-
-						return $result;
-					}
-				}
-			}
-		}
-
-		if (!$result->isSuccess())
-		{
-			return $result;
-		}
-
-		$systemShipment = $this->getSystemShipment();
-
-		$r = $systemShipment->onBasketModify($action, $basketItem, $name, $oldValue, $value);
-		if (!$r->isSuccess())
-		{
-			$result->addErrors($r->getErrors());
-			return $result;
-		}
-
-		if ($name == 'QUANTITY')
-		{
-			if ($allowQuantityChange)
-			{
-				if ($currentShipment)
-				{
-					/** @var ShipmentItemCollection $shipmentItemCollection */
-					if (!$shipmentItemCollection = $currentShipment->getShipmentItemCollection())
-					{
-						throw new Main\ObjectNotFoundException('Entity "ShipmentItemCollection" not found');
-					}
-
-					if ($shipmentItem = $shipmentItemCollection->getItemByBasketCode($basketItem->getBasketCode()))
-					{
-						$r = $shipmentItem->setField(
-								"QUANTITY",
-								$shipmentItem->getField("QUANTITY") + $deltaQuantity
-						);
-
-						if ($r->isSuccess())
-						{
-							if ($deltaQuantity < 0)
-							{
-								$r = $systemShipment->onBasketModify($action, $basketItem, $name, $oldValue, $value);
-								if (!$r->isSuccess())
-								{
-									$result->addErrors($r->getErrors());
-									return $result;
-								}
-							}
-
-							/** @var Delivery\CalculationResult $deliveryCalculate */
-							$deliveryCalculate = $currentShipment->calculateDelivery();
-							if (!$deliveryCalculate->isSuccess())
-							{
-								$result->addWarnings($deliveryCalculate->getErrors());
-							}
-
-							if ($deliveryCalculate->getPrice() > 0)
-							{
-								$currentShipment->setField('BASE_PRICE_DELIVERY', $deliveryCalculate->getPrice());
-							}
-						}
-						else
-						{
-							$result->addErrors($r->getErrors());
-						}
-					}
-					else
-					{
-						if ($shipmentItem = $shipmentItemCollection->createItem($basketItem))
-						{
-							$shipmentItem->setField("QUANTITY", $basketItem->getQuantity());
+							return $deliveryService->isAllowEditShipment();
 						}
 					}
 				}
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param BasketItem $basketItem
+	 * @param $value
+	 * @return Result
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ObjectNotFoundException
+	 */
+	private function checkDistributedQuantity(BasketItem $basketItem, $value)
+	{
+		$result = new Result();
+
+		$basketItemQuantity = $this->getBasketItemDistributedQuantity($basketItem);
+		if ($basketItemQuantity > $value)
+		{
+			$result->addError(new ResultError(
+				Loc::getMessage('SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY',
+					array(
+						'#PRODUCT_NAME#' => $basketItem->getField("NAME"),
+						'#BASKET_ITEM_QUANTITY#' => $basketItemQuantity,
+						'#BASKET_ITEM_MEASURE#' => $basketItem->getField("MEASURE_NAME"),
+						'#QUANTITY#' => $basketItemQuantity - $value
+					)
+				),
+				'SALE_ORDER_SYSTEM_SHIPMENT_LESS_QUANTITY')
+			);
 		}
 
 		return $result;

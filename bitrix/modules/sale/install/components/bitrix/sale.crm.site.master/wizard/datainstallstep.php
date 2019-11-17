@@ -1,10 +1,10 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Config\Option,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools\SitePatcher;
+	Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher;
 
 Loc::loadMessages(__FILE__);
 
@@ -22,7 +22,7 @@ elseif (Main\IO\File::isFileExists($_SERVER["DOCUMENT_ROOT"]."/bitrix/wizards/bi
  * Class DataInstallStep
  * Install portal and services
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class DataInstallStep extends \DataInstallStep
 {
@@ -32,24 +32,9 @@ class DataInstallStep extends \DataInstallStep
 	private $component = null;
 
 	/**
-	 * Check step errors
-	 */
-	protected function setStepErrors()
-	{
-		$errors = $this->component->getWizardStepErrors($this->currentStepName);
-		if ($errors)
-		{
-			foreach ($errors as $error)
-			{
-				$this->SetError($error);
-			}
-		}
-	}
-
-	/**
 	 * Initialization step id and title
 	 */
-	function initStep()
+	public function initStep()
 	{
 		define("ADDITIONAL_INSTALL", "Y");
 
@@ -68,7 +53,7 @@ class DataInstallStep extends \DataInstallStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	function showStep()
+	public function showStep()
 	{
 		$this->prepareWizardVars();
 
@@ -79,11 +64,11 @@ class DataInstallStep extends \DataInstallStep
 
 		ob_start();
 		?>
-		<div class="adm-site-master-timer">
-			<img class="adm-site-master-timer-image" src="<?=$this->component->getPath()?>/wizard/images/timer.svg" alt="">
+		<div class="adm-crm-site-master-timer">
+			<img class="adm-crm-site-master-timer-image" src="<?=$this->component->getPath()?>/wizard/images/timer.svg" alt="">
 		</div>
 
-		<div class="adm-site-master-timer-description">
+		<div class="adm-crm-site-master-timer-description">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_DATAINSTALLSTEP_DESCR")?>
 		</div>
 
@@ -92,7 +77,7 @@ class DataInstallStep extends \DataInstallStep
 				<span class="ui-alert-message" id="error_text"></span>
 			</div>
 
-			<div class="adm-slider-buttons" id="error_buttons">
+			<div class="adm-crm-slider-buttons" id="error_buttons">
 				<div class="ui-btn-container ui-btn-container-center">
 					<button type="button" id="error_retry_button" class="ui-btn ui-btn-primary" onclick="">
 						<?=Loc::getMessage("SALE_CSM_WIZARD_DATAINSTALLSTEP_RETRY_BUTTON")?>
@@ -112,10 +97,13 @@ class DataInstallStep extends \DataInstallStep
 		list($firstService, $stage, $status) = $this->GetFirstStep($arServices);
 		$formName = $wizard->GetFormName();
 		$nextStepVarName = $wizard->GetRealName("nextStep");
+		$messages = Loc::loadLanguageFile(__FILE__);
 		?>
 		<script type="text/javascript">
+			BX.message(<?=\CUtil::PhpToJSObject($messages)?>);
 			var ajaxForm = new CAjaxForm("<?=$formName?>", "iframe-post-form", "<?=$nextStepVarName?>");
 			ajaxForm.Post("<?=$firstService?>", "<?=$stage?>", "<?=$status?>");
+			ajaxForm.SetEventBeforeUnloadWindow();
 		</script>
 		<?
 		$content = ob_get_contents();
@@ -137,6 +125,14 @@ class DataInstallStep extends \DataInstallStep
 	 */
 	public function onPostForm()
 	{
+		$wizard =& $this->GetWizard();
+		$serviceID = $wizard->GetVar("nextStep");
+		if ($serviceID !== "finish")
+		{
+			/** @noinspection PhpVariableNamingConventionInspection */
+			global $APPLICATION;
+			$APPLICATION->RestartBuffer();
+		}
 		parent::OnPostForm();
 
 		$this->prepareSite();
@@ -276,7 +272,7 @@ class DataInstallStep extends \DataInstallStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function prepareWizardVars()
+	private function prepareWizardVars()
 	{
 		$wizard = $this->GetWizard();
 		$sitePatcher = SitePatcher::getInstance();
@@ -305,7 +301,7 @@ class DataInstallStep extends \DataInstallStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function prepareSite()
+	private function prepareSite()
 	{
 		$sitePatcher = SitePatcher::getInstance();
 
@@ -322,6 +318,7 @@ class DataInstallStep extends \DataInstallStep
 		$sitePatcher->patchImopenlines();
 		$sitePatcher->patchVoximplant();
 		$sitePatcher->patchMobile();
+		$sitePatcher->patchIm();
 
 		Option::set("crm", "crm_shop_enabled", "Y");
 

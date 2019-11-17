@@ -1,7 +1,9 @@
 <?
 
+use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main\UI\Extension;
+use Bitrix\UI\Toolbar\Facade\Toolbar;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 {
@@ -10,22 +12,34 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 
 class UIToolbarComponent extends CBitrixComponent
 {
+	private $toolbarId;
+
 	/**
 	 * Execute component.
 	 *
 	 * @return void
 	 */
-
 	public function executeComponent()
 	{
-		\Bitrix\Main\Loader::includeModule('ui');
-
-		$GLOBALS["APPLICATION"]->addBufferContent([$this, "includeTemplate"]);
-
+		Loader::includeModule('ui');
 		Extension::load(["ui.buttons", "ui.buttons.icons"]);
-		$this->initComponentTemplate();
-		$GLOBALS["APPLICATION"]->setAdditionalCSS($this->getTemplate()->getFolder()."/style.css");
-		$GLOBALS["APPLICATION"]->addHeadScript($this->getTemplate()->getFolder()."/script.js");
+
+		$this->toolbarId = $this->arParams["TOOLBAR_ID"] ?? Toolbar::DEFAULT_ID;
+
+		if($this->toolbarId === Toolbar::DEFAULT_ID)
+		{
+			$GLOBALS["APPLICATION"]->addBufferContent([$this, "includeTemplate"]);
+
+			$this->initComponentTemplate();
+			$GLOBALS["APPLICATION"]->setAdditionalCSS($this->getTemplate()->getFolder()."/style.css");
+			$GLOBALS["APPLICATION"]->addHeadScript($this->getTemplate()->getFolder()."/script.js");
+		}
+		else
+		{
+			$this->arResult["TOOLBAR_ID"] = $this->toolbarId;
+			$this->arResult["CONTAINER_ID"] = "toolbar_" . $this->randString();
+			$this->includeComponentTemplate("common");
+		}
 	}
 
 	public function includeTemplate()
@@ -80,7 +94,10 @@ class UIToolbarComponent extends CBitrixComponent
 		{
 			if (
 				isset($traceLine['function']) &&
-				in_array($traceLine['function'], ['ob_end_flush', 'ob_end_clean', 'LocalRedirect', 'ForkActions'])
+				in_array(
+					$traceLine['function'],
+					['ob_end_flush', 'ob_end_clean', 'LocalRedirect', 'ForkActions', 'fastcgi_finish_request']
+				)
 			)
 			{
 				return true;

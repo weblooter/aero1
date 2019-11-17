@@ -1,8 +1,8 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools\AgentChecker;
+	Bitrix\Sale\CrmSiteMaster\Tools\AgentChecker;
 
 Loc::loadMessages(__FILE__);
 
@@ -10,7 +10,7 @@ Loc::loadMessages(__FILE__);
  * Class B24ConnectorStep
  * Step of check agents
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class B24ConnectorStep  extends \CWizardStep
 {
@@ -24,7 +24,7 @@ class B24ConnectorStep  extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -47,7 +47,7 @@ class B24ConnectorStep  extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	function initStep()
+	public function initStep()
 	{
 		$this->component = $this->GetWizard()->GetVar("component");
 
@@ -71,7 +71,7 @@ class B24ConnectorStep  extends \CWizardStep
 			<div class="ui-alert ui-alert-danger ui-alert-inline ui-alert-icon-danger">
 				<span class="ui-alert-message"><?= Loc::getMessage("SALE_CSM_WIZARD_B24CONNECTORSTEP_ERROR")?></span>
 			</div>
-			<div class="adm-site-master-paragraph">
+			<div class="adm-crm-site-master-paragraph">
 				<p><?=Loc::getMessage("SALE_CSM_WIZARD_B24CONNECTORSTEP_UNINSTALL_LINK", [
 					"#LANGUAGE_ID#" => LANGUAGE_ID
 				])?></p>
@@ -81,7 +81,7 @@ class B24ConnectorStep  extends \CWizardStep
 		else
 		{
 			?>
-			<div class="adm-site-master-paragraph">
+			<div class="adm-crm-site-master-paragraph">
 				<p><?=Loc::getMessage("SALE_CSM_WIZARD_B24CONNECTORSTEP_CONTENT1")?></p>
 				<p><?=Loc::getMessage("SALE_CSM_WIZARD_B24CONNECTORSTEP_CONTENT2", [
 					"#LANGUAGE_ID#" => LANGUAGE_ID

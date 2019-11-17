@@ -24,6 +24,7 @@ $this->addExternalJs($this->GetFolder() . '/template.js');
 		}
 	</script>
 	<?$APPLICATION->ShowHead();?>
+	<title><?$APPLICATION->ShowTitle()?></title>
 	<?if ($arParams['EDITABLE_TITLE_SELECTOR']):?>
 		<style>
 			<?=$arParams['EDITABLE_TITLE_SELECTOR']?> {
@@ -117,11 +118,12 @@ if ($arResult["SHOW_BITRIX24_THEME"] == "Y")
 
 	<script type="text/javascript">
 		BX.ready(function () {
-			BX.UI.SidePanelWrapper.init(<?=Json::encode([
+			BX.UI.SidePanel.Wrapper.init(<?=Json::encode([
 				'containerId' => 'workarea-content',
 				'isCloseAfterSave' => $arParams['CLOSE_AFTER_SAVE'],
 				'isReloadGridAfterSave' => $arParams['RELOAD_GRID_AFTER_SAVE'],
 				'isReloadPageAfterSave' => $arParams['RELOAD_PAGE_AFTER_SAVE'],
+				'skipNotification' => $arResult['SKIP_NOTIFICATION'],
 				'useLinkTargetsReplacing' => $arParams['USE_LINK_TARGETS_REPLACING'],
 				'title' => [
 					'defaultTitle' => $arParams['EDITABLE_TITLE_DEFAULT'],

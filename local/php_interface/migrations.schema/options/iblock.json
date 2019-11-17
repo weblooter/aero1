@@ -1,0 +1,88 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "combined_list_mode",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "custom_edit_form_use_property_id",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "detail_image_size",
+            "VALUE": "200",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "event_log_iblock",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "iblock_menu_max_sections",
+            "VALUE": "50",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "list_full_date_edit",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "list_image_size",
+            "VALUE": "50",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "num_catalog_levels",
+            "VALUE": "3",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "path2rss",
+            "VALUE": "\/upload\/",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "property_features_enabled",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "show_xml_id",
+            "VALUE": "N",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "iblock",
+            "NAME": "use_htmledit",
+            "VALUE": "Y",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

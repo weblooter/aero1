@@ -1,0 +1,40 @@
+{
+    "event": "LOCAL_CORE_CONSULT_SHORT_FORM",
+    "type": {
+        "LID": "en",
+        "EVENT_TYPE": "email",
+        "NAME": "",
+        "DESCRIPTION": [
+            ""
+        ],
+        "SORT": "150"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#DEFAULT_EMAIL_FROM#",
+            "SUBJECT": "#SITE_NAME#: Заявки на консультацию или звонок",
+            "MESSAGE": [
+                "#MSG#"
+            ],
+            "BODY_TYPE": "html",
+            "BCC": "",
+            "REPLY_TO": "",
+            "CC": "",
+            "IN_REPLY_TO": "",
+            "PRIORITY": "",
+            "FIELD1_NAME": "",
+            "FIELD1_VALUE": "",
+            "FIELD2_NAME": "",
+            "FIELD2_VALUE": "",
+            "SITE_TEMPLATE_ID": "",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": "",
+            "EVENT_TYPE": "[ LOCAL_CORE_CONSULT_SHORT_FORM ] LocalCore: Заявки на консультацию или звонок"
+        }
+    ]
+}

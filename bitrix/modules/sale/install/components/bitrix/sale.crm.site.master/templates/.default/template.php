@@ -20,18 +20,18 @@ if ($arResult["ERROR"]["ORDER"])
 {
 	Bitrix\Main\UI\Extension::load(array("ui.buttons", "ui.forms", "ui.progressbar", "ui.fonts.opensans", "ui.alerts"));
 	?>
-	<div class="adm-site-master-grid">
-		<div class="adm-site-master-title"><?=Loc::getMessage("SALE_CSM_TEMPLATE_ORDER_CONVERTER_ERROR_TITLE")?></div>
-		<div class="adm-site-master-content">
+	<div class="adm-crm-site-master-grid">
+		<div class="adm-crm-site-master-title"><?=Loc::getMessage("SALE_CSM_TEMPLATE_ORDER_CONVERTER_ERROR_TITLE")?></div>
+		<div class="adm-crm-site-master-content">
 
-			<div class="adm-site-master-warning">
-				<img class="adm-site-master-warning-image" src="<?=$component->getPath()?>/wizard/images/warning.svg" alt="">
+			<div class="adm-crm-site-master-warning">
+				<img class="adm-crm-site-master-warning-image" src="<?=$component->getPath()?>/wizard/images/warning.svg" alt="">
 			</div>
 			<div class="ui-alert ui-alert-danger ui-alert-text-center ui-alert-inline ui-alert-icon-danger">
 				<span class="ui-alert-message"><?=Loc::getMessage("SALE_CSM_TEMPLATE_ORDER_CONVERTER_ERROR_DESCR")?></span>
 			</div>
 
-			<div class="adm-site-master-grid-content">
+			<div class="adm-crm-site-master-grid-content">
 				<?
 				$APPLICATION->IncludeComponent('bitrix:main.ui.grid', '', [
 					'GRID_ID' => 'order_error_list',
@@ -99,7 +99,7 @@ else
 			wizardSteps: <?=CUtil::PhpToJSObject($arResult["WIZARD_STEPS"])?>,
 			formId: '<?=$component->getWizard()->GetFormName()?>',
 			documentRoot: '<?=htmlspecialcharsbx(CUtil::addslashes($_SERVER["DOCUMENT_ROOT"]))?>',
-			siteName: "CRM_SITE",
+			siteNameId: "CRM_SITE",
 			docRootId: "DOC_ROOT",
 			docRootLinkId: "DOC_ROOT_LINK",
 			createSiteId: "create_site",

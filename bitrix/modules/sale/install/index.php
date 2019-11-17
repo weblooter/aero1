@@ -227,6 +227,9 @@ Class sale extends CModule
 		$eventManager->registerEventHandler('landing', '\Bitrix\Landing\Internals\Site::OnAfterDelete', 'sale', '\Bitrix\Sale\TradingPlatform\Landing\Landing', 'onLandingSiteDelete');
 		$eventManager->registerEventHandler('landing', 'onBeforeSiteRecycle', 'sale', '\Bitrix\Sale\TradingPlatform\Landing\Landing', 'onLandingBeforeSiteRecycle');
 
+		$eventManager->registerEventHandler('report', 'onAnalyticPageCollect', 'sale', '\Bitrix\Sale\Integration\Report\EventHandler', 'onAnalyticPageCollect');
+		$eventManager->registerEventHandler('report', 'onAnalyticPageBatchCollect', 'sale', '\Bitrix\Sale\Integration\Report\EventHandler', 'onAnalyticPageBatchCollect');
+
 		COption::SetOptionString("sale", "viewed_capability", "N");
 		COption::SetOptionString("sale", "viewed_count", 10);
 		COption::SetOptionString("sale", "viewed_time", 5);
@@ -486,6 +489,9 @@ Class sale extends CModule
 		$eventManager->unRegisterEventHandler('landing', '\Bitrix\Landing\Internals\Site::OnAfterAdd', 'sale', '\Bitrix\Sale\TradingPlatform\Landing\Landing', 'onLandingSiteAdd');
 		$eventManager->unRegisterEventHandler('landing', '\Bitrix\Landing\Internals\Site::OnAfterDelete', 'sale', '\Bitrix\Sale\TradingPlatform\Landing\Landing', 'onLandingSiteDelete');
 		$eventManager->unRegisterEventHandler('landing', 'onBeforeSiteRecycle', 'sale', '\Bitrix\Sale\TradingPlatform\Landing\Landing', 'onLandingBeforeSiteRecycle');
+
+		$eventManager->unRegisterEventHandler('report', 'onAnalyticPageCollect', 'sale', '\Bitrix\Sale\Integration\Report\EventHandler', 'onAnalyticPageCollect');
+		$eventManager->unRegisterEventHandler('report', 'onAnalyticPageBatchCollect', 'sale', '\Bitrix\Sale\Integration\Report\EventHandler', 'onAnalyticPageBatchCollect');
 
 		if (\Bitrix\Main\Loader::includeModule('sale'))
 		{

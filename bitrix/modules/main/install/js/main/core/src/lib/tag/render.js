@@ -99,12 +99,16 @@ export default function render(sections: string[], ...substitutions: string[]): 
 			return preparedAcc + item + sections[index + 1];
 		}, sections[0]);
 
-	if (html.toLowerCase().includes('doctype') || html.includes('<html'))
+	const lowercaseHtml = html.trim().toLowerCase();
+	if (
+		lowercaseHtml.startsWith('<!doctype')
+		|| lowercaseHtml.startsWith('<html')
+	)
 	{
 		const doc = document.implementation.createHTMLDocument('');
 		doc.documentElement.innerHTML = html;
 		replaceChild(doc, children);
-		Event.bindAll(doc, handlers);
+		bindAll(doc, handlers);
 		handlers.clear();
 		return doc;
 	}
@@ -125,24 +129,34 @@ export default function render(sections: string[], ...substitutions: string[]): 
 
 	if (parsedDocument.body.children.length === 1)
 	{
-		return parsedDocument.body.children[0];
+		const [el] = parsedDocument.body.children;
+		Dom.remove(el);
+		return el;
 	}
 
 	if (parsedDocument.body.children.length > 1)
 	{
-		return [...parsedDocument.body.children];
+		return [...parsedDocument.body.children].map((item) => {
+			Dom.remove(item);
+			return item;
+		});
 	}
 
 	if (parsedDocument.body.children.length === 0)
 	{
 		if (parsedDocument.head.children.length === 1)
 		{
-			return parsedDocument.head.children[0];
+			const [el] = parsedDocument.head.children;
+			Dom.remove(el);
+			return el;
 		}
 
 		if (parsedDocument.head.children.length > 1)
 		{
-			return [...parsedDocument.head.children];
+			return [...parsedDocument.head.children].map((item) => {
+				Dom.remove(item);
+				return item;
+			});
 		}
 	}
 

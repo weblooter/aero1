@@ -96,6 +96,12 @@ class Service
 	 * @param Request|null $request
 	 * @param int $mode
 	 * @return ServiceResult
+	 * @throws NotSupportedException
+	 * @throws \Bitrix\Main\ArgumentException
+	 * @throws \Bitrix\Main\ArgumentNullException
+	 * @throws \Bitrix\Main\ArgumentOutOfRangeException
+	 * @throws \Bitrix\Main\ArgumentTypeException
+	 * @throws \Bitrix\Main\ObjectException
 	 */
 	public function initiatePay(Payment $payment, Request $request = null, $mode = BaseServiceHandler::STREAM)
 	{
@@ -130,7 +136,7 @@ class Service
 		if (!$initResult->isSuccess())
 		{
 			$error = implode("\n", $initResult->getErrorMessages());
-			Logger::addError($error);
+			Logger::addError(get_class($this->handler).". InitiatePay: ".$error);
 		}
 
 		return $initResult;
@@ -181,6 +187,13 @@ class Service
 	/**
 	 * @param Request $request
 	 * @return Result
+	 * @throws NotSupportedException
+	 * @throws \Bitrix\Main\ArgumentException
+	 * @throws \Bitrix\Main\ArgumentNullException
+	 * @throws \Bitrix\Main\ArgumentOutOfRangeException
+	 * @throws \Bitrix\Main\ArgumentTypeException
+	 * @throws \Bitrix\Main\ObjectException
+	 * @throws \Bitrix\Main\ObjectNotFoundException
 	 */
 	public function processRequest(Request $request)
 	{
@@ -191,8 +204,14 @@ class Service
 			return $processResult;
 		}
 
-		$debugInfo = 'request: '.($request->toArray() ? implode("\n", $request->toArray()) : '[]');
-		Logger::addDebugInfo($debugInfo);
+		$debugInfo = implode("\n", $request->toArray());
+		if (empty($debugInfo))
+		{
+			$debugInfo = file_get_contents("php://input");
+		}
+		Logger::addDebugInfo(
+			get_class($this->handler)." ProcessRequest. paySystemId=".$this->getField("ID").", request=".($debugInfo ? $debugInfo : "empty")
+		);
 
 		$paymentId = $this->handler->getPaymentIdFromRequest($request);
 
@@ -200,7 +219,9 @@ class Service
 		{
 			$processResult->addError(new Error(Loc::getMessage('SALE_PS_SERVICE_PAYMENT_ERROR_EMPTY')));
 
-			Logger::addError('processRequest: '.Loc::getMessage('SALE_PS_SERVICE_PAYMENT_ERROR_EMPTY'));
+			Logger::addError(
+				get_class($this->handler).'. ProcessRequest: '.Loc::getMessage('SALE_PS_SERVICE_PAYMENT_ERROR_EMPTY')
+			);
 
 			return $processResult;
 		}
@@ -212,7 +233,7 @@ class Service
 			$errorMessage = str_replace('#ORDER_ID#', $orderId, Loc::getMessage('SALE_PS_SERVICE_ORDER_ERROR'));
 			$processResult->addError(new Error($errorMessage));
 
-			Logger::addError('processRequest: '.$errorMessage);
+			Logger::addError(get_class($this->handler).'. ProcessRequest: '.$errorMessage);
 
 			return $processResult;
 		}
@@ -222,13 +243,12 @@ class Service
 		$orderClassName = $registry->getOrderClassName();
 
 		$order = $orderClassName::load($orderId);
-
 		if (!$order)
 		{
 			$errorMessage = str_replace('#ORDER_ID#', $orderId, Loc::getMessage('SALE_PS_SERVICE_ORDER_ERROR'));
 			$processResult->addError(new Error($errorMessage));
 
-			Logger::addError('processRequest: '.$errorMessage);
+			Logger::addError(get_class($this->handler).'. ProcessRequest: '.$errorMessage);
 
 			return $processResult;
 		}
@@ -238,7 +258,7 @@ class Service
 			$errorMessage = str_replace('#ORDER_ID#', $orderId, Loc::getMessage('SALE_PS_SERVICE_ORDER_CANCELED'));
 			$processResult->addError(new Error($errorMessage));
 
-			Logger::addError('processRequest: '.$errorMessage);
+			Logger::addError(get_class($this->handler).'. ProcessRequest: '.$errorMessage);
 
 			return $processResult;
 		}
@@ -254,14 +274,13 @@ class Service
 			$errorMessage = str_replace('#PAYMENT_ID#', $paymentId, Loc::getMessage('SALE_PS_SERVICE_PAYMENT_ERROR'));
 			$processResult->addError(new Error($errorMessage));
 
-			Logger::addError('processRequest: '.$errorMessage);
+			Logger::addError(get_class($this->handler).'. ProcessRequest: '.$errorMessage);
 
 			return $processResult;
 		}
 
 		/** @var \Bitrix\Sale\PaySystem\ServiceResult $serviceResult */
 		$serviceResult = $this->handler->processRequest($payment, $request);
-
 		if ($serviceResult->isSuccess())
 		{
 			$status = null;
@@ -287,7 +306,7 @@ class Service
 				if (!$paidResult->isSuccess())
 				{
 					$error = 'PAYMENT SET PAID: '.join(' ', $paidResult->getErrorMessages());
-					Logger::addError($error);
+					Logger::addError(get_class($this->handler).'. ProcessRequest: '.$error);
 
 					$serviceResult->setResultApplied(false);
 				}
@@ -297,11 +316,10 @@ class Service
 			if ($psData)
 			{
 				$res = $payment->setFields($psData);
-
 				if (!$res->isSuccess())
 				{
 					$error = 'PAYMENT SET PAID: '.join(' ', $res->getErrorMessages());
-					Logger::addError($error);
+					Logger::addError(get_class($this->handler).'. ProcessRequest: '.$error);
 
 					$serviceResult->setResultApplied(false);
 				}
@@ -312,7 +330,7 @@ class Service
 			if (!$saveResult->isSuccess())
 			{
 				$error = 'ORDER SAVE: '.join(' ', $saveResult->getErrorMessages());
-				Logger::addError($error);
+				Logger::addError(get_class($this->handler).'. ProcessRequest: '.$error);
 
 				$serviceResult->setResultApplied(false);
 			}
@@ -321,6 +339,9 @@ class Service
 		{
 			$serviceResult->setResultApplied(false);
 			$processResult->addErrors($serviceResult->getErrors());
+
+			$error = implode("\n", $serviceResult->getErrorMessages());
+			Logger::addError(get_class($this->handler).'. ProcessRequest Error: '.$error);
 		}
 
 		$this->handler->sendResponse($serviceResult, $request);

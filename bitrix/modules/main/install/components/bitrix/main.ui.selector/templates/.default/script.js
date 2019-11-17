@@ -33,6 +33,7 @@
 		this.tag = null;
 		this.options = null;
 		this.callback = null;
+		this.callbackBefore = null;
 		this.items = null;
 		this.entities = null;
 		this.mainPopupWindow = null;
@@ -98,6 +99,7 @@
 
 			this.options = params.options || {};
 			this.callback = params.callback || null;
+			this.callbackBefore = params.callbackBefore || null;
 
 			this.items = params.items || null;
 			this.entities = params.entities || null;
@@ -144,7 +146,8 @@
 					offsetTop: 5,
 					offsetLeft: 15
 				},
-				callback: this.callback
+				callback: this.callback,
+				callbackBefore: this.callbackBefore
 			});
 
 			BX.addCustomEvent('BX.UI.SelectorManager:getTreeItemRelation', function(params) {

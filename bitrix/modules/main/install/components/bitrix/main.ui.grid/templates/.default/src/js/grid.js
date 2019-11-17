@@ -1101,11 +1101,11 @@
 			});
 
 			column.forEach(function(cell, cellIndex) {
-				var clone = BX.clone(cell);
-
 				cell.style.minWidth = cellWidth + 'px';
 				cell.style.width = cellWidth + 'px';
 				cell.style.minHeight = heights[cellIndex] + 'px';
+
+				var clone = BX.clone(cell);
 
 				var lastStickyCell = this.getLastStickyCellFromRowByIndex(cellIndex);
 

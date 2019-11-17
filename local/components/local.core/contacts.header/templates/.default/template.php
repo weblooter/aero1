@@ -19,7 +19,7 @@
                 <div class="h1-title"><?=$APPLICATION->GetPageProperty('pre-h1')?></div>
                 <div class="h1"><?=$APPLICATION->GetPageProperty('h1')?></div>
                 <p>
-                    <? $APPLICATION->IncludeFile('include/contacts-header-address.php', false, ['MODE' => 'text']) ?>
+                    <?=tplvar('address')?>
                 </p>
             </div>
 

@@ -31,7 +31,7 @@ function isCloneable(value: any): boolean %checks
 	return isCloneableValue || Type.isDomNode(value);
 }
 
-function internalClone(value: any, map: WeakMap<any, any>): any
+export function internalClone(value: any, map: WeakMap<any, any>): any
 {
 	if (map.has(value))
 	{

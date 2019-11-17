@@ -74,6 +74,25 @@ class LandingFilterComponent extends LandingBaseComponent
 	}
 
 	/**
+	 * Returns current raw filter by type.
+	 * @param string $type Filter type.
+	 * @return array
+	 */
+	public static function getFilterRaw($type)
+	{
+		$grid = self::getGrid($type);
+		$gridFilter = self::getFilterPresets();
+		$search = $grid->getFilter($gridFilter);
+
+		if ($search['FILTER_APPLIED'])
+		{
+			return $search;
+		}
+
+		return [];
+	}
+
+	/**
 	 * Get current filter by type.
 	 * @param string $type Filter type.
 	 * @return array

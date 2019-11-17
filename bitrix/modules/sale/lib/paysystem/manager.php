@@ -140,12 +140,22 @@ final class Manager
 	/**
 	 * @param Request $request
 	 * @return array|false
+	 * @throws ArgumentException
+	 * @throws \Bitrix\Main\ArgumentNullException
+	 * @throws \Bitrix\Main\ArgumentOutOfRangeException
+	 * @throws \Bitrix\Main\ArgumentTypeException
+	 * @throws \Bitrix\Main\ObjectException
 	 */
 	public static function searchByRequest(Request $request)
 	{
 		$documentRoot = Application::getDocumentRoot();
 
-		$items = self::getList(array('select' => array('*')));
+		$items = self::getList([
+			'select' => ['*'],
+			'filter' => [
+				'ACTIVE' => 'Y',
+			],
+		]);
 
 		while ($item = $items->fetch())
 		{
@@ -169,7 +179,9 @@ final class Manager
 				if (class_exists($className) && is_callable(array($className, 'isMyResponse')))
 				{
 					if ($className::isMyResponse($request, $item['ID']))
+					{
 						return $item;
+					}
 				}
 			}
 		}

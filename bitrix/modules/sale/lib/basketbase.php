@@ -144,7 +144,7 @@ abstract class BasketBase extends BasketItemCollection
 			'ORDER_ID', 'DATE_INSERT', 'DATE_UPDATE', 'PRODUCT_XML_ID',
 			'SUBSCRIBE', 'RECOMMENDATION', 'VAT_INCLUDED', 'SORT',
 			'DATE_REFRESH', 'DISCOUNT_NAME', 'DISCOUNT_VALUE', 'DISCOUNT_COUPON',
-			'XML_ID'
+			'XML_ID', 'MARKING_CODE_GROUP'
 		);
 
 		$itemList = array();

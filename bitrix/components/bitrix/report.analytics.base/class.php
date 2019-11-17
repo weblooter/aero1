@@ -14,7 +14,7 @@ class ReportAnalyticsBase extends CBitrixComponent
 		$this->arResult['MENU_ITEMS'] = $this->getLeftMenuItems();
 		$this->arResult['ANALYTIC_BOARD_LEFT_TITLE'] = $this->arParams['PAGE_TITLE'];
 
-		$currentAnalyticBoardKey = $this->getAnalyticBoardKey();
+		$currentAnalyticBoardKey = $this->getCurrentAnalyticBoardKey();
 		$this->arResult['ANALYTIC_BOARD_KEY'] = $currentAnalyticBoardKey;
 		$currentAnalyticBoard = $this->getAnalyticBoardByKey($currentAnalyticBoardKey);
 		$this->arResult['ANALYTIC_BOARD_TITLE'] = $currentAnalyticBoard ? $currentAnalyticBoard->getTitle() : '';
@@ -40,21 +40,27 @@ HTML;
 		return;
 	}
 	/**
+	 * @param string $firstBoardBatch
 	 * @return null
 	 * @throws \Bitrix\Main\SystemException
 	 */
-	private function getAnalyticBoardKey()
+	private function getCurrentAnalyticBoardKey($firstBoardBatch = "")
 	{
-		$analyticBoardKey = \Bitrix\Main\Application::getInstance()->getContext()->getRequest()->get('analyticBoardKey');
-		if (!$analyticBoardKey)
+		static $result = null;
+		if(is_null($result))
 		{
-			$boardList = $this->getAnalyticsBoardsList();
-			if (!empty($boardList))
+			$analyticBoardKey = \Bitrix\Main\Application::getInstance()->getContext()->getRequest()->get('analyticBoardKey');
+			if (!$analyticBoardKey)
 			{
-				$analyticBoardKey = $boardList[0]->getMachineKey();
+				$boardList = $this->getAnalyticsBoardsList($firstBoardBatch);
+				if (!empty($boardList))
+				{
+					$analyticBoardKey = $boardList[0]->getMachineKey();
+				}
 			}
+			$result = $analyticBoardKey ?: null;
 		}
-		return $analyticBoardKey ?: null;
+		return $result;
 	}
 
 	private function getLeftMenuItems()
@@ -72,7 +78,7 @@ HTML;
 			];
 		}
 		$boardList = $this->getAnalyticsBoardsList();
-		$currentAnalyticBoardKey = $this->getAnalyticBoardKey();
+		$currentAnalyticBoardKey = $this->getCurrentAnalyticBoardKey($batchList[0]->getKey());
 		foreach ($boardList as $board)
 		{
 			$item = [
@@ -81,12 +87,12 @@ HTML;
 					'href' => "?analyticBoardKey=" . $board->getBoardKey(),
 					'title' => $board->getTitle(),
 					'DATA' => [
-						'disabled-board' => $board->isDisabled(),
 						'role' => 'report-analytics-menu-item',
-						'report-board-key' => $board->getBoardKey()
+						'report-board-key' => $board->getBoardKey(),
+						'is-external' => $board->isExternal() ? 'Y' : 'N',
+						'external-url' => $board->getExternalUrl()
 					]
 				]
-
 			];
 
 			if ($board->getBoardKey() == $currentAnalyticBoardKey)
@@ -143,9 +149,13 @@ HTML;
 	/**
 	 * @return \Bitrix\Report\VisualConstructor\AnalyticBoard[]
 	 */
-	private function getAnalyticsBoardsList()
+	private function getAnalyticsBoardsList($boardBatchKey = "")
 	{
 		$defaultBoardProvider = new \Bitrix\Report\VisualConstructor\RuntimeProvider\AnalyticBoardProvider();
+		if($boardBatchKey != "")
+		{
+			$defaultBoardProvider->addFilter("boardBatchKey", $boardBatchKey);
+		}
 		return $defaultBoardProvider->execute()->getResults();
 	}
 
@@ -165,8 +175,13 @@ HTML;
 	 */
 	private function getAnalyticsBoardsBatchList()
 	{
-		$batchProvider = new \Bitrix\Report\VisualConstructor\RuntimeProvider\AnalyticBoardBatchProvider();
-		$list = $batchProvider->execute()->getResults();
-		return $list;
+		static $result = null;
+		if(is_null($result))
+		{
+			$batchProvider = new \Bitrix\Report\VisualConstructor\RuntimeProvider\AnalyticBoardBatchProvider();
+			$list = $batchProvider->execute()->getResults();
+			$result = $list;
+		}
+		return $result;
 	}
 }

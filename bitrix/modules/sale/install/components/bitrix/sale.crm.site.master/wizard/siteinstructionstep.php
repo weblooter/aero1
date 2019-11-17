@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Application,
@@ -11,7 +11,7 @@ Loc::loadMessages(__FILE__);
  * Class SiteInstructionStep
  * Step with instructions for creating a site
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class SiteInstructionStep extends \CWizardStep
 {
@@ -35,7 +35,7 @@ class SiteInstructionStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -52,7 +52,7 @@ class SiteInstructionStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -111,18 +111,23 @@ class SiteInstructionStep extends \CWizardStep
 			$languageId = "ru";
 		}
 
-		$instructionLink = "https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=103&LESSON_ID=287&LESSON_PATH=8799.3987.287";
+		$instructionLink = "https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=103&LESSON_ID=287";
+		$instructionVmLink = "https://dev.1c-bitrix.ru/learning/course/?COURSE_ID=37&LESSON_ID=8849";
 		if ($languageId && $languageId !== "ru")
 		{
 			$instructionLink = "https://training.bitrix24.com/support/training/course/?COURSE_ID=68&LESSON_ID=6217";
+			$instructionVmLink = "https://training.bitrix24.com/support/training/course/?COURSE_ID=113&LESSON_ID=9579";
 		}
 
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph">
+		<div class="adm-crm-site-master-paragraph">
 			<p><?=Loc::getMessage("SALE_CSM_WIZARD_SITEINSTRUCTIONSTEP_DESCR_TEXT")?></p>
 			<p><?=Loc::getMessage("SALE_CSM_WIZARD_SITEINSTRUCTIONSTEP_DESCR_LINK", [
 				"#LINK_INSTRUCTION#" => $instructionLink
+			])?></p>
+			<p><?=Loc::getMessage("SALE_CSM_WIZARD_SITEINSTRUCTIONSTEP_DESCR_VM_LINK", [
+				"#LINK_VM_INSTRUCTION#" => $instructionVmLink
 			])?></p>
 			<p><?=Loc::getMessage("SALE_CSM_WIZARD_SITEINSTRUCTIONSTEP_DESCR_NEXT")?></p>
 		</div>
@@ -144,8 +149,8 @@ class SiteInstructionStep extends \CWizardStep
 		if ($this->GetNextStepID() !== null)
 		{
 			?>
-			<span class="adm-site-master-checkbox">
-				<label class="adm-site-master-checkbox-label" style="display: flex !important;align-items: center;flex-direction: row;">
+			<span class="adm-crm-site-master-checkbox">
+				<label class="adm-crm-site-master-checkbox-label" style="display: flex !important;align-items: center;flex-direction: row;">
 					<input type="checkbox" id="confirmation_done" value="Y">
 					<?=Loc::getMessage("SALE_CSM_WIZARD_SITEINSTRUCTIONSTEP_ALL_DONE")?>
 				</label>
@@ -172,7 +177,7 @@ class SiteInstructionStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getLanguageId()
+	private function getLanguageId()
 	{
 		$languageId = '';
 
@@ -193,7 +198,7 @@ class SiteInstructionStep extends \CWizardStep
 	/**
 	 * Save form fields to wizard's var
 	 */
-	protected function setFormFields()
+	private function setFormFields()
 	{
 		foreach ($this->formFieldList as $field)
 		{

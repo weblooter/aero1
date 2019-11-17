@@ -116,10 +116,11 @@
 
 		showErrorTemplate: function()
 		{
-			var resultDiv = document.createElement('div');
-			resultDiv.innerHTML = BX.message("SALE_HANDLERS_PAY_SYSTEM_YANDEX_CHECKOUT_ERROR_MESSAGE");
-			resultDiv.classList.add("alert");
-			resultDiv.classList.add("alert-danger");
+			var resultDiv = BX.create('div', {
+				props: {className: 'alert alert-danger'},
+				text: BX.message('SALE_HANDLERS_PAY_SYSTEM_YANDEX_CHECKOUT_ERROR_MESSAGE')
+			});
+
 			this.paysystemBlockNode.innerHTML = '';
 			this.paysystemBlockNode.appendChild(resultDiv);
 		},

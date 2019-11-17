@@ -1,9 +1,9 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 /**
  * Class CrmPackage
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class CrmPackage
 {

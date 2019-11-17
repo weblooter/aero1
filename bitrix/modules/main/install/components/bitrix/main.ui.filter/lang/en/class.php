@@ -38,6 +38,7 @@ $MESS["MAIN_UI_FILTER__SINGLE"] = "Exact date";
 $MESS["MAIN_UI_FILTER__THIS_MONTH"] = "This month";
 $MESS["MAIN_UI_FILTER__THIS_WEEK"] = "This week";
 $MESS["MAIN_UI_FILTER__TODAY"] = "Today";
+$MESS["MAIN_UI_FILTER__VALUE_REQUIRED"] = "This field is required";
 $MESS["MAIN_UI_FILTER__YES"] = "Yes";
 $MESS["MAIN_UI_FILTER__YESTERDAY"] = "Yesterday";
 ?>

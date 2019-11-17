@@ -1,4 +1,4 @@
-(function() {
+(function(BX) {
 	/* list of registered proxy functions */
 	var proxyList = new WeakMap();
 	var deferList = new WeakMap();
@@ -3995,6 +3995,7 @@
 // set empty ready handler
 	BX(BX.DoNothing);
 	window.BX = BX;
+
 	BX.browser.addGlobalClass();
 
 	/* data storage */
@@ -4092,4 +4093,4 @@
 
 // some internal variables for new logic
 	var dataStorage = new BX.DataStorage();	// manager which BX.data() uses to keep data
-})(window);
+})(window.BX);

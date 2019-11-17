@@ -325,13 +325,22 @@ $arrYN = array(
 	<td><?=GetMessage("USERTYPE_USER_TYPE_ID")?>:</td>
 	<td>
 		<?
-		$arUserTypes = $USER_FIELD_MANAGER->GetUserType();
-		$arr = array("reference"=>array(), "reference_id"=>array());
-		foreach($arUserTypes as $arUserType)
+		$typeList = array();
+		foreach($USER_FIELD_MANAGER->GetUserType() as $arUserType)
 		{
-			$arr["reference"][] = $arUserType["DESCRIPTION"];
-			$arr["reference_id"][] = $arUserType["USER_TYPE_ID"];
+			$typeList[$arUserType["USER_TYPE_ID"]] = $arUserType["DESCRIPTION"];
 		}
+		\Bitrix\Main\Type\Collection::sortByColumn(
+			$typeList,
+			array('DESCRIPTION' => SORT_ASC),
+			'',
+			null,
+			true
+		);
+		$arr = array(
+			"reference" => array_values($typeList),
+			"reference_id" =>array_keys($typeList)
+		);
 		echo SelectBoxFromArray("find_user_type_id", $arr, $find_user_type_id, GetMessage("MAIN_ALL"), "");
 		?>
 	</td>

@@ -1241,7 +1241,7 @@ if(typeof BX.UI.EntityEditor === "undefined")
 					);
 					this._buttonContainer.appendChild(this._configMenuButton);
 				}
-			}
+				}
 
 			this.adjustButtons();
 		},
@@ -2321,6 +2321,7 @@ if(typeof BX.UI.EntityEditor === "undefined")
 				}
 			}
 
+			BX.onCustomEvent(window, "BX.UI.EntityEditor:onPrepareConfigMenuItems", [ this, items ]);
 			return items;
 		},
 		getServiceUrl: function()

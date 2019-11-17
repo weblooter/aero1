@@ -1,0 +1,88 @@
+{
+    "event": "LOCAL_CORE_CONSULT_SEND_ANSWER",
+    "type": {
+        "LID": "ru",
+        "EVENT_TYPE": "email",
+        "NAME": "LocalCore: Задан вопрос",
+        "DESCRIPTION": [
+            "#FIO#\r",
+            "#EMAIL#\r",
+            "#MSG#\r",
+            "#ELEM_ID#"
+        ],
+        "SORT": "150"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#EMAIL#",
+            "SUBJECT": "#SITE_NAME#: Обращение к хирургу Ведрову О. В",
+            "MESSAGE": [
+                "Уважаемый(ая), #FIO#!<br\/>\r",
+                "<br\/>\r",
+                "Как только Олег Вячеславович ответит на ваш вопрос, мы отправим уведомление на указанный Вами электронный адрес. Просим отнестись с пониманием к ожиданию ответа, на все вопросы отвечает хирург в свободное от операций время. <br\/>\r",
+                "<br\/>\r",
+                "Спасибо Вам за обращение!<br\/>\r",
+                "<br\/>\r",
+                "__________________________________________<br\/>\r",
+                "<br\/>\r",
+                "Ведров Олег Вячеславович - пластический хирург <br\/>\r",
+                "тел: +7 (499) 499-49-49<br\/>\r",
+                "почта: dr.vedrov@gmail.com<br\/>\r",
+                "адрес: г. Москва, ……...<br\/>\r",
+                "сайт: <a href=\"https:\/\/dr-vedrov.ru\/?utm_source=mail&utm_medium=consultation\">https:\/\/dr-vedrov.ru\/<\/a>\r",
+                ""
+            ],
+            "BODY_TYPE": "html",
+            "BCC": "",
+            "REPLY_TO": "",
+            "CC": "",
+            "IN_REPLY_TO": "",
+            "PRIORITY": "",
+            "FIELD1_NAME": "",
+            "FIELD1_VALUE": "",
+            "FIELD2_NAME": "",
+            "FIELD2_VALUE": "",
+            "SITE_TEMPLATE_ID": "",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": "",
+            "EVENT_TYPE": "[ LOCAL_CORE_CONSULT_SEND_ANSWER ] LocalCore: Задан вопрос"
+        },
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#DEFAULT_EMAIL_FROM#",
+            "SUBJECT": "#SITE_NAME#: Вам задали вопрос",
+            "MESSAGE": [
+                "Вам поступил вопрос от #FIO#.\r",
+                "\r",
+                "Вопрос: #MSG#\r",
+                "\r",
+                "_______________________\r",
+                "\r",
+                "Ответьте на вопрос и активируйте его на странице https:\/\/dr-vedrov.ru\/bitrix\/admin\/iblock_element_edit.php?IBLOCK_ID=#ELEM_ID#&type=main_ved&ID=21&lang=ru&find_section_section=-1&WF=Y"
+            ],
+            "BODY_TYPE": "text",
+            "BCC": "",
+            "REPLY_TO": "",
+            "CC": "",
+            "IN_REPLY_TO": "",
+            "PRIORITY": "",
+            "FIELD1_NAME": "",
+            "FIELD1_VALUE": "",
+            "FIELD2_NAME": "",
+            "FIELD2_VALUE": "",
+            "SITE_TEMPLATE_ID": "",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": "",
+            "EVENT_TYPE": "[ LOCAL_CORE_CONSULT_SEND_ANSWER ] LocalCore: Задан вопрос"
+        }
+    ]
+}

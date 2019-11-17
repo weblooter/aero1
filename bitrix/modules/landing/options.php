@@ -125,22 +125,19 @@ if ($postRight >= 'R'):
 	}
 
 	// paths for sites
-	if (!Manager::isB24())
+	$allOptions[] = array(
+		'header',
+		Loc::getMessage('LANDING_OPT_PUB_PATH_HEADER'),
+		Loc::getMessage('LANDING_OPT_PUB_PATH_HELP')
+	);
+	foreach ($sites as $row)
 	{
 		$allOptions[] = array(
-			'header',
-			Loc::getMessage('LANDING_OPT_PUB_PATH_HEADER'),
-			Loc::getMessage('LANDING_OPT_PUB_PATH_HELP')
+			'pub_path_' . $row['LID'],
+			$row['NAME'] . ' [' . $row['LID'] . ']:',
+			array('text', 32),
+			\Bitrix\Landing\Manager::getPublicationPathConst()
 		);
-		foreach ($sites as $row)
-		{
-			$allOptions[] = array(
-				'pub_path_' . $row['LID'],
-				$row['NAME'] . ' [' . $row['LID'] . ']:',
-				array('text', 32),
-				\Bitrix\Landing\Manager::getPublicationPathConst()
-			);
-		}
 	}
 
 	// other options

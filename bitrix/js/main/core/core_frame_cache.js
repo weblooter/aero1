@@ -49,19 +49,18 @@
 			]
 		};
 
-		this.frameData = null;
+		this.frameDataReceived = false;
 		if (BX.type.isString(window.frameDataString) && window.frameDataString.length > 0)
 		{
 			BX.frameCache.onFrameDataReceived(window.frameDataString);
 		}
 
 		this.vars = window.frameCacheVars ? window.frameCacheVars : {
+			dynamicBlocks: {},
 			page_url: "",
 			params: {},
 			storageBlocks: []
 		};
-
-		this.lastReplacedBlocks = false;
 
 		//local storage warming up
 		var lsCache = BX.frameCache.localStorage.get(localStorageKey) || {};
@@ -166,10 +165,16 @@
 		BX.frameCache.localStorage.set(localStorageKey, lsCache, lolalStorageTTL);
 	};
 
-	BX.frameCache.processData = function(block)
+	BX.frameCache.insertBlock = function(block, callback)
 	{
+		if (!BX.type.isFunction(callback))
+		{
+			callback = function() {};
+		}
+
 		if (!block)
 		{
+			callback();
 			return;
 		}
 
@@ -185,6 +190,7 @@
 			if (!dynamicStart || !dynamicEnd)
 			{
 				BX.debug("Dynamic area " + block.ID + " was not found");
+				callback();
 				return;
 			}
 		}
@@ -194,6 +200,7 @@
 			if (!container)
 			{
 				BX.debug("Container " + block.ID + " was not found");
+				callback();
 				return;
 			}
 		}
@@ -303,16 +310,18 @@
 			if (htmlWasInserted)
 			{
 				BX.ajax.processRequestData(block.CONTENT, {scriptsRunFirst: false, dataType: "HTML"});
-			}
 
-			if (BX.type.isArray(block.PROPS.BUNDLE_JS))
-			{
-				BX.setJSList(block.PROPS.BUNDLE_JS);
-			}
+				if (BX.type.isArray(block.PROPS.BUNDLE_JS))
+				{
+					BX.setJSList(block.PROPS.BUNDLE_JS);
+				}
 
-			if (BX.type.isArray(block.PROPS.BUNDLE_CSS))
-			{
-				BX.setCSSList(block.PROPS.BUNDLE_CSS);
+				if (BX.type.isArray(block.PROPS.BUNDLE_CSS))
+				{
+					BX.setCSSList(block.PROPS.BUNDLE_CSS);
+				}
+
+				callback();
 			}
 		}
 	};
@@ -354,7 +363,7 @@
 		if (!noInvoke)
 		{
 			BX.ready(BX.proxy(function() {
-				if (!this.frameData)
+				if (!this.frameDataReceived)
 				{
 					this.invokeCache();
 				}
@@ -412,8 +421,22 @@
 		var headers = [
 			{ name: "BX-ACTION-TYPE", value: "get_dynamic" },
 			{ name: "BX-REF", value: document.referrer },
-			{ name: "BX-CACHE-MODE", value: this.vars.CACHE_MODE }
+			{ name: "BX-CACHE-MODE", value: this.vars.CACHE_MODE },
+			{ name: "BX-CACHE-BLOCKS", value: this.vars.dynamicBlocks ? JSON.stringify(this.vars.dynamicBlocks) : "" }
 		];
+
+		if (this.vars.AUTO_UPDATE === false && this.vars.AUTO_UPDATE_TTL && this.vars.AUTO_UPDATE_TTL > 0)
+		{
+			var lastModified = Date.parse(document.lastModified);
+			if (!isNaN(lastModified))
+			{
+				var now = new Date().getTime();
+				if ((lastModified + this.vars.AUTO_UPDATE_TTL * 1000) < now)
+				{
+					headers.push({ name: "BX-INVALIDATE-CACHE", value: "Y" });
+				}
+			}
+		}
 
 		if (this.vars.CACHE_MODE === "APPCACHE")
 		{
@@ -461,7 +484,6 @@
 		try
 		{
 			eval("result = " + response);
-			this.frameData = result;
 		}
 		catch (e)
 		{
@@ -478,33 +500,35 @@
 			return;
 		}
 
-		if (this.frameData && BX.type.isNotEmptyString(this.frameData.redirect_url))
+		this.frameDataReceived = true;
+
+		if (result && BX.type.isNotEmptyString(result.redirect_url))
 		{
-			window.location = this.frameData.redirect_url;
+			window.location = result.redirect_url;
 			return;
 		}
 
-		if (this.frameData && this.frameData.error === true)
+		if (result && result.error === true)
 		{
 			BX.ready(BX.proxy(function() {
 				setTimeout(BX.proxy(function() {
-					BX.onCustomEvent("onFrameDataRequestFail", [this.frameData]);
+					BX.onCustomEvent("onFrameDataRequestFail", [result]);
 				}, this), 0);
 			}, this));
 
 			return;
 		}
 
-		BX.frameCache.setCompositeVars(this.frameData);
+		BX.frameCache.setCompositeVars(result);
 		BX.ready(BX.proxy(function() {
-			this.handleResponse(this.frameData);
+			this.handleResponse(result);
 			this.tryUpdateSessid();
 		}, this));
 	};
 
 	BX.frameCache.insertFromCache = function(resultSet, transaction)
 	{
-		if (!this.frameData)
+		if (!this.frameDataReceived)
 		{
 			var items = resultSet.items;
 			if (items.length > 0)
@@ -523,8 +547,7 @@
 
 	BX.frameCache.insertBlocks = function(blocks, fromCache)
 	{
-		var useHash = this.lastReplacedBlocks.length != 0;
-
+		var blocksToInsert = new Set();
 		for (var i = 0; i < blocks.length; i++)
 		{
 			var block = blocks[i];
@@ -535,27 +558,33 @@
 				continue;
 			}
 
-			var skip = false;
-			if (useHash)
-			{
-				for (var j = 0; j < this.lastReplacedBlocks.length; j++)
-				{
-					if (this.lastReplacedBlocks[j].ID == block.ID && this.lastReplacedBlocks[j].HASH == block.HASH)
-					{
-						skip = true;
-						break;
-					}
-				}
-			}
-
-			if (!skip)
-			{
-				this.processData(block)
-			}
+			blocksToInsert.add(block);
 		}
 
-		BX.onCustomEvent("onFrameDataProcessed", [blocks, fromCache]);
-		this.lastReplacedBlocks = blocks;
+		var inserted = 0;
+		var handleBlockInsertion = function() {
+			if (++inserted === blocksToInsert.size)
+			{
+				BX.onCustomEvent("onFrameDataProcessed", [blocks, fromCache]);
+			}
+		}.bind(this);
+
+		if (blocksToInsert.size === 0)
+		{
+			BX.onCustomEvent("onFrameDataProcessed", [blocks, fromCache]);
+		}
+		else
+		{
+			blocksToInsert.forEach(function(block) {
+
+				if (block && block.HASH && block.PROPS && block.PROPS.ID)
+				{
+					this.vars.dynamicBlocks[block.PROPS.ID] = block.HASH;
+				}
+
+				this.insertBlock(block, handleBlockInsertion);
+			}, this);
+		}
 	};
 
 	BX.frameCache.writeCache = function(blocks)

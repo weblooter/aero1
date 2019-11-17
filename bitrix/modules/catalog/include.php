@@ -191,6 +191,7 @@ Loader::registerAutoLoadClasses(
 		'\Bitrix\Catalog\Product\Search' => 'lib/product/search.php',
 		'\Bitrix\Catalog\Product\Sku' => 'lib/product/sku.php',
 		'\Bitrix\Catalog\Product\SubscribeManager' => 'lib/product/subscribemanager.php',
+		'\Bitrix\Catalog\Product\SystemField' => 'lib/product/systemfield.php',
 		'\Bitrix\Catalog\Product\Viewed' => 'lib/product/viewed.php',
 		'\Bitrix\Catalog\Update\AdminFilterOption' => 'lib/update/adminfilteroption.php',
 		'\Bitrix\Catalog\Update\AdminGridOption' => 'lib/update/admingridoption.php',

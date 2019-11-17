@@ -34,7 +34,6 @@ $MESS["IMAGE_EDITOR_ERROR_IMAGE_LOADING_ERROR"] = "Bild kann nicht geladen werde
 $MESS["IMAGE_EDITOR_ERROR_LOAD_STICKER"] = "Aufkleber \${path} kann nicht geladen werden";
 $MESS["IMAGE_EDITOR_ERROR_RENDERING_ERROR_DESCRIPTION"] = "Fehler bei Bildwiedergabe";
 $MESS["IMAGE_EDITOR_ERROR_UNSUPPORTED_FILE_TYPE"] = "Dateien \${fileType} werden nicht unterstützt";
-$MESS["IMAGE_EDITOR_ERROR_WEBCAM_NOT_SUPPORTED"] = "Ihr Browser unterstützt keine Kamera";
 $MESS["IMAGE_EDITOR_ERROR_WEBCAM_UNAVAILABLE"] = "Webkamera ist nicht verfügbar";
 $MESS["IMAGE_EDITOR_EXPORT"] = "Anwenden";
 $MESS["IMAGE_EDITOR_EXPORTING"] = "Wird exportiert...";

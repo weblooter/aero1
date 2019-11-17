@@ -11,7 +11,7 @@ $this->setFrameMode(true);
 
 $filter = Toolbar::getFilter();
 $rightButtons = Toolbar::renderRightButtons();
-$filterButtons = Toolbar::renderFilterRightButtons();
+$filterButtons = Toolbar::renderAfterFilterButtons();
 $favoriteStar = Toolbar::hasFavoriteStar()? '<span class="ui-toolbar-star" id="uiToolbarStar"></span>' : '';
 
 $titleProps = "";
@@ -52,6 +52,6 @@ $titleStyles = !empty($titleProps) ? ' style="'.$titleProps.'"' : "";
 			return $button->getUniqId();
 		}, Toolbar::getButtons()),
     ])?>,
-		targetContainer = document.querySelector('.ui-toolbar')
+		targetContainer = document.getElementById('uiToolbarContainer')
 	);
 </script>

@@ -387,6 +387,25 @@ class ShipmentItemCollection
 	}
 
 	/**
+	 * @return float
+	 * @throws Main\ArgumentNullException
+	 */
+	public function getWeight() : float
+	{
+		$weight = 0;
+
+		/** @var ShipmentItem $shipmentItem */
+		foreach ($this->getShippableItems() as $shipmentItem)
+		{
+			$basketItem = $shipmentItem->getBasketItem();
+
+			$weight += $basketItem->getWeight() * $shipmentItem->getQuantity();
+		}
+
+		return $weight;
+	}
+
+	/**
 	 * @return Shipment
 	 */
 	public function getShipment()
@@ -747,6 +766,17 @@ class ShipmentItemCollection
 			}
 
 			return $result;
+		}
+		elseif ($action === EventActions::UPDATE)
+		{
+			$shipmentItem = $this->getItemByBasketCode($basketItem->getBasketCode());
+
+			if (!$shipmentItem)
+			{
+				$shipmentItem = $this->createItem($basketItem);
+			}
+
+			$shipmentItem->setField('QUANTITY', $value);
 		}
 
 		return $result;

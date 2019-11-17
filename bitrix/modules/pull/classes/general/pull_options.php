@@ -128,8 +128,13 @@ class CPullOptions
 	}
 	public static function SetQueueServerStatus($flag = "N")
 	{
-		COption::SetOptionString("pull", "nginx", $flag=='Y'?'Y':'N');
+		$currentValue = COption::GetOptionString("pull", "nginx");
+		if($currentValue === $flag)
+		{
+			return true;
+		}
 
+		COption::SetOptionString("pull", "nginx", $flag=='Y'?'Y':'N');
 		if ($flag=='Y')
 		{
 			CAgent::AddAgent("CPullChannel::CheckOnlineChannel();", "pull", "N", 240, "", "Y", ConvertTimeStamp(time()+CTimeZone::GetOffset()+240, "FULL"));

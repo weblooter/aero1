@@ -1,6 +1,7 @@
 <?php
 use Bitrix\Main,
 	Bitrix\Main\EventManager,
+	Bitrix\Main\Loader,
 	Bitrix\Main\Localization\Loc,
 	Bitrix\Main\ModuleManager,
 	Bitrix\Main\Localization\LanguageTable;
@@ -185,8 +186,17 @@ class catalog extends CModule
 			 * Remove this code after migration rest catalog events to d7 events.
 			 */
 			Main\Config\Option::set('catalog', 'enable_processing_deprecated_events', 'Y', '');
-			\Bitrix\Catalog\Compatible\EventCompatibility::registerEvents();
+			if (Main\Loader::includeModule('catalog'))
+			{
+				\Bitrix\Catalog\Compatible\EventCompatibility::registerEvents();
+			}
+			else
+			{
+				Main\Update\Stepper::bindClass('\Bitrix\Catalog\Compatible\EventCompatibility', 'catalog', 1);
+			}
 		}
+
+		Main\Update\Stepper::bindClass('\Bitrix\Catalog\Product\SystemField', 'catalog', 60);
 
 		$this->InstallTasks();
 

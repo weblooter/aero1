@@ -85,6 +85,7 @@ $arFilterFields = array(
 	"filter_buyer",
 	"filter_product_id",
 	"filter_product_xml_id",
+	"filter_catalog_xml_id",
 	"filter_affiliate_id",
 	"filter_discount_coupon",
 	"filter_person_type",
@@ -471,28 +472,39 @@ if(!empty($filter_delivery_service) && is_array($filter_delivery_service))
 	}
 }
 
-if(!empty($filter_product_id) || !empty($filter_product_xml_id))
+if(!empty($filter_product_id) || !empty($filter_product_xml_id)|| !empty($filter_catalog_xml_id))
 {
-
 	$whereExpression = "";
 	if (intval($filter_product_id) > 0)
 	{
 		$whereExpression .= "(PRODUCT_ID = ".intval($filter_product_id);
 	}
 
-	if (strval(trim($filter_product_xml_id)) != "")
+	$filterProductFields = [
+		'PRODUCT_XML_ID' => $filter_product_xml_id,
+		'CATALOG_XML_ID' => $filter_catalog_xml_id
+	];
+
+	foreach ($filterProductFields as $code=>$filterValue)
 	{
-		if($whereExpression == "")
-			$whereExpression .= "(";
-		else
-			$whereExpression .= " AND ";
+		if (strval(trim($filterValue)) != "")
+		{
+			if ($whereExpression == "")
+			{
+				$whereExpression .= "(";
+			}
+			else
+			{
+				$whereExpression .= " AND ";
+			}
 
-		/** @var \Bitrix\Main\DB\Connection $connection */
-		$connection = \Bitrix\Main\Application::getConnection();
-		/** @var \Bitrix\Main\DB\SqlHelper $sqlHelper */
-		$sqlHelper = $connection->getSqlHelper();
+			/** @var \Bitrix\Main\DB\Connection $connection */
+			$connection = \Bitrix\Main\Application::getConnection();
+			/** @var \Bitrix\Main\DB\SqlHelper $sqlHelper */
+			$sqlHelper = $connection->getSqlHelper();
 
-		$whereExpression .= "PRODUCT_XML_ID = '".$sqlHelper->forSql($filter_product_xml_id)."'";
+			$whereExpression .= "{$code} = '".$sqlHelper->forSql($filterValue)."'";
+		}
 	}
 
 	if(strval($whereExpression) != "")
@@ -3527,6 +3539,7 @@ else
 			"filter_group_id" => Loc::getMessage("SALE_F_USER_GROUP_ID"),
 			"filter_product_id" => Loc::getMessage("SO_PRODUCT_ID"),
 			"filter_product_xml_id" => Loc::getMessage("SO_PRODUCT_XML_ID"),
+			"filter_catalog_xml_id" => Loc::getMessage("SOA_BASKET_CATALOG_XML_ID"),
 			"filter_affiliate_id" => Loc::getMessage("SO_AFFILIATE_ID"),
 			"filter_coupon" => Loc::getMessage("SALE_ORDER_LIST_HEADER_NAME_COUPONS"),
 			"filter_sum_paid" => Loc::getMessage("SO_SUM_PAID"),
@@ -4010,6 +4023,10 @@ else
 		<tr>
 			<td><?= Loc::getMessage("SO_PRODUCT_XML_ID") ?>:</td>
 			<td><input name="filter_product_xml_id" value="<?= htmlspecialcharsbx($filter_product_xml_id) ?>" size="40" type="text"></td>
+		</tr>
+		<tr>
+			<td><?= Loc::getMessage("SOA_BASKET_CATALOG_XML_ID") ?>:</td>
+			<td><input name="filter_catalog_xml_id" value="<?= htmlspecialcharsbx($filter_catalog_xml_id) ?>" size="40" type="text"></td>
 		</tr>
 		<tr>
 			<td><?= Loc::getMessage("SO_AFFILIATE_ID") ?>:</td>

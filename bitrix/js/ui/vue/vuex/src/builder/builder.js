@@ -130,30 +130,9 @@ export class VuexBuilder
 
 	clearDatabase()
 	{
-		var results = [];
+		this.models.forEach(model => model.clearDatabase());
 
-		this.models.forEach(model => {
-			results.push(model.clearDatabase());
-		});
-
-		return new Promise((resolve, reject) =>
-		{
-			Promise.all(results).then(stores =>
-			{
-				resolve(true);
-				if (typeof callback === 'function')
-				{
-					callback(true);
-				}
-			}, error =>
-			{
-				console.error('BX.VuexBuilder.clearModelState: storage was not clear due to runtime errors.', error? error: '');
-				if (typeof callback !== 'function')
-				{
-					reject('ERROR_WHILE_CLEARING');
-				}
-			});
-		});
+		return new Promise((resolve, reject) => resolve(true));
 	}
 
 	/**

@@ -18,6 +18,7 @@ use Bitrix\Sale\Result;
 use Bitrix\Sale\Shipment;
 use Bitrix\Sale\ShipmentCollection;
 use Bitrix\Sale\ShipmentItem;
+use Bitrix\Sale\ShipmentItemStore;
 
 /**
  * Class Check
@@ -471,30 +472,37 @@ abstract class Check
 			'date_create' => new Main\Type\DateTime()
 		);
 
-		$entitiesData = $this->extractData();
+		$data = $this->extractData();
 
-		if ($entitiesData)
+		if ($data)
 		{
-			if (isset($entitiesData['ORDER']))
+			if (isset($data['ORDER']))
 			{
-				$result['order'] = $entitiesData['ORDER'];
+				$result['order'] = $data['ORDER'];
 			}
 
-			foreach ($entitiesData['PAYMENTS'] as $payment)
+			foreach ($data['PAYMENTS'] as $payment)
 			{
-				$result['payments'][] = array(
+				$item = [
 					'entity' => $payment['ENTITY'],
 					'type' => $payment['TYPE'],
 					'is_cash' => $payment['IS_CASH'],
 					'sum' => $payment['SUM']
-				);
+				];
+
+				if (isset($payment['ADDITIONAL_PARAMS']))
+				{
+					$item['additional_params'] = $payment['ADDITIONAL_PARAMS'];
+				}
+
+				$result['payments'][] = $item;
 			}
 
-			if (isset($entitiesData['PRODUCTS']))
+			if (isset($data['PRODUCTS']))
 			{
-				foreach ($entitiesData['PRODUCTS'] as $product)
+				foreach ($data['PRODUCTS'] as $product)
 				{
-					$item = array(
+					$item = [
 						'entity' => $product['ENTITY'],
 						'name' => $product['NAME'],
 						'base_price' => $product['BASE_PRICE'],
@@ -503,25 +511,35 @@ abstract class Check
 						'quantity' => $product['QUANTITY'],
 						'vat' => $product['VAT'],
 						'payment_object' => $product['PAYMENT_OBJECT'],
-					);
+					];
+
+					if (isset($product['NOMENCLATURE_CODE']))
+					{
+						$item['nomenclature_code'] = $product['NOMENCLATURE_CODE'];
+					}
 
 					if ($product['DISCOUNT'])
 					{
-						$item['discount'] = array(
+						$item['discount'] = [
 							'discount' => $product['DISCOUNT']['PRICE'],
 							'discount_type' => $product['DISCOUNT']['TYPE'],
-						);
+						];
+					}
+
+					if (isset($product['ADDITIONAL_PARAMS']))
+					{
+						$item['additional_params'] = $product['ADDITIONAL_PARAMS'];
 					}
 
 					$result['items'][] = $item;
 				}
 			}
 
-			if (isset($entitiesData['DELIVERY']))
+			if (isset($data['DELIVERY']))
 			{
-				foreach ($entitiesData['DELIVERY'] as $delivery)
+				foreach ($data['DELIVERY'] as $delivery)
 				{
-					$item = array(
+					$item = [
 						'entity' => $delivery['ENTITY'],
 						'name' => $delivery['NAME'],
 						'base_price' => $delivery['BASE_PRICE'],
@@ -530,30 +548,40 @@ abstract class Check
 						'quantity' => $delivery['QUANTITY'],
 						'vat' => $delivery['VAT'],
 						'payment_object' => $delivery['PAYMENT_OBJECT'],
-					);
+					];
 
 					if ($delivery['DISCOUNT'])
 					{
-						$item['discount'] = array(
+						$item['discount'] = [
 							'discount' => $delivery['DISCOUNT']['PRICE'],
 							'discount_type' => $delivery['DISCOUNT']['TYPE'],
-						);
+						];
+					}
+
+					if (isset($delivery['ADDITIONAL_PARAMS']))
+					{
+						$item['additional_params'] = $delivery['ADDITIONAL_PARAMS'];
 					}
 
 					$result['items'][] = $item;
 				}
 			}
 
-			if (isset($entitiesData['BUYER']))
+			if (isset($data['BUYER']))
 			{
-				if (isset($entitiesData['BUYER']['EMAIL']))
-					$result['client_email'] = $entitiesData['BUYER']['EMAIL'];
+				if (isset($data['BUYER']['EMAIL']))
+					$result['client_email'] = $data['BUYER']['EMAIL'];
 
-				if (isset($entitiesData['BUYER']['PHONE']))
-					$result['client_phone'] = $entitiesData['BUYER']['PHONE'];
+				if (isset($data['BUYER']['PHONE']))
+					$result['client_phone'] = $data['BUYER']['PHONE'];
 			}
 
-			$result['total_sum'] = $entitiesData['TOTAL_SUM'];
+			if (isset($data['ADDITIONAL_PARAMS']))
+			{
+				$result['additional_params'] = $data['ADDITIONAL_PARAMS'];
+			}
+
+			$result['total_sum'] = $data['TOTAL_SUM'];
 		}
 
 		return $result;
@@ -648,7 +676,38 @@ abstract class Check
 						}
 					}
 
-					$result['PRODUCTS'][] = $item;
+					if ($basketItem->isSupportedMarkingCode())
+					{
+						$item['QUANTITY'] = 1;
+						$item['SUM'] = $basketItem->getPriceWithVat();
+
+						$shipmentItem->getShipmentItemStoreCollection()->rewind();
+
+						$storeCollection = $shipmentItem->getShipmentItemStoreCollection();
+						for ($i = $basketItem->getQuantity(); $i > 0; $i--)
+						{
+							$markingCode = '';
+
+							/** @var ShipmentItemStore $itemStore */
+							if ($itemStore = $storeCollection->current())
+							{
+								$markingCode = $this->buildTag1162(
+									$itemStore->getMarkingCode(),
+									$basketItem->getMarkingCodeGroup()
+								);
+
+								$storeCollection->next();
+							}
+
+							$item['NOMENCLATURE_CODE'] = $markingCode;
+
+							$result['PRODUCTS'][] = $item;
+						}
+					}
+					else
+					{
+						$result['PRODUCTS'][] = $item;
+					}
 				}
 
 				$priceDelivery = (float)$entity->getPrice();
@@ -716,6 +775,89 @@ abstract class Check
 	}
 
 	/**
+	 * @param string $markingCode
+	 * @param string $markingCodeGroup
+	 * @return string
+	 */
+	protected function buildTag1162(string $markingCode, string $markingCodeGroup) : string
+	{
+		list($gtin, $serial, ) = $this->parseMarkingCode($markingCode);
+
+		return
+			$this->convertToBinaryFormat($markingCodeGroup, 2).' '.
+			$this->convertToBinaryFormat($gtin, 6).' '.
+			$this->convertCharsToHex($serial);
+	}
+
+	/**
+	 * @param $code
+	 * @return array
+	 */
+	private function parseMarkingCode(string $code) : array
+	{
+		$gtin = substr($code, 0, 14);
+		$serial = substr($code, 14, 13);
+		$reserve = substr($code, 27);
+
+		return [$gtin, $serial, $reserve];
+	}
+
+	/**
+	 * @param $string
+	 * @param $size
+	 * @return string
+	 */
+	protected function convertToBinaryFormat($string, $size) : string
+	{
+		$result = '';
+
+		for ($i = 0; $i < $size; $i++)
+		{
+			$hex = dechex(($string >> (8 * $i)) & 0xFF);
+			if (strlen($hex) === 1)
+			{
+				$hex = '0'.$hex;
+			}
+
+			if ($i !== 0)
+			{
+				$result = ' '.$result;
+			}
+
+			$result = ToUpper($hex).$result;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param $string
+	 * @return string
+	 */
+	protected function convertCharsToHex($string) : string
+	{
+		$result = '';
+
+		for ($i = 0, $len = strlen($string); $i < $len; $i++)
+		{
+			$hex = dechex(ord($string[$i]));
+			if (strlen($hex) === 1)
+			{
+				$hex = '0'.$hex;
+			}
+
+			$result .= ToUpper($hex);
+
+			if ($i !== $len - 1)
+			{
+				$result .= ' ';
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @return array|null
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
@@ -755,7 +897,6 @@ abstract class Check
 	 * @throws Main\ArgumentOutOfRangeException
 	 * @throws Main\ArgumentTypeException
 	 * @throws Main\LoaderException
-	 * @throws Main\NotImplementedException
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
@@ -804,6 +945,7 @@ abstract class Check
 	 * @return int
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\SystemException
 	 */
 	protected function getDeliveryVatId(Shipment $shipment)
 	{
@@ -920,6 +1062,35 @@ abstract class Check
 		if (!isset($data['PRODUCTS']))
 		{
 			$result->addError(new Main\Error(Main\Localization\Loc::getMessage('SALE_CASHBOX_CHECK_ERROR_NO_PRODUCTS')));
+		}
+		else
+		{
+			$errors = [];
+
+			foreach ($data['PRODUCTS'] as $product)
+			{
+				if (isset($product['NOMENCLATURE_CODE']) && $product['NOMENCLATURE_CODE'] === '')
+				{
+					if (isset($errors[$product['PRODUCT_ID']]))
+					{
+						continue;
+					}
+
+					$errors[$product['PRODUCT_ID']] = new Main\Error(
+						Main\Localization\Loc::getMessage(
+							'SALE_CASHBOX_CHECK_ERROR_NO_NOMENCLATURE_CODE',
+							[
+								'#PRODUCT_NAME#' => $product['NAME']
+							]
+						)
+					);
+				}
+			}
+
+			if ($errors)
+			{
+				$result->addErrors($errors);
+			}
 		}
 
 		if (!$this->isCorrectSum($data))

@@ -48,7 +48,8 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
             $rsElems = \CIBlockElement::GetList(['SORT' => 'ASC'],
                 [
                     'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'),
-                    'ACTIVE' => 'Y'
+                    'ACTIVE' => 'Y',
+                    '!PROPERTY_SHOW_ON_INDEX' => false
                 ],
                 false,
                 false,

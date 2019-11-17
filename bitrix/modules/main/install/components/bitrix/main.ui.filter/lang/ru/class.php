@@ -40,4 +40,5 @@ $MESS["MAIN_UI_FILTER__DATE_NEXT_DAYS_LABEL"] = "Следующие #N# (дня/
 $MESS["MAIN_UI_FILTER__DATE_PREV_DAYS_LABEL"] = "Последние #N# (дня/дней)";
 $MESS["MAIN_UI_FILTER__DATE_ERROR_LABEL"] = "Укажите дату в формате";
 $MESS["MAIN_UI_FILTER__DATE_ERROR_TITLE"] = "Фильтр по этому полю работать не будет.";
+$MESS["MAIN_UI_FILTER__VALUE_REQUIRED"] = "Поле должно быть заполнено";
 ?>

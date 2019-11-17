@@ -8,6 +8,8 @@ class CReport
 		'SUM', 'COUNT_DISTINCT', 'AVG', 'MAX', 'MIN'
 	];
 
+	protected static $alternateColumnPhrases = null;
+
 	public static $iBlockCompareVariations = array(
 		'EQUAL' => '=',
 		'GREATER_OR_EQUAL' => '>=',
@@ -17,7 +19,9 @@ class CReport
 		'NOT_EQUAL' => '!',
 		'START_WITH' => '>%',
 		'CONTAINS' => '%',
-		'NOT_CONTAINS' => '!%'
+		'NOT_CONTAINS' => '!%',
+		'BETWEEN' => '><',
+		'NOT_BETWEEN' => '!><'
 	);
 
 	public static function Add($settings)
@@ -304,6 +308,56 @@ class CReport
 		return $chains;
 	}
 
+	protected static function initializeAlternateColumnPhrases($helperClass)
+	{
+		if (static::$alternateColumnPhrases === null)
+		{
+			static::$alternateColumnPhrases = [];
+			
+			if (is_string($helperClass)
+				&& $helperClass !== ''
+				&& method_exists($helperClass, 'getAlternatePhrasesOfColumns'))
+			{
+				$phrases = call_user_func([$helperClass, 'getAlternatePhrasesOfColumns']);
+				if (is_array($phrases))
+				{
+					static::$alternateColumnPhrases[$helperClass] = $phrases;
+				}
+				else
+				{
+					static::$alternateColumnPhrases[$helperClass] = [];
+				}
+			}
+		}
+	}
+
+	public static function isAlternateColumnPhraseExists($helperClass, $messageCode)
+	{
+		static::initializeAlternateColumnPhrases($helperClass);
+
+		$result = false;
+
+		if (is_string($helperClass) && $helperClass !== ''
+			&& is_array(static::$alternateColumnPhrases[$helperClass])
+			&& isset(static::$alternateColumnPhrases[$helperClass][$messageCode]))
+		{
+			$result = true;
+		}
+
+		return $result;
+	}
+
+	public static function getAlternateColumnPhrase($helperClass, $messageCode)
+	{
+		$result = '';
+
+		if (static::isAlternateColumnPhraseExists($helperClass, $messageCode))
+		{
+			$result = static::$alternateColumnPhrases[$helperClass][$messageCode];
+		}
+
+		return $result;
+	}
 
 	public static function generateColumnTree($chains, $initEntity, $helper_class, $level = 0)
 	{
@@ -365,20 +419,18 @@ class CReport
 		return $tree;
 	}
 
-	protected static function attachLangToColumnTree(&$tree, $initEntity, $helper_class, $preTitle = array())
+	protected static function attachLangToColumnTree(&$tree, $initEntity, $helperClass, $preTitle = array())
 	{
-		$arUFInfo = call_user_func(array($helper_class, 'getUFInfo'));
-
 		foreach($tree as &$treeElem)
 		{
-			$ownerId = call_user_func(array($helper_class, 'getOwnerId'));
+			$ownerId = call_user_func(array($helperClass, 'getOwnerId'));
 
 			$humanTitle = '';
 
 			if (!empty($treeElem['field']))
 			{
 				// detect UF
-				$arUF = call_user_func(array($helper_class, 'detectUserField'), $treeElem['field']);
+				$arUF = call_user_func(array($helperClass, 'detectUserField'), $treeElem['field']);
 				if ($arUF['isUF'])
 				{
 					$treeElem['isUF'] = true;
@@ -393,9 +445,34 @@ class CReport
 				// second: entity-defined lang
 				$eElementTitle = $treeElem['field']->getLangCode();
 
-				//$elementTitle = HasMessage($rElementTitle) ? $rElementTitle : $eElementTitle;
-				$elementMessage = GetMessage($rElementTitle);
-				$elementTitle = (!empty($elementMessage)) ? $rElementTitle : $eElementTitle;
+				// PRCNT hack should not be here
+				if (substr($rElementTitle, -12) === '_PRCNT_FIELD')
+				{
+					$messageCode = substr($rElementTitle, 0, -12).'_FIELD';
+				}
+				else
+				{
+					$messageCode = $rElementTitle;
+				}
+
+				if (static::isAlternateColumnPhraseExists($helperClass, $messageCode))
+				{
+					$elementTitle = $rElementTitle;
+				}
+				else
+				{
+					$elementMessage = GetMessage($messageCode);
+					if (is_string($elementMessage) && $elementMessage !== '')
+					{
+						$elementTitle = $rElementTitle;
+					}
+					else
+					{
+						$elementTitle = $eElementTitle;
+					}
+				}
+
+				unset($messageCode);
 			}
 			else
 			{
@@ -407,17 +484,28 @@ class CReport
 			if (!isset($treeElem['isUF']) || !$treeElem['isUF'])
 			{
 				// PRCNT hack should not be here
-				if (substr($elementTitle, -12) == '_PRCNT_FIELD')
+				if (substr($elementTitle, -12) === '_PRCNT_FIELD')
 				{
-					$humanTitle = GetMessage(substr($elementTitle, 0, -12).'_FIELD');
+					$messageCode = substr($elementTitle, 0, -12).'_FIELD';
 				}
 				else
 				{
-					$humanTitle = GetMessage($elementTitle);
+					$messageCode = $elementTitle;
 				}
+
+				if (static::isAlternateColumnPhraseExists($helperClass, $messageCode))
+				{
+					$humanTitle = static::getAlternateColumnPhrase($helperClass, $messageCode);
+				}
+				else
+				{
+					$humanTitle = GetMessage($messageCode);
+				}
+
+				unset($messageCode);
 			}
 
-			if (empty($humanTitle))
+			if (!is_string($humanTitle) || $humanTitle === '')
 			{
 				$humanTitle = $treeElem['fieldName'];
 			}
@@ -446,7 +534,7 @@ class CReport
 
 				$sendPreTitle = array($humanTitle);
 
-				self::attachLangToColumnTree($treeElem['branch'], $initEntity, $helper_class, $sendPreTitle);
+				self::attachLangToColumnTree($treeElem['branch'], $initEntity, $helperClass, $sendPreTitle);
 			}
 		}
 	}

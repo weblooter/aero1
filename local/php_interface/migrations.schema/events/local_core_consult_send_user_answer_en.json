@@ -1,0 +1,60 @@
+{
+    "event": "LOCAL_CORE_CONSULT_SEND_USER_ANSWER",
+    "type": {
+        "LID": "en",
+        "EVENT_TYPE": "email",
+        "NAME": "",
+        "DESCRIPTION": [
+            ""
+        ],
+        "SORT": "150"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#EMAIL#",
+            "SUBJECT": "#SITE_NAME#: Ответ на обращение в клинику Селин",
+            "MESSAGE": [
+                "Уважаемый(ая), #FIO#!<br>\r",
+                " <br>\r",
+                " На вопрос, который Вы задавали на сайте dr-vedrov.ru ответил хирург.<br>\r",
+                " <br>\r",
+                " Ваш вопрос: “#QUESTION#”<br>\r",
+                " <br>\r",
+                " Ответ доктора:<br>\r",
+                " <a href=\"https:\/\/dr-vedrov.ru#ANSWER_LINK#?utm_source=mail&utm_medium=consultation\" target=\"_blank\">Посмотреть ответ на сайте<\/a><br>\r",
+                " <br>\r",
+                " <br>\r",
+                " Спасибо Вам за обращение!<br>\r",
+                " <br>\r",
+                " __________________________________________<br>\r",
+                " <br>\r",
+                " Ведров Олег Вячеславович - пластический хирург <br>\r",
+                " тел: +7 (499) 499-49-49<br>\r",
+                " почта: dr.vedrov@gmail.com<br>\r",
+                " адрес: г. Москва, ……...<br>\r",
+                " сайт: <a href=\"https:\/\/dr-vedrov.ru\/?utm_source=mail&utm_medium=consultation\" target=\"_blank\">https:\/\/dr-vedrov.ru\/<\/a><br>\r",
+                " <br>\r",
+                " Письмо сформировано автоматически<br>"
+            ],
+            "BODY_TYPE": "html",
+            "BCC": "",
+            "REPLY_TO": "",
+            "CC": "",
+            "IN_REPLY_TO": "",
+            "PRIORITY": "",
+            "FIELD1_NAME": "",
+            "FIELD1_VALUE": "",
+            "FIELD2_NAME": "",
+            "FIELD2_VALUE": "",
+            "SITE_TEMPLATE_ID": "",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": "",
+            "EVENT_TYPE": "[ LOCAL_CORE_CONSULT_SEND_USER_ANSWER ] LocalCore: Отправить пользователю ответ на вопрос из консультации"
+        }
+    ]
+}

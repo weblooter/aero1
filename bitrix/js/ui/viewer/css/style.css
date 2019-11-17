@@ -363,6 +363,8 @@
 	color: rgba(255,255,255,.8);
 	border-bottom: 1px solid rgba(255,255,255,.4);
 	transition: .1s;
+	font-size: 28px;
+	text-decoration: none;
 }
 
 .ui-viewer-error-title a:hover,
@@ -410,6 +412,8 @@
 	color: rgba(255,255,255,.8);
 	border-bottom: 1px solid rgba(255,255,255,.3);
 	transition: .1s;
+	font-size: 13px;
+	text-decoration: none;
 }
 
 .ui-viewer-error-text a:hover,

@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc;
 
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
  * Class WelcomeStep
  * Step with welcome information
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class WelcomeStep extends \CWizardStep
 {
@@ -21,7 +21,7 @@ class WelcomeStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -38,7 +38,7 @@ class WelcomeStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -85,17 +85,17 @@ class WelcomeStep extends \CWizardStep
 
 		ob_start();
 		?>
-		<img class="adm-site-master-attention" src="<?=$this->component->getPath()?>/wizard/images/attention.svg" alt="">
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR1")?></div>
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_ITEMS")?></div>
+		<img class="adm-crm-site-master-attention" src="<?=$this->component->getPath()?>/wizard/images/attention.svg" alt="">
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR1")?></div>
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_ITEMS")?></div>
 
-		<ul class="adm-site-master-list">
-			<li class="adm-site-master-list-item step-list-item-1"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM1")?></li>
-			<li class="adm-site-master-list-item step-list-item-2"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM2")?></li>
-			<li class="adm-site-master-list-item step-list-item-3"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM3")?></li>
+		<ul class="adm-crm-site-master-list">
+			<li class="adm-crm-site-master-list-item step-list-item-1"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM1")?></li>
+			<li class="adm-crm-site-master-list-item step-list-item-2"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM2")?></li>
+			<li class="adm-crm-site-master-list-item step-list-item-3"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_ITEM3")?></li>
 		</ul>
 
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_DESCR2")?></div>
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_WELCOMESTEP_DESCR_DESCR2")?></div>
 		<?
 		$content = ob_get_contents();
 		ob_end_clean();

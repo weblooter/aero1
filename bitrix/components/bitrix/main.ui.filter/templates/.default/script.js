@@ -2096,8 +2096,10 @@ this.BX = this.BX || {};
 	      var value, tmpValues, title;
 	      var result = [];
 	      fields = fields.filter(function (current) {
-	        return !!current;
-	      });
+	        return !!current && this.parent.params.FIELDS.some(function (currentField) {
+	          return current.NAME === currentField.NAME;
+	        });
+	      }, this);
 	      fields.map(function (current) {
 	        value = null;
 
@@ -3124,10 +3126,22 @@ this.BX = this.BX || {};
 	     */
 	    getFieldByName: function getFieldByName(name) {
 	      var fields = this.getParam('FIELDS');
-	      fields = fields.filter(function (current) {
+	      var field = fields.find(function (current) {
 	        return current.NAME === name;
-	      }, this);
-	      return fields.length > 0 ? fields[0] : null;
+	      });
+
+	      if (field) {
+	        return field;
+	      }
+
+	      var node = this.getFieldListContainer().querySelector('[data-name="' + name + '"]');
+	      field = BX.Filter.Field.instances.get(node);
+
+	      if (field) {
+	        return field.options;
+	      }
+
+	      return null;
 	    },
 
 	    /**
@@ -4080,7 +4094,13 @@ this.BX = this.BX || {};
 	        });
 	      }
 	    },
-	    prepareControlDateValue: function prepareControlDateValue(values, name, field) {
+	    prepareControlDateValue: function prepareControlDateValue(values, name, field, withAdditional) {
+	      var additionalFieldsContainer = field.querySelector('.main-ui-filter-additional-fields-container');
+
+	      if (additionalFieldsContainer && !withAdditional) {
+	        BX.remove(additionalFieldsContainer);
+	      }
+
 	      var select = BX.Filter.Utils.getByClass(field, this.settings.classSelect);
 	      var yearsSwitcher = field.querySelector(".main-ui-select[data-name*=\"_allow_year\"]");
 	      var selectName = name + this.settings.datePostfix;
@@ -4226,12 +4246,16 @@ this.BX = this.BX || {};
 	          }
 	      }
 
+	      if (additionalFieldsContainer && !withAdditional) {
+	        BX.append(additionalFieldsContainer, field);
+	      }
+
 	      var additionalFields = Array.from(field.querySelectorAll('.main-ui-filter-additional-fields-container > [data-type="DATE"]'));
 
 	      if (additionalFields) {
 	        additionalFields.forEach(function (additionalField) {
 	          var name = additionalField.dataset.name;
-	          this.prepareControlDateValue(values, name, additionalField);
+	          this.prepareControlDateValue(values, name, additionalField, true);
 	        }, this);
 	      }
 	    },
@@ -4882,25 +4906,24 @@ this.BX = this.BX || {};
 	      }
 	    },
 	    _onFindButtonClick: function _onFindButtonClick() {
-	      var Preset = this.getPreset();
-	      var currentPresetId = Preset.getCurrentPresetId();
+	      var presets = this.getPreset();
+	      var currentPresetId = presets.getCurrentPresetId();
 	      var promise;
 
-	      if (currentPresetId !== 'tmp_filter' && currentPresetId !== 'default_filter' && !Preset.isPresetValuesModified(currentPresetId)) {
-	        var preset = Preset.getPreset(currentPresetId);
-	        var additional = Preset.getAdditionalValues(currentPresetId);
-	        var rows = Preset.getFields().map(function (current) {
+	      if (currentPresetId !== 'tmp_filter' && currentPresetId !== 'default_filter' && !presets.isPresetValuesModified(currentPresetId)) {
+	        var preset = presets.getPreset(currentPresetId);
+	        var additional = presets.getAdditionalValues(currentPresetId);
+	        var rows = presets.getFields().map(function (current) {
 	          return BX.data(current, 'name');
 	        });
 	        preset.ADDITIONAL = this.preparePresetFields(additional, rows);
 	        preset.ADDITIONAL = preset.ADDITIONAL.filter(function (field) {
 	          return !this.getPreset().isEmptyField(field);
 	        }, this);
-	        Preset.applyPreset(currentPresetId);
 	        promise = this.applyFilter(false, currentPresetId);
 	        this.closePopup();
 	      } else {
-	        Preset.deactivateAllPresets();
+	        presets.deactivateAllPresets();
 	        promise = this.applyFilter();
 	        this.closePopup();
 	      }
@@ -5420,6 +5443,10 @@ this.BX = this.BX || {};
 	      }
 
 	      return '';
+	    },
+	    getField: function getField(name) {
+	      var node = this.getFieldListContainer().querySelector('[data-name="' + name + '"]');
+	      return BX.Filter.Field.instances.get(node);
 	    }
 	  };
 	})();
@@ -5453,6 +5480,7 @@ this.BX = this.BX || {};
 
 	  return data;
 	}
+	var onValueChange = Symbol('onValueChange');
 	var Field =
 	/*#__PURE__*/
 	function (_Event$EventEmitter) {
@@ -5463,21 +5491,49 @@ this.BX = this.BX || {};
 
 	    babelHelpers.classCallCheck(this, Field);
 	    _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Field).call(this, options));
-	    _this.id = options.NAME;
+	    _this.id = options.options.NAME;
 	    _this.parent = options.parent;
 	    _this.node = options.node;
 	    _this.options = babelHelpers.objectSpread({}, options.options);
 	    _this.cache = new main_core.Cache.MemoryCache();
+	    _this[onValueChange] = _this[onValueChange].bind(babelHelpers.assertThisInitialized(_this));
+	    main_core.Event.bind(_this.node, 'input', _this[onValueChange]);
+	    main_core.Event.bind(_this.node, 'change', _this[onValueChange]);
+	    var clearButtons = babelHelpers.toConsumableArray(_this.node.querySelectorAll('.main-ui-control-value-delete'));
+	    clearButtons.forEach(function (button) {
+	      button.addEventListener('click', function () {
+	        setTimeout(function () {
+	          _this[onValueChange]();
+	        });
+	      });
+	    });
+	    var MO = new MutationObserver(function () {
+	      _this[onValueChange]();
+	    });
+	    var selects = babelHelpers.toConsumableArray(_this.node.querySelectorAll('.main-ui-select'));
+	    selects.forEach(function (select) {
+	      MO.observe(select, {
+	        attributeFilter: ['data-value']
+	      });
+	    });
 	    Field.instances.set(_this.node, babelHelpers.assertThisInitialized(_this));
 	    return _this;
 	  }
-	  /**
-	   * @private
-	   * @return {HTMLDivElement}
-	   */
-
 
 	  babelHelpers.createClass(Field, [{
+	    key: onValueChange,
+	    value: function value() {
+	      this.emit('BX.Filter.Field:change', {
+	        field: this,
+	        value: this.getValue()
+	      });
+	    }
+	    /**
+	     * @private
+	     * @return {HTMLDivElement}
+	     */
+
+	  }, {
 	    key: "getAdditionalFieldContainer",
 	    value: function getAdditionalFieldContainer() {
 	      return this.cache.remember('additionalFieldsContainer', function () {
@@ -5551,7 +5607,8 @@ this.BX = this.BX || {};
 	          var baseField = babelHelpers.objectSpread({}, stub, {
 	            NAME: options.id,
 	            LABEL: options.name,
-	            TYPE: type === 'checkbox' ? 'SELECT' : stub.TYPE
+	            TYPE: type === 'checkbox' ? 'SELECT' : stub.TYPE,
+	            VALUE_REQUIRED: options.valueRequired === true
 	          });
 
 	          if (type === 'list') {
@@ -5652,6 +5709,56 @@ this.BX = this.BX || {};
 
 	      return '';
 	    }
+	  }, {
+	    key: "setValue",
+	    value: function setValue(value) {
+	      var _this3 = this;
+
+	      var type = this.options.TYPE;
+
+	      if (type === 'DATE' || type === 'NUMBER') {
+	        if (main_core.Type.isPlainObject(value)) {
+	          var container = this.parent.getFieldListContainer();
+	          Object.entries(value).forEach(function (_ref5) {
+	            var _ref6 = babelHelpers.slicedToArray(_ref5, 2),
+	                key = _ref6[0],
+	                fieldValue = _ref6[1];
+
+	            var fieldNode = container.querySelector("[data-name=\"".concat(_this3.id, "\"] [data-name=\"").concat(_this3.id).concat(key, "\"], [data-name=\"").concat(_this3.id, "\"] [name=\"").concat(_this3.id).concat(key, "\"]"));
+
+	            if (fieldNode) {
+	              if (main_core.Dom.hasClass(fieldNode, 'main-ui-select')) {
+	                var items = main_core.Dom.attr(fieldNode, 'data-items');
+
+	                if (main_core.Type.isArray(items)) {
+	                  var item = items.find(function (currentItem) {
+	                    return currentItem.VALUE === fieldValue;
+	                  });
+
+	                  if (main_core.Type.isPlainObject(item)) {
+	                    main_core.Dom.attr(fieldNode, 'data-value', item);
+	                    var nameNode = fieldNode.querySelector('.main-ui-select-name');
+
+	                    if (nameNode) {
+	                      nameNode.innerText = item.NAME;
+	                    }
+
+	                    fieldNode.click();
+	                    var result = BX.Main.ui.Factory.get(fieldNode);
+
+	                    if (main_core.Type.isPlainObject(result)) {
+	                      BX.onCustomEvent(window, 'UI::Select::Change', [result.instance, item]);
+	                    }
+	                  }
+	                }
+	              } else if (fieldNode.tagName === 'INPUT') {
+	                fieldNode.value = fieldValue;
+	              }
+	            }
+	          });
+	        }
+	      }
+	    }
 	  }]);
 	  return Field;
 	}(main_core.Event.EventEmitter);
@@ -5711,20 +5818,23 @@ this.BX = this.BX || {};
 	    /**
 	     * Extends current applied filter
 	     * @param {Object.<String, *>} fields
+	     * @param {boolean} [force = false]
 	     */
 
 	  }, {
 	    key: "extendFilter",
 	    value: function extendFilter(fields) {
+	      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
 	      if (main_core.Type.isObject(fields)) {
 	        Object.keys(fields).forEach(function (key) {
 	          if (main_core.Type.isNumber(fields[key])) {
-	            fields[key] = "".concat(fields[key]);
+	            fields[key] = String(fields[key]);
 	          }
 	        });
 	        var currentPresetId = this.parent.getPreset().getCurrentPresetId();
 
-	        if (currentPresetId === 'tmp_filter' || currentPresetId === 'default_filter') {
+	        if (force || currentPresetId === 'tmp_filter' || currentPresetId === 'default_filter') {
 	          var newFields = Object.assign({}, this.parent.getFilterFieldsValues(), fields);
 	          this.setFields(newFields);
 	          this.apply();
@@ -5830,7 +5940,7 @@ this.BX = this.BX || {};
 	}
 
 	function _templateObject$1() {
-	  var data = babelHelpers.taggedTemplateLiteral(["\n\t\t\t<div \n\t\t\t\tclass=\"main-ui-filter-error-message\" \n\t\t\t\ttitle=\"", "\">\n\t\t\t\t", " ", "\n\t\t\t</div>\n\t\t"]);
+	  var data = babelHelpers.taggedTemplateLiteral(["\n\t\t\t<div \n\t\t\t\tclass=\"main-ui-filter-error-message\" \n\t\t\t\ttitle=\"", "\">\n\t\t\t\t", "\n\t\t\t</div>\n\t\t"]);
 
 	  _templateObject$1 = function _templateObject() {
 	    return data;
@@ -5839,6 +5949,7 @@ this.BX = this.BX || {};
 	  return data;
 	}
 	var errorMessages = new WeakMap();
+	var errorMessagesTypes = new WeakMap();
 	var values = new WeakMap();
 	var Fields =
 	/*#__PURE__*/
@@ -6414,7 +6525,7 @@ this.BX = this.BX || {};
 	          return '';
 	        }();
 
-	        var html = main_core.Text.encode(fieldData.VALUE).replace("name=\"".concat(fieldData.NAME, "\""), "name=\"".concat(fieldData.NAME, "\" value=\"").concat(fieldValue, "\""));
+	        var html = main_core.Text.decode(fieldData.VALUE).replace("name=\"".concat(fieldData.NAME, "\""), "name=\"".concat(fieldData.NAME, "\" value=\"").concat(fieldValue, "\""));
 	        var control = field.querySelector('.main-ui-custom');
 	        main_core.Runtime.html(control, html);
 	      }
@@ -6639,6 +6750,7 @@ this.BX = this.BX || {};
 	            fieldData.SUB_TYPE = data;
 	            fieldData.NAME = group.dataset.name;
 	            fieldData.TYPE = group.dataset.type;
+	            fieldData.VALUE_REQUIRED = group.dataset.valueRequired === 'true';
 	            var presetData = this.parent.getPreset().getCurrentPresetData();
 
 	            if (main_core.Type.isArray(presetData.FIELDS)) {
@@ -6665,6 +6777,7 @@ this.BX = this.BX || {};
 	                }
 
 	                fieldData.VALUES = presetField.VALUES;
+	                fieldData.REQUIRED = presetField.REQUIRED;
 	              }
 	            }
 
@@ -6836,7 +6949,11 @@ this.BX = this.BX || {};
 	          ENABLE_TIME = _options$ENABLE_TIME === void 0 ? false : _options$ENABLE_TIME,
 	          _options$LABEL2 = options.LABEL,
 	          LABEL = _options$LABEL2 === void 0 ? '' : _options$LABEL2,
-	          TYPE = options.TYPE;
+	          TYPE = options.TYPE,
+	          _options$VALUE_REQUIR = options.VALUE_REQUIRED,
+	          VALUE_REQUIRED = _options$VALUE_REQUIR === void 0 ? false : _options$VALUE_REQUIR,
+	          _options$REQUIRED = options.REQUIRED,
+	          REQUIRED = _options$REQUIRED === void 0 ? false : _options$REQUIRED;
 	      var ENABLE_LABEL = this.parent.params.ENABLE_LABEL;
 	      var subType = SUB_TYPE.VALUE || dateTypes.NONE;
 	      var fieldName = options.NAME.replace('_datesel', '');
@@ -7071,14 +7188,79 @@ this.BX = this.BX || {};
 	          });
 	        }
 	      });
+
+	      if (VALUE_REQUIRED) {
+	        renderedFieldGroup.dataset.valueRequired = true;
+	        var allInputs = [].concat(babelHelpers.toConsumableArray(inputs), babelHelpers.toConsumableArray(renderedFieldGroup.querySelectorAll('.main-ui-number-input')));
+	        allInputs.forEach(function (input) {
+	          input.addEventListener('change', _this2.checkRequiredDateValue.bind(_this2));
+	          input.addEventListener('input', _this2.checkRequiredDateValue.bind(_this2));
+	          var parentNode = input.parentNode;
+	          var clearButton = parentNode.querySelector('.main-ui-control-value-delete');
+
+	          if (clearButton) {
+	            clearButton.addEventListener('click', function () {
+	              setTimeout(function () {
+	                _this2.checkRequiredDateValue({
+	                  target: input
+	                });
+	              });
+	            });
+	          }
+
+	          main_core.Event.bindOnce(input, 'mouseout', function () {
+	            _this2.checkRequiredDateValue({
+	              target: input
+	            });
+	          });
+	        });
+	      }
+
+	      if (REQUIRED) {
+	        var removeButton = renderedFieldGroup.querySelector('.main-ui-filter-field-delete');
+
+	        if (removeButton) {
+	          BX.remove(removeButton);
+	        }
+	      }
+
+	      var currentValues = {};
+	      this.parent.prepareControlDateValue(currentValues, fieldName, renderedFieldGroup);
+	      Object.entries(currentValues).forEach(function (_ref4) {
+	        var _ref5 = babelHelpers.slicedToArray(_ref4, 2),
+	            key = _ref5[0],
+	            value = _ref5[1];
+
+	        currentValues[key.replace(fieldName, '')] = value;
+	        delete currentValues[key];
+	      });
 	      this.parent.getEmitter().emit('BX.Filter.Field:init', {
 	        field: new Field({
 	          parent: this.parent,
-	          options: babelHelpers.objectSpread({}, options),
+	          options: babelHelpers.objectSpread({}, options, {
+	            VALUES: currentValues
+	          }),
 	          node: renderedFieldGroup
 	        })
 	      });
 	      return renderedFieldGroup;
+	    }
+	  }, {
+	    key: "checkRequiredDateValue",
+	    value: function checkRequiredDateValue(event) {
+	      if (event.target.value === '') {
+	        this.showError({
+	          id: 'valueError',
+	          target: event.target,
+	          text: this.parent.params.MAIN_UI_FILTER__VALUE_REQUIRED
+	        });
+	        return;
+	      }
+
+	      this.hideError({
+	        id: 'valueError',
+	        target: event.target
+	      });
 	    }
 	  }, {
 	    key: "onDateChange",
@@ -7092,7 +7274,10 @@ this.BX = this.BX || {};
 	      values.set(event.target, event.target.value);
 
 	      if (event.target.value === '') {
-	        this.hideDateError(event.target);
+	        this.hideError({
+	          id: 'formatError',
+	          target: event.target
+	        });
 	        return;
 	      }
 
@@ -7104,41 +7289,55 @@ this.BX = this.BX || {};
 	        }
 	      }).then(function (result) {
 	        if (!result.data.result) {
-	          _this3.showDateError(event.target);
+	          _this3.showError({
+	            id: 'formatError',
+	            target: event.target
+	          });
 
 	          return;
 	        }
 
-	        _this3.hideDateError(event.target);
+	        _this3.hideError({
+	          id: 'formatError',
+	          target: event.target
+	        });
 	      });
 	    }
 	  }, {
-	    key: "showDateError",
-	    value: function showDateError(inputField) {
-	      main_core.Dom.style(inputField, 'border-color', '#FF5752');
+	    key: "showError",
+	    value: function showError(_ref6) {
+	      var id = _ref6.id,
+	          target = _ref6.target,
+	          _ref6$text = _ref6.text,
+	          text = _ref6$text === void 0 ? null : _ref6$text;
+	      main_core.Dom.style(target, 'border-color', '#FF5752');
 
-	      if (errorMessages.has(inputField)) {
-	        main_core.Dom.remove(errorMessages.get(inputField));
+	      if (errorMessages.has(target) && errorMessagesTypes.get(target) === id) {
+	        main_core.Dom.remove(errorMessages.get(target));
 	      }
 
 	      var _this$parent$params = this.parent.params,
 	          MAIN_UI_FILTER__DATE_ERROR_TITLE = _this$parent$params.MAIN_UI_FILTER__DATE_ERROR_TITLE,
 	          MAIN_UI_FILTER__DATE_ERROR_LABEL = _this$parent$params.MAIN_UI_FILTER__DATE_ERROR_LABEL;
-	      var dateErrorMessage = main_core.Tag.render(_templateObject$1(), MAIN_UI_FILTER__DATE_ERROR_TITLE, MAIN_UI_FILTER__DATE_ERROR_LABEL, main_core.Loc.getMessage('FORMAT_DATE'));
-	      errorMessages.set(inputField, dateErrorMessage);
-	      main_core.Dom.insertAfter(dateErrorMessage, inputField);
-	      main_core.Dom.attr(inputField, 'is-valid', 'false');
+	      var errorText = text || "".concat(MAIN_UI_FILTER__DATE_ERROR_LABEL, " ").concat(main_core.Loc.getMessage('FORMAT_DATE'));
+	      var dateErrorMessage = main_core.Tag.render(_templateObject$1(), MAIN_UI_FILTER__DATE_ERROR_TITLE, errorText);
+	      errorMessages.set(target, dateErrorMessage);
+	      errorMessagesTypes.set(target, id);
+	      main_core.Dom.insertAfter(dateErrorMessage, target);
+	      main_core.Dom.attr(target, 'is-valid', 'false');
 	    }
 	  }, {
-	    key: "hideDateError",
-	    value: function hideDateError(inputField) {
-	      main_core.Dom.style(inputField, 'border-color', null);
+	    key: "hideError",
+	    value: function hideError(_ref7) {
+	      var id = _ref7.id,
+	          target = _ref7.target;
+	      main_core.Dom.style(target, 'border-color', null);
 
-	      if (errorMessages.has(inputField)) {
-	        main_core.Dom.remove(errorMessages.get(inputField));
+	      if (errorMessages.has(target) && errorMessagesTypes.get(target) === id) {
+	        main_core.Dom.remove(errorMessages.get(target));
 	      }
 
-	      main_core.Dom.attr(inputField, 'is-valid', 'true');
+	      main_core.Dom.attr(target, 'is-valid', 'true');
 	    }
 	  }]);
 	  return Fields;
@@ -8142,6 +8341,8 @@ this.BX = this.BX || {};
 	  }, {
 	    key: "updatePresetFields",
 	    value: function updatePresetFields(preset, noValues) {
+	      var _this3 = this;
+
 	      var fields;
 	      var fieldListContainer;
 	      var fieldNodes = [];
@@ -8150,7 +8351,11 @@ this.BX = this.BX || {};
 	        fields = preset.FIELDS;
 
 	        if (BX.type.isArray(preset.ADDITIONAL)) {
-	          preset.ADDITIONAL.forEach(function (field) {
+	          preset.ADDITIONAL.filter(function (field) {
+	            return _this3.parent.params.FIELDS.some(function (currentField) {
+	              return field.NAME === currentField.NAME;
+	            });
+	          }).forEach(function (field) {
 	            var replaced = false;
 	            field.IS_PRESET_FIELD = true;
 	            fields.forEach(function (presetField, index) {
@@ -8166,7 +8371,11 @@ this.BX = this.BX || {};
 	          });
 	        }
 
-	        (fields || []).forEach(function (fieldData, index) {
+	        (fields || []).filter(function (field) {
+	          return _this3.parent.params.FIELDS.some(function (currentField) {
+	            return field.NAME === currentField.NAME;
+	          });
+	        }).forEach(function (fieldData, index) {
 	          fieldData.TABINDEX = index + 1;
 
 	          if (noValues) {

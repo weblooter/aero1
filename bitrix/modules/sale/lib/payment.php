@@ -35,9 +35,9 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 	 */
 	protected function __construct(array $fields = array())
 	{
-		$priceRoundedFields = ['SUM', 'PRICE_COD'];
+		$priceFields = ['SUM', 'PRICE_COD'];
 
-		foreach ($priceRoundedFields as $code)
+		foreach ($priceFields as $code)
 		{
 			if (isset($fields[$code]))
 			{
@@ -46,6 +46,14 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 		}
 
 		parent::__construct($fields);
+	}
+
+	/**
+	 * @return string|void
+	 */
+	public static function getRegistryEntity()
+	{
+		return Registry::ENTITY_PAYMENT;
 	}
 
 	/**
@@ -1046,11 +1054,11 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 	 */
 	public function setField($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'SUM' => 'SUM',
 			'PRICE_COD' => 'PRICE_COD',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -1115,11 +1123,11 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 	 */
 	public function setFieldNoDemand($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'SUM' => 'SUM',
 			'PRICE_COD' => 'PRICE_COD',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -1137,7 +1145,6 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 	 * @param string $name
 	 * @param null $oldValue
 	 * @param null $value
-	 * @throws Main\ObjectNotFoundException
 	 */
 	protected function addChangesToHistory($name, $oldValue = null, $value = null)
 	{
@@ -1256,9 +1263,10 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 
 	/**
 	 * @param array $parameters
-	 *
-	 * @return Main\DB\Result
+	 * @return Main\ORM\Query\Result|Internals\EO_Payment_Result
 	 * @throws Main\ArgumentException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
 	 */
 	public static function getList(array $parameters = array())
 	{
@@ -1299,11 +1307,11 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
+	 * @throws Main\ArgumentNullException
 	 */
 	public function getHash()
 	{
-		/** @var \Bitrix\Sale\Order $order */
 		$order = $this->getOrder();
 
 		return md5(
@@ -1426,7 +1434,8 @@ class Payment extends Internals\CollectableEntity implements IBusinessValueProvi
 
 	/**
 	 * @param $primary
-	 * @return Main\Entity\DeleteResult
+	 * @return Main\ORM\Data\DeleteResult
+	 * @throws \Exception
 	 */
 	protected static function deleteInternal($primary)
 	{

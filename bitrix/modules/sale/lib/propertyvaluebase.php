@@ -645,12 +645,11 @@ abstract class PropertyValueBase extends Internals\CollectableEntity
 	}
 
 	/**
-	 * @throws Main\NotImplementedException
 	 * @return string
 	 */
-	public static function getRegistryType()
+	public static function getRegistryEntity()
 	{
-		throw new Main\NotImplementedException();
+		return Registry::ENTITY_PROPERTY_VALUE;
 	}
 
 	/**

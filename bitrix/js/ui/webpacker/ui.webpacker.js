@@ -263,6 +263,12 @@
 			}, {});
 		}
 	};
+	webPacker.ready = function(handler)
+	{
+		(document.readyState === "complete" || document.readyState === "loaded")
+			? handler()
+			: this.addEventListener(window, 'DOMContentLoaded', handler);
+	};
 	webPacker.addEventListener = function(el, eventName, handler)
 	{
 		el = el || window;

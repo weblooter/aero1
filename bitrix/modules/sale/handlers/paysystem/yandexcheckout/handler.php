@@ -37,6 +37,7 @@ class YandexCheckoutHandler
 	const PAYMENT_METHOD_WEBMONEY = 'webmoney';
 	const PAYMENT_METHOD_CASH = 'cash';
 	const PAYMENT_METHOD_MOBILE_BALANCE = 'mobile_balance';
+	const PAYMENT_METHOD_EMBEDDED = 'embedded';
 
 	const MODE_SMART = '';
 	const MODE_ALFABANK = 'alfabank';
@@ -48,6 +49,7 @@ class YandexCheckoutHandler
 	const MODE_WEBMONEY = 'webmoney';
 	const MODE_CASH = 'cash';
 	const MODE_MOBILE_BALANCE = 'mobile_balance';
+	const MODE_EMBEDDED = 'embedded';
 
 	const URL = 'https://payment.yandex.net/api/v3';
 
@@ -57,9 +59,11 @@ class YandexCheckoutHandler
 	 * @param Payment $payment
 	 * @param Request|null $request
 	 * @return PaySystem\ServiceResult
+	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 * @throws Main\ArgumentTypeException
+	 * @throws Main\NotImplementedException
 	 * @throws Main\ObjectException
 	 */
 	public function initiatePay(Payment $payment, Request $request = null)
@@ -69,77 +73,30 @@ class YandexCheckoutHandler
 			$request = Main\Context::getCurrent()->getRequest();
 		}
 
-		$result = $this->initiatePayInternal($payment, $request);
-		if (!$result->isSuccess())
-		{
-			$error = 'Yandex.Checkout: initiatePay: '.join("\n", $result->getErrorMessages());
-			PaySystem\Logger::addError($error);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * @param Payment $payment
-	 * @param Request $request
-	 * @return PaySystem\ServiceResult
-	 * @throws Main\ArgumentNullException
-	 */
-	private function initiatePayInternal(Payment $payment, Request $request)
-	{
-		if ($this->hasPaymentMethodFields() &&
-			!$this->isFillPaymentMethodFields($request)
-		)
-		{
-			$phoneFields = $this->getPhoneFields();
-			$phoneFields = isset($phoneFields[$this->service->getField('PS_MODE')]) ? $phoneFields[$this->service->getField('PS_MODE')] : [];
-			$params = array(
-				'SUM' => PriceMaths::roundPrecision($payment->getSum()),
-				'CURRENCY' => $payment->getField('CURRENCY'),
-				'FIELDS' => $this->getPaymentMethodFields(),
-				'PHONE_FIELDS' => $phoneFields,
-				'PAYMENT_METHOD' => $this->service->getField('PS_MODE'),
-				'PAYMENT_ID' => $payment->getId(),
-				'PAYSYSTEM_ID' => $this->service->getField('ID'),
-			);
-			$this->setExtraParams($params);
-
-			return $this->showTemplate($payment, "template_query");
-		}
-
 		$result = new PaySystem\ServiceResult();
+		$createYandexPaymentData = [];
 
-		$createResult = $this->createYandexPayment($payment, $request);
-		if (!$createResult->isSuccess())
+		if ($this->needCreateYandexPayment($payment, $request))
 		{
-			$result->addErrors($createResult->getErrors());
-			return $result;
+			$createYandexPaymentResult = $this->createYandexPayment($payment, $request);
+			if (!$createYandexPaymentResult->isSuccess())
+			{
+				return $createYandexPaymentResult;
+			}
+
+			$createYandexPaymentData = $createYandexPaymentResult->getData();
 		}
 
-		$yandexPaymentData = $createResult->getData();
-		if ($yandexPaymentData['status'] === static::PAYMENT_STATUS_CANCELED)
+		if (isset($createYandexPaymentData['id']))
 		{
-			return $result->addError(
-				new Main\Error(
-					Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_ERROR_PAYMENT_CANCELED')
-				)
-			);
+			$result->setPsData(['PS_INVOICE_ID' => $createYandexPaymentData['id']]);
 		}
 
-		$result->setPsData(array('PS_INVOICE_ID' => $yandexPaymentData['id']));
+		$template = $this->getTemplateName($request);
 
-		$params = array(
-			'URL' => $yandexPaymentData['confirmation']['confirmation_url'],
-			'CURRENCY' => $payment->getField('CURRENCY'),
-			'SUM' => PriceMaths::roundPrecision($payment->getSum()),
+		$this->setExtraParams(
+			$this->getTemplateParams($payment, $template, $createYandexPaymentData)
 		);
-		$this->setExtraParams($params);
-
-		$template = "template";
-		if ($this->isSetExternalPaymentType())
-		{
-			$template .= "_success";
-		}
 
 		$showTemplateResult = $this->showTemplate($payment, $template);
 		if ($showTemplateResult->isSuccess())
@@ -154,7 +111,85 @@ class YandexCheckoutHandler
 		return $result;
 	}
 
-	/**confirm
+	/**
+	 * @param Payment $payment
+	 * @param $request
+	 * @return bool
+	 */
+	protected function needCreateYandexPayment(Payment $payment, $request) : bool
+	{
+		$template = $this->getTemplateName($request);
+
+		return $template !== 'template_query';
+	}
+
+	/**
+	 * @param Payment $payment
+	 * @param $template
+	 * @param array $additionalParams
+	 * @return array
+	 * @throws Main\ArgumentNullException
+	 */
+	protected function getTemplateParams(Payment $payment, $template, $additionalParams = []) : array
+	{
+		$params = [
+			'SUM' => PriceMaths::roundPrecision($payment->getSum()),
+			'CURRENCY' => $payment->getField('CURRENCY'),
+		];
+
+		if ($template === 'template')
+		{
+			$params['URL'] = $additionalParams['confirmation']['confirmation_url'] ?? '';
+		}
+		elseif ($template === 'template_query')
+		{
+			$phoneFields = $this->getPhoneFields();
+			$phoneFields = isset($phoneFields[$this->service->getField('PS_MODE')])
+				? $phoneFields[$this->service->getField('PS_MODE')]
+				: [];
+
+			$params['FIELDS'] = $this->getPaymentMethodFields();
+			$params['PHONE_FIELDS'] = $phoneFields;
+			$params['PAYMENT_METHOD'] = $this->service->getField('PS_MODE');
+			$params['PAYMENT_ID'] = $payment->getId();
+			$params['PAYSYSTEM_ID'] = $this->service->getField('ID');
+		}
+		elseif ($template === 'template_embedded')
+		{
+			$params['CONFIRMATION_TOKEN'] = $additionalParams['confirmation']['confirmation_token'] ?? '';
+			$params['RETURN_URL'] = $this->getBusinessValue($payment, 'YANDEX_CHECKOUT_RETURN_URL');
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @param Request $request
+	 * @return string
+	 */
+	protected function getTemplateName(Request $request) : string
+	{
+		$template = "template";
+
+		if ($this->hasPaymentMethodFields() &&
+			!$this->isFillPaymentMethodFields($request)
+		)
+		{
+			$template .= "_query";
+		}
+		elseif ($this->isSetExternalPaymentType())
+		{
+			$template .= "_success";
+		}
+		elseif ($this->isSetEmbeddedPaymentType())
+		{
+			$template .= "_embedded";
+		}
+
+		return $template;
+	}
+
+	/**
 	 * @return bool
 	 */
 	private function isSetExternalPaymentType()
@@ -168,11 +203,23 @@ class YandexCheckoutHandler
 	}
 
 	/**
+	 * @return bool
+	 */
+	private function isSetEmbeddedPaymentType()
+	{
+		return $this->service->getField('PS_MODE') === static::MODE_EMBEDDED;
+	}
+
+	/**
 	 * @param Payment $payment
 	 * @param Request $request
 	 * @return PaySystem\ServiceResult
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\ArgumentTypeException
+	 * @throws Main\NotImplementedException
+	 * @throws Main\ObjectException
 	 */
 	private function createYandexPayment(Payment $payment, Request $request)
 	{
@@ -193,7 +240,36 @@ class YandexCheckoutHandler
 		}
 
 		$response = $sendResult->getData();
-		$result->setData($response);
+
+		$verificationResult = $this->verifyCreateYandexPaymentResponse($response);
+		if ($verificationResult->isSuccess())
+		{
+			$result->setData($response);
+		}
+		else
+		{
+			$result->addErrors($verificationResult->getErrors());
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param $response
+	 * @return PaySystem\ServiceResult
+	 */
+	private function verifyCreateYandexPaymentResponse($response)
+	{
+		$result = new PaySystem\ServiceResult();
+
+		if ($response['status'] === static::PAYMENT_STATUS_CANCELED)
+		{
+			$result->addError(
+				new Main\Error(
+					Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_ERROR_PAYMENT_CANCELED')
+				)
+			);
+		}
 
 		return $result;
 	}
@@ -218,6 +294,10 @@ class YandexCheckoutHandler
 	 * @param array $params
 	 * @return PaySystem\ServiceResult
 	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\ArgumentTypeException
+	 * @throws Main\ObjectException
 	 */
 	private function send($url, array $headers, array $params = array())
 	{
@@ -287,7 +367,7 @@ class YandexCheckoutHandler
 	 * @throws Main\ArgumentOutOfRangeException
 	 * @throws Main\NotImplementedException
 	 */
-	private function getYandexPaymentQueryParams(Payment $payment, Request $request)
+	protected function getYandexPaymentQueryParams(Payment $payment, Request $request)
 	{
 		$query = array(
 			'description' => $this->getPaymentDescription($payment),
@@ -314,8 +394,15 @@ class YandexCheckoutHandler
 			$query['recipient'] = ['gateway_id' => $articleId];
 		}
 
-		if ($this->service->getField('PS_MODE') !== static::MODE_SMART)
+		if ($this->service->getField('PS_MODE') === static::MODE_EMBEDDED)
 		{
+			$query['confirmation'] = array(
+				'type' => 'embedded'
+			);
+		}
+		elseif ($this->service->getField('PS_MODE') !== static::MODE_SMART)
+		{
+			$query['capture'] = true;
 			$query['payment_method_data'] = array(
 				'type' => $this->getYandexHandlerType($this->service->getField('PS_MODE'))
 			);
@@ -444,8 +531,6 @@ class YandexCheckoutHandler
 
 		$inputStream = static::readFromStream();
 
-		PaySystem\Logger::addDebugInfo('Yandex.Checkout: inputStream: '.$inputStream);
-
 		$data = static::decode($inputStream);
 		if ($data !== false)
 		{
@@ -497,12 +582,6 @@ class YandexCheckoutHandler
 			$result->addError(new Main\Error(Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_ERROR_QUERY')));
 		}
 
-		if (!$result->isSuccess())
-		{
-			$error = 'Yandex.Checkout: processRequest: '.join("\n", $result->getErrorMessages());
-			PaySystem\Logger::addError($error);
-		}
-
 		return $result;
 	}
 
@@ -512,6 +591,7 @@ class YandexCheckoutHandler
 	 * @return bool
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\ArgumentTypeException
 	 * @throws Main\ObjectException
 	 */
 	private function isSumCorrect(Payment $payment, array $paymentData)
@@ -678,7 +758,7 @@ class YandexCheckoutHandler
 	 */
 	private function getAuthorizationHeader(Payment $payment)
 	{
-		if (\Bitrix\Main\Config\Option::get('sale', 'YANDEX_CHECKOUT_OAUTH', false) == true)
+		if (Main\Config\Option::get('sale', 'YANDEX_CHECKOUT_OAUTH', false) == true)
 		{
 			$token = $this->getYandexToken(self::AUTH_TYPE);
 			return 'Bearer '.$token;
@@ -758,7 +838,8 @@ class YandexCheckoutHandler
 			static::MODE_QIWI => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_QIWI'),
 			static::MODE_WEBMONEY => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_WEBMONEY'),
 			static::MODE_ALFABANK => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_ALFABANK'),
-			static::MODE_CASH => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_CASH')
+			static::MODE_CASH => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_CASH'),
+			static::MODE_EMBEDDED => Localization\Loc::getMessage('SALE_HPS_YANDEX_CHECKOUT_EMBEDDED'),
 		);
 	}
 
@@ -778,6 +859,7 @@ class YandexCheckoutHandler
 			static::MODE_QIWI => static::PAYMENT_METHOD_QIWI,
 			static::MODE_WEBMONEY => static::PAYMENT_METHOD_WEBMONEY,
 			static::MODE_CASH => static::PAYMENT_METHOD_CASH,
+			static::MODE_EMBEDDED => static::PAYMENT_METHOD_EMBEDDED,
 		);
 
 		if (array_key_exists($psMode, $handlersMap))
@@ -816,8 +898,6 @@ class YandexCheckoutHandler
 
 		if ($inputStream)
 		{
-			PaySystem\Logger::addDebugInfo('Yandex.Checkout: Check my response: paySystemId='.$paySystemId.' inputStream='.$inputStream);
-
 			$data = static::decode($inputStream);
 			if ($data === false)
 			{
@@ -929,13 +1009,11 @@ class YandexCheckoutHandler
 	 */
 	private function getPhoneFields()
 	{
-		$paymentMethodPhoneFields = array(
-			static::MODE_QIWI => array('phone'),
-			static::MODE_MOBILE_BALANCE => array('phone'),
-			static::MODE_SBERBANK_SMS => array('phone'),
-		);
-
-		return $paymentMethodPhoneFields;
+		return [
+			static::MODE_QIWI => ['phone'],
+			static::MODE_MOBILE_BALANCE => ['phone'],
+			static::MODE_SBERBANK_SMS => ['phone'],
+		];
 	}
 
 	/**

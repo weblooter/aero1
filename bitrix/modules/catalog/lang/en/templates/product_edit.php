@@ -92,6 +92,7 @@ $MESS["C2IT_SUBSCR_PARAMS"] = "Subscription parameters";
 $MESS["C2IT_TO"] = "To";
 $MESS["C2IT_TRIAL"] = "Trial";
 $MESS["C2IT_TRIAL_FOR"] = "Trial for (only for trials):";
+$MESS["C2IT_UF_FIELDS"] = "Additional parameters";
 $MESS["C2IT_USERS_GROUP"] = "User group";
 $MESS["C2IT_VKL"] = "Incl.";
 $MESS["C2IT_WITHOUT_ORDER"] = "Renewal without ordering:";

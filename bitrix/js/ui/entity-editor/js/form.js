@@ -153,7 +153,7 @@ if(typeof(BX.UI.ComponentAjax) === "undefined")
 					BX.onCustomEvent(
 						window,
 						"BX.UI.EntityEditorAjax:onSubmit",
-						[ response["data"]["ENTITY_DATA"] ]
+						[ response["data"]["ENTITY_DATA"], response ]
 					);
 					callback(response["data"]);
 				}
@@ -173,6 +173,11 @@ if(typeof(BX.UI.ComponentAjax) === "undefined")
 				{
 					messages.push(errors[i]["message"]);
 				}
+				BX.onCustomEvent(
+					window,
+					"BX.UI.EntityEditorAjax:onSubmitFailure",
+					[ response["errors"] ]
+				);
 				callback({ "ERRORS": messages });
 			}.bind(this)
 		);

@@ -73,6 +73,12 @@ class Manager
 	const FEATURE_DYNAMIC_BLOCK = 'dynamic_block';
 
 	/**
+	 * If true, that self::isB24() returns false always.
+	 * @var bool
+	 */
+	protected static $forceB24disable = false;
+
+	/**
 	 * Current temporary functions.
 	 * @var array
 	 */
@@ -1212,6 +1218,11 @@ class Manager
 	{
 		static $return = null;
 
+		if (self::$forceB24disable === true)
+		{
+			return false;
+		}
+
 		if ($return === null)
 		{
 			if (
@@ -1230,6 +1241,32 @@ class Manager
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Sets local flag to new state.
+	 * @param boolean $flag Disable or not.
+	 * @return void
+	 */
+	public static function forceB24disable($flag)
+	{
+		self::$forceB24disable = $flag === true;
+	}
+
+	/**
+	 * Returns true, if SMN is extended for CRM.
+	 * @return bool
+	 */
+	public static function isExtendedSMN()
+	{
+		static $option = null;
+
+		if ($option === null)
+		{
+			$option = self::getOption('smn_extended', 'N') == 'Y';
+		}
+
+		return $option;
 	}
 
 	/**

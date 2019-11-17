@@ -139,6 +139,7 @@ final class CheckManager
 					static::savePrintResult(
 						$checkId,
 						[
+							'ID' => $checkId,
 							'ERROR' => [
 								'TYPE' =>  Errors\Error::TYPE,
 								'MESSAGE' => implode("\n", $printResult->getErrorMessages())

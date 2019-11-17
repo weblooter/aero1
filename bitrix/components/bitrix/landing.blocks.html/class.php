@@ -10,6 +10,18 @@ use \Bitrix\Landing\Landing;
 class LandingBlocksHtmlComponent extends \CBitrixComponent
 {
 	/**
+	 * Local htmlspecialcharsback funciton.
+	 * @param string $code Code for decoding.
+	 * @return string
+	 */
+	public function htmlspecialcharsback($code)
+	{
+		$code = \htmlspecialcharsback($code);
+		$code = str_replace('&#39;', "'", $code);
+		return $code;
+	}
+
+	/**
 	 * Base executable method.
 	 * @return void
 	 */

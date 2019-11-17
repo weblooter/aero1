@@ -66,9 +66,9 @@ if (Loader::includeModule('bitrix24'))
 	}
 }
 if (
-!\Bitrix\Landing\Rights::hasAdditionalRight(
-	\Bitrix\Landing\Rights::ADDITIONAL_RIGHTS['menu24']
-)
+	!\Bitrix\Landing\Rights::hasAdditionalRight(
+		\Bitrix\Landing\Rights::ADDITIONAL_RIGHTS['menu24']
+	)
 )
 {
 	Manager::getApplication()->showAuthForm(

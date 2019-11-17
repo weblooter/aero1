@@ -1,0 +1,44 @@
+{
+    "event": "BLOG_SONET_POST_SHARE",
+    "type": {
+        "LID": "ru",
+        "EVENT_TYPE": "email",
+        "NAME": "Добавлен новый получатель сообщения",
+        "DESCRIPTION": [
+            "#EMAIL_TO# - Email получателя письма",
+            "#POST_ID# - ID сообщения",
+            "#RECIPIENT_ID# - ID получателя",
+            "#URL_ID# - URL страницы сообщения",
+            ""
+        ],
+        "SORT": "100"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#EMAIL_FROM#",
+            "EMAIL_TO": "#EMAIL_TO#",
+            "SUBJECT": "#POST_TITLE#",
+            "MESSAGE": [
+                "<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post_share.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>"
+            ],
+            "BODY_TYPE": "html",
+            "BCC": null,
+            "REPLY_TO": null,
+            "CC": null,
+            "IN_REPLY_TO": null,
+            "PRIORITY": null,
+            "FIELD1_NAME": null,
+            "FIELD1_VALUE": null,
+            "FIELD2_NAME": null,
+            "FIELD2_VALUE": null,
+            "SITE_TEMPLATE_ID": "mail_user",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": null,
+            "EVENT_TYPE": "[ BLOG_SONET_POST_SHARE ] Добавлен новый получатель сообщения"
+        }
+    ]
+}

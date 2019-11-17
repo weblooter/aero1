@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 use Bitrix\Main,
 	Bitrix\Sale,
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
 
 /**
  * Class PersonTypePreparer
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class PersonTypePreparer
 {
@@ -19,7 +19,7 @@ class PersonTypePreparer
 	/**
 	 * @param string $error
 	 */
-	protected function setError($error)
+	private function setError($error)
 	{
 		$this->errors[] = $error;
 	}
@@ -110,7 +110,7 @@ class PersonTypePreparer
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getCurrentPersonTypeSite($personTypeId)
+	private function getCurrentPersonTypeSite($personTypeId)
 	{
 		$site = array();
 
@@ -136,7 +136,7 @@ class PersonTypePreparer
 	 * @throws Main\SystemException
 	 * @throws \Exception
 	 */
-	protected function addSiteToPersonType($personTypeId, $siteId)
+	private function addSiteToPersonType($personTypeId, $siteId)
 	{
 		$personTypeId = intval($personTypeId);
 		if ($personTypeId <= 0)
@@ -184,7 +184,7 @@ class PersonTypePreparer
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function addSitesToPersonType(array $personTypes, $siteId)
+	private function addSitesToPersonType(array $personTypes, $siteId)
 	{
 		foreach ($personTypes as $personTypeId)
 		{
@@ -200,7 +200,7 @@ class PersonTypePreparer
 	 * @throws Main\SystemException
 	 * @throws \Exception
 	 */
-	protected function deleteSitesFromPersonType($personTypeId)
+	private function deleteSitesFromPersonType($personTypeId)
 	{
 		$personTypeId = intval($personTypeId);
 		if ($personTypeId <= 0)

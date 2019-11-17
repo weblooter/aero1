@@ -5,10 +5,10 @@ IncludeModuleLangFile(__FILE__);
 if($_GET["back_url_pub"] <> "" && !is_array($_GET["back_url_pub"]) && strpos($_GET["back_url_pub"], "/") === 0)
 	$_SESSION["BACK_URL_PUB"] = $_GET["back_url_pub"];
 
-if($_GET["back_url_crm"] <> "" && !is_array($_GET["back_url_crm"]) && strpos($_GET["back_url_crm"], "/") === 0)
-	$_SESSION["BACK_URL_CRM"] = $_GET["back_url_crm"];
+if($_GET["back_url_additional"] <> "" && !is_array($_GET["back_url_additional"]) && strpos($_GET["back_url_additional"], "/") === 0)
+	$_SESSION["BACK_URL_ADDITIONAL"] = $_GET["back_url_additional"];
 
-$params = DeleteParam(array("logout", "back_url_pub", "back_url_crm", "sessid"));
+$params = DeleteParam(array("logout", "back_url_pub", "back_url_additional", "sessid"));
 
 $arPanelButtons = array();
 
@@ -148,7 +148,9 @@ if($USER->IsAuthorized())
 }
 
 $defaultServerName = '';
-if (\Bitrix\Main\Config\Option::get("sale", "~IS_SALE_CRM_SITE_MASTER_FINISH") === "Y")
+if (\Bitrix\Main\Config\Option::get("sale", "~IS_SALE_CRM_SITE_MASTER_FINISH") === "Y"
+	|| \Bitrix\Main\Config\Option::get("sale", "~IS_SALE_BSM_SITE_MASTER_FINISH") === "Y"
+)
 {
 	$defaultSite = \Bitrix\Main\SiteTable::getList([
 		"select" => ["SERVER_NAME"],
@@ -159,6 +161,10 @@ if (\Bitrix\Main\Config\Option::get("sale", "~IS_SALE_CRM_SITE_MASTER_FINISH") =
 	{
 		$defaultServerName = (\Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? "https" : "http")."://".$defaultSite["SERVER_NAME"];
 	}
+	elseif ($serverName = \Bitrix\Main\Config\Option::get("main", "server_name"))
+	{
+		$defaultServerName = (\Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? "https" : "http")."://".$serverName;
+	}
 }
 ?>
 <div id="bx-panel" class="adm-header"><div class="adm-header-left">
@@ -166,27 +172,34 @@ if (\Bitrix\Main\Config\Option::get("sale", "~IS_SALE_CRM_SITE_MASTER_FINISH") =
 		<a hidefocus="true" href="<?=$defaultServerName.$sPubUrl?>" id="bx-panel-view-tab" class="adm-header-btn adm-header-btn-site" title="<?=GetMessage("adm_top_panel_view_title")?>"><?=GetMessage("admin_panel_site")?></a>
 		<a hidefocus="true" href="<?=BX_ROOT."/admin/index.php?lang=".LANGUAGE_ID?>" class="adm-header-btn adm-header-btn-admin"><?=GetMessage("admin_panel_admin")?></a>
 		<?php
+		$additionalSiteId = null;
+		$additionalTabTitle = "";
+		$additionalTabMessage = "";
 		if (\Bitrix\Main\Config\Option::get("sale", "~IS_SALE_CRM_SITE_MASTER_FINISH") === "Y")
 		{
-			$crmSiteId = \Bitrix\Main\Config\Option::get("sale", "~CRM_WIZARD_SITE_ID");
-			if ($crmSiteId)
+			$additionalSiteId = \Bitrix\Main\Config\Option::get("sale", "~CRM_WIZARD_SITE_ID");
+			$additionalTabTitle = GetMessage("adm_top_panel_view_b24_title");
+			$additionalTabMessage = GetMessage("admin_panel_b24");
+		}
+
+		if ($additionalSiteId)
+		{
+			$additionalSite = \Bitrix\Main\SiteTable::getList([
+				"select" => ["SERVER_NAME"],
+				"filter" => ["LID" => $additionalSiteId]
+			])->fetch();
+
+			if ($additionalSite && !empty($additionalSite["SERVER_NAME"]))
 			{
-				$crmSite = \Bitrix\Main\SiteTable::getList([
-					"select" => ["SERVER_NAME"],
-					"filter" => ["LID" => $crmSiteId]
-				])->fetch();
+				$additionalSiteUrl = ($_SESSION["BACK_URL_ADDITIONAL"] <> ""
+					? htmlspecialcharsbx($_SESSION["BACK_URL_ADDITIONAL"]).(strpos($_SESSION["BACK_URL_ADDITIONAL"], "?") !== false? "&amp;":"?")
+					: '/?').'back_url_admin='.urlencode($APPLICATION->GetCurPage().($params<>"" ? "?".$params : ""));
 
-				if ($crmSite && isset($crmSite["SERVER_NAME"]) && !empty($crmSite["SERVER_NAME"]))
-				{
-					$sCrmUrl = ($_SESSION["BACK_URL_CRM"] <> ""?
-							htmlspecialcharsbx($_SESSION["BACK_URL_CRM"]).(strpos($_SESSION["BACK_URL_CRM"], "?") !== false? "&amp;":"?") : '/?').
-						'back_url_admin='.urlencode($APPLICATION->GetCurPage().($params<>""? "?".$params:""));
-
-					$crmServerName = (\Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? "https" : "http")."://".$crmSite["SERVER_NAME"].$sCrmUrl;
-					?>
-					<a hidefocus="true" href="<?=$crmServerName?>" id="bx-panel-view-tab" class="adm-header-btn adm-header-btn-crm" title="<?=GetMessage("adm_top_panel_view_crm_title")?>"><?=GetMessage("admin_panel_crm")?></a>
-					<?php
-				}
+				$additionalSiteHost = \Bitrix\Main\Context::getCurrent()->getRequest()->isHttps() ? "https://" : "http://";
+				$additionalSiteServerName = $additionalSiteHost.$additionalSite["SERVER_NAME"].$additionalSiteUrl;
+				?>
+				<a hidefocus="true" href="<?=$additionalSiteServerName?>" id="bx-panel-view-tab" class="adm-header-btn adm-header-btn-crm" title="<?=$additionalTabTitle?>"><?=$additionalTabMessage?></a>
+				<?php
 			}
 		}
 		?>

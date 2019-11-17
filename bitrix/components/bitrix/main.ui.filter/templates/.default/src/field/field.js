@@ -1,5 +1,7 @@
 import {Event, Dom, Cache, Tag, Type} from 'main.core';
 
+const onValueChange = Symbol('onValueChange');
+
 export class Field extends Event.EventEmitter
 {
 	static instances = new WeakMap();
@@ -7,12 +9,49 @@ export class Field extends Event.EventEmitter
 	constructor(options)
 	{
 		super(options);
-		this.id = options.NAME;
+		this.id = options.options.NAME;
 		this.parent = options.parent;
 		this.node = options.node;
 		this.options = {...options.options};
 		this.cache = new Cache.MemoryCache();
+		this[onValueChange] = this[onValueChange].bind(this);
+
+		Event.bind(this.node, 'input', this[onValueChange]);
+		Event.bind(this.node, 'change', this[onValueChange]);
+
+		const clearButtons = [
+			...this.node.querySelectorAll('.main-ui-control-value-delete'),
+		];
+
+		clearButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				setTimeout(() => {
+					this[onValueChange]();
+				});
+			});
+		});
+
+		const MO = new MutationObserver(() => {
+			this[onValueChange]();
+		});
+
+		const selects = [
+			...this.node.querySelectorAll('.main-ui-select'),
+		];
+
+		selects.forEach((select) => {
+			MO.observe(select, {attributeFilter: ['data-value']});
+		});
+
 		Field.instances.set(this.node, this);
+	}
+
+	[onValueChange]()
+	{
+		this.emit('BX.Filter.Field:change', {
+			field: this,
+			value: this.getValue(),
+		});
 	}
 
 	/**
@@ -76,7 +115,7 @@ export class Field extends Event.EventEmitter
 		{
 			const stubs = this.parent.params.FIELDS_STUBS;
 			const {type = 'string'} = options;
-			const stub = stubs.find(item => item.NAME === type);
+			const stub = stubs.find((item) => item.NAME === type);
 
 			if (Type.isPlainObject(stub))
 			{
@@ -85,6 +124,7 @@ export class Field extends Event.EventEmitter
 					NAME: options.id,
 					LABEL: options.name,
 					TYPE: type === 'checkbox' ? 'SELECT' : stub.TYPE,
+					VALUE_REQUIRED: options.valueRequired === true,
 				};
 
 				if (type === 'list')
@@ -201,5 +241,58 @@ export class Field extends Event.EventEmitter
 		}
 
 		return '';
+	}
+
+	setValue(value)
+	{
+		const {TYPE: type} = this.options;
+
+		if (type === 'DATE' || type === 'NUMBER')
+		{
+			if (Type.isPlainObject(value))
+			{
+				const container = this.parent.getFieldListContainer();
+
+				Object.entries(value).forEach(([key, fieldValue]) => {
+					const fieldNode = container.querySelector(`[data-name="${this.id}"] [data-name="${this.id}${key}"], [data-name="${this.id}"] [name="${this.id}${key}"]`);
+
+					if (fieldNode)
+					{
+						if (Dom.hasClass(fieldNode, 'main-ui-select'))
+						{
+							const items = Dom.attr(fieldNode, 'data-items');
+
+							if (Type.isArray(items))
+							{
+								const item = items.find((currentItem) => currentItem.VALUE === fieldValue);
+
+								if (Type.isPlainObject(item))
+								{
+									Dom.attr(fieldNode, 'data-value', item);
+
+									const nameNode = fieldNode.querySelector('.main-ui-select-name');
+									if (nameNode)
+									{
+										nameNode.innerText = item.NAME;
+									}
+
+									fieldNode.click();
+
+									const result = BX.Main.ui.Factory.get(fieldNode);
+									if (Type.isPlainObject(result))
+									{
+										BX.onCustomEvent(window, 'UI::Select::Change', [result.instance, item]);
+									}
+								}
+							}
+						}
+						else if (fieldNode.tagName === 'INPUT')
+						{
+							fieldNode.value = fieldValue;
+						}
+					}
+				});
+			}
+		}
 	}
 }

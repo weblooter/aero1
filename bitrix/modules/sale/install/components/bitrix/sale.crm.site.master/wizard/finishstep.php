@@ -1,11 +1,11 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Config\Option,
 	Bitrix\Main\Localization\Loc,
 	Bitrix\Sale\Update\CrmEntityCreatorStepper,
-	Bitrix\Wizard\Tools\SitePatcher;
+	Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher;
 
 Loc::loadMessages(__FILE__);
 
@@ -23,7 +23,7 @@ elseif (Main\IO\File::isFileExists($_SERVER["DOCUMENT_ROOT"]."/bitrix/wizards/bi
  * Class FinishStep
  * Step with finish information
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class FinishStep extends \FinishStep
 {
@@ -39,7 +39,7 @@ class FinishStep extends \FinishStep
 	/**
 	 * Initialization step id and title
 	 */
-	function initStep()
+	public function initStep()
 	{
 		$this->component = $this->GetWizard()->GetVar("component");
 
@@ -56,7 +56,7 @@ class FinishStep extends \FinishStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	function showStep()
+	public function showStep()
 	{
 		if (!CrmEntityCreatorStepper::isAgent()
 			&& !CrmEntityCreatorStepper::isFinished()
@@ -64,27 +64,32 @@ class FinishStep extends \FinishStep
 		{
 			$this->component->setSaleCrmSiteMasterFinish();
 			$this->component->setSaleCrmSiteMasterStub();
+			$this->component->setLandingSmnExtended();
 
-			$this->siteId = SitePatcher::getInstance()->getCrmSiteId();
+			$this->siteId = SitePatcher::getCrmSiteId();
 			$this->sitePath = SitePatcher::getInstance()->getCrmSitePath();
 			$this->siteDir = SitePatcher::getInstance()->getCrmSiteDir();
+
+			SitePatcher::disableRegularArchive();
 
 			$this->createNewIndex();
 
 			// register event for show progress bar and bind agent
 			CrmEntityCreatorStepper::registerEventHandler();
+
+			SitePatcher::saveConfig1C();
 		}
 
 		ob_start();
 		?>
-		<div class="adm-site-master-finish">
-			<img class="adm-site-master-finish-image" src="<?=$this->component->getPath()?>/wizard/images/smile.svg" alt="">
+		<div class="adm-crm-site-master-finish">
+			<img class="adm-crm-site-master-finish-image" src="<?=$this->component->getPath()?>/wizard/images/smile.svg" alt="">
 		</div>
 
-		<div class="adm-site-master-finish-description">
+		<div class="adm-crm-site-master-finish-description">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_FINISHSTEP_DESCR1")?>
 		</div>
-		<div class="adm-site-master-finish-description">
+		<div class="adm-crm-site-master-finish-description">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_FINISHSTEP_DESCR2")?>
 		</div>
 		<?
@@ -126,7 +131,7 @@ class FinishStep extends \FinishStep
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	function createNewIndex()
+	public function createNewIndex()
 	{
 		$wizard =& $this->GetWizard();
 
@@ -179,6 +184,13 @@ class FinishStep extends \FinishStep
 			"main",
 			"wizard_first".substr($wizard->GetID(), 7)."_".$this->siteId,
 			"Y",
+			$this->siteId
+		);
+
+		Option::set(
+			"main",
+			"wizard_solution",
+			$wizard->GetID(),
 			$this->siteId
 		);
 	}

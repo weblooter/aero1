@@ -693,6 +693,7 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 
 		$siteId = Manager::getMainSiteId();
 		$bitrix24 = Manager::isB24();
+		$bitrix24originalVar = $bitrix24;
 		$disableCloud = defined('LANDING_DISABLE_CLOUD') &&
 						LANDING_DISABLE_CLOUD === true;
 
@@ -707,6 +708,7 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 				'SITE_PROTOCOL' => 'SITE.DOMAIN.PROTOCOL',
 				'SITE_DOMAIN' => 'SITE.DOMAIN.DOMAIN',
 				'SITE_CODE' => 'SITE.CODE',
+				'SITE_TYPE' => 'SITE.TYPE',
 				'SITE_SMN_ID' => 'SITE.SMN_SITE_ID',
 				'FOLDER_CODE' => 'LF.CODE'
 			),
@@ -725,6 +727,14 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 		));
 		while ($row = $res->fetch())
 		{
+			if ($row['SITE_TYPE'] == 'SMN')
+			{
+				$bitrix24 = false;
+			}
+			else
+			{
+				$bitrix24 = $bitrix24originalVar;
+			}
 			$domainReplace = false;
 			$row['SITE_ID_ORIG'] = $row['SITE_ID'];
 			// build site domain by default

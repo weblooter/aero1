@@ -31,3 +31,8 @@ export {
 };
 
 export * from './core-compatibility';
+
+if (global && global.window && global.window.BX)
+{
+	Object.assign(global.window.BX, exports);
+}

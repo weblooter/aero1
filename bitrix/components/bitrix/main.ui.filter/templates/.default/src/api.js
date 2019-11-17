@@ -58,22 +58,26 @@ export class Api
 	/**
 	 * Extends current applied filter
 	 * @param {Object.<String, *>} fields
+	 * @param {boolean} [force = false]
 	 */
-	extendFilter(fields)
+	extendFilter(fields, force = false)
 	{
 		if (Type.isObject(fields))
 		{
 			Object.keys(fields).forEach((key) => {
 				if (Type.isNumber(fields[key]))
 				{
-					fields[key] = `${fields[key]}`;
+					fields[key] = String(fields[key]);
 				}
 			});
 
 			const currentPresetId = this.parent.getPreset().getCurrentPresetId();
 
-			if (currentPresetId === 'tmp_filter'
-				|| currentPresetId === 'default_filter')
+			if (
+				force
+				|| currentPresetId === 'tmp_filter'
+				|| currentPresetId === 'default_filter'
+			)
 			{
 				const newFields = Object.assign({}, this.parent.getFilterFieldsValues(), fields);
 

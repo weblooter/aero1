@@ -77,7 +77,7 @@
 		getInnerTotalWidth: function()
 		{
 			return (
-				this.titleContainer.offsetWidth +
+				(this.titleContainer ? this.titleContainer.offsetWidth : 0)+
 				(this.filterContainer ? this.filterContainer.offsetWidth : 0) +
 				this.buttonContainer.offsetWidth
 			);
@@ -95,7 +95,7 @@
 		{
 			var userAgent = navigator.userAgent.toLowerCase();
 
-			if (userAgent.indexOf('safari') !== -1)
+			if (userAgent.indexOf('safari') !== -1 || userAgent.indexOf('firefox') !== -1 || userAgent.indexOf('MSIE') !== -1)
 			{
 				if (userAgent.indexOf('chrome') > -1)
 				{

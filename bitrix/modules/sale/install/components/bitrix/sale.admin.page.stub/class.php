@@ -14,6 +14,9 @@ class SaleAdminPageStub extends \CBitrixComponent
 	/** @var string */
 	const CRM_WIZARD_SITE_ID = "~CRM_WIZARD_SITE_ID";
 
+	/** @var string */
+	const IS_SALE_BSM_SITE_MASTER_FINISH = "~IS_SALE_BSM_SITE_MASTER_FINISH";
+
 	/**
 	 * @return array
 	 */
@@ -193,6 +196,22 @@ class SaleAdminPageStub extends \CBitrixComponent
 			if ($site && isset($site["SERVER_NAME"]) && !empty($site["SERVER_NAME"]))
 			{
 				return $site["SERVER_NAME"];
+			}
+		}
+		elseif ((Main\Config\Option::get("sale", self::IS_SALE_BSM_SITE_MASTER_FINISH, "N") === "Y"))
+		{
+			$site = \Bitrix\Main\SiteTable::getList([
+				"select" => ["SERVER_NAME"],
+				"filter" => ["=DEF" => "Y"]
+			])->fetch();
+
+			if ($site && isset($site["SERVER_NAME"]) && !empty($site["SERVER_NAME"]))
+			{
+				return $site["SERVER_NAME"];
+			}
+			elseif (\Bitrix\Main\Config\Option::get("main", "server_name"))
+			{
+				return \Bitrix\Main\Config\Option::get("main", "server_name");
 			}
 		}
 

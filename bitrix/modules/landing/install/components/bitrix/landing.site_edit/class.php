@@ -129,10 +129,22 @@ class LandingSiteEditComponent extends LandingBaseFormComponent
 
 			$this->arResult['SITE'] = $this->getRow();
 			$this->arResult['LANG_CODES'] = $this->getLangCodes();
-			$this->arResult['IP_FOR_DNS'] = $this->getIpForDNS();
 			$this->arResult['TEMPLATES'] = $this->getTemplates();
 			$this->arResult['SHOW_RIGHTS'] = Rights::isExtendedMode() && Rights::isAdmin();
 			$this->arResult['SETTINGS'] = [];
+
+			if (
+				!defined('LANDING_DISABLE_B24_MODE') &&
+				$this->arResult['SITE']['TYPE']['CURRENT'] == 'SMN'
+			)
+			{
+				Manager::forceB24disable(true);
+			}
+
+			if (Manager::isB24())
+			{
+				$this->arResult['IP_FOR_DNS'] = $this->getIpForDNS();
+			}
 
 			// set predefined for getting props from component
 			\Bitrix\Landing\Node\Component::setPredefineForDynamicProps([
@@ -276,5 +288,6 @@ class LandingSiteEditComponent extends LandingBaseFormComponent
 
 
 		parent::executeComponent();
+		Manager::forceB24disable(false);
 	}
 }

@@ -19,7 +19,8 @@ $server = $context->getServer();
 $lang = $context->getLanguage();
 $documentRoot = \Bitrix\Main\Application::getDocumentRoot();
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/sale/include.php");
+\Bitrix\Main\Loader::includeModule('sale');
+
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/sale/prolog.php");
 
 $APPLICATION->SetTitle(\Bitrix\Main\Localization\Loc::getMessage('SALE_SYNCHRONIZER_TITLE'));

@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Templates;
+namespace Bitrix\Sale\CrmSiteMaster\Templates;
 
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 	die();
@@ -13,7 +13,7 @@ Loc::loadMessages(__FILE__);
  * Class CrmSiteMasterTemplate
  * Template for master
  *
- * @package Bitrix\Wizard\Templates
+ * @package Bitrix\Sale\CrmSiteMaster\Templates
  */
 class CrmSiteMasterTemplate extends \CWizardTemplate
 {
@@ -79,7 +79,7 @@ class CrmSiteMasterTemplate extends \CWizardTemplate
 			$buttonsResult = $obStep->showButtons();
 			if (isset($buttonsResult["NEED_WRAPPER"]) && $buttonsResult["NEED_WRAPPER"] === true)
 			{
-				$buttons = '<div class="adm-site-master-buttons">';
+				$buttons = '<div class="adm-crm-site-master-buttons">';
 				if (isset($buttonsResult["CENTER"]) && $buttonsResult["CENTER"] === true)
 				{
 					$buttons .= '<div class="ui-btn-container ui-btn-container-center">';
@@ -201,35 +201,6 @@ class CrmSiteMasterTemplate extends \CWizardTemplate
 		}
 	}
 
-	document.onkeydown = EnterKeyPress;
-
-	function EnterKeyPress(event)
-	{
-
-		event = event || window.event;
-
-		if (!event.ctrlKey)
-			return;
-
-		var key = (event.keyCode ? event.keyCode : (event.which ? event.which : null) );
-
-		if (!key)
-			return;
-
-		if (key === 13 || key === 39)
-		{
-			var nextButton = document.forms["{$formName}"].elements["{$nextButtonId}"];
-			if (nextButton)
-				nextButton.click();
-		}
-		else if (key === 37)
-		{
-			var prevButton = document.forms["{$formName}"].elements["{$prevButtonId}"];
-			if (prevButton)
-				prevButton.click();
-		}
-	}
-
 	function CloseWindow()
 	{
 		if (self.parent.window.WizardWindow)
@@ -242,9 +213,9 @@ class CrmSiteMasterTemplate extends \CWizardTemplate
 <body onload="OnLoad();">
 	{#FORM_START#}
 	{$sessidPost}
-	<div class="adm-site-master-wrapper">
-		<div class="adm-site-master-title">{$stepTitle}</div>
-		<div class="adm-site-master-content">
+	<div class="adm-crm-site-master-wrapper">
+		<div class="adm-crm-site-master-title">{$stepTitle}</div>
+		<div class="adm-crm-site-master-content">
 			{$strError}
 			{#CONTENT#}
 		</div>

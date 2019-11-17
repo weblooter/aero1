@@ -193,6 +193,7 @@ $MESS["SALE_AUTO_SHP_TR_STATUS_ON"] = "Обновление статусов о�
 $MESS["SALE_AUTO_SHP_TR_STATUS_MAP"] = "Соответствие статусов отправлений служб доставок и статусов отгрузок";
 
 $MESS["SMO_VALUE_PRECISION_TITLE"] = "Точность округления при расчетах";
+$MESS["SMO_VALUE_PRECISION_0"] = ".";
 $MESS["SMO_VALUE_PRECISION_1"] = ".0";
 $MESS["SMO_VALUE_PRECISION_2"] = ".00";
 $MESS["SMO_VALUE_PRECISION_3"] = ".000";

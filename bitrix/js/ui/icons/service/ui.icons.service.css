@@ -348,6 +348,10 @@
 	background-color: #349ed0;
 	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-infocall.svg);
 }
+.ui-icon-service-audio-infocall > i {
+	background-color: #3dc9db;
+	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-audio-infocall.svg);
+}
 .ui-icon-service-light-infocall > i { background-image: url(/bitrix/js/ui/icons/service/images/ui-service-light-infocall.svg); }
 
 .ui-icon-service-deal > i {
@@ -386,4 +390,23 @@
 .ui-icon-service-light-avito > i {
 	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-avito.svg);
 }
+
+.ui-icon-service-mailru2 > i {
+	background-color: #005ff9;
+	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-mailru.svg);
+}
+.ui-icon-service-light-mailru2 > i {
+	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-mailru.svg);
+}
+
+.ui-icon.ui-icon-service-sbbol > i,
+.ui-icon.ui-icon-service-sberbank > i {
+	background-color: #289D37;
+	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-sberbank.svg);
+}
+.ui-icon.ui-icon-service-light-sbbol > i,
+.ui-icon.ui-icon-service-light-sberbank > i {
+	background-image: url(/bitrix/js/ui/icons/service/images/ui-service-light-sberbank.svg);
+}
+
 /*endregion*/

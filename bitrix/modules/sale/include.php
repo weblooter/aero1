@@ -631,6 +631,8 @@ CModule::AddAutoloadClasses(
 		'\Bitrix\Sale\Location\Normalizer\SpaceNormalizer' => '/lib/location/normalizer/spacenormalizer.php',
 		'\Bitrix\Sale\Location\Normalizer\LanguageNormalizer' => '/lib/location/normalizer/languagenormalizer.php',
 		'\Bitrix\Sale\Location\Normalizer\Helper' => '/lib/location/normalizer/helper.php',
+
+		'\Sale\Handlers\Delivery\Additional\RusPost\Reliability\Service' => '/handlers/delivery/additional/ruspost/reliability/service.php'
 	)
 );
 

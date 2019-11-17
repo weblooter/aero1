@@ -39,7 +39,6 @@ BX.UI.ActionPanel = function(options)
 	this.showResetAllBlock = typeof options.showResetAllBlock === 'undefined' ? (this.pinnedMode ? false : true) : options.showResetAllBlock;
 
 	this.buildPanelContainer();
-	this.bindEvents();
 	if (this.pinnedMode)
 	{
 		this.buildPanelByGroup();
@@ -740,6 +739,7 @@ BX.UI.ActionPanel.prototype =
 
 	draw: function()
 	{
+		this.bindEvents();
 		document.body.appendChild(this.getPanelContainer());
 		this.adjustPanelStyle();
 		if (this.pinnedMode)

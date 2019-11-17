@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Application,
@@ -12,7 +12,7 @@ Loc::loadMessages(__FILE__);
  * Class BackupStep
  * Step with check backup
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class BackupStep extends \CWizardStep
 {
@@ -26,7 +26,7 @@ class BackupStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -81,7 +81,7 @@ class BackupStep extends \CWizardStep
 
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph">
+		<div class="adm-crm-site-master-paragraph">
 			<p><?= Loc::getMessage("SALE_CSM_WIZARD_BACKUPSTEP_DESCR_TEXT") ?></p>
 			<p><?= Loc::getMessage("SALE_CSM_WIZARD_BACKUPSTEP_DESCR_LINK", [
 					"#LINK_INSTRUCTION#" => $instructionLink
@@ -106,8 +106,8 @@ class BackupStep extends \CWizardStep
 		if ($this->GetNextStepID() !== null)
 		{
 			?>
-			<span class="adm-site-master-checkbox">
-				<label class="adm-site-master-checkbox-label"
+			<span class="adm-crm-site-master-checkbox">
+				<label class="adm-crm-site-master-checkbox-label"
 					   style="display: flex !important;align-items: center;flex-direction: row;">
 					<input type="checkbox" id="confirmation_done" value="Y">
 					<?= Loc::getMessage("SALE_CSM_WIZARD_BACKUPSTEP_ALL_DONE") ?>
@@ -137,7 +137,7 @@ class BackupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getLanguageId()
+	private function getLanguageId()
 	{
 		$languageId = '';
 

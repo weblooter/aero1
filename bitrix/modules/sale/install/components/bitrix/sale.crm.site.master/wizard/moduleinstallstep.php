@@ -1,9 +1,10 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools\ModuleChecker;
+	Bitrix\Sale\CrmSiteMaster\Tools\ModuleChecker,
+	Bitrix\Sale\CrmSiteMaster\Tools\PushChecker;
 
 Loc::loadMessages(__FILE__);
 
@@ -11,7 +12,7 @@ Loc::loadMessages(__FILE__);
  * Class ModuleInstallStep
  * Install required modules
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class ModuleInstallStep extends \CWizardStep
 {
@@ -31,7 +32,7 @@ class ModuleInstallStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -85,19 +86,19 @@ class ModuleInstallStep extends \CWizardStep
 
 		ob_start();
 		?>
-		<div class="adm-site-master-progress-container" id="result">
-			<div class="adm-site-master-progress-counter">
-				<div class="adm-site-master-progress-container-num" id="progressBar_percent"></div>
-				<div class="adm-site-master-progress-container-per">%</div>
+		<div class="adm-crm-site-master-progress-container" id="result">
+			<div class="adm-crm-site-master-progress-counter">
+				<div class="adm-crm-site-master-progress-container-num" id="progressBar_percent"></div>
+				<div class="adm-crm-site-master-progress-container-per">%</div>
 			</div>
 
-			<img src="<?=$this->component->getPath()?>/wizard/images/install-complete-icon.svg" alt="" class="adm-site-master-progress-complete">
-			<div class="adm-site-master-progress-complete-text">
+			<img src="<?=$this->component->getPath()?>/wizard/images/install-complete-icon.svg" alt="" class="adm-crm-site-master-progress-complete">
+			<div class="adm-crm-site-master-progress-complete-text">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_INSTALL_FINISH")?>
 			</div>
 		</div>
 
-		<div class="adm-site-master-progress">
+		<div class="adm-crm-site-master-progress">
 			<div class="ui-progressbar ui-progressbar-lg ui-progressbar-success">
 				<div class="ui-progressbar-track">
 					<div class="ui-progressbar-bar" id="progressBar" style="width: 0%;"></div>
@@ -105,12 +106,12 @@ class ModuleInstallStep extends \CWizardStep
 			</div>
 		</div>
 
-		<div class="adm-site-master-progress-description" id="progress_description">
+		<div class="adm-crm-site-master-progress-description" id="progress_description">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_INSTALL_WAIT1")?><br>
 			<?=Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_INSTALL_WAIT2")?>
 		</div>
 
-		<div class="adm-slider-buttons" id="button_submit_wrap" style="display: none">
+		<div class="adm-crm-slider-buttons" id="button_submit_wrap" style="display: none">
 			<div class="ui-btn-container ui-btn-container-center">
 				<button type="submit" class="ui-btn ui-btn-primary">
 					<?=Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_NEXT")?>
@@ -123,7 +124,7 @@ class ModuleInstallStep extends \CWizardStep
 				<span class="ui-alert-message" id="error_text"></span>
 			</div>
 
-			<div class="adm-slider-buttons" id="error_buttons">
+			<div class="adm-crm-slider-buttons" id="error_buttons">
 				<div class="ui-btn-container ui-btn-container-center">
 					<button type="button" id="error_retry_button" class="ui-btn ui-btn-primary" onclick="">
 						<?=Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_RETRY_BUTTON")?>
@@ -165,7 +166,7 @@ class ModuleInstallStep extends \CWizardStep
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\SystemException
 	 */
-	function onPostForm()
+	public function onPostForm()
 	{
 		$wizard =& $this->GetWizard();
 		if ($wizard->IsPrevButtonClick())
@@ -184,19 +185,36 @@ class ModuleInstallStep extends \CWizardStep
 			$checkModules = $this->moduleChecker->checkInstalledModules();
 			if ($checkModules["NOT_INSTALL"])
 			{
-				$wizard->SetCurrentStep("Bitrix\Wizard\Steps\ModuleStep");
+				$wizard->SetCurrentStep("Bitrix\Sale\CrmSiteMaster\Steps\ModuleStep");
 			}
 			else
 			{
 				$this->moduleChecker->deleteInstallStatus();
-				$wizard->SetCurrentStep("Bitrix\Wizard\Steps\SiteInstructionStep");
+				$wizard->SetCurrentStep("Bitrix\Sale\CrmSiteMaster\Steps\SiteInstructionStep");
 			}
 			return true;
 		}
 
 		if ($moduleStage != "skip")
 		{
-			$this->installModule($moduleId);
+			try
+			{
+				$this->installModule($moduleId);
+
+				if ($moduleId === "pull")
+				{
+					$pushChecker = new PushChecker();
+					$registerResult = $pushChecker->registerSharedServer();
+					if (!$registerResult->isSuccess())
+					{
+						$this->SetError(implode("<br />", $registerResult->getErrorMessages()));
+					}
+				}
+			}
+			catch (\Exception $ex)
+			{
+				$this->SetError($ex->getMessage());
+			}
 
 			$cacheManager = Main\Application::getInstance()->getManagedCache();
 			$cacheManager->clean("b_module");
@@ -212,22 +230,22 @@ class ModuleInstallStep extends \CWizardStep
 			{
 				$arError[] = $error[0];
 			}
-			$arError[] = Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_ERROR_NOTICE", [
+			$strError = implode("<br />", $arError);
+			$strError = addslashes(str_replace(["\r\n", "\r", "\n"], "<br />", $strError));
+
+			$strError .= "<br /><br />".Loc::getMessage("SALE_CSM_WIZARD_MODULEINSTALLSTEP_ERROR_NOTICE", [
 				"#MODULES_LINK#" => "/bitrix/admin/module_admin.php?lang=".LANGUAGE_ID
 			]);
-			$strError = implode("<br>", $arError);
 
-			$response = '';
-			$response .= "window.ajaxWizardForm.ShowError('".$strError."')";
-			die("[response]".$response."[/response]");
+			$response = "window.ajaxWizardForm.ShowError('".$strError."')";
+			$this->sendResponse($response);
 		}
 
 		list($nextModule, $nextModuleStage, $stepsComplete) = $this->getModuleStep($moduleId);
 
 		if ($nextModule == "finish")
 		{
-			$response = '';
-			$response .= "window.ajaxWizardForm.StopAjax();";
+			$response = "window.ajaxWizardForm.StopAjax();";
 			$response .= "window.ajaxWizardForm.SetStatus('100');";
 			$response .= "window.ajaxWizardForm.Post('".$nextModule."', '".$nextModuleStage."');";
 		}
@@ -235,18 +253,19 @@ class ModuleInstallStep extends \CWizardStep
 		{
 			$percent = round($stepsComplete);
 
-			$response = '';
-			$response .= "window.ajaxWizardForm.SetStatus('".$percent."');";
+			$response = "window.ajaxWizardForm.SetStatus('".$percent."');";
 			$response .= "window.ajaxWizardForm.Post('".$nextModule."', '".$nextModuleStage."');";
 		}
 
-		die("[response]".$response."[/response]");
+		$this->sendResponse($response);
+
+		return true;
 	}
 
 	/**
 	 * @return array
 	 */
-	protected function getFirstModule()
+	private function getFirstModule()
 	{
 		$modules = array_keys($this->modules);
 		foreach ($modules as $module)
@@ -270,7 +289,7 @@ class ModuleInstallStep extends \CWizardStep
 	 * @param $moduleId
 	 * @return array
 	 */
-	protected function getModuleStep($moduleId)
+	private function getModuleStep($moduleId)
 	{
 		$modules = array_keys($this->modules);
 		$nextService = $nextServiceStage = "finish";
@@ -311,7 +330,7 @@ class ModuleInstallStep extends \CWizardStep
 	/**
 	 * @param $moduleId
 	 */
-	protected function onModuleInstalledEvent($moduleId)
+	private function onModuleInstalledEvent($moduleId)
 	{
 		foreach (GetModuleEvents("main", "OnModuleInstalled", true) as $arEvent)
 		{
@@ -325,7 +344,7 @@ class ModuleInstallStep extends \CWizardStep
 	 * @param $moduleId
 	 * @return bool
 	 */
-	protected function installModule($moduleId)
+	private function installModule($moduleId)
 	{
 		/** @noinspection PhpVariableNamingConventionInspection */
 		global $DB, $APPLICATION;
@@ -388,5 +407,16 @@ class ModuleInstallStep extends \CWizardStep
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param $response
+	 */
+	private function sendResponse($response)
+	{
+		/** @noinspection PhpVariableNamingConventionInspection */
+		global $APPLICATION;
+		$APPLICATION->RestartBuffer();
+		die("[response]".$response."[/response]");
 	}
 }

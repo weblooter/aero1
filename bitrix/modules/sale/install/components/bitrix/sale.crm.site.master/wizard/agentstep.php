@@ -1,8 +1,8 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools\AgentChecker;
+	Bitrix\Sale\CrmSiteMaster\Tools\AgentChecker;
 
 Loc::loadMessages(__FILE__);
 
@@ -10,7 +10,7 @@ Loc::loadMessages(__FILE__);
  * Class AgentStep
  * Step of check agents
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class AgentStep  extends \CWizardStep
 {
@@ -22,7 +22,7 @@ class AgentStep  extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -39,7 +39,7 @@ class AgentStep  extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -62,7 +62,7 @@ class AgentStep  extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	function initStep()
+	public function initStep()
 	{
 		$this->component = $this->GetWizard()->GetVar("component");
 
@@ -90,7 +90,7 @@ class AgentStep  extends \CWizardStep
 			<div class="ui-alert ui-alert-danger ui-alert-icon-danger">
 				<span class="ui-alert-message"><?=$error?></span>
 			</div>
-			<div class="adm-site-master-paragraph">
+			<div class="adm-crm-site-master-paragraph">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_AGENTSTEP_CHECKER_LINK", [
 					"#LANG#" => LANGUAGE_ID
 				])?>

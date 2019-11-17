@@ -43,6 +43,7 @@
 		COUNTER: "COUNTER",
 		PERCENT: "PERCENT",
 		INCIRCLE: "INCIRCLE",
+		INCIRCLECOUNTER: "INCIRCLECOUNTER",
 		NONE: "NONE",
 	};
 
@@ -226,6 +227,13 @@
 							text: this.getStatusPercent()
 						});
 					}
+					else if (this.getStatusType() === BX.UI.ProgressRound.Status.INCIRCLECOUNTER)
+					{
+						this.status = BX.create("div", {
+							props: { className: "ui-progressround-status-incircle" },
+							text: this.getStatusCounter()
+						});
+					}
 					else if (this.getStatusType() === BX.UI.ProgressRound.Status.PERCENT)
 					{
 						this.status = BX.create("div", {
@@ -286,6 +294,12 @@
 				{
 					BX.adjust(this.status, {
 						text: this.getStatusPercent()
+					});
+				}
+				else if (this.getStatusType() === BX.UI.ProgressRound.Status.INCIRCLECOUNTER)
+				{
+					BX.adjust(this.status, {
+						text: this.getStatusCounter()
 					});
 				}
 			},

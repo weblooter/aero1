@@ -263,7 +263,7 @@ BX.Sale.Admin.OrderEditPage =
 
 	callFieldsUpdaters: function(orderData)
 	{
-		var ordered = ["DISCOUNTS_LIST", "DELIVERY_PRICE", "PROPERTIES_ARRAY", "BUYER_PROFILES_LIST","BUYER_PROFILES_DATA"],
+		var ordered = ["DISCOUNTS_LIST", "DELIVERY_PRICE", "PROPERTIES_ARRAY", "BUYER_PROFILES_LIST","BUYER_PROFILES_DATA", "DELIVERY_WEIGHT"],
 			orderedDone = {};
 
 		for(var i = 0, l = ordered.length-1; i<=l; i++)
@@ -560,7 +560,9 @@ BX.Sale.Admin.OrderEditPage =
 
 			if(l > 0)
 			{
-				discountsNode = BX.create('table');
+				discountsNode = BX.create('div',{
+					props: {  className: "sale_order_basketsale-order-basket-product-n3-discount-description" }
+					});
 
 				for(i = 0, l; i<l; i++)
 				{
@@ -615,10 +617,13 @@ BX.Sale.Admin.OrderEditPage =
 	 */
 	addDiscountItemRow: function(itemCode, itemType, itemDiscount,  discountParams, table, mode)
 	{
-		var row = table.insertRow(-1),
+		// var row = table.insertRow(-1),
+		var row = BX.create('div', { props: {className: "sale_order_basketsale-order-basket-product-n3-discount-description-row"} }),
 			itemAttrs = {'data-discount-id': discountParams.DISCOUNT_ID},
 			name,
 			checkbox;
+
+			table.appendChild(row);
 
 		if (itemType === 'DISCOUNT_LIST')
 		{
@@ -644,7 +649,10 @@ BX.Sale.Admin.OrderEditPage =
 			});
 
 		row.appendChild(
-			BX.create('td',{
+			BX.create('div',{
+				props: {
+					className: "sale_order_basketsale-order-basket-product-n3-discount-input"
+				},
 				children: [
 					BX.create('input',{
 						props: {
@@ -686,16 +694,13 @@ BX.Sale.Admin.OrderEditPage =
 			value = itemDiscount.DESCR;
 		}
 
-		row.appendChild(
-			BX.create('td',{
-				html: "<strong>"+value+"</strong>"
-			})
-		);
-
 		if(discountParams.EDIT_PAGE_URL)
 		{
 			row.appendChild(
-				BX.create('td',{
+				BX.create('div',{
+					props: {
+						className: "sale_order_basketsale-order-basket-product-n3-discount-name"
+					},
 					children: [
 						BX.create('a',{
 							props: {
@@ -720,6 +725,24 @@ BX.Sale.Admin.OrderEditPage =
 				})
 			);
 		}
+
+		var valueWrap = BX.create('div',{
+				props: {className: "sale_order_basketsale-order-basket-product-n3-discount-list-container"},
+				html: "<div class=\"sale_order_basketsale-order-basket-product-n3-discount-list\">"+value+"</div>"
+			});
+
+		row.appendChild( valueWrap );
+
+		if (value.length > 500) {
+			valueWrap.appendChild(BX.create('div',{
+				props: {className: "sale_order_basketsale-order-basket-product-n3-discount-expand-btn" },
+				events: {
+					click: function(e) {valueWrap.classList.toggle("expand")}
+				}
+			}))
+		};
+
+
 
 		return row;
 	},

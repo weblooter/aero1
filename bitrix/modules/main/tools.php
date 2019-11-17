@@ -3992,9 +3992,12 @@ function GetCountryArray($lang=LANGUAGE_ID)
 {
 	$arMsg = IncludeModuleLangFile(__FILE__, $lang, true);
 	$arr = array();
-	foreach($arMsg as $id=>$country)
-		if(strpos($id, "COUNTRY_") === 0)
-			$arr[intval(substr($id, 8))] = $country;
+	if (is_array($arMsg))
+	{
+		foreach($arMsg as $id=>$country)
+			if(strpos($id, "COUNTRY_") === 0)
+				$arr[intval(substr($id, 8))] = $country;
+	}
 	asort($arr);
 	$arCountry = array("reference_id"=>array_keys($arr), "reference"=>array_values($arr));
 	return $arCountry;
@@ -4554,9 +4557,20 @@ class CJSCore
 			}
 		}
 
+		//An old path format required a language id.
 		if (isset($arPaths['lang']))
 		{
-			$arPaths['lang'] = str_replace("/lang/".LANGUAGE_ID."/", "/", $arPaths['lang']);
+			if (is_array($arPaths['lang']))
+			{
+				foreach ($arPaths['lang'] as $key => $lang)
+				{
+					$arPaths['lang'][$key] = str_replace('/lang/'.LANGUAGE_ID.'/', '/', $lang);
+				}
+			}
+			else
+			{
+				$arPaths['lang'] = str_replace('/lang/'.LANGUAGE_ID.'/', '/', $arPaths['lang']);
+			}
 		}
 
 		self::$arRegisteredExt[$name] = $arPaths;
@@ -5116,13 +5130,20 @@ JS;
 		global $APPLICATION;
 		$jsMsg = '';
 
-		if (is_string($lang))
+		if (!is_array($lang))
 		{
-			$messLang = \Bitrix\Main\Localization\Loc::loadLanguageFile($_SERVER['DOCUMENT_ROOT'].$lang);
+			$lang = [$lang];
+		}
 
-			if (!empty($messLang))
+		foreach ($lang as $path)
+		{
+			if (is_string($path))
 			{
-				$jsMsg = '(window.BX||top.BX).message('.CUtil::PhpToJSObject($messLang, false).');';
+				$messLang = \Bitrix\Main\Localization\Loc::loadLanguageFile($_SERVER['DOCUMENT_ROOT'].$path);
+				if (!empty($messLang))
+				{
+					$jsMsg .= '(window.BX||top.BX).message('.CUtil::PhpToJSObject($messLang, false).');';
+				}
 			}
 		}
 

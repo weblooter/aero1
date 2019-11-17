@@ -254,12 +254,4 @@ abstract class BasketItemCollection extends Internals\EntityCollection
 
 		return $context;
 	}
-
-	/**
-	 * @throws NotImplementedException
-	 */
-	public static function getRegistryType()
-	{
-		throw new NotImplementedException();
-	}
 }

@@ -1,0 +1,40 @@
+{
+    "items": [
+        {
+            "ACTIVE": "Y",
+            "C_SORT": "1",
+            "ANONYMOUS": "N",
+            "NAME": "Администраторы",
+            "STRING_ID": "administrators",
+            "DESCRIPTION": "Полный доступ к управлению сайтом.",
+            "SECURITY_POLICY": null
+        },
+        {
+            "ACTIVE": "Y",
+            "C_SORT": "2",
+            "ANONYMOUS": "Y",
+            "NAME": "Все пользователи (в том числе неавторизованные)",
+            "STRING_ID": "everyone",
+            "DESCRIPTION": "Все пользователи, включая неавторизованных.",
+            "SECURITY_POLICY": null
+        },
+        {
+            "ACTIVE": "Y",
+            "C_SORT": "3",
+            "ANONYMOUS": "N",
+            "NAME": "Пользователи, имеющие право голосовать за рейтинг",
+            "STRING_ID": "RATING_VOTE",
+            "DESCRIPTION": "В эту группу пользователи добавляются автоматически.",
+            "SECURITY_POLICY": null
+        },
+        {
+            "ACTIVE": "Y",
+            "C_SORT": "4",
+            "ANONYMOUS": "N",
+            "NAME": "Пользователи имеющие право голосовать за авторитет",
+            "STRING_ID": "RATING_VOTE_AUTHORITY",
+            "DESCRIPTION": "В эту группу пользователи добавляются автоматически.",
+            "SECURITY_POLICY": null
+        }
+    ]
+}

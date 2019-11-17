@@ -2077,24 +2077,11 @@
     }, {
       key: "clearDatabase",
       value: function clearDatabase() {
-        var results = [];
         this.models.forEach(function (model) {
-          results.push(model.clearDatabase());
+          return model.clearDatabase();
         });
         return new Promise(function (resolve, reject) {
-          Promise.all(results).then(function (stores) {
-            resolve(true);
-
-            if (typeof callback === 'function') {
-              callback(true);
-            }
-          }, function (error) {
-            console.error('BX.VuexBuilder.clearModelState: storage was not clear due to runtime errors.', error ? error : '');
-
-            if (typeof callback !== 'function') {
-              reject('ERROR_WHILE_CLEARING');
-            }
-          });
+          return resolve(true);
         });
       }
       /**

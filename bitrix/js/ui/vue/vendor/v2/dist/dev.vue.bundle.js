@@ -10045,9 +10045,9 @@
     return dynamicArgRE.test(name) // dynamic [name]
     ? {
       name: name.slice(1, -1),
-      dynamic: true // static name
-
-    } : {
+      dynamic: true
+    } // static name
+    : {
       name: "\"".concat(name, "\""),
       dynamic: false
     };

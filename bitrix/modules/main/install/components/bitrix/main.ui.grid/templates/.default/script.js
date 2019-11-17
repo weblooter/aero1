@@ -429,7 +429,7 @@
 	              action.DATA.reverse();
 	              action.DATA.forEach(function (controlObject) {
 	                if (self.validateControlObject(controlObject)) {
-	                  newElement = self.createControl(controlObject, BX.data(container, 'relative') || container.id);
+	                  newElement = self.createControl(controlObject, container.id || BX.data(container, 'relative'));
 
 	                  if (BX.type.isDomNode(newElement)) {
 	                    BX.insertAfter(newElement, container);
@@ -7580,10 +7580,10 @@
 	        return BX.height(cell);
 	      });
 	      column.forEach(function (cell, cellIndex) {
-	        var clone = BX.clone(cell);
 	        cell.style.minWidth = cellWidth + 'px';
 	        cell.style.width = cellWidth + 'px';
 	        cell.style.minHeight = heights[cellIndex] + 'px';
+	        var clone = BX.clone(cell);
 	        var lastStickyCell = this.getLastStickyCellFromRowByIndex(cellIndex);
 
 	        if (lastStickyCell) {

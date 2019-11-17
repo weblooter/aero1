@@ -1534,7 +1534,7 @@ class OrderCompatibility extends Internals\EntityCompatibility
 						);
 
 						/** @var Sale\ShipmentItemStore $shipmentItemStore */
-						$shipmentItemStore = $shipmentItemStoreCollection->getItemByBarcode($saveBarcodeData['BARCODE'],$basketItem->getBasketCode(), $barcodeData['STORE_ID']);
+						$shipmentItemStore = $shipmentItemStoreCollection->getItemByBarcode($saveBarcodeData['BARCODE']);
 
 						if (!$shipmentItemStore)
 						{

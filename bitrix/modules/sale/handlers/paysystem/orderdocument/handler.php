@@ -111,7 +111,7 @@ class OrderDocumentHandler
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	public function registerCallbackOnGenerate(Payment $payment, $params) // защита от того, что документ уже создан
+	public function registerCallbackOnGenerate(Payment $payment, $params)
 	{
 		$document = $this->getDocument($payment);
 		if ($document === null)
@@ -257,7 +257,14 @@ class OrderDocumentHandler
 		if (isset($documentInfo['pdfUrl']))
 		{
 			$fileId = DocumentGenerator\Model\FileTable::getBFileId($document->PDF_ID);
-			return \CFile::GetFileArray($fileId);
+			if ($fileId !== false)
+			{
+				$fileArray = \CFile::GetFileArray($fileId);
+				if ($fileArray)
+				{
+					return $fileArray;
+				}
+			}
 		}
 
 		return null;

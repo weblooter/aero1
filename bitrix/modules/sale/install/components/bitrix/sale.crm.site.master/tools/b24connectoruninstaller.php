@@ -1,12 +1,12 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 use Bitrix\Main,
 	Bitrix\B24Connector;
 
 /**
  * Class B24ConnectorUnInstaller
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class B24ConnectorUnInstaller
 {

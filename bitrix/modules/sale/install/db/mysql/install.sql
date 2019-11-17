@@ -50,6 +50,7 @@ create table if not exists b_sale_basket
 	DELAY char(1) not null default 'N',
 	NAME varchar(255) not null,
 	CAN_BUY char(1) not null default 'Y',
+	MARKING_CODE_GROUP varchar(100) null,
 	MODULE varchar(100) null,
 	CALLBACK_FUNC varchar(100) null,
 	NOTES varchar(250) null,
@@ -1130,6 +1131,7 @@ create table if not exists b_sale_order_delivery (
 	REASON_MARKED VARCHAR(255) NULL DEFAULT NULL,
 	CURRENCY VARCHAR(3) NULL DEFAULT NULL,
 	`SYSTEM` CHAR(1) NOT NULL DEFAULT 'N',
+	WEIGHT double(18, 4) default 0,
 	RESPONSIBLE_ID int(11) DEFAULT NULL,
 	EMP_RESPONSIBLE_ID int(11) DEFAULT NULL,
 	DATE_RESPONSIBLE_ID datetime DEFAULT NULL,
@@ -1341,6 +1343,7 @@ create table if not exists b_sale_store_barcode (
 	ID INT NOT NULL AUTO_INCREMENT,
 	BASKET_ID INT NOT NULL,
 	BARCODE VARCHAR(100) NULL,
+	MARKING_CODE VARCHAR(100) NULL,
 	STORE_ID INT NULL,
 	QUANTITY DOUBLE NOT NULL,
 	DATE_CREATE DATETIME NULL,
@@ -1920,5 +1923,14 @@ create table if not exists b_sale_documentgenerator_callback_registry(
 	DOCUMENT_ID INT NOT NULL,
 	CALLBACK_CLASS VARCHAR(100) NOT NULL,
 	CALLBACK_METHOD VARCHAR(100) NOT NULL,
+	PRIMARY KEY (ID)
+);
+
+create table if not exists b_sale_order_entities_custom_fields(
+	ID INT NOT NULL AUTO_INCREMENT,
+	ENTITY_ID INT NOT NULL,
+	ENTITY_TYPE varchar(255) NOT NULL,
+	ENTITY_REGISTRY_TYPE varchar(255) not null,
+	FIELD varchar(255) not null,
 	PRIMARY KEY (ID)
 );

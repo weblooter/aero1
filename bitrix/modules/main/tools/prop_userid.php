@@ -261,7 +261,6 @@ function Ch".$tag_name_x."()
 			else
 			{
 				DV_".$tag_name_x.".innerHTML = '';
-				document.getElementById('SELECT".$tag_name_escaped."').value = 'SU';
 			}
 		}
 		else if (

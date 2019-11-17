@@ -1,0 +1,53 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "schema_agentschema",
+            "VALUE": "bb0330ef333610b4c387a15d7486350f",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "schema_groupschema",
+            "VALUE": "ce9d2933cdad3e20961ec30d89a4e975",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "schema_hlblockschema",
+            "VALUE": "e06d66a3e4c2d293741edad692325129",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "schema_iblockschema",
+            "VALUE": "fa3c153cf3fdda901d97008703ab7e0b",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "schema_usertypeentitiesschema",
+            "VALUE": "76d13c8ace149261de385fffebb07a55",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "upgrade3_0cb1fbfb39557866ff1875c8228ecb05",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "sprint.migration",
+            "NAME": "upgrade3_0e3044041414874d3d40476d9be2c13e",
+            "VALUE": "1",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

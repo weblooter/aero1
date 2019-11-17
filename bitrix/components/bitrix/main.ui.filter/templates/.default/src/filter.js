@@ -777,11 +777,26 @@
 		{
 			var fields = this.getParam('FIELDS');
 
-			fields = fields.filter(function(current) {
+			var field = fields.find(function(current) {
 				return current.NAME === name;
-			}, this);
+			});
 
-			return fields.length > 0 ? fields[0] : null;
+			if (field)
+			{
+				return field;
+			}
+
+			var node = this.getFieldListContainer()
+				.querySelector('[data-name="' + name + '"]');
+
+			field = BX.Filter.Field.instances.get(node);
+
+			if (field)
+			{
+				return field.options;
+			}
+
+			return null;
 		},
 
 
@@ -1934,8 +1949,15 @@
 			}
 		},
 
-		prepareControlDateValue: function(values, name, field)
+		prepareControlDateValue: function(values, name, field, withAdditional)
 		{
+			var additionalFieldsContainer = field.querySelector('.main-ui-filter-additional-fields-container');
+
+			if (additionalFieldsContainer && !withAdditional)
+			{
+				BX.remove(additionalFieldsContainer);
+			}
+
 			var select = BX.Filter.Utils.getByClass(field, this.settings.classSelect);
 			var yearsSwitcher = field.querySelector(".main-ui-select[data-name*=\"_allow_year\"]");
 			var selectName = name + this.settings.datePostfix;
@@ -2098,6 +2120,11 @@
 				}
 			}
 
+			if (additionalFieldsContainer && !withAdditional)
+			{
+				BX.append(additionalFieldsContainer, field);
+			}
+
 			var additionalFields = Array.from(
 				field.querySelectorAll(
 					'.main-ui-filter-additional-fields-container > [data-type="DATE"]',
@@ -2108,7 +2135,7 @@
 			{
 				additionalFields.forEach(function(additionalField) {
 					var name = additionalField.dataset.name;
-					this.prepareControlDateValue(values, name, additionalField);
+					this.prepareControlDateValue(values, name, additionalField, true);
 				}, this);
 			}
 		},
@@ -2879,29 +2906,33 @@
 
 		_onFindButtonClick: function()
 		{
-			var Preset = this.getPreset();
-			var currentPresetId = Preset.getCurrentPresetId();
+			var presets = this.getPreset();
+			var currentPresetId = presets.getCurrentPresetId();
 			var promise;
 
-			if (currentPresetId !== 'tmp_filter' &&
-				currentPresetId !== 'default_filter' &&
-				!Preset.isPresetValuesModified(currentPresetId))
+			if (
+				currentPresetId !== 'tmp_filter'
+				&& currentPresetId !== 'default_filter'
+				&& !presets.isPresetValuesModified(currentPresetId)
+			)
 			{
-				var preset = Preset.getPreset(currentPresetId);
-				var additional = Preset.getAdditionalValues(currentPresetId);
-				var rows = Preset.getFields().map(function(current) { return BX.data(current, 'name'); });
+				var preset = presets.getPreset(currentPresetId);
+				var additional = presets.getAdditionalValues(currentPresetId);
+				var rows = presets.getFields().map(function(current) {
+					return BX.data(current, 'name');
+				});
+
 				preset.ADDITIONAL = this.preparePresetFields(additional, rows);
 				preset.ADDITIONAL = preset.ADDITIONAL.filter(function(field) {
 					return !this.getPreset().isEmptyField(field);
 				}, this);
 
-				Preset.applyPreset(currentPresetId);
 				promise = this.applyFilter(false, currentPresetId);
 				this.closePopup();
 			}
 			else
 			{
-				Preset.deactivateAllPresets();
+				presets.deactivateAllPresets();
 				promise = this.applyFilter();
 				this.closePopup();
 			}
@@ -3561,7 +3592,15 @@
 			}
 
 			return '';
-		}
+		},
+
+		getField: function(name)
+		{
+			var node = this.getFieldListContainer()
+				.querySelector('[data-name="' + name + '"]');
+
+			return BX.Filter.Field.instances.get(node);
+		},
 	};
 })();
 

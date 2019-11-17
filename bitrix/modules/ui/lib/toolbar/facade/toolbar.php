@@ -24,6 +24,8 @@ use Bitrix\UI\Toolbar\Manager;
  * @see \Bitrix\UI\Toolbar\Toolbar::getFilter
  * @method static renderRightButtons();
  * @see \Bitrix\UI\Toolbar\Toolbar::renderRightButtons
+ * @method static renderAfterFilterButtons();
+ * @see \Bitrix\UI\Toolbar\Toolbar::renderAfterFilterButtons
  * @method static renderFilterRightButtons();
  * @see \Bitrix\UI\Toolbar\Toolbar::renderFilterRightButtons
  * @method static setTitleMinWidth($width);

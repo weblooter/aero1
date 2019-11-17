@@ -6,7 +6,9 @@ use Bitrix\Main\Config\Option;
 
 class Config
 {
-	const DEFAULT_SERVER = "https://rtc-cloud-ms1.bitrix.info";
+	const DEFAULT_SERVER = "rtc-cloud.bitrix.info";
+	const HOSTNAME_URL = "/hostname";
+	const SERVER_LIST_URL = "/servers";
 	const REGISTER_URL = "/register-client/";
 	const PUB_URL = "/pub/";
 	const SUB_URL = "/subws/";
@@ -28,7 +30,7 @@ class Config
 
 	public static function getRegisterUrl()
 	{
-		return static::getServerAddress() . (defined("PULL_SHARED_REGISTER_URL") ? PULL_SHARED_REGISTER_URL : static::REGISTER_URL);
+		return "https://" . static::getServerAddress() . (defined("PULL_SHARED_REGISTER_URL") ? PULL_SHARED_REGISTER_URL : static::REGISTER_URL);
 	}
 
 	/**
@@ -38,7 +40,7 @@ class Config
 	 */
 	public static function getPublishUrl()
 	{
-		return static::getServerAddress() . static::PUB_URL;
+		return "https://" . static::getServerAddress() . static::PUB_URL;
 	}
 
 	/**
@@ -48,7 +50,7 @@ class Config
 	 */
 	public static function getLongPollingUrl()
 	{
-		return static::getServerAddress() . static::SUB_URL;
+		return "https://" . static::getServerAddress() . static::SUB_URL;
 	}
 
 	/**
@@ -58,8 +60,7 @@ class Config
 	 */
 	public static function getWebSocketUrl()
 	{
-		$result = static::getServerAddress() . static::SUB_URL;
-		$result = str_replace(["https", "http"], ["wss", "ws"], $result);
+		$result = "wss://" . static::getServerAddress() . static::SUB_URL;
 		return $result;
 	}
 
@@ -68,7 +69,7 @@ class Config
 	 */
 	public static function getWebPublishUrl()
 	{
-		return static::getServerAddress() . static::REST_URL;
+		return "https://" . static::getServerAddress() . static::REST_URL;
 	}
 
 	public static function getServerVersion()
@@ -94,12 +95,5 @@ class Config
 	public static function isRegistered()
 	{
 		return (Option::get("pull", static::IS_REGISTERED_ON_SHARED_SERVER) === "Y");
-	}
-
-	public static function selectServer()
-	{
-		// todo: actual selection of the server
-
-		return defined("PULL_SHARED_SERVER") ? PULL_SHARED_SERVER : static::DEFAULT_SERVER;
 	}
 }

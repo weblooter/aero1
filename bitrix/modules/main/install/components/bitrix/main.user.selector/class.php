@@ -53,6 +53,7 @@ class MainUserSelectorComponent extends CBitrixComponent
 		$this->arParams['NAME_TEMPLATE'] = empty($this->arParams['NAME_TEMPLATE']) ? \CAllSite::GetNameFormat(false) : str_replace(array("#NOBR#","#/NOBR#"), array("",""), $this->arParams["NAME_TEMPLATE"]);
 		$this->arParams['SELECTOR_OPTIONS'] = is_array($this->arParams['SELECTOR_OPTIONS']) ? $this->arParams['SELECTOR_OPTIONS'] : [];
 		$this->arParams['FIRE_CLICK_EVENT'] = isset($this->arParams['FIRE_CLICK_EVENT']) && $this->arParams['FIRE_CLICK_EVENT'] == 'Y' ? 'Y' : 'N';
+		$this->arParams['LOCK'] = isset($this->arParams['LOCK']) ? (bool) $this->arParams['LOCK'] : false;
 
 		if (isset($this->arParams['SHOW_BUTTON_SELECT']))
 		{
@@ -123,7 +124,12 @@ class MainUserSelectorComponent extends CBitrixComponent
 			}
 			$this->arResult['ITEMS_SELECTED'] = $res;
 		}
-
+		$this->arResult['ITEMS_UNDELETABLE'] = (
+			isset($this->arParams['UNDELETABLE'])
+			&& is_array($this->arParams['UNDELETABLE'])
+				? $this->arParams['UNDELETABLE']
+				: []
+		);
 		$this->arResult['IS_INPUT_MULTIPLE'] = substr($this->arParams['INPUT_NAME'], -2) == '[]';
 		$this->arResult['FIRE_CLICK_EVENT'] = (
 			$this->arParams['FIRE_CLICK_EVENT'] == 'Y'

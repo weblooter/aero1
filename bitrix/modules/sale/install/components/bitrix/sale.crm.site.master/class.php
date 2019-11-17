@@ -6,8 +6,8 @@ use Bitrix\Main,
 	Bitrix\Main\Config\Option,
 	Bitrix\Main\Localization\Loc,
 	Bitrix\Sale\Update\CrmEntityCreatorStepper,
-	Bitrix\Wizard\Tools,
-	Bitrix\Wizard\Templates;
+	Bitrix\Sale\CrmSiteMaster\Tools,
+	Bitrix\Sale\CrmSiteMaster\Templates;
 
 Loc::loadMessages(__FILE__);
 
@@ -20,6 +20,8 @@ require_once("tools/crmpackage.php");
 require_once("tools/sitepatcher.php");
 require_once("tools/agentchecker.php");
 require_once("tools/b24connectoruninstaller.php");
+require_once("tools/pushchecker.php");
+require_once("tools/bitrixvmchecker.php");
 
 /**
  * Class SaleCrmSiteMaster
@@ -38,27 +40,29 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/** @var string */
 	const IS_SALE_CRM_SITE_MASTER_STUB = "~IS_SALE_CRM_SITE_MASTER_STUB";
 
+	const IS_CRM_SITE_MASTER_OPENED = "~IS_CRM_SITE_MASTER_OPENED";
+
 	const ERROR_TYPE_COMPONENT = "COMPONENT";
 	const ERROR_TYPE_ORDER = "ORDER";
 	const ERROR_TYPE_WIZARD = "WIZARD";
 
 	/** @var CWizardBase wizard */
-	protected $wizard;
+	private $wizard;
 
 	/** @var Tools\ModuleChecker $moduleChecker */
-	protected $moduleChecker;
+	private $moduleChecker;
 
 	/** @var array default steps */
-	protected $defaultStep = [];
+	private $defaultStep = [];
 
 	/** @var array required steps */
-	protected $requiredStep = [];
+	private $requiredStep = [];
 
 	/** @var array variable for wizard */
-	protected $wizardVar = [];
+	private $wizardVar = [];
 
 	/** @var array error for wizard's step */
-	protected $wizardStepErrors = [];
+	private $wizardStepErrors = [];
 
 	/**
 	 * @param $arParams
@@ -66,12 +70,11 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 */
 	public function onPrepareComponentParams($arParams)
 	{
-		$this->defaultStep = $arParams["DEFAULT_STEPS"];
-		$this->requiredStep = $arParams["REQUIRED_STEPS"];
-		$modulesRequired = $arParams["MODULES_REQUIRED"];
+		$this->defaultStep = $this->getDefaultSteps();
+		$this->requiredStep = $this->getRequiredSteps();
 
 		$this->moduleChecker = new Tools\ModuleChecker();
-		$this->moduleChecker->setRequiredModules($modulesRequired);
+		$this->moduleChecker->setRequiredModules($this->getRequiredModules());
 
 		$this->arResult = [
 			"CONTENT" => "",
@@ -87,6 +90,147 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	}
 
 	/**
+	 * @return array
+	 */
+	private function getDefaultSteps()
+	{
+		$defaultStep = [
+			"Bitrix\Sale\CrmSiteMaster\Steps\WelcomeStep" => [
+				"SORT" => 100
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\BackupStep" => [
+				"SORT" => 200
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\SiteInstructionStep" => [
+				"SORT" => 400
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\SiteStep" => [
+				"SORT" => 500
+			],
+		];
+
+		if (Bitrix\Main\ModuleManager::isModuleInstalled("intranet"))
+		{
+			$defaultStep["Bitrix\Sale\CrmSiteMaster\Steps\DataInstallStep"]["SORT"] = 600;
+			$defaultStep["Bitrix\Sale\CrmSiteMaster\Steps\CrmGroupStep"]["SORT"] = 700;
+			$defaultStep["Bitrix\Sale\CrmSiteMaster\Steps\FinishStep"]["SORT"] = 800;
+		}
+
+		return $defaultStep;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getRequiredSteps()
+	{
+		return [
+			"Bitrix\Sale\CrmSiteMaster\Steps\B24ConnectorStep" => [
+				"SORT" => 320
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\PersonTypeStep" => [
+				"SORT" => 330
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\ActivationKeyStep" => [
+				"SORT" => 340
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\UpdateSystemStep" => [
+				"SORT" => 350
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\ModuleStep" => [
+				"SORT" => 360
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\PushAndPullStep" => [
+				"SORT" => 365
+			],
+			"Bitrix\Sale\CrmSiteMaster\Steps\ModuleInstallStep" => [
+				"SORT" => 370
+			]
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getRequiredModules()
+	{
+		return [
+			"main" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_MAIN_NAME"),
+				"version" => "19.0.400"
+			],
+			"pull" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_PULL_NAME"),
+				"version" => "19.0.0"
+			],
+			"intranet" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_INTRANET_NAME"),
+				"version" => "19.0.600"
+			],
+			"crm" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_CRM_NAME"),
+				"version" => "19.0.300"
+			],
+			"tasks" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_TASKS_NAME"),
+				"version" => ""
+			],
+			"disk" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_DISK_NAME"),
+				"version" => ""
+			],
+			"calendar" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_CALENDAR_NAME"),
+				"version" => ""
+			],
+			"im" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_IM_NAME"),
+				"version" => "16.5.0"
+			],
+			"webdav" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_WEBDAV_NAME"),
+				"version" => ""
+			],
+			"dav" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_DAV_NAME"),
+				"version" => ""
+			],
+			"timeman" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_TIMEMAN_NAME"),
+				"version" => ""
+			],
+			"meeting" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_MEETING_NAME"),
+				"version" => ""
+			],
+			"imconnector" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_IMCONNECTOR_NAME"),
+				"version" => ""
+			],
+			"mobile" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_MOBILE_NAME"),
+				"version" => ""
+			],
+			"mobileapp" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_MOBILEAPP_NAME"),
+				"version" => ""
+			],
+			"voximplant" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_VOXIMPLANT_NAME"),
+				"version" => ""
+			],
+			"imopenlines" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_IMOPENLINES_NAME"),
+				"version" => ""
+			],
+			"landing" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_LANDING_NAME"),
+				"version" => ""
+			],
+		];
+	}
+
+	/**
 	 * @return Tools\ModuleChecker
 	 */
 	public function getModuleChecker()
@@ -98,7 +242,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $name
 	 * @param $value
 	 */
-	protected function addWizardVar($name, $value)
+	private function addWizardVar($name, $value)
 	{
 		$this->wizardVar[$name] = $value;
 	}
@@ -106,7 +250,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * @return array
 	 */
-	protected function getWizardVars()
+	private function getWizardVars()
 	{
 		return $this->wizardVar;
 	}
@@ -115,7 +259,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $stepName
 	 * @param $value
 	 */
-	protected function addWizardStepError($stepName, $value)
+	private function addWizardStepError($stepName, $value)
 	{
 		$this->wizardStepErrors[$stepName]["ERRORS"][] = $value;
 	}
@@ -133,7 +277,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $errors
 	 * @param $type
 	 */
-	protected function addErrors($errors, $type)
+	private function addErrors($errors, $type)
 	{
 		if (!is_array($errors))
 		{
@@ -150,7 +294,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param array|string $error
 	 * @param $type
 	 */
-	protected function addError($error, $type)
+	private function addError($error, $type)
 	{
 		$this->arResult["ERROR"][$type] = array_merge($this->arResult["ERROR"][$type], [$error]);
 	}
@@ -159,17 +303,9 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $type
 	 * @return array
 	 */
-	protected function getErrors($type)
+	private function getErrors($type)
 	{
 		return isset($this->arResult["ERROR"][$type]) ? $this->arResult["ERROR"][$type] : [];
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function getWizardErrors()
-	{
-		return $this->arResult["WIZARD_ERRORS"];
 	}
 
 	/**
@@ -177,7 +313,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $sort
 	 * @param bool $replace
 	 */
-	protected function addWizardStep($stepName, $sort, $replace = false)
+	private function addWizardStep($stepName, $sort, $replace = false)
 	{
 		if ($replace)
 		{
@@ -192,7 +328,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Include wizard's step
 	 */
-	protected function includeWizardSteps()
+	private function includeWizardSteps()
 	{
 		$steps = $this->arResult["WIZARD_STEPS"];
 		foreach ($steps as $step)
@@ -215,7 +351,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Include wizard's template
 	 */
-	protected function includeWizardTemplate()
+	private function includeWizardTemplate()
 	{
 		if (Main\IO\File::isFileExists(self::WIZARD_DIR."template/crmsitemastertemplate.php"))
 		{
@@ -233,11 +369,14 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function createWizard()
+	private function createWizard()
 	{
 		$crmPackage = new Tools\CrmPackage();
 		$crmPackage->setId("bitrix:portal");
-		$crmPackage->setSiteId($this->getCrmSiteId());
+		if ($crmSiteId = self::getCrmSiteId())
+		{
+			$crmPackage->setSiteId($crmSiteId);
+		}
 
 		$this->wizard = new CWizardBase(Loc::getMessage("SALE_CSM_TITLE"), $crmPackage);
 
@@ -262,7 +401,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Set variables for wizard
 	 */
-	protected function setWizardVariables()
+	private function setWizardVariables()
 	{
 		if (!($wizard = $this->getWizard()))
 		{
@@ -284,30 +423,30 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\LoaderException
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function initSteps()
+	private function initSteps()
 	{
 		$notExistModules = $this->moduleChecker->getNotExistModules();
-
 		if ($notExistModules)
 		{
 			$notAvailableModule = $this->moduleChecker->checkAvailableModules($notExistModules);
 			if ($notAvailableModule["ERROR"])
 			{
-				$this->addWizardStepError("Bitrix\Wizard\Steps\ActivationKeyStep", $notAvailableModule["ERROR"]);
+				$this->addWizardStepError("Bitrix\Sale\CrmSiteMaster\Steps\ActivationKeyStep", $notAvailableModule["ERROR"]);
 			}
 
 			if ($notAvailableModule["MODULES"])
 			{
 				// Activate coupon
-				$this->addWizardStep("Bitrix\Wizard\Steps\ActivationKeyStep", 140);
+				$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\ActivationKeyStep", 340);
 			}
 			else
 			{
 				// Update system
-				$this->addWizardStep("Bitrix\Wizard\Steps\UpdateSystemStep", 150);
+				$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\UpdateSystemStep", 350);
 				$this->addWizardVar("not_exist_modules", $notExistModules);
 			}
 		}
@@ -316,24 +455,26 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 			$installedModules = $this->moduleChecker->checkInstalledModules();
 			if ($installedModules["MIN_VERSION"])
 			{
-				$this->addWizardStep("Bitrix\Wizard\Steps\ModuleStep", 160);
+				$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\ModuleStep", 360);
 				$this->addWizardVar("min_version_modules", $installedModules["MIN_VERSION"]);
 			}
 			else
 			{
 				if ($installedModules["NOT_INSTALL"] || $this->moduleChecker->isModuleInstall())
 				{
-					$this->addWizardStep("Bitrix\Wizard\Steps\ModuleStep", 160);
-					$this->addWizardStep("Bitrix\Wizard\Steps\ModuleInstallStep", 170);
+					$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\ModuleStep", 360);
+					$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\ModuleInstallStep", 370);
 
 					$this->addWizardVar("not_installed_modules", $installedModules["NOT_INSTALL"]);
 				}
 			}
 		}
 
+		$this->checkBitrixVm();
 		$this->checkAgents();
 		$this->checkPersonType();
 		$this->checkB24Connection();
+		$this->checkPushServer();
 
 		$this->sortSteps();
 	}
@@ -341,7 +482,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Add wizard steps to component's params
 	 */
-	protected function addStepsToResult()
+	private function addStepsToResult()
 	{
 		foreach ($this->defaultStep as $stepName => $step)
 		{
@@ -352,7 +493,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Sort wizard's step
 	 */
-	protected function sortSteps()
+	private function sortSteps()
 	{
 		$arSteps = [];
 		foreach ($this->defaultStep as $stepName => $step)
@@ -399,7 +540,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * Control required steps
 	 */
-	protected function controlRequiredSteps()
+	private function controlRequiredSteps()
 	{
 		if ($this->wizard->IsNextButtonClick())
 		{
@@ -428,7 +569,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @param $stepName
 	 * @return bool
 	 */
-	protected function isStepExists($stepName)
+	private function isStepExists($stepName)
 	{
 		if (in_array($stepName, $this->arResult["WIZARD_STEPS"]))
 		{
@@ -441,7 +582,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	/**
 	 * @param $stepName
 	 */
-	protected function setStepImmediately($stepName)
+	private function setStepImmediately($stepName)
 	{
 		unset($_REQUEST[$this->wizard->nextButtonID]);
 		unset($_REQUEST[$this->wizard->nextStepHiddenID]);
@@ -495,6 +636,14 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	}
 
 	/**
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function setLandingSmnExtended()
+	{
+		Option::set("landing", "smn_extended", "Y");
+	}
+
+	/**
 	 * @return string
 	 * @throws Main\ArgumentException
 	 * @throws Main\ObjectPropertyException
@@ -518,7 +667,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function checkPersonType()
+	private function checkPersonType()
 	{
 		$personTypePreparer = new Tools\PersonTypePreparer();
 
@@ -526,7 +675,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 
 		if ($personTypeList["NOT_MATCH"])
 		{
-			$this->addWizardStep("Bitrix\Wizard\Steps\PersonTypeStep", 130);
+			$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\PersonTypeStep", 330);
 		}
 	}
 
@@ -534,13 +683,13 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function checkAgents()
+	private function checkAgents()
 	{
 		$agentChecker = new Tools\AgentChecker();
 		$result = $agentChecker->checkAgents();
 		if (!$result->isSuccess())
 		{
-			$this->addWizardStep("Bitrix\Wizard\Steps\AgentStep", 110);
+			$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\AgentStep", 310);
 
 			$errors = $result->getErrors();
 			foreach ($errors as $error)
@@ -563,6 +712,15 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 		}
 	}
 
+	private function checkBitrixVm()
+	{
+		$bitrixVmChecker = new Tools\BitrixVmChecker();
+		if (!$bitrixVmChecker->isVm())
+		{
+			$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\BitrixVmStep", 300);
+		}
+	}
+
 	/**
 	 * @throws Main\LoaderException
 	 */
@@ -573,14 +731,14 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 		{
 			if ($b24connector->isSiteConnected())
 			{
-				$this->addWizardStep("Bitrix\Wizard\Steps\B24ConnectorStep", 120);
+				$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\B24ConnectorStep", 320);
 			}
 			else
 			{
 				$result = $b24connector->uninstallModule();
 				if (!$result->isSuccess())
 				{
-					$this->addWizardStep("Bitrix\Wizard\Steps\B24ConnectorStep", 120);
+					$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\B24ConnectorStep", 320);
 					$errors = [];
 					foreach ($result->getErrors() as $error)
 					{
@@ -588,6 +746,34 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 					}
 
 					$this->addWizardVar("b24connector_error", implode("<br>", $errors));
+				}
+			}
+		}
+	}
+
+	private function checkPushServer()
+	{
+		$pushChecker = new Tools\PushChecker();
+		if ($pushChecker->isModuleLoaded())
+		{
+			$version = $pushChecker->getModuleVersion();
+			if ($version && (version_compare($version, "19.0.0") !== -1))
+			{
+				if (!$pushChecker->isPushActive() && !$pushChecker->isShared())
+				{
+					$registerResult = $pushChecker->registerSharedServer();
+					if (!$registerResult->isSuccess())
+					{
+						$errorMessages = $registerResult->getErrorMessages();
+						$this->addWizardVar("push_error", $errorMessages);
+					}
+					else
+					{
+						$this->addWizardVar("push_error", false);
+					}
+
+					// after ModuleStep
+					$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\PushAndPullStep", 365);
 				}
 			}
 		}
@@ -635,13 +821,21 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\LoaderException
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
 	public function executeComponent()
 	{
+		/** @noinspection PhpVariableNamingConventionInspection */
+		global $APPLICATION;
+		$APPLICATION->SetTitle(Loc::getMessage('SALE_CSM_TITLE'));
+
+		$this->checkPermission();
 		$this->checkModules();
 		$this->checkSession();
+
+		$this->setMasterOpenOption();
 
 		if ($errors = $this->getErrors(self::ERROR_TYPE_COMPONENT))
 		{
@@ -661,7 +855,7 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 
 			if (empty($this->getErrors(self::ERROR_TYPE_ORDER)))
 			{
-				$this->addWizardStep("Bitrix\Wizard\Steps\FinishStep", 100, true);
+				$this->addWizardStep("Bitrix\Sale\CrmSiteMaster\Steps\FinishStep", 100, true);
 			}
 		}
 
@@ -694,6 +888,16 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 		}
 	}
 
+	private function checkPermission()
+	{
+		/** @noinspection PhpVariableNamingConventionInspection */
+		global $USER;
+		if (!$USER->IsAdmin())
+		{
+			$this->addError(Loc::getMessage("SALE_CSM_ACCESS_DENIED"), self::ERROR_TYPE_COMPONENT);
+		}
+	}
+
 	private function checkModules()
 	{
 		if (!Loader::includeModule("sale"))
@@ -707,6 +911,18 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 		if ($this->request->isPost() && !check_bitrix_sessid())
 		{
 			$this->addError(Loc::getMessage("SALE_CSM_WIZARD_ERROR_SESSION_EXPIRED"), self::ERROR_TYPE_COMPONENT);
+		}
+	}
+
+	/**
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	private function setMasterOpenOption()
+	{
+		if (Option::get("sale", self::IS_CRM_SITE_MASTER_OPENED, "N") === "N")
+		{
+			Option::set("sale", self::IS_CRM_SITE_MASTER_OPENED, "Y");
 		}
 	}
 

@@ -1151,100 +1151,112 @@ export class Presets
 
 			if (BX.type.isArray(preset.ADDITIONAL))
 			{
-				preset.ADDITIONAL.forEach((field) => {
-					let replaced = false;
-					field.IS_PRESET_FIELD = true;
-					fields.forEach((presetField, index) => {
-						if (field.NAME === presetField.NAME)
+				preset.ADDITIONAL
+					.filter((field) => {
+						return this.parent.params.FIELDS.some((currentField) => {
+							return field.NAME === currentField.NAME;
+						});
+					})
+					.forEach((field) => {
+						let replaced = false;
+						field.IS_PRESET_FIELD = true;
+						fields.forEach((presetField, index) => {
+							if (field.NAME === presetField.NAME)
+							{
+								fields[index] = field;
+								replaced = true;
+							}
+						});
+
+						if (!replaced)
 						{
-							fields[index] = field;
-							replaced = true;
+							fields.push(field);
 						}
 					});
-
-					if (!replaced)
-					{
-						fields.push(field);
-					}
-				});
 			}
 
-			(fields || []).forEach(function(fieldData, index) {
-				fieldData.TABINDEX = index + 1;
-				if (noValues)
-				{
-					switch (fieldData.TYPE)
+			(fields || [])
+				.filter((field) => {
+					return this.parent.params.FIELDS.some((currentField) => {
+						return field.NAME === currentField.NAME;
+					});
+				})
+				.forEach(function(fieldData, index) {
+					fieldData.TABINDEX = index + 1;
+					if (noValues)
 					{
-						case this.parent.types.SELECT: {
-							fieldData.VALUE = fieldData.ITEMS[0];
-							break;
-						}
-
-						case this.parent.types.MULTI_SELECT: {
-							fieldData.VALUE = [];
-							break;
-						}
-
-						case this.parent.types.DATE: {
-							fieldData.SUB_TYPE = fieldData.SUB_TYPES[0];
-							fieldData.VALUES = {
-								_from: '',
-								_to: '',
-								_days: '',
-							};
-							break;
-						}
-
-						case this.parent.types.CUSTOM_DATE: {
-							fieldData.VALUE = {
-								days: [],
-								months: [],
-								years: [],
-							};
-							break;
-						}
-
-						case this.parent.types.NUMBER: {
-							fieldData.SUB_TYPE = fieldData.SUB_TYPES[0];
-							fieldData.VALUES = {
-								_from: '',
-								_to: '',
-							};
-							break;
-						}
-
-						case this.parent.types.CUSTOM_ENTITY: {
-							fieldData.VALUES = {
-								_label: '',
-								_value: '',
-							};
-							break;
-						}
-
-						case this.parent.types.CUSTOM: {
-							fieldData._VALUE = '';
-							break;
-						}
-
-						default: {
-							if ('VALUE' in fieldData)
-							{
-								if (BX.type.isArray(fieldData.VALUE))
-								{
-									fieldData.VALUE = [];
-								}
-								else
-								{
-									fieldData.VALUE = '';
-								}
+						switch (fieldData.TYPE)
+						{
+							case this.parent.types.SELECT: {
+								fieldData.VALUE = fieldData.ITEMS[0];
+								break;
 							}
-							break;
+
+							case this.parent.types.MULTI_SELECT: {
+								fieldData.VALUE = [];
+								break;
+							}
+
+							case this.parent.types.DATE: {
+								fieldData.SUB_TYPE = fieldData.SUB_TYPES[0];
+								fieldData.VALUES = {
+									_from: '',
+									_to: '',
+									_days: '',
+								};
+								break;
+							}
+
+							case this.parent.types.CUSTOM_DATE: {
+								fieldData.VALUE = {
+									days: [],
+									months: [],
+									years: [],
+								};
+								break;
+							}
+
+							case this.parent.types.NUMBER: {
+								fieldData.SUB_TYPE = fieldData.SUB_TYPES[0];
+								fieldData.VALUES = {
+									_from: '',
+									_to: '',
+								};
+								break;
+							}
+
+							case this.parent.types.CUSTOM_ENTITY: {
+								fieldData.VALUES = {
+									_label: '',
+									_value: '',
+								};
+								break;
+							}
+
+							case this.parent.types.CUSTOM: {
+								fieldData._VALUE = '';
+								break;
+							}
+
+							default: {
+								if ('VALUE' in fieldData)
+								{
+									if (BX.type.isArray(fieldData.VALUE))
+									{
+										fieldData.VALUE = [];
+									}
+									else
+									{
+										fieldData.VALUE = '';
+									}
+								}
+								break;
+							}
 						}
 					}
-				}
 
-				fieldNodes.push(this.createControl(fieldData));
-			}, this);
+					fieldNodes.push(this.createControl(fieldData));
+				}, this);
 
 			this.parent.disableFieldsDragAndDrop();
 			fieldListContainer = this.parent.getFieldListContainer();

@@ -63,7 +63,7 @@ if (Manager::isB24())
 {
 	$domainName = isset($domains[$row['DOMAIN_ID']['CURRENT']]['DOMAIN'])
 				? $domains[$row['DOMAIN_ID']['CURRENT']]['DOMAIN']
-				: $row['DOMAIN_ID']['CURRENT'];
+				: '';
 }
 else
 {

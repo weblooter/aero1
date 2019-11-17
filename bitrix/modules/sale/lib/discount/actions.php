@@ -133,7 +133,7 @@ class Actions
 	}
 
 	/**
-	 * Return current use actions mode.
+	 * Returns current use actions mode.
 	 *
 	 * @return int
 	 */
@@ -170,6 +170,17 @@ class Actions
 	public static function isMixedMode()
 	{
 		return self::$useMode === self::MODE_MIXED;
+	}
+
+	/**
+	 * Check current use actions mode.
+	 *
+	 * @param array $list
+	 * @return bool
+	 */
+	public static function checkUseMode(array $list)
+	{
+		return (in_array(self::$useMode, $list, true));
 	}
 
 	/**
@@ -608,7 +619,7 @@ class Actions
 		$sumConfiguration = $configuration['sum']?: array();
 		$applyIfMoreProfitable = $configuration['apply_if_more_profitable'] === 'Y';
 
-		if (in_array(self::getUseMode(), array(self::MODE_MANUAL, self::MODE_MIXED)))
+		if (static::checkUseMode(array(self::MODE_MANUAL, self::MODE_MIXED)))
 		{
 			$actionStoredData = self::getActionStoredData();
 			$cumulativeOrderUserValue = $actionStoredData['cumulative_value'];

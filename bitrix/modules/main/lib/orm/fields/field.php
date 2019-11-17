@@ -336,7 +336,7 @@ abstract class Field
 	}
 
 	/**
-	 * @param $modifier
+	 * @param \callable $modifier
 	 *
 	 * @return $this
 	 * @throws SystemException
@@ -357,7 +357,7 @@ abstract class Field
 	}
 
 	/**
-	 * @param $modifier
+	 * @param \callable $modifier
 	 *
 	 * @throws SystemException
 	 */
@@ -412,7 +412,7 @@ abstract class Field
 	}
 
 	/**
-	 * @param $modifier
+	 * @param \callable $modifier
 	 *
 	 * @return $this
 	 * @throws SystemException
@@ -433,7 +433,7 @@ abstract class Field
 	}
 
 	/**
-	 * @param $modifier
+	 * @param \callable $modifier
 	 *
 	 * @throws SystemException
 	 */

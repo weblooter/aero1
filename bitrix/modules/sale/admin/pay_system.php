@@ -98,7 +98,7 @@ if (($ids = $lAdmin->GroupAction()) && $saleModulePermissions >= "W")
 				if ($dbRes->fetch())
 				{
 					$lAdmin->AddGroupError(Loc::getMessage("SALE_DELETE_ERROR"), $id);
-					continue;
+					continue 2;
 				}
 
 				$result = \Bitrix\Sale\PaySystem\Manager::delete($id);

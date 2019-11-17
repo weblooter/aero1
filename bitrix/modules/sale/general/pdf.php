@@ -226,6 +226,7 @@ class CSaleTfpdf extends tFPDF
 		{
 			if ($columnId == $firstColumnKey)
 			{
+				$digitWidth += $arRowsWidth[$columnId];
 				continue;
 			}
 

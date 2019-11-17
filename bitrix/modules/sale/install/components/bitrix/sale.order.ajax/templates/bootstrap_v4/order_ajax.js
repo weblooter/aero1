@@ -354,6 +354,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						this.setAnalyticsDataLayer('purchase', result.ID);
 					}
 
+					(window.b24order=window.b24order||[]).push({id: result.ID, sum: this.result.TOTAL.ORDER_PRICE});
+
 					redirected = true;
 					location.href = result.REDIRECT_URL;
 				}

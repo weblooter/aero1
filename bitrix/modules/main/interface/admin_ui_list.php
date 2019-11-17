@@ -271,8 +271,7 @@ class CAdminUiList extends CAdminList
 			$adminSidePanelHelper->setSkipResponse(true);
 		}
 
-		if ((empty($_REQUEST["action_all_rows_".$this->table_id]) ||
-				$_REQUEST["action_all_rows_".$this->table_id] === "N") && isset($_REQUEST["ID"]))
+		if (!$this->IsGroupActionToAll() && isset($_REQUEST["ID"]))
 		{
 			if(!is_array($_REQUEST["ID"]))
 				$arID = array($_REQUEST["ID"]);
@@ -285,6 +284,19 @@ class CAdminUiList extends CAdminList
 		{
 			return array("");
 		}
+	}
+
+	/**
+	 * Returns true if the user has set the flag "To all" in the list.
+	 *
+	 * @return bool
+	 */
+	public function IsGroupActionToAll()
+	{
+		return (
+			isset($_REQUEST["action_all_rows_".$this->table_id])
+			&& $_REQUEST["action_all_rows_".$this->table_id] === 'Y'
+		);
 	}
 
 	public function ActionDoGroup($id, $action_id, $add_params = "")

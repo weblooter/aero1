@@ -249,11 +249,6 @@ abstract class EntityObject implements ArrayAccess
 				}
 			}
 		}
-		else
-		{
-			// nothing to do
-			return $result;
-		}
 
 		// changed collections
 		$this->sysSaveRelations($result);
@@ -301,7 +296,7 @@ abstract class EntityObject implements ArrayAccess
 
 					foreach ($collection as $object)
 					{
-						//$object->delete();
+						$object->delete();
 					}
 				}
 				elseif ($field->getCascadeDeletePolicy() === CascadePolicy::SET_NULL)
@@ -1749,22 +1744,70 @@ abstract class EntityObject implements ArrayAccess
 	 */
 	public function sysSaveRelations(Result $result)
 	{
+		$saveCascade = true;
+
 		foreach ($this->_actualValues as $fieldName => $value)
 		{
 			$field = $this->entity->getField($fieldName);
 
-			if ($field instanceof OneToMany && $value->sysIsChanged())
+			if ($field instanceof Reference)
 			{
-				// save changed elements of collection
+				if ($saveCascade)
+				{
+					$value->save();
+				}
+			}
+			elseif ($field instanceof OneToMany)
+			{
 				$collection = $value;
 
-				foreach ($collection->sysGetChanges() as $change)
-				{
-					list($remoteObject,) = $change;
+				/** @var static[] $objectsToSave */
+				$objectsToSave = [];
 
-					// no matter what changeType is, just save the remote object
-					// elementals will be changed after add or nulled after remove
-					/** @var static $remoteObject */
+				/** @var static[] $objectsToDelete */
+				$objectsToDelete = [];
+
+				if ($collection->sysIsChanged())
+				{
+					// save changed elements of collection
+					foreach ($collection->sysGetChanges() as $change)
+					{
+						list($remoteObject, $changeType) = $change;
+
+						if ($changeType == Collection::OBJECT_ADDED)
+						{
+							$objectsToSave[] = $remoteObject;
+						}
+						elseif ($changeType == Collection::OBJECT_REMOVED)
+						{
+							if ($field->getCascadeDeletePolicy() == CascadePolicy::FOLLOW)
+							{
+								$objectsToDelete[] = $remoteObject;
+							}
+							else
+							{
+								// set null by default
+								$objectsToSave[] = $remoteObject;
+							}
+						}
+					}
+				}
+
+				if ($saveCascade)
+				{
+					// everything should be saved, except deleted
+					foreach ($collection->getAll() as $remoteObject)
+					{
+						if (!in_array($remoteObject, $objectsToDelete) && !in_array($remoteObject, $objectsToSave))
+						{
+							$objectsToSave[] = $remoteObject;
+						}
+					}
+				}
+
+				// save remote objects
+				foreach ($objectsToSave as $remoteObject)
+				{
 					$remoteResult = $remoteObject->save();
 
 					if (!$remoteResult->isSuccess())
@@ -1773,42 +1816,73 @@ abstract class EntityObject implements ArrayAccess
 					}
 				}
 
-				// forget collection changes
-				$collection->sysResetChanges();
-			}
-			elseif ($field instanceof ManyToMany && $value->sysIsChanged())
-			{
-				$collection = $value;
-
-				foreach ($collection->sysGetChanges() as $change)
+				// delete remote objects
+				foreach ($objectsToDelete as $remoteObject)
 				{
-					list($remoteObject, $changeType) = $change;
+					$remoteResult = $remoteObject->delete();
 
-					// initialize mediator object
-					$mediatorObjectClass = $field->getMediatorEntity()->getObjectClass();
-					$localReferenceName = $field->getLocalReferenceName();
-					$remoteReferenceName = $field->getRemoteReferenceName();
-
-					/** @var static $mediatorObject */
-					$mediatorObject = new $mediatorObjectClass;
-					$mediatorObject->sysSetValue($localReferenceName, $this);
-					$mediatorObject->sysSetValue($remoteReferenceName, $remoteObject);
-
-					// add or remove mediator depending on changeType
-					if ($changeType == Collection::OBJECT_ADDED)
+					if (!$remoteResult->isSuccess())
 					{
-						$mediatorObject->save();
-					}
-					elseif ($changeType == Collection::OBJECT_REMOVED)
-					{
-						// destroy directly through data class
-						$mediatorDataClass = $field->getMediatorEntity()->getDataClass();
-						$mediatorDataClass::delete($mediatorObject->primary);
+						$result->addErrors($remoteResult->getErrors());
 					}
 				}
 
 				// forget collection changes
-				$collection->sysResetChanges();
+				if ($collection->sysIsChanged())
+				{
+					$collection->sysResetChanges();
+				}
+			}
+			elseif ($field instanceof ManyToMany)
+			{
+				$collection = $value;
+
+				if ($value->sysIsChanged())
+				{
+					foreach ($collection->sysGetChanges() as $change)
+					{
+						list($remoteObject, $changeType) = $change;
+
+						// initialize mediator object
+						$mediatorObjectClass = $field->getMediatorEntity()->getObjectClass();
+						$localReferenceName = $field->getLocalReferenceName();
+						$remoteReferenceName = $field->getRemoteReferenceName();
+
+						/** @var static $mediatorObject */
+						$mediatorObject = new $mediatorObjectClass;
+						$mediatorObject->sysSetValue($localReferenceName, $this);
+						$mediatorObject->sysSetValue($remoteReferenceName, $remoteObject);
+
+						// add or remove mediator depending on changeType
+						if ($changeType == Collection::OBJECT_ADDED)
+						{
+							$mediatorObject->save();
+						}
+						elseif ($changeType == Collection::OBJECT_REMOVED)
+						{
+							// destroy directly through data class
+							$mediatorDataClass = $field->getMediatorEntity()->getDataClass();
+							$mediatorDataClass::delete($mediatorObject->primary);
+						}
+					}
+
+					// forget collection changes
+					$collection->sysResetChanges();
+				}
+
+				// should everything be saved?
+				if ($saveCascade)
+				{
+					foreach ($collection->getAll() as $remoteObject)
+					{
+						$remoteResult = $remoteObject->save();
+
+						if (!$remoteResult->isSuccess())
+						{
+							$result->addErrors($remoteResult->getErrors());
+						}
+					}
+				}
 			}
 
 			// remove deleted objects from collections
@@ -1889,7 +1963,7 @@ abstract class EntityObject implements ArrayAccess
 			$this->_actualValues[$fieldName] = $collection;
 		}
 
-		// add to collection
+		/** @var Collection $collection Add to collection */
 		$collection->add($remoteObject);
 
 		if ($field instanceof OneToMany)
@@ -1897,6 +1971,16 @@ abstract class EntityObject implements ArrayAccess
 			// set self to the object
 			$remoteFieldName = $field->getRefField()->getName();
 			$remoteObject->sysSetValue($remoteFieldName, $this);
+
+			// if we don't have primary right now, repeat setter later
+			if ($this->state == State::RAW)
+			{
+				$localObject = $this;
+
+				$this->sysAddOnPrimarySetListener(function () use ($localObject, $remoteObject, $remoteFieldName) {
+					$remoteObject->sysSetValue($remoteFieldName, $localObject);
+				});
+			}
 		}
 
 		// mark object as changed
@@ -1946,8 +2030,17 @@ abstract class EntityObject implements ArrayAccess
 		if ($field instanceof OneToMany)
 		{
 			// remove self from the object
-			$remoteFieldName = $field->getRefField()->getName();
-			$remoteObject->sysSetValue($remoteFieldName, null);
+			if ($field->getCascadeDeletePolicy() == CascadePolicy::FOLLOW)
+			{
+				// nothing to do
+			}
+			else
+			{
+				// set null by default
+				$remoteFieldName = $field->getRefField()->getName();
+				$remoteObject->sysSetValue($remoteFieldName, null);
+			}
+
 		}
 
 		// mark object as changed

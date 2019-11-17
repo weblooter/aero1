@@ -2,7 +2,7 @@
 $MESS["SALE_CSM_WIZARD_SITESTEP_TITLE"] = "Пожалуйста, уточните следующие данные";
 $MESS["SALE_CSM_WIZARD_SITESTEP_NEXT"] = "Продолжить";
 $MESS["SALE_CSM_WIZARD_SITESTEP_PREV"] = "Назад";
-$MESS["SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_TITLE"] = "Выберите сайт на котором будет установлена CRM или добавьте новый:";
+$MESS["SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_TITLE"] = "Выберите сайт на котором будет установлена Битрикс24 или добавьте новый:";
 $MESS["SALE_CSM_WIZARD_SITESTEP_SITE_SELECT_NEW"] = "Добавить новый сайт";
 $MESS["SALE_CSM_WIZARD_SITESTEP_SITE_CREATE_ERROR"] = "Что-то пошло не так...";
 $MESS["SALE_CSM_WIZARD_SITESTEP_ID"] = "Код сайта (две латинских буквы или цифры)";

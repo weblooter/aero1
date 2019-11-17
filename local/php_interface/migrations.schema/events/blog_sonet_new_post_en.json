@@ -1,0 +1,42 @@
+{
+    "event": "BLOG_SONET_NEW_POST",
+    "type": {
+        "LID": "en",
+        "EVENT_TYPE": "email",
+        "NAME": "New post added",
+        "DESCRIPTION": [
+            "#EMAIL_TO# - Recipient email",
+            "#POST_ID# - Post ID",
+            "#URL_ID# - Post URL"
+        ],
+        "SORT": "100"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#EMAIL_FROM#",
+            "EMAIL_TO": "#EMAIL_TO#",
+            "SUBJECT": "#POST_TITLE#",
+            "MESSAGE": [
+                "<?EventMessageThemeCompiler::includeComponent(\"bitrix:socialnetwork.blog.post.mail\",\"\",Array(\"EMAIL_TO\" => \"{#EMAIL_TO#}\",\"RECIPIENT_ID\" => \"{#RECIPIENT_ID#}\",\"POST_ID\" => \"{#POST_ID#}\",\"URL\" => \"{#URL#}\"));?>"
+            ],
+            "BODY_TYPE": "html",
+            "BCC": null,
+            "REPLY_TO": null,
+            "CC": null,
+            "IN_REPLY_TO": null,
+            "PRIORITY": null,
+            "FIELD1_NAME": null,
+            "FIELD1_VALUE": null,
+            "FIELD2_NAME": null,
+            "FIELD2_VALUE": null,
+            "SITE_TEMPLATE_ID": "mail_user",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": null,
+            "EVENT_TYPE": "[ BLOG_SONET_NEW_POST ] Добавлено новое сообщение"
+        }
+    ]
+}

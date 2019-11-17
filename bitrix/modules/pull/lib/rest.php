@@ -259,7 +259,7 @@ class Rest extends \IRestService
 		$clientId = $server->getClientId();
 		if (!$clientId)
 		{
-			throw new \Bitrix\Rest\RestException("Get access to application config available only for application authorization.", "WRONG_AUTH_TYPE", \CRestServer::STATUS_FORBIDDEN);
+			throw new \Bitrix\Rest\RestException("Send push notifications available only for application authorization.", "WRONG_AUTH_TYPE", \CRestServer::STATUS_FORBIDDEN);
 		}
 
 		if (!self::isAdmin())

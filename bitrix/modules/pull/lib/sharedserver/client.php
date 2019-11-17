@@ -11,13 +11,21 @@ class Client
 {
 	const TYPE_CP = "CP";
 
-	public static function register()
+	public static function register($preferredServer = "")
 	{
 		$result = new Result();
-		$serverAddress = Config::selectServer();
-		Config::setServerAddress($serverAddress);
+		if($preferredServer == "")
+		{
+			$serverAddressResult = static::selectServer();
+			if(!$serverAddressResult->isSuccess())
+			{
+				Config::setRegistered(false);
+				return $result->addErrors($serverAddressResult->getErrors());
+			}
+			$preferredServer = $serverAddressResult->getData()['hostname'];
+		}
+		Config::setServerAddress($preferredServer);
 		$registerResult = static::performRegister();
-
 		if(!$registerResult->isSuccess())
 		{
 			Config::setRegistered(false);
@@ -29,6 +37,70 @@ class Client
 		Config::setSignatureKey($registrationData["securityKey"]);
 		Config::setRegistered(true);
 
+		return $result;
+	}
+
+	public static function selectServer()
+	{
+		$result = new Result();
+		$httpClient = new HttpClient();
+		$response = $httpClient->get("https://" . Config::DEFAULT_SERVER . Config::HOSTNAME_URL);
+		if(!$response)
+		{
+			$errors = $httpClient->getError();
+			foreach ($errors as $code => $message)
+			{
+				$result->addError(new Error($message, $code));
+			}
+			return $result;
+		}
+		if ($httpClient->getStatus() != 200)
+		{
+			return $result->addError(new Error("Unexpected server response code " . $httpClient->getStatus(), "WRONG_RESPONSE_CODE"));
+		}
+		$result->setData([
+			'hostname' => $response
+		]);
+		return $result;
+	}
+
+	public static function getServerList()
+	{
+		$result = new Result();
+		$httpClient = new HttpClient([
+			"socketTimeout" => 5,
+			"streamTimeout" => 5
+		]);
+		$response = $httpClient->get("https://" . Config::DEFAULT_SERVER . Config::SERVER_LIST_URL);
+		if(!$response)
+		{
+			$errors = $httpClient->getError();
+			foreach ($errors as $code => $message)
+			{
+				$result->addError(new Error($message, $code));
+			}
+			return $result;
+		}
+		if ($httpClient->getStatus() != 200)
+		{
+			return $result->addError(new Error("Unexpected server response code " . $httpClient->getStatus(), "WRONG_RESPONSE_CODE"));
+		}
+		$list = explode("\n", $response);
+		$list = array_filter($list, function($a){return $a != "";});
+		$list = array_map(
+			function($a){
+				list($url, $region) = explode(";", $a);
+				return [
+					'url' => $url,
+					'region' => $region
+				];
+			},
+			$list
+		);
+
+		$result->setData([
+			'serverList' => $list
+		]);
 		return $result;
 	}
 

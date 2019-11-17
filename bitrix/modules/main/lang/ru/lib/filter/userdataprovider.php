@@ -13,6 +13,7 @@ $MESS["MAIN_USER_FILTER_PROFESSION"] = "Профессия";
 $MESS["MAIN_USER_FILTER_LOGIN"] = "Логин";
 $MESS["MAIN_USER_FILTER_EMAIL"] = "E-Mail";
 $MESS["MAIN_USER_FILTER_DATE_REGISTER"] = "Дата регистрации";
+$MESS["MAIN_USER_FILTER_LAST_ACTIVITY_DATE"] = "Дата последней активности";
 $MESS["MAIN_USER_FILTER_BIRTHDAY"] = "Дата рождения";
 $MESS["MAIN_USER_FILTER_GENDER"] = "Пол";
 $MESS["MAIN_USER_FILTER_GENDER_F"] = "Женский";

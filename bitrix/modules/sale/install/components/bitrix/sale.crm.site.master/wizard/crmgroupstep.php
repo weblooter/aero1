@@ -1,16 +1,16 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Application,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Wizard\Tools\SitePatcher;
+	Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher;
 
 Loc::loadMessages(__FILE__);
 
 /**
  * Class CrmGroupStep
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class CrmGroupStep extends \CWizardStep
 {
@@ -30,7 +30,7 @@ class CrmGroupStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -47,7 +47,7 @@ class CrmGroupStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -92,19 +92,19 @@ class CrmGroupStep extends \CWizardStep
 	{
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR1")?></div>
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR2")?></div>
-		<div class="adm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR3")?></div>
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR1")?></div>
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR2")?></div>
+		<div class="adm-crm-site-master-paragraph"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_DESCR3")?></div>
 
 		<div class="ui-alert ui-alert-danger ui-alert-inline ui-alert-icon-danger">
 			<span class="ui-alert-message"><?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_NOTE")?></span>
 		</div>
 
-		<div class="adm-group-master-form">
-			<div class="adm-group-master-form-select-manager">
+		<div class="adm-crm-group-master-form">
+			<div class="adm-crm-group-master-form-select-manager">
 				{#USER_GROUPS_SELECT_MANAGER#}
 			</div>
-			<div class="adm-group-master-form-select-admin">
+			<div class="adm-crm-group-master-form-select-admin">
 				{#USER_GROUPS_SELECT_ADMIN#}
 			</div>
 		</div>
@@ -141,10 +141,19 @@ class CrmGroupStep extends \CWizardStep
 			Main\Config\Option::set("crm", self::EMPLOYEE_USER_GROUP_ID, $employeeGroupId);
 		}
 
-		$managerRoleId = $this->getManagerRoleId();
-		if ($managerRoleId && $employeeGroupId)
+		$crmRoleId = $this->getCrmRoleId(
+				Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_CRM_ROLE_ADM")
+		);
+		if ($crmRoleId === null)
 		{
-			$this->setCrmRole($managerRoleId, [$employeeGroupId]);
+			$crmRoleId = $this->getCrmRoleId(
+				Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_CRM_ROLE_MAN")
+			);
+		}
+
+		if ($crmRoleId && $employeeGroupId)
+		{
+			$this->setCrmRole($crmRoleId, [$employeeGroupId]);
 		}
 
 		$this->setIntranetUserGroups();
@@ -158,7 +167,7 @@ class CrmGroupStep extends \CWizardStep
 	/**
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function saveSelectedGroups()
+	private function saveSelectedGroups()
 	{
 		$selectedGroups = [];
 
@@ -190,7 +199,7 @@ class CrmGroupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function setIntranetUserGroups()
+	private function setIntranetUserGroups()
 	{
 		$groups = [self::ADMIN_USER_GROUP_ID];
 
@@ -221,17 +230,17 @@ class CrmGroupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function showSelectUserGroupManagerHtml()
+	private function showSelectUserGroupManagerHtml()
 	{
 		$groupList = $this->getUserGroupList();
 
 		ob_start();
 		?>
-		<div class="adm-site-master-form-row">
-			<label for="USER_GROUPS_MANAGER" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="USER_GROUPS_MANAGER" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_SELECT_TITLE_MAN")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl-multiple-select ui-ctl-w75">
 					<select class="ui-ctl-element ui-ctl-element-auto"
 						name="USER_GROUPS_MANAGER[]" id="USER_GROUPS_MANAGER" title="" multiple size="5"
@@ -258,17 +267,17 @@ class CrmGroupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function showSelectUserGroupAdminHtml()
+	private function showSelectUserGroupAdminHtml()
 	{
 		$groupList = $this->getUserGroupList();
 
 		ob_start();
 		?>
-		<div class="adm-site-master-form-row">
-			<label for="USER_GROUPS_ADMIN" class="adm-site-master-form-label">
+		<div class="adm-crm-site-master-form-row">
+			<label for="USER_GROUPS_ADMIN" class="adm-crm-site-master-form-label">
 				<?=Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_SELECT_TITLE_ADM")?>
 			</label>
-			<div class="adm-site-master-form-control">
+			<div class="adm-crm-site-master-form-control">
 				<div class="ui-ctl-multiple-select ui-ctl-w75">
 					<select class="ui-ctl-element ui-ctl-element-auto"
 							name="USER_GROUPS_ADMIN[]" id="USER_GROUPS_ADMIN" title="" multiple size="5">
@@ -295,7 +304,7 @@ class CrmGroupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getUserGroupList()
+	private function getUserGroupList()
 	{
 		$groupList = [];
 
@@ -356,7 +365,7 @@ class CrmGroupStep extends \CWizardStep
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getEmployeesGroupId()
+	private function getEmployeesGroupId()
 	{
 		$employeeGroupId = Main\GroupTable::getList([
 			"select" => ["ID"],
@@ -367,15 +376,15 @@ class CrmGroupStep extends \CWizardStep
 	}
 
 	/**
-	 * @param $managerRoleId
+	 * @param $crmRoleId
 	 * @param array $groups
 	 */
-	protected function setCrmRole($managerRoleId, array $groups)
+	private function setCrmRole($crmRoleId, array $groups)
 	{
 		$arPerms = [];
 		foreach ($groups as $group)
 		{
-			$arPerms["G".$group][] = $managerRoleId;
+			$arPerms["G".$group][] = $crmRoleId;
 		}
 
 		$crmRole = new \CcrmRole();
@@ -394,21 +403,22 @@ class CrmGroupStep extends \CWizardStep
 	}
 
 	/**
+	 * @param $name
 	 * @return int|null
 	 */
-	protected function getManagerRoleId()
+	private function getCrmRoleId($name)
 	{
-		$managerRoleId = null;
+		$crmRoleId = null;
 
 		$crmRoleIterator = \CCrmRole::GetList(
 			["ID" => "DESC"],
-			["NAME" => Loc::getMessage("SALE_CSM_WIZARD_CRMGROUPSTEP_CRM_ROLE_MAN")]
+			["NAME" => $name]
 		);
 		if ($crmRole = $crmRoleIterator->Fetch())
 		{
-			$managerRoleId = (int)$crmRole["ID"];
+			$crmRoleId = (int)$crmRole["ID"];
 		}
 
-		return $managerRoleId;
+		return $crmRoleId;
 	}
 }

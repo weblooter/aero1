@@ -9,6 +9,8 @@
 namespace Bitrix\Main\ORM\Fields\Relations;
 
 use Bitrix\Main\ArgumentException;
+use Bitrix\Main\ORM\Fields\ITypeHintable;
+use Bitrix\Main\SystemException;
 use Bitrix\Main\ORM\Entity;
 use Bitrix\Main\ORM\Fields\Field;
 use Bitrix\Main\ORM\Objectify\EntityObject;
@@ -20,7 +22,7 @@ use Bitrix\Main\ORM\Query\Join;
  * @package    bitrix
  * @subpackage main
  */
-abstract class Relation extends Field
+abstract class Relation extends Field implements ITypeHintable
 {
 	/** @var string Name of target entity */
 	protected $refEntityName;
@@ -64,7 +66,7 @@ abstract class Relation extends Field
 	/**
 	 * @return Entity
 	 * @throws \Bitrix\Main\ArgumentException
-	 * @throws \Bitrix\Main\SystemException
+	 * @throws SystemException
 	 */
 	public function getRefEntity()
 	{
@@ -137,5 +139,25 @@ abstract class Relation extends Field
 	public function getCascadeDeletePolicy()
 	{
 		return $this->cascadeDeletePolicy;
+	}
+
+	/**
+	 * @return EntityObject|string
+	 * @throws ArgumentException
+	 * @throws SystemException
+	 */
+	public function getGetterTypeHint()
+	{
+		return $this->getRefEntity()->getObjectClass();
+	}
+
+	/**
+	 * @return EntityObject|string
+	 * @throws ArgumentException
+	 * @throws SystemException
+	 */
+	public function getSetterTypeHint()
+	{
+		return $this->getRefEntity()->getObjectClass();
 	}
 }

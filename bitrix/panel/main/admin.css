@@ -984,7 +984,7 @@ input.adm-header-search::-ms-clear {
 }
 
 .adm-main-menu-item-icon {
-	background:url("images/bx-admin-sprite-big1.png?2") no-repeat -100px -100px;
+	background:url("images/bx-admin-sprite-big1.png?3") no-repeat -100px -100px;
 	height:45px;
 	position:relative;
 	z-index:2;
@@ -1000,6 +1000,7 @@ input.adm-header-search::-ms-clear {
 .adm-settings .adm-main-menu-item-icon {background-position: center -657px; height:49px;}
 .adm-marketing .adm-main-menu-item-icon {background-position: center -1698px; height:48px;}
 .adm-landing .adm-main-menu-item-icon {background-position: center -1797px; height:48px;}
+.adm-crm-site-master .adm-main-menu-item-icon {background-position: center -1886px; height:48px;}
 
 .adm-default:hover .adm-main-menu-item-icon {background-position: center -1638px; height:47px;}
 .adm-desktop:hover .adm-main-menu-item-icon {background-position: center -46px; height:46px;}
@@ -1011,6 +1012,7 @@ input.adm-header-search::-ms-clear {
 .adm-settings:hover .adm-main-menu-item-icon {background-position: center -713px; height:49px;}
 .adm-marketing:hover .adm-main-menu-item-icon {background-position: center -1752px; height:48px;}
 .adm-landing:hover .adm-main-menu-item-icon {background-position: center -1841px; height:48px;}
+.adm-crm-site-master:hover .adm-main-menu-item-icon {background-position: center -1930px; height:48px;}
 
 .adm-main-menu-item-active.adm-default .adm-main-menu-item-icon {background-position: center -1638px; height:47px;}
 .adm-main-menu-item-active.adm-desktop .adm-main-menu-item-icon {background-position: center -46px; height:46px;}
@@ -1022,6 +1024,7 @@ input.adm-header-search::-ms-clear {
 .adm-main-menu-item-active.adm-settings .adm-main-menu-item-icon {background-position: center -713px; height:49px;}
 .adm-main-menu-item-active.adm-marketing .adm-main-menu-item-icon {background-position: center -1752px; height:48px;}
 .adm-main-menu-item-active.adm-landing .adm-main-menu-item-icon {background-position: center -1841px; height:48px;}
+.adm-main-menu-item-active.adm-crm-site-master .adm-main-menu-item-icon {background-position: center -1930px; height:48px;}
 
 .adm-main-menu-item-text {
 	font-size:11px;
@@ -1164,6 +1167,7 @@ input.adm-header-search::-ms-clear {
 	margin-bottom:14px;
 	text-shadow:0 1px 0 rgba(255,255,255,0.5);
 	padding-left:16px;
+	white-space: nowrap;
 }
 
 .adm-submenu-title-desktop {
@@ -3366,7 +3370,7 @@ it's made to prevent appearing of artefacts from old admin button icons.
 /*======================================================MENU ICONS=========================================*/
 
 .adm-submenu-item-link-icon {
-	background:url("images/icons-sprite-14.png?2") no-repeat center -1512px;
+	background:url("images/icons-sprite-14.png?3") no-repeat center -1512px;
 }
 .fav_menu_icon {background-position:center -1540px;}
 .iblock_menu_icon_iblocks {background-position:center -56px;}
@@ -3461,6 +3465,8 @@ it's made to prevent appearing of artefacts from old admin button icons.
 .promo_https_menu_icon {background-position: center -2461px;}
 .landing_menu_icon {background-position: center -2517px;}
 .sender_ads_menu_icon {background-position: center -2546px;}
+
+.sale_crm_site_master_icon {background-position: center -2575px;}
 
 /*======================================================END MENU ICONS=========================================*/
 

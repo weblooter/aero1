@@ -690,7 +690,7 @@ class Asset
 			'#(\s*@import\s*)([\'"])([^\'"]+)(\2)#si',
 			function ($matches) use ($path)
 			{
-				return $matches[1].Asset::replaceUrlCSS($matches[3], $matches[2], addslashes($path)).")";
+				return $matches[1].Asset::replaceUrlCSS($matches[3], $matches[2], addslashes($path));
 			},
 			$content
 		);

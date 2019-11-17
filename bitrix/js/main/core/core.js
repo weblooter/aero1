@@ -2066,7 +2066,7 @@
 	})('versions', []).push({
 	  version: _core.version,
 	  mode: _library ? 'pure' : 'global',
-	  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
+	  copyright: '(c) 2019 Denis Pushkarev (zloirock.ru)'
 	});
 	});
 
@@ -3636,7 +3636,7 @@
 	  fround: _mathFround
 	});
 
-	// 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
+	// 20.2.2.17 Math.hypot([value1[, value2[, ... ]]])
 
 
 	var abs$1 = Math.abs;
@@ -9120,7 +9120,7 @@
 (function (exports) {
 	'use strict';
 
-	if (!window.DOMRect) {
+	if (!window.DOMRect || typeof DOMRect.prototype.toJSON !== 'function' || typeof DOMRect.fromRect !== 'function') {
 	  window.DOMRect =
 	  /*#__PURE__*/
 	  function () {
@@ -9187,16 +9187,16 @@
 	var bxTmp = window.BX;
 
 	window.BX = function (node) {
-	  if (BX.type.isNotEmptyString(node)) {
+	  if (window.BX.type.isNotEmptyString(node)) {
 	    return document.getElementById(node);
 	  }
 
-	  if (BX.type.isDomNode(node)) {
+	  if (window.BX.type.isDomNode(node)) {
 	    return node;
 	  }
 
-	  if (BX.type.isFunction(node)) {
-	    return BX.ready(node);
+	  if (window.BX.type.isFunction(node)) {
+	    return window.BX.ready(node);
 	  }
 
 	  return null;
@@ -10412,6 +10412,18 @@
 	  return value;
 	}
 
+	function getPageScroll() {
+	  var _document = document,
+	      documentElement = _document.documentElement,
+	      body = _document.body;
+	  var scrollTop = Math.max(window.pageYOffset || 0, documentElement ? documentElement.scrollTop : 0, body ? body.scrollTop : 0);
+	  var scrollLeft = Math.max(window.pageXOffset || 0, documentElement ? documentElement.scrollLeft : 0, body ? body.scrollLeft : 0);
+	  return {
+	    scrollTop: scrollTop,
+	    scrollLeft: scrollLeft
+	  };
+	}
+
 	var Dom =
 	/*#__PURE__*/
 	function () {
@@ -10927,9 +10939,11 @@
 	    value: function getPosition(element) {
 	      if (Type.isDomNode(element)) {
 	        var elementRect = element.getBoundingClientRect();
-	        var _document$documentEle = document.documentElement,
-	            scrollLeft = _document$documentEle.scrollLeft,
-	            scrollTop = _document$documentEle.scrollTop;
+
+	        var _getPageScroll = getPageScroll(),
+	            scrollLeft = _getPageScroll.scrollLeft,
+	            scrollTop = _getPageScroll.scrollTop;
+
 	        return new DOMRect(elementRect.left + scrollLeft, elementRect.top + scrollTop, elementRect.width, elementRect.height);
 	      }
 
@@ -11734,7 +11748,6 @@
 	 * @return {*}
 	 */
 
-
 	function clone(value) {
 	  return internalClone(value, new WeakMap());
 	}
@@ -12074,12 +12087,13 @@
 
 	    return preparedAcc + item + sections[index + 1];
 	  }, sections[0]);
+	  var lowercaseHtml = html.trim().toLowerCase();
 
-	  if (html.toLowerCase().includes('doctype') || html.includes('<html')) {
+	  if (lowercaseHtml.startsWith('<!doctype') || lowercaseHtml.startsWith('<html')) {
 	    var doc = document.implementation.createHTMLDocument('');
 	    doc.documentElement.innerHTML = html;
 	    replaceChild(doc, children);
-	    Event.bindAll(doc, handlers);
+	    bindAll(doc, handlers);
 	    handlers.clear();
 	    return doc;
 	  }
@@ -12094,20 +12108,34 @@
 	  }
 
 	  if (parsedDocument.body.children.length === 1) {
-	    return parsedDocument.body.children[0];
+	    var _parsedDocument$body$ = babelHelpers.slicedToArray(parsedDocument.body.children, 1),
+	        el = _parsedDocument$body$[0];
+
+	    Dom.remove(el);
+	    return el;
 	  }
 
 	  if (parsedDocument.body.children.length > 1) {
-	    return babelHelpers.toConsumableArray(parsedDocument.body.children);
+	    return babelHelpers.toConsumableArray(parsedDocument.body.children).map(function (item) {
+	      Dom.remove(item);
+	      return item;
+	    });
 	  }
 
 	  if (parsedDocument.body.children.length === 0) {
 	    if (parsedDocument.head.children.length === 1) {
-	      return parsedDocument.head.children[0];
+	      var _parsedDocument$head$ = babelHelpers.slicedToArray(parsedDocument.head.children, 1),
+	          _el = _parsedDocument$head$[0];
+
+	      Dom.remove(_el);
+	      return _el;
 	    }
 
 	    if (parsedDocument.head.children.length > 1) {
-	      return babelHelpers.toConsumableArray(parsedDocument.head.children);
+	      return babelHelpers.toConsumableArray(parsedDocument.head.children).map(function (item) {
+	        Dom.remove(item);
+	        return item;
+	      });
 	    }
 	  }
 
@@ -13180,6 +13208,10 @@
 	  return new DOMRect(x, y, w, h).toJSON();
 	}
 
+	if (global && global.window && global.window.BX) {
+	  Object.assign(global.window.BX, exports);
+	}
+
 	exports.Type = Type;
 	exports.Reflection = Reflection;
 	exports.Text = Text;
@@ -13242,7 +13274,7 @@
 
 
 
-(function() {
+(function(BX) {
 	/* list of registered proxy functions */
 	var proxyList = new WeakMap();
 	var deferList = new WeakMap();
@@ -17239,6 +17271,7 @@
 // set empty ready handler
 	BX(BX.DoNothing);
 	window.BX = BX;
+
 	BX.browser.addGlobalClass();
 
 	/* data storage */
@@ -17336,7 +17369,7 @@
 
 // some internal variables for new logic
 	var dataStorage = new BX.DataStorage();	// manager which BX.data() uses to keep data
-})(window);
+})(window.BX);
 
 ;(function(window)
 {

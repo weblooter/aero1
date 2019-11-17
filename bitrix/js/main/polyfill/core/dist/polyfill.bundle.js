@@ -2059,7 +2059,7 @@
 	})('versions', []).push({
 	  version: _core.version,
 	  mode: _library ? 'pure' : 'global',
-	  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
+	  copyright: '(c) 2019 Denis Pushkarev (zloirock.ru)'
 	});
 	});
 
@@ -3629,7 +3629,7 @@
 	  fround: _mathFround
 	});
 
-	// 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
+	// 20.2.2.17 Math.hypot([value1[, value2[, ... ]]])
 
 
 	var abs$1 = Math.abs;
@@ -9113,7 +9113,7 @@
 (function (exports) {
 	'use strict';
 
-	if (!window.DOMRect) {
+	if (!window.DOMRect || typeof DOMRect.prototype.toJSON !== 'function' || typeof DOMRect.fromRect !== 'function') {
 	  window.DOMRect =
 	  /*#__PURE__*/
 	  function () {

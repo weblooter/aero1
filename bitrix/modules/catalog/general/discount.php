@@ -36,6 +36,7 @@ class CAllCatalogDiscount
 	static protected $useSaleDiscount = null;
 	static protected $getPriceTypesOnly = false;
 	static protected $getPercentFromBasePrice = null;
+	static private $needDiscountCache = null;
 
 	private static function calculatePriceByDiscount($basePrice, $currentPrice, $oneDiscount, &$needErase)
 	{
@@ -1236,12 +1237,35 @@ class CAllCatalogDiscount
 
 		if (self::$useSaleDiscount && Loader::includeModule('sale'))
 		{
+			if (self::$needDiscountCache === null)
+			{
+				self::$needDiscountCache = false;
+
+				$cache = Sale\Discount\RuntimeCache\DiscountCache::getInstance();
+				$ids = $cache->getDiscountIds($arUserGroups);
+				if (!empty($ids))
+				{
+					$discountList = $cache->getDiscounts(
+						$ids,
+						['all', 'catalog'],
+						$siteID,
+						[]
+					);
+					if (!empty($discountList))
+					{
+						self::$needDiscountCache = true;
+					}
+					unset($discountList);
+				}
+				unset($ids, $cache);
+			}
+
 			$product = array(
 				'ID' => $intProductID,
 				'MODULE' => 'catalog',
 			);
 
-			if ($arCatalogGroups !== array(-1))
+			if (self::$needDiscountCache && $arCatalogGroups !== array(-1))
 			{
 				Catalog\Product\Price\Calculation::pushConfig();
 				Catalog\Product\Price\Calculation::setConfig([

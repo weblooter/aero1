@@ -1550,6 +1550,8 @@ BX.PopupWindow.prototype.close = function()
 			this.unbindAutoHide();
 		}
 
+		BX.onCustomEvent(this, "onPopupAfterClose", [this]);
+
 		if (!this.isCacheable())
 		{
 			this.destroy();
@@ -2919,10 +2921,7 @@ BX.PopupMenuItem.prototype = {
 
 		BX.onCustomEvent(this, "onMouseEnter");
 
-		if (this.subMenuTimeout)
-		{
-			clearTimeout(this.subMenuTimeout);
-		}
+		this.clearSubMenuTimeout();
 
 		if (this.hasSubMenu())
 		{
@@ -2947,10 +2946,17 @@ BX.PopupMenuItem.prototype = {
 
 		BX.onCustomEvent(this, "onMouseLeave");
 
+		this.clearSubMenuTimeout();
+	},
+
+	clearSubMenuTimeout: function()
+	{
 		if (this.subMenuTimeout)
 		{
 			clearTimeout(this.subMenuTimeout);
 		}
+
+		this.subMenuTimeout = null;
 	},
 
 	hasSubMenu: function()
@@ -3028,6 +3034,8 @@ BX.PopupMenuItem.prototype = {
 
 	closeSubMenu: function()
 	{
+		this.clearSubMenuTimeout();
+
 		if (this.subMenuWindow)
 		{
 			BX.removeClass(this.layout.item, "menu-popup-item-open");

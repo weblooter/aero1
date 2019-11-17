@@ -436,7 +436,7 @@ array_unshift($tab["fields"], array(
 										}
 										else if (empty($selected))
 										{
-											continue;
+											break;
 										}
 										else
 										{
@@ -488,7 +488,7 @@ array_unshift($tab["fields"], array(
 									$field["type"] = substr($field["type"], 0, -4);
 								if ($field["type"] == "crm" && !\Bitrix\Main\ModuleManager::isModuleInstalled("crm") ||
 									$field["type"] == "disk_file" && !\Bitrix\Main\ModuleManager::isModuleInstalled("disk"))
-									continue;
+									break;
 									$val = is_array($val) ? $val : array();
 									$className = ($field["type"] == "disk_file" ? "file" : $field["type"]);
 									ob_start();
@@ -504,7 +504,7 @@ array_unshift($tab["fields"], array(
 									);
 									$html = ob_get_clean();
 									if ($html == '')
-										continue;
+										break;
 									break;
 								case 'crm':
 								case 'disk_file':
@@ -512,7 +512,7 @@ array_unshift($tab["fields"], array(
 									$field["type"] = ($field["type"] == "disk" ? "disk_file" : $field["type"]);
 									if ($field["type"] == "crm" && !\Bitrix\Main\ModuleManager::isModuleInstalled("crm") ||
 										$field["type"] == "disk_file" && !\Bitrix\Main\ModuleManager::isModuleInstalled("disk"))
-										continue;
+										break;
 									$val = is_array($val) ? $val : array();
 									$className = ($field["type"] == "disk_file" ? "file" : $field["type"]);
 									ob_start();
@@ -528,7 +528,7 @@ array_unshift($tab["fields"], array(
 									);
 									$html = ob_get_clean();
 									if ($html == '')
-										continue;
+										break;
 									$html .= '<input type="hidden" id="'.$field["~id"].'" value="'.$val["FIELD_NAME"].'" data-bx-type="'.$field["type"].'" />';
 									$jsObjects[] = $field["~id"];
 									break;

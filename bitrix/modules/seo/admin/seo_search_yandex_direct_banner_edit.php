@@ -1315,7 +1315,7 @@ foreach($banner["SETTINGS"]["Phrases"] as $phraseData)
 			timeOut = setTimeout(BX.proxy(hint.close, hint), 10000)
 		});
 		BX.bind(textInput, 'blur', function(){hint.close(); clearTimeout(timeOut);});
-		BX.bind(textInput, 'keyup', parsePhraseList);
+		BX.bind(textInput, 'keyup', BX.debounce(parsePhraseList, 500));
 
 //		minus keywords hint binds
 		var minusKWInput = BX('minus_text');

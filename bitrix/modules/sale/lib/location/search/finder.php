@@ -337,7 +337,7 @@ class Finder
 
 		$map = Location\LocationTable::getMap();
 		$nameRequired = false;
-		$locationRequred = false;
+		$locationRequired = false;
 
 		if(is_array($parameters['select']))
 		{
@@ -358,7 +358,7 @@ class Finder
 					unset($parameters['select'][$alias]);
 				}
 
-				$locationRequred = true;
+				$locationRequired = true;
 			}
 		}
 
@@ -379,12 +379,12 @@ class Finder
 				unset($filter[$field]);
 			}
 
-			$locationRequred = true;
+			$locationRequired = true;
 		}
 
 		// data join, only if extended select specified
 
-		if($locationRequred && $filterByPhrase)
+		if($locationRequired && $filterByPhrase)
 			$query['JOIN'][] = "inner join ".Location\LocationTable::getTableName()." L on A.LOCATION_ID = L.ID";
 
 		if($nameRequired)

@@ -627,15 +627,6 @@ abstract class PropertyValueCollectionBase extends Internals\EntityCollection
 	}
 
 	/**
-	 * @throws Main\NotImplementedException
-	 * @return string
-	 */
-	public static function getRegistryType()
-	{
-		throw new Main\NotImplementedException();
-	}
-
-	/**
 	 * @param $primary
 	 * @throws Main\NotImplementedException
 	 * @return Entity\DeleteResult

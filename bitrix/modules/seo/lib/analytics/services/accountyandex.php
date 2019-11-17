@@ -10,11 +10,14 @@ use Bitrix\Main\Web\Json;
 use Bitrix\Main\Type\Date;
 use Bitrix\Seo\Retargeting\Response;
 use Bitrix\Seo\Retargeting\Services\ResponseYandex;
+use Bitrix\Seo\Retargeting\IRequestDirectly;
 
-class AccountYandex extends \Bitrix\Seo\Analytics\Account
+class AccountYandex extends \Bitrix\Seo\Analytics\Account implements IRequestDirectly
 {
 	const TYPE_CODE = 'yandex';
 	const ERROR_CODE_REPORT_OFFLINE = 100201;
+
+	protected $currency;
 
 	/**
 	 * Get list.
@@ -84,6 +87,9 @@ class AccountYandex extends \Bitrix\Seo\Analytics\Account
 		// https://tech.yandex.ru/direct/doc/reports/example-docpage/
 		$result = new ResponseYandex();
 		$expenses = new Expenses();
+
+		// preload currency cause we can lost it if request after report
+		$this->getCurrency();
 		$result->setData(['expenses' => $expenses]);
 
 		$dateFrom = $dateFrom ?: new Date();
@@ -154,8 +160,12 @@ class AccountYandex extends \Bitrix\Seo\Analytics\Account
 
 	protected function getCurrency()
 	{
+		if($this->currency)
+		{
+			return $this->currency;
+		}
 		// currency is global for an account, so we get it from the first campaign.
-		$cacheString = 'analytics_yandex_currency_'.CurrentUser::get()->getId();
+		$cacheString = 'analytics_yandex_currency';
 		$cachePath = '/seo/analytics/yandex/';
 		$cacheTime = 3600;
 		$cache = Cache::createInstance();
@@ -201,7 +211,9 @@ class AccountYandex extends \Bitrix\Seo\Analytics\Account
 			}
 		}
 
-		return $currency ?: 'RUB';
+		$this->currency = $currency;
+
+		return $currency;
 	}
 
 	/**

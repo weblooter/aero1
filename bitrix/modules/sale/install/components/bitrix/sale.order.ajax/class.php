@@ -589,7 +589,7 @@ class SaleOrderAjax extends \CBitrixComponent
 	{
 		if (!isset($this->basketStorage))
 		{
-			$this->basketStorage = Sale\Basket\Storage::getInstance(Sale\Fuser::getId(), Main\Context::getCurrent()->getSite());
+			$this->basketStorage = Sale\Basket\Storage::getInstance(Sale\Fuser::getId(), $this->getSiteId());
 		}
 
 		return $this->basketStorage;
@@ -4403,13 +4403,6 @@ class SaleOrderAjax extends \CBitrixComponent
 		{
 			$this->arResult['DELIVERY'] += $problemDeliveries;
 		}
-
-		$eventParameters = array(
-			$order, &$this->arUserResult, $this->request,
-			&$this->arParams, &$this->arResult, &$this->arDeliveryServiceAll, &$this->arPaySystemServiceAll
-		);
-		foreach (GetModuleEvents('sale', 'OnSaleComponentOrderDeliveriesCalculated', true) as $arEvent)
-			ExecuteModuleEventEx($arEvent, $eventParameters);
 	}
 
 	/**
@@ -5739,6 +5732,15 @@ class SaleOrderAjax extends \CBitrixComponent
 		if ($this->action !== 'saveOrderAjax')
 		{
 			$this->calculateDeliveries($order);
+		}
+
+		$eventParameters = array(
+			$order, &$this->arUserResult, $this->request,
+			&$this->arParams, &$this->arResult, &$this->arDeliveryServiceAll, &$this->arPaySystemServiceAll
+		);
+		foreach (GetModuleEvents('sale', 'OnSaleComponentOrderDeliveriesCalculated', true) as $arEvent)
+		{
+			ExecuteModuleEventEx($arEvent, $eventParameters);
 		}
 
 		return $order;

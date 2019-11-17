@@ -1,15 +1,14 @@
-.adm-site-master-wrapper, .adm-site-master-grid {
+.adm-crm-site-master-wrapper, .adm-crm-site-master-grid {
 	box-sizing: border-box;
 	padding: 19px 35px;
-	max-width: 1050px;
 	background: #fff;
 }
 
-.adm-site-master-grid {
+.adm-crm-site-master-grid {
 	max-width: none;
 }
 
-.adm-site-master-title {
+.adm-crm-site-master-title {
 	margin: 0 0 20px;
 	padding: 0 0 15px;
 	border-bottom: 1px solid rgba(82, 92, 105, 0.11);
@@ -18,7 +17,7 @@
 	font: 18px "OpenSans-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-attention {
+.adm-crm-site-master-attention {
 	display: block;
 	margin: 30px auto 32px;
 	max-width: 312px;
@@ -26,27 +25,27 @@
 	height: auto;
 }
 
-.adm-site-master-paragraph-wrapper {
+.adm-crm-site-master-paragraph-wrapper {
 	margin: 60px 0 20px 0;
 }
 
-.adm-site-master-paragraph {
+.adm-crm-site-master-paragraph {
 	margin: 10px 0;
 	color: #525c69;
 	font: 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-check-key {
+.adm-crm-site-master-check-key {
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
 }
 
-.adm-site-master-check-key-column { padding: 0 10px; }
+.adm-crm-site-master-check-key-column { padding: 0 10px; }
 
-.adm-site-master-buy-key-container { text-align: center; }
+.adm-crm-site-master-buy-key-container { text-align: center; }
 
-.adm-site-master-buy-key-block {
+.adm-crm-site-master-buy-key-block {
 	display: inline-flex;
 	padding: 13px 75px;
 	border-radius: 20px;
@@ -55,13 +54,13 @@
 	align-items: center;
 }
 
-.adm-site-master-errors {
+.adm-crm-site-master-errors {
 	margin: 5px 0;
 	color: #ff5752;
 	font: 13px/22px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-buy-key-link {
+.adm-crm-site-master-buy-key-link {
 	border-bottom: 1px solid #ccdae1;
 	color: #333;
 	font-size: 19px;
@@ -70,11 +69,11 @@
 	transition: 250ms linear all;
 }
 
-.adm-site-master-buy-key-link:hover { border-bottom-color: #333; }
+.adm-crm-site-master-buy-key-link:hover { border-bottom-color: #333; }
 
-.adm-site-master-buy-key-link a { text-decoration: none; }
+.adm-crm-site-master-buy-key-link a { text-decoration: none; }
 
-.adm-site-master-buy-key-icon {
+.adm-crm-site-master-buy-key-icon {
 	position: relative;
 	margin-right: 14px;
 	width: 22px;
@@ -82,7 +81,7 @@
 	border-radius: 50%;
 }
 
-.adm-site-master-buy-key-icon svg {
+.adm-crm-site-master-buy-key-icon svg {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -90,9 +89,9 @@
 	margin-left: -11px;
 }
 
-.adm-site-master-content .ui-progressbar-status { display: none; }
+.adm-crm-site-master-content .ui-progressbar-status { display: none; }
 
-.adm-site-master-progress-container {
+.adm-crm-site-master-progress-container {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -102,7 +101,7 @@
 	align-items: center;
 }
 
-.adm-site-master-progress-counter {
+.adm-crm-site-master-progress-counter {
 	position: absolute;
 	top: 0;
 	display: flex;
@@ -110,16 +109,16 @@
 	opacity: 1;
 	transition: 250ms linear all;
 	pointer-events: none;
-	align-items: flex-end;
+	align-items: baseline;
 	justify-content: center;
 }
 
-.adm-site-master-progress-container.complete .adm-site-master-progress-counter {
+.adm-crm-site-master-progress-container.complete .adm-crm-site-master-progress-counter {
 	top: 50%;
 	opacity: 0;
 }
 
-.adm-site-master-progress-complete {
+.adm-crm-site-master-progress-complete {
 	position: absolute;
 	top: -50%;
 	opacity: 0;
@@ -127,12 +126,12 @@
 	pointer-events: none;
 }
 
-.adm-site-master-progress-container.complete .adm-site-master-progress-complete {
+.adm-crm-site-master-progress-container.complete .adm-crm-site-master-progress-complete {
 	top: 0;
 	opacity: 1;
 }
 
-.adm-site-master-progress-container-num {
+.adm-crm-site-master-progress-container-num {
 	position: relative;
 	color: #2fc6f6;
 	vertical-align: middle;
@@ -140,7 +139,7 @@
 	font-family: "OpenSans-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-progress-container-per {
+.adm-crm-site-master-progress-container-per {
 	position: relative;
 	color: #a8adb4;
 	vertical-align: middle;
@@ -148,22 +147,22 @@
 	font-family: "OpenSans-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-progress-container .adm-site-master-progress-counter,
-.adm-site-master-progress-container.complete .adm-site-master-progress-complete {
+.adm-crm-site-master-progress-container .adm-crm-site-master-progress-counter,
+.adm-crm-site-master-progress-container.complete .adm-crm-site-master-progress-complete {
 	top: 0;
 	opacity: 1;
 }
 
-.adm-site-master-progress { margin-bottom: 150px; }
+.adm-crm-site-master-progress { margin-bottom: 150px; }
 
-.adm-site-master-progress-description {
+.adm-crm-site-master-progress-description {
 	color: #525c69;
 	text-align: center;;
 	font: 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	opacity: .5;
 }
 
-.adm-site-master-progress-complete-text {
+.adm-crm-site-master-progress-complete-text {
 	position: absolute;
 	top: 130px;
 	color: #333;
@@ -173,72 +172,72 @@
 	transition: 250ms linear all;
 }
 
-.adm-site-master-progress-container.complete .adm-site-master-progress-complete-text {
+.adm-crm-site-master-progress-container.complete .adm-crm-site-master-progress-complete-text {
 	top: 160px;
 	opacity: 1;
 }
 
-.adm-site-master-form-row { margin-bottom: 10px; }
+.adm-crm-site-master-form-row { margin-bottom: 10px; }
 
-.adm-site-master-form-label {
+.adm-crm-site-master-form-label {
 	color: #525c69;
 	font: 13px/22px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	opacity: .5;
 }
 
-.adm-site-master-form-action-fill {
+.adm-crm-site-master-form-action-fill {
 	border-bottom: 1px dotted;
 	text-decoration: none;
 }
 
-.adm-site-master-form-action-fill:hover {
+.adm-crm-site-master-form-action-fill:hover {
 	border-bottom: 1px solid;
 	text-decoration: none;
 }
 
-.adm-site-master-warning {
+.adm-crm-site-master-warning {
 	margin-bottom: 20px;
 	text-align: center;
 }
 
-.adm-site-master-warning-image {
+.adm-crm-site-master-warning-image {
 	max-width: 100%;
 	height: auto;
 }
 
-.adm-site-master-timer {
+.adm-crm-site-master-timer {
 	margin-bottom: 20px;
 	text-align: center;
 }
 
-.adm-site-master-timer-image {
+.adm-crm-site-master-timer-image {
 	max-width: 100%;
 	height: auto;
 }
 
-.adm-site-master-timer-description {
+.adm-crm-site-master-timer-description {
 	color: #333;
 	text-align: center;
 	font: 16px/32px "OpenSans-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-finish {
+.adm-crm-site-master-finish {
 	margin-bottom: 20px;
 	text-align: center;
 }
 
-.adm-site-master-finish-image {
+.adm-crm-site-master-finish-image {
 	max-width: 100%;
 	height: auto;
 }
 
-.adm-site-master-finish-description {
+.adm-crm-site-master-finish-description {
 	color: #333;
 	text-align: center;
 	font: 16px/32px "OpenSans-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.adm-site-master-checkbox {
+.adm-crm-site-master-checkbox {
 	margin-right: 20px;
 	height: 39px;
 	color: #868c96;
@@ -247,12 +246,12 @@
 	line-height: 39px;
 }
 
-.adm-site-master-checkbox,
-.adm-site-master-checkbox-label { cursor: pointer; }
+.adm-crm-site-master-checkbox,
+.adm-crm-site-master-checkbox-label { cursor: pointer; }
 
-.adm-site-master-checkbox-label input[type="checkbox"] { vertical-align: middle; }
+.adm-crm-site-master-checkbox-label input[type="checkbox"] { vertical-align: middle; }
 
-.adm-site-master-buttons {
+.adm-crm-site-master-buttons {
 	display: flex;
 	flex-direction: row;
 	margin-top: 30px;
@@ -262,16 +261,16 @@
 	justify-content: center;
 }
 
-.adm-site-master-buttons .ui-btn-container { margin: 0; }
+.adm-crm-site-master-buttons .ui-btn-container { margin: 0; }
 
-.adm-site-master-grid-content { margin-top: 20px }
+.adm-crm-site-master-grid-content { margin-top: 20px }
 
-.adm-site-master-list {
+.adm-crm-site-master-list {
 	margin: 20px auto 40px auto;
 	padding: 0;
 }
 
-.adm-site-master-list-item {
+.adm-crm-site-master-list-item {
 	position: relative;
 	margin: 0 0 35px 0;
 	padding: 0 0 0 40px;
@@ -280,14 +279,14 @@
 	list-style: none;
 }
 
-.adm-site-master-list-item:last-child { margin: 0; }
+.adm-crm-site-master-list-item:last-child { margin: 0; }
 
-.adm-site-master-list-item:before {
+.adm-crm-site-master-list-item:before {
 	content: '';
 	position: absolute;
-	top: -3px;
+	top: -1px;
 	left: 0;
-	padding: 2px 0 0 0;
+	padding: 1px 0 0 0;
 	width: 22px;
 	height: 22px;
 	border-radius: 100%;
@@ -314,10 +313,27 @@
 	height: auto;
 }
 
-.adm-group-master-form {
+.adm-crm-group-master-form {
 	margin: 20px 0 0 0;
 }
 
-.adm-group-master-form-select-manager {
+.adm-crm-group-master-form-select-admin,
+.adm-crm-group-master-form-select-manager {
+	width: 80%;
+}
+
+.adm-crm-group-master-form-select-manager {
 	margin: 0 0 20px 0;
+}
+
+.adm-crm-push-step-error-block {
+	display: block;
+}
+
+.adm-crm-push-step-error-item {
+	margin-left: 30px;
+}
+
+.adm-crm-site-sitestep-fields {
+	width: 60%;
 }

@@ -1262,7 +1262,7 @@ class CSocServAuth
 				'=XML_ID'=>$socservUserFields['XML_ID'],
 				'=EXTERNAL_AUTH_ID'=>$socservUserFields['EXTERNAL_AUTH_ID']
 			),
-			'select' => array("ID", "USER_ID", "ACTIVE" => "USER.ACTIVE"),
+			'select' => array("ID", "USER_ID", "ACTIVE" => "USER.ACTIVE", "PERSONAL_PHOTO"),
 		));
 		$socservUser = $dbSocUser->fetch();
 
@@ -1422,7 +1422,7 @@ class CSocServAuth
 
 				if($entryId > 0)
 				{
-					UserTable::update($entryId, UserTable::filterFields($socservUserFields));
+					UserTable::update($entryId, UserTable::filterFields($socservUserFields, $socservUser));
 				}
 				else
 				{

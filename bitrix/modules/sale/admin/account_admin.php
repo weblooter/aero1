@@ -1,11 +1,4 @@
 <?
-##############################################
-# Bitrix: SiteManager                        #
-# Copyright (c) 2002-2006 Bitrix             #
-# http://www.bitrixsoft.com                  #
-# mailto:admin@bitrixsoft.com                #
-##############################################
-
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 
 $publicMode = $adminPage->publicMode;
@@ -15,7 +8,7 @@ $saleModulePermissions = $APPLICATION->GetGroupRight("sale");
 if ($saleModulePermissions=="D")
 	$APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/sale/include.php");
+\Bitrix\Main\Loader::includeModule('sale');
 
 IncludeModuleLangFile(__FILE__);
 

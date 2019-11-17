@@ -1,0 +1,50 @@
+{
+    "event": "LOCAL_CORE_SERVICES_CREATE_REVIEW",
+    "type": {
+        "LID": "ru",
+        "EVENT_TYPE": "email",
+        "NAME": "LocalCore: Добавлен отзыв",
+        "DESCRIPTION": [
+            "#FIO#\r",
+            "#EMAIL#\r",
+            "#MSG#\r",
+            "#ELEM_ID#"
+        ],
+        "SORT": "150"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#DEFAULT_EMAIL_FROM#",
+            "SUBJECT": "#SITE_NAME#: Вам оставили отзыв",
+            "MESSAGE": [
+                "Вам оставили отзыв.\r",
+                "\r",
+                "Имя: #FIO#\r",
+                "E-mail: #EMAIL#\r",
+                "Сообщение: #MSG#\r",
+                "_____________________\r",
+                "\r",
+                "Отредактируйте отзыв и активируйте его на странице https:\/\/dr-vedrov.ru\/bitrix\/admin\/iblock_element_edit.php?IBLOCK_ID=#ELEM_ID#&type=main_ved&ID=45&lang=ru&find_section_section=0&WF=Y"
+            ],
+            "BODY_TYPE": "text",
+            "BCC": "",
+            "REPLY_TO": "",
+            "CC": "",
+            "IN_REPLY_TO": "",
+            "PRIORITY": "",
+            "FIELD1_NAME": "",
+            "FIELD1_VALUE": "",
+            "FIELD2_NAME": "",
+            "FIELD2_VALUE": "",
+            "SITE_TEMPLATE_ID": "",
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": "",
+            "EVENT_TYPE": "[ LOCAL_CORE_SERVICES_CREATE_REVIEW ] LocalCore: Добавлен отзыв"
+        }
+    ]
+}

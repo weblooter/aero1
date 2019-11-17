@@ -225,6 +225,8 @@ class PaymentCollection extends Internals\EntityCollection
 	/**
 	 * @param Order $order
 	 * @return PaymentCollection
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
 	 */
 	public static function load(Order $order)
 	{

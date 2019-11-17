@@ -223,7 +223,7 @@ class SberbankOnlineHandler
 		PaySystem\Logger::addDebugInfo('Sberbank: request: '.$inputJson);
 
 		$secretKey = $this->getBusinessValue($payment, 'SBERBANK_SECRET_KEY');
-		if (!$this->isCheckSumCorrect($request, $secretKey))
+		if ($secretKey && !$this->isCheckSumCorrect($request, $secretKey))
 		{
 			$result->addError(new Main\Error(Localization\Loc::getMessage('SALE_HPS_SBERBANK_ERROR_CHECK_SUM')));
 		}
@@ -515,13 +515,20 @@ class SberbankOnlineHandler
 		PaySystem\Logger::addDebugInfo('Sberbank: response data: '.$response);
 
 		$response = static::decode($response);
-		if (isset($response['errorCode']) && $response['errorCode'] != self::RESPONSE_CODE_SUCCESS)
+		if ($response)
 		{
-			$result->addError(new Main\Error($response['errorMessage'], $response['errorCode']));
+			if (isset($response['errorCode']) && $response['errorCode'] != self::RESPONSE_CODE_SUCCESS)
+			{
+				$result->addError(new Main\Error($response['errorMessage'], $response['errorCode']));
+			}
+			else
+			{
+				$result->setData($response);
+			}
 		}
 		else
 		{
-			$result->setData($response);
+			$result->addError(new Main\Error(Localization\Loc::getMessage("SALE_HPS_SBERBANK_ERROR_DECODE_RESPONSE")));
 		}
 
 		return $result;

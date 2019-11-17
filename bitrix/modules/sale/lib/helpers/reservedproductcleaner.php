@@ -118,14 +118,14 @@ class ReservedProductCleaner extends Stepper
 
 		if($selectedRowsCount < $limit)
 		{
-			Option::delete("crm", array("name" => $className));
+			Option::delete("sale", array("name" => $className));
 			return false;
 		}
 		else
 		{
 			$result["steps"] = $result["steps"] + $selectedRowsCount;
 			$option = $result["steps"];
-			Option::set("crm", $className, $option);
+			Option::set("sale", $className, $option);
 			return true;
 		}
 	}

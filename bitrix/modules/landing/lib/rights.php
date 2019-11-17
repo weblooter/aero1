@@ -303,6 +303,7 @@ class Rights
 
 		// full access for admin
 		if (
+			$uid &&
 			self::isOn() &&
 			!self::isAdmin() &&
 			self::isFeatureOn() &&
@@ -818,6 +819,11 @@ class Rights
 			if (!self::isFeatureOn())
 			{
 				return true;
+			}
+
+			if (!Manager::getUserId())
+			{
+				return false;
 			}
 
 			if (self::isAdmin())

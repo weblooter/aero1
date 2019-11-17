@@ -57,9 +57,6 @@ abstract class OrderBase extends Internals\Entity
 	/** @var bool $isStartField */
 	protected $isStartField = null;
 
-	/** @var null $eventClassName */
-	protected static $eventClassName = null;
-
 
 	/** @var null|string $calculateType */
 	protected $calculateType = null;
@@ -75,9 +72,9 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	protected function __construct(array $fields = array())
 	{
-		$priceRoundedFields = ['PRICE', 'PRICE_DELIVERY', 'SUM_PAID', 'PRICE_PAYMENT', 'DISCOUNT_VALUE'];
+		$priceFields = ['PRICE', 'PRICE_DELIVERY', 'SUM_PAID', 'PRICE_PAYMENT', 'DISCOUNT_VALUE'];
 
-		foreach ($priceRoundedFields as $code)
+		foreach ($priceFields as $code)
 		{
 			if (isset($fields[$code]))
 			{
@@ -185,13 +182,11 @@ abstract class OrderBase extends Internals\Entity
 	}
 
 	/**
-	 * Return registry type of class
-	 *
-	 * @throws Main\NotImplementedException
+	 * @return string
 	 */
-	public static function getRegistryType()
+	public static function getRegistryEntity()
 	{
-		throw new Main\NotImplementedException();
+		return Registry::ENTITY_ORDER;
 	}
 
 	/**
@@ -258,12 +253,14 @@ abstract class OrderBase extends Internals\Entity
 	public static function load($id)
 	{
 		if (intval($id) <= 0)
+		{
 			throw new Main\ArgumentNullException("id");
+		}
 
-		$filter = array(
-			'filter' => array('ID' => $id),
-			'select' => array('*'),
-		);
+		$filter = [
+			'filter' => ['ID' => $id],
+			'select' => ['*'],
+		];
 
 		$list = static::loadByFilter($filter);
 		if (!empty($list) && is_array($list))
@@ -284,7 +281,7 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public static function loadByFilter(array $parameters)
 	{
-		$list = array();
+		$list = [];
 
 		$parameters = static::prepareParams($parameters);
 
@@ -298,7 +295,7 @@ abstract class OrderBase extends Internals\Entity
 			$list[] = $order;
 		}
 
-		return (!empty($list) ? $list : null);
+		return $list;
 	}
 
 	/**
@@ -312,15 +309,25 @@ abstract class OrderBase extends Internals\Entity
 		);
 
 		if (isset($parameters['filter']))
+		{
 			$result['filter'] = $parameters['filter'];
+		}
 		if (isset($parameters['limit']))
+		{
 			$result['limit'] = $parameters['limit'];
+		}
 		if (isset($parameters['order']))
+		{
 			$result['order'] = $parameters['order'];
+		}
 		if (isset($parameters['offset']))
+		{
 			$result['offset'] = $parameters['offset'];
+		}
 		if (isset($parameters['runtime']))
+		{
 			$result['runtime'] = $parameters['runtime'];
+		}
 
 		return $result;
 	}
@@ -336,21 +343,19 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public static function loadByAccountNumber($value)
 	{
-		if (strval(trim($value)) == '')
-			throw new Main\ArgumentNullException("value");
-
-		$filter = array(
-			'filter' => array('=ACCOUNT_NUMBER' => $value),
-			'select' => array('*'),
-		);
-
-		$list = static::loadByFilter($filter);
-		if (!empty($list) && is_array($list))
+		if (trim($value) == '')
 		{
-			return reset($list);
+			throw new Main\ArgumentNullException("value");
 		}
 
-		return null;
+		$parameters = [
+			'filter' => ['=ACCOUNT_NUMBER' => $value],
+			'select' => ['*'],
+		];
+
+		$list = static::loadByFilter($parameters);
+
+		return reset($list);
 	}
 
 	/**
@@ -377,7 +382,7 @@ abstract class OrderBase extends Internals\Entity
 		if (!$this->isMathActionOnly())
 		{
 			/** @var Result $r */
-			$r = $basket->refreshData(array('PRICE', 'QUANTITY', 'COUPONS'));
+			$r = $basket->refreshData(['PRICE', 'QUANTITY', 'COUPONS']);
 			if (!$r->isSuccess())
 			{
 				$result->addErrors($r->getErrors());
@@ -425,18 +430,6 @@ abstract class OrderBase extends Internals\Entity
 	}
 
 	/**
-	 * Check basket for emptiness
-	 *
-	 * @return bool
-	 */
-	public function isNotEmptyBasket()
-	{
-		$basket = $this->getBasket();
-
-		return !empty($basket);
-	}
-
-	/**
 	 * Load basket appended to order
 	 *
 	 * @return BasketBase|null
@@ -469,14 +462,14 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public function setField($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'PRICE' => 'PRICE',
 			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
 			'SUM_PAID' => 'SUM_PAID',
 			'PRICE_PAYMENT' => 'PRICE_PAYMENT',
 			'DISCOUNT_VALUE' => 'DISCOUNT_VALUE',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -532,14 +525,14 @@ abstract class OrderBase extends Internals\Entity
 	 */
 	public function setFieldNoDemand($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'PRICE' => 'PRICE',
 			'PRICE_DELIVERY' => 'PRICE_DELIVERY',
 			'SUM_PAID' => 'SUM_PAID',
 			'PRICE_PAYMENT' => 'PRICE_PAYMENT',
 			'DISCOUNT_VALUE' => 'DISCOUNT_VALUE',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -608,11 +601,11 @@ abstract class OrderBase extends Internals\Entity
 	}
 
 	/**
-	 * Return collection of order properties
-	 *
 	 * @return PropertyValueCollectionBase
 	 * @throws Main\ArgumentException
 	 * @throws Main\NotImplementedException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
 	 */
 	public function getPropertyCollection()
 	{
@@ -693,10 +686,10 @@ abstract class OrderBase extends Internals\Entity
 	}
 
 	/**
-	 * @param $select
 	 * @return Result
-	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\NotImplementedException
 	 */
 	protected function refreshInternal()
 	{
@@ -802,72 +795,6 @@ abstract class OrderBase extends Internals\Entity
 	public function getTaxValue()
 	{
 		return floatval($this->getField('TAX_VALUE'));
-	}
-
-	/**
-	 * @return Result
-	 * @throws Main\ObjectNotFoundException
-	 */
-	protected function syncOrderTax()
-	{
-		$result = new Result();
-
-		/** @var Tax $tax */
-		if (!$tax = $this->getTax())
-		{
-			throw new Main\ObjectNotFoundException('Entity "Tax" not found');
-		}
-
-		$this->resetTax();
-		/** @var Result $r */
-		$r = $tax->calculate();
-		if ($r->isSuccess())
-		{
-			$taxResult = $r->getData();
-			if (isset($taxResult['TAX_PRICE']) && floatval($taxResult['TAX_PRICE']) > 0)
-			{
-				/** @var Result $r */
-				$r = $this->setField('TAX_PRICE', $taxResult['TAX_PRICE']);
-				if (!$r->isSuccess())
-				{
-					$result->addErrors($r->getErrors());
-				}
-			}
-
-			if (isset($taxResult['VAT_SUM']) && floatval($taxResult['VAT_SUM']) > 0)
-			{
-				/** @var Result $r */
-				$r = $this->setField('VAT_SUM', $taxResult['VAT_SUM']);
-				if (!$r->isSuccess())
-				{
-					$result->addErrors($r->getErrors());
-				}
-			}
-
-			if (isset($taxResult['VAT_DELIVERY']) && floatval($taxResult['VAT_DELIVERY']) > 0)
-			{
-				/** @var Result $r */
-				$r = $this->setField('VAT_DELIVERY', $taxResult['VAT_DELIVERY']);
-				if (!$r->isSuccess())
-				{
-					$result->addErrors($r->getErrors());
-				}
-			}
-
-			/** @var Result $r */
-			$r = $this->setField('TAX_VALUE', $this->isUsedVat()? $this->getVatSum() : $this->getField('TAX_PRICE'));
-			if (!$r->isSuccess())
-			{
-				$result->addErrors($r->getErrors());
-			}
-
-		}
-		else
-		{
-			$result->addErrors($r->getErrors());
-		}
-
-		return $result;
 	}
 
 	/**
@@ -1496,6 +1423,12 @@ abstract class OrderBase extends Internals\Entity
 
 	/**
 	 * @return Result
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\NotImplementedException
+	 * @throws Main\ObjectNotFoundException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
 	 */
 	protected function saveEntities()
 	{
@@ -1678,7 +1611,9 @@ abstract class OrderBase extends Internals\Entity
 			$this->setField('DATE_CANCELED', new Type\DateTime());
 
 			if (is_object($USER) && $USER->isAuthorized())
+			{
 				$this->setField('EMP_CANCELED_ID', $USER->getID());
+			}
 
 			Internals\EventsPool::addEvent(
 				$this->getInternalId(),
@@ -1703,7 +1638,9 @@ abstract class OrderBase extends Internals\Entity
 				$this->setField('DATE_MARKED', new Type\DateTime());
 
 				if ($USER->isAuthorized())
+				{
 					$this->setField('EMP_MARKED_ID', $USER->getID());
+				}
 			}
 			elseif ($value == "N")
 			{

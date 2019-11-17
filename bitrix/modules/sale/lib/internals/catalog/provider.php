@@ -1318,13 +1318,6 @@ final class Provider
 			/** @var Sale\ShipmentItemStore $shipmentItemStore */
 			foreach ($shipmentItemStoreCollection as $shipmentItemStore)
 			{
-				/** @var Sale\BasketItem $basketItem */
-				if (!$basketItem = $shipmentItemStore->getBasketItem())
-				{
-					throw new Main\ObjectNotFoundException('Entity "BasketItem" not found');
-				}
-
-				//				$basketCode = $basketItem->getBasketCode();
 				$productId = $basketItem->getProductId();
 
 				$storeId = $shipmentItemStore->getStoreId();

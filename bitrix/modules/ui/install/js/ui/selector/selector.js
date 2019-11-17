@@ -58,6 +58,7 @@ BX.UI.Selector = function(params)
 		ajax: []
 	}; // tmpSearchResult
 	this.callback = (BX.type.isNotEmptyObject(params.callback) ? params.callback : {});
+	this.callbackBefore = (BX.type.isNotEmptyObject(params.callbackBefore) ? params.callbackBefore : {});
 	this.searchXhr = null;
 	this.searchRequestId = null;
 	this.timeouts = {
@@ -160,6 +161,47 @@ BX.UI.Selector.prototype.openDialog = function()
 		return;
 	}
 
+	var isPromiseReturned = false;
+	var promise = null;
+
+	if (typeof this.callbackBefore.openDialog == 'function')
+	{
+		if (BX.type.isNotEmptyObject(this.callbackBefore.context))
+		{
+			promise = this.callbackBefore.openDialog.bind(this.callbackBefore.context)();
+			isPromiseReturned =
+				promise &&
+				(
+					Object.prototype.toString.call(promise) === "[object Promise]" ||
+					promise.toString() === "[object BX.Promise]"
+				)
+			;
+		}
+	}
+
+	if (!isPromiseReturned)
+	{
+		promise = Promise.resolve();
+	}
+
+	promise.then(
+		this.openDialogPromiseFulfilled.bind(this),
+		this.openDialogPromiseRejected.bind(this)
+	);
+};
+
+BX.UI.Selector.prototype.openDialogPromiseFulfilled = function(result)
+{
+	var popupBind = this.getPopupBind();
+
+	if (
+		BX.type.isDomNode(popupBind)
+		&& !document.body.contains(popupBind)
+	)
+	{
+		return;
+	}
+
 	if (this.getOption('useContainer') == 'Y') // obUseContainer
 	{
 		if (!this.openContainer())
@@ -195,7 +237,9 @@ BX.UI.Selector.prototype.openDialog = function()
 	}
 	else
 	{
-		this.popups.main = new BX.PopupWindow('bx-selector-dialog-' + this.id, popupBind, {
+		this.popups.main = new BX.PopupWindow({
+			id: 'bx-selector-dialog-' + this.id,
+			bindElement: popupBind,
 			autoHide: true,
 			zIndex: 1200,
 			className: this.getRenderInstance().class.popup,
@@ -289,9 +333,18 @@ BX.UI.Selector.prototype.openDialog = function()
 	});
 };
 
+BX.UI.Selector.prototype.openDialogPromiseRejected = function(reason)
+{
+	this.callback.closeDialog({
+		selectorId: this.id
+	});
+};
+
 BX.UI.Selector.prototype.openContainer = function()
 {
-	this.popups.container = new BX.PopupWindow('bx-selector-dialog-' + this.id + '-container', this.getPopupBind(), {
+	this.popups.container = new BX.PopupWindow({
+		id: 'bx-selector-dialog-' + this.id + '-container',
+		bindElement: this.getPopupBind(),
 		autoHide: true,
 		zIndex: 1200,
 		className: this.getRenderInstance().class.popup,
@@ -408,7 +461,9 @@ BX.UI.Selector.prototype.openSearch = function(params)
 	}
 	else
 	{
-		this.popups.search = new BX.PopupWindow('bx-selector-dialog-' + this.id + '-search', this.getPopupBind(), {
+		this.popups.search = new BX.PopupWindow({
+			id: 'bx-selector-dialog-' + this.id + '-search',
+			bindElement: this.getPopupBind(),
 			autoHide: true,
 			zIndex: 1200,
 			className: this.getRenderInstance().class.popup,
@@ -2295,6 +2350,62 @@ BX.UI.Selector.prototype.selectItem = function(params)
 		return false;
 	}
 
+	var isPromiseReturned = false;
+	var promise = null;
+
+	if (typeof this.callbackBefore.select == 'function')
+	{
+		if (BX.type.isNotEmptyObject(this.callbackBefore.context))
+		{
+			promise = this.callbackBefore.select.bind(this.callbackBefore.context)(itemId);
+			isPromiseReturned =
+				promise &&
+				(
+					Object.prototype.toString.call(promise) === "[object Promise]" ||
+					promise.toString() === "[object BX.Promise]"
+				)
+			;
+		}
+	}
+
+	if (!isPromiseReturned)
+	{
+		promise = Promise.resolve();
+	}
+
+	promise.then(
+		function(result)
+		{
+			this.selectItemPromiseFulfilled({
+				itemId: itemId,
+				entityType: entityType,
+				itemNode: itemNode,
+				className: className,
+				tab: tab
+			});
+		}.bind(this),
+		function(reason)
+		{
+			this.selectItemPromiseRejected({
+				itemId: itemId,
+				entityType: entityType,
+				itemNode: itemNode,
+				className: className,
+				tab: tab
+			});
+		}.bind(this)
+	);
+};
+
+BX.UI.Selector.prototype.selectItemPromiseFulfilled = function(data)
+{
+	var
+		itemId = data.itemId,
+		entityType = data.entityType,
+		itemNode = data.itemNode,
+		className = data.className,
+		tab = data.tab;
+
 	if (this.getOption('focusInputOnSelectItem') != 'N')
 	{
 		BX.focus(this.input);
@@ -2332,7 +2443,7 @@ BX.UI.Selector.prototype.selectItem = function(params)
 
 	BX.onCustomEvent('BX.UI.Selector:onSelectItem', [ {
 		selectorId: this.id,
-		itemId: params.itemId
+		itemId: itemId
 	} ]);
 
 	if (this.callback.select)
@@ -2367,9 +2478,10 @@ BX.UI.Selector.prototype.selectItem = function(params)
 	}
 
 	this.getSearchInstance().abortSearchRequest();
+};
 
-	return false;
-
+BX.UI.Selector.prototype.selectItemPromiseRejected = function(data)
+{
 };
 
 BX.UI.Selector.prototype.deleteSelectedItem = function(params)

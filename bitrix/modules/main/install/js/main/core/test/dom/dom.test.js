@@ -73,6 +73,49 @@ describe('Dom', () => {
 				assert(element.getAttribute('class') === 'test1 test2 test3');
 			});
 		});
+
+		describe('Memory leak detection', () => {
+			it('Should not leak if passed single string class name', () => {
+				let element = document.createElement('div');
+				let className = 'test-class';
+				Dom.addClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if passed array of names', () => {
+				let element = document.createElement('div');
+				let className = ['test-class', 'test-class2', 'test-class3'];
+				Dom.addClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				let isClassNameCollected = false;
+				global.weak(className, () => {
+					isClassNameCollected = true;
+				});
+
+				element = null;
+				className = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+				assert.ok(isClassNameCollected, 'Memory leak detected! "className" is not collected');
+			});
+		});
 	});
 
 	describe('#hasClass', () => {
@@ -151,6 +194,66 @@ describe('Dom', () => {
 				assert(!Dom.hasClass(element, 'test3 test222 test1'));
 			});
 		});
+
+		describe('Memory leak detection', () => {
+			it('Should not leak if passed single string class name', () => {
+				let element = document.createElement('div');
+				let className = 'test-class';
+				Dom.hasClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if passed multiple string class name', () => {
+				let element = document.createElement('div');
+				let className = 'test-class test-class2 test-class3';
+				Dom.hasClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if passed array of names', () => {
+				let element = document.createElement('div');
+				let className = ['test-class', 'test-class2', 'test-class3'];
+				Dom.hasClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				let isClassNameCollected = false;
+				global.weak(className, () => {
+					isClassNameCollected = true;
+				});
+
+				element = null;
+				className = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+				assert.ok(isClassNameCollected, 'Memory leak detected! "className" is not collected');
+			});
+		});
 	});
 
 	describe('#removeClass', () => {
@@ -224,6 +327,66 @@ describe('Dom', () => {
 
 				Dom.removeClass(element, ['test1']);
 				assert(element.getAttribute('class') === '');
+			});
+		});
+
+		describe('Memory leak detection', () => {
+			it('Should not leak if passed single string class name', () => {
+				let element = document.createElement('div');
+				let className = 'test-class';
+				Dom.removeClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if passed multiple string class name', () => {
+				let element = document.createElement('div');
+				let className = 'test-class test-class2 test-class3';
+				Dom.removeClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if passed array of names', () => {
+				let element = document.createElement('div');
+				let className = ['test-class', 'test-class2', 'test-class3'];
+				Dom.removeClass(element, className);
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				let isClassNameCollected = false;
+				global.weak(className, () => {
+					isClassNameCollected = true;
+				});
+
+				element = null;
+				className = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+				assert.ok(isClassNameCollected, 'Memory leak detected! "className" is not collected');
 			});
 		});
 	});
@@ -302,6 +465,79 @@ describe('Dom', () => {
 
 			assert.deepEqual(element, result);
 		});
+
+		describe('Memory leak detection', () => {
+			it('Should not leak if create element without params', () => {
+				let element = Dom.create('div');
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "Element" is not collected');
+			});
+
+			it('Should not leak if create element with params', () => {
+				let params = {
+					props: {
+						className: 'test-class',
+					},
+				};
+				let element = Dom.create('div', params);
+
+				let isParamsCollected = false;
+				global.weak(params, () => {
+					isParamsCollected = true;
+				});
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				params = null;
+				element = null;
+
+				global.gc();
+
+				assert.ok(isParamsCollected, 'Memory leak detected! "params" is not collected');
+				assert.ok(isElementCollected, 'Memory leak detected! "element" is not collected');
+			});
+
+			it('Should not leak if create element with params object only', () => {
+				let params = {
+					tag: 'div',
+					props: {
+						className: 'test',
+					}
+				};
+				let element = Dom.create(params);
+
+				let isParamsCollected = false;
+				global.weak(params, () => {
+					isParamsCollected = true;
+				});
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				params = null;
+				element = null;
+
+				global.gc();
+
+				assert.ok(isParamsCollected, 'Memory leak detected! "params" is not collected');
+				assert.ok(isElementCollected, 'Memory leak detected! "element" is not collected');
+			});
+
+		});
 	});
 
 	describe('#style', () => {
@@ -339,6 +575,43 @@ describe('Dom', () => {
 				assert.ok(Dom.style(element, 'display', 'none') === element);
 				assert.ok(Dom.style(element, 'display', '') === element);
 				assert.ok(Dom.style(element, 'width', '100px') === element);
+			});
+		});
+
+		describe('Memory leaks detection', () => {
+			it('Should not retain element param', () => {
+				let element = document.createElement('div');
+
+				Dom.style(element, 'padding', '10px');
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc(false);
+
+				assert.ok(isElementCollected, 'Memory leak detected! "element" is not collected');
+			});
+
+			it('Should not retain styles param', () => {
+				let element = document.createElement('div');
+				let styles = {padding: '10px', margin: '10px'};
+
+				Dom.style(element, styles);
+
+				let isStylesCollected = false;
+				global.weak(styles, () => {
+					isStylesCollected = true;
+				});
+
+				styles = null;
+
+				global.gc();
+
+				assert.ok(isStylesCollected, 'Memory leak detected! "styles" is not collected');
 			});
 		});
 	});

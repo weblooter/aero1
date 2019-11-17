@@ -1,0 +1,386 @@
+{
+    "items": [
+        {
+            "ENTITY_ID": "BLOG_POST",
+            "FIELD_NAME": "UF_GRATITUDE",
+            "USER_TYPE_ID": "integer",
+            "XML_ID": "UF_GRATITUDE",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "N",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": []
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_VIDOE_TITLE",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "ROWS": 1,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Видео: заголовок"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Видео: заголовок"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Видео: заголовок"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Видео: заголовок"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Видео: заголовок"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_VIDEO_NAME",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 80,
+                "ROWS": 3,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Видео: название"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Видео: название"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Видео: название"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Видео: название"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Видео: название"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_VIDEO_LINK",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "ROWS": 1,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Видео: ссылка"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Видео: ссылка"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Видео: ссылка"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Видео: ссылка"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Видео: ссылка"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_VIDEO_IMG",
+            "USER_TYPE_ID": "file",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "LIST_WIDTH": 450,
+                "LIST_HEIGHT": 450,
+                "MAX_SHOW_SIZE": 0,
+                "MAX_ALLOWED_SIZE": 0,
+                "EXTENSIONS": []
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Видео: изображение"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Видео: изображение"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Видео: изображение"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Видео: изображение"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Видео: изображение"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_VIDEP_DESC",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 80,
+                "ROWS": 3,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Видео: описание"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Видео: описание"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Видео: описание"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Видео: описание"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Видео: описание"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_PREVIEW_TEXT",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 80,
+                "ROWS": 3,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Анонс"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Анонс"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Анонс"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Анонс"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Анонс"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:consult_SECTION",
+            "FIELD_NAME": "UF_OPERATION",
+            "USER_TYPE_ID": "iblock_element",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "DISPLAY": "LIST",
+                "LIST_HEIGHT": 1,
+                "IBLOCK_ID": 8,
+                "DEFAULT_VALUE": "",
+                "ACTIVE_FILTER": "Y"
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Операция"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Операция"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Операция"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Операция"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Операция"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:services_SECTION",
+            "FIELD_NAME": "UF_MAIN_NAME",
+            "USER_TYPE_ID": "string",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "Y",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "ROWS": 1,
+                "REGEXP": "",
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Название на главной станице"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Название на главной станице"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Название на главной станице"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Название на главной станице"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Название на главной станице"
+            }
+        },
+        {
+            "ENTITY_ID": "IBLOCK_main_ved:services_SECTION",
+            "FIELD_NAME": "UF_MAIN_IMG",
+            "USER_TYPE_ID": "file",
+            "XML_ID": "",
+            "SORT": "100",
+            "MULTIPLE": "N",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "SIZE": 20,
+                "LIST_WIDTH": 270,
+                "LIST_HEIGHT": 450,
+                "MAX_SHOW_SIZE": 0,
+                "MAX_ALLOWED_SIZE": 0,
+                "EXTENSIONS": []
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "",
+                "ru": "Картинка для главной"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "",
+                "ru": "Картинка для главной"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "",
+                "ru": "Картинка для главной"
+            },
+            "ERROR_MESSAGE": {
+                "en": "",
+                "ru": "Картинка для главной"
+            },
+            "HELP_MESSAGE": {
+                "en": "",
+                "ru": "Картинка для главной"
+            }
+        }
+    ]
+}

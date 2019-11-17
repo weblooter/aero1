@@ -98,14 +98,24 @@ abstract class Serial extends Base
 					{
 						$result['dataProvider'][$res['groupBy']]['label_' . $reportCount] = $res['label'];
 					}
+					if ($res['targetUrl'])
+					{
+						$result['dataProvider'][$res['groupBy']]['targetUrl_' . $reportCount] = $res['targetUrl'];
+					}
+
+					if ($res['balloon'])
+					{
+						$balloon = $result['dataProvider'][$res['groupBy']]['balloon'] ?: [];
+						$result['dataProvider'][$res['groupBy']]['balloon'] = array_merge($balloon, $res['balloon']);
+					}
 
 					if ($result['valueAxes'][0]['maximum'] < $res['value'])
 					{
 						$result['valueAxes'][0]['maximum'] = $res['value'];
 					}
 				}
-				$result['graphs'][] = array(
-					"balloonText" => $data['config']['reportTitle'] . " [[value]]",
+
+				$graph = array(
 					"bullet" => "round",
 					//"labelText" => "[[value]]",
 					"title" => $data['config']['reportTitle'],
@@ -115,6 +125,16 @@ abstract class Serial extends Base
 					"descriptionField" => 'label_' . $reportCount,
 					"fillAlphas" => 0,
 				);
+
+				if(isset($data["config"]["balloonFunction"]))
+				{
+					$graph["balloonFunction"] = $data["config"]["balloonFunction"];
+				}
+				else
+				{
+					$graph["balloonText"] = $data["config"]["reportTitle"] . " [[value]]";
+				}
+				$result['graphs'][] = $graph;
 			}
 
 

@@ -679,7 +679,7 @@ class CRatings extends CAllRatings
 	{
 		global $DB, $USER;
 
-		$externalAuthTypes = array_diff(\Bitrix\Main\UserTable::getExternalUserTypes(), array('email'));
+		$externalAuthTypes = array_diff(\Bitrix\Main\UserTable::getExternalUserTypes(), array('email', 'replica'));
 
 		return "
 			SELECT
@@ -710,7 +710,7 @@ class CRatings extends CAllRatings
 	{
 		global $DB, $USER;
 
-		$externalAuthTypes = array_diff(\Bitrix\Main\UserTable::getExternalUserTypes(), array('email'));
+		$externalAuthTypes = array_diff(\Bitrix\Main\UserTable::getExternalUserTypes(), array('email', 'replica'));
 
 		return "
 			SELECT

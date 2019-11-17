@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Tools;
+namespace Bitrix\Sale\CrmSiteMaster\Tools;
 
 use Bitrix\Main,
 	Bitrix\Main\Config\Option,
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
 
 /**
  * Class AgentChecker
- * @package Bitrix\Wizard\Tools
+ * @package Bitrix\Sale\CrmSiteMaster\Tools
  */
 class AgentChecker
 {

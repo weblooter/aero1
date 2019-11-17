@@ -2410,6 +2410,7 @@ function ImgShw(ID, width, height, alt)
 							break;
 					}
 					imagedestroy($picture);
+					@chmod($io->GetPhysicalName($destinationFile), BX_FILE_PERMISSIONS);
 				}
 			}
 

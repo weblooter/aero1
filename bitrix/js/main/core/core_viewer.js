@@ -29,6 +29,21 @@ function _viewerElementBind(div, isTarget, groupBy, obElementViewer)
 	{
 		if (BX.getClass('BX.UI.Viewer') && BX(div))
 		{
+			BX.findChildren(div, isTarget, true).forEach(function(node){
+				if (node.dataset.bxSrc)
+				{
+					node.dataset.src = node.dataset.bxSrc;
+				}
+				if (node.dataset.bxImage)
+				{
+					node.dataset.src = node.dataset.bxImage;
+				}
+				if (node.dataset.bxViewer === 'image')
+				{
+					node.dataset.viewerType = 'image';
+				}
+			});
+
 			BX.UI.Viewer.bind(BX(div), isTarget);
 			return;
 		}

@@ -190,6 +190,52 @@ describe('core/tag', () => {
 			assert.ok(element.hasAttribute('onabort') === false);
 			assert.ok(element.hasAttribute('onautocomplete') === true);
 		});
+
+		describe('bug: 0118220', () => {
+			it('Should works with string contains doctype (not document)', () => {
+				const text = 'http://test.com/?doctype=1';
+				const element = Tag.render`
+					<div>${text}</div>
+				`;
+
+				assert.ok(element.innerHTML === text);
+			});
+		});
+
+		it('Should works with string contains doctype (document)', () => {
+			const title = 'Test title';
+			const content = 'Test content';
+			const element = Tag.render`
+					<!doctype>
+					<html>
+						<head>
+							<title>${title}</title>
+						</head>
+						<body>${content}</body>
+					</html>
+				`;
+
+			assert.ok(element.nodeType === Node.DOCUMENT_NODE);
+			assert.ok(element.title === title);
+			assert.ok(element.body.innerHTML.trim() === content);
+		});
+
+		describe('Memory leak detection', () => {
+			it('Should not retain result element', () => {
+				let element = Tag.render`<div></div>`;
+
+				let isElementCollected = false;
+				global.weak(element, () => {
+					isElementCollected = true;
+				});
+
+				element = null;
+
+				global.gc();
+
+				assert.ok(isElementCollected, 'Memory leak detected! "element" is not collected');
+			});
+		});
 	});
 
 	describe('attrs', () => {

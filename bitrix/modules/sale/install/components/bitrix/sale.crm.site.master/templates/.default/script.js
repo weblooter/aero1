@@ -10,7 +10,7 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 			this.formId = parametrs.formId || '';
 			this.formNode = BX(parametrs.formId);
 			this.documentRoot = parametrs.documentRoot || '';
-			this.siteName = parametrs.siteName || '';
+			this.siteNameNode = BX(parametrs.siteNameId);
 			this.docRootNode = BX(parametrs.docRootId);
 			this.docRootLinkNode = BX(parametrs.docRootLinkId);
 			this.createSiteNode = BX(parametrs.createSiteId);
@@ -31,18 +31,20 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 			if (this.currentStepId !== undefined)
 			{
 				if (this.wizardSteps.includes(this.currentStepId)
-					&& this.currentStepId === "Bitrix\\Wizard\\Steps\\SiteStep"
+					&& this.currentStepId === "Bitrix\\Sale\\CrmSiteMaster\\Steps\\SiteStep"
 				)
 				{
 					this.bindSiteEvents();
 
-					var siteSelectNode = document.getElementsByName(this.siteName)[0];
-					this.saleNewSiteForm(siteSelectNode);
-					BX.bind(siteSelectNode, 'change', BX.proxy(this.saleNewSiteForm.bind(this, siteSelectNode), this));
+					if (this.siteNameNode)
+					{
+						this.saleNewSiteForm(this.siteNameNode);
+						BX.bind(this.siteNameNode, 'change', BX.proxy(this.saleNewSiteForm.bind(this, this.siteNameNode), this));
+					}
 				}
 
 				if (this.wizardSteps.includes(this.currentStepId)
-					&& this.currentStepId === "Bitrix\\Wizard\\Steps\\ActivationKeyStep"
+					&& this.currentStepId === "Bitrix\\Sale\\CrmSiteMaster\\Steps\\ActivationKeyStep"
 				)
 				{
 					this.bindKeyEvents();
@@ -50,8 +52,8 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 
 				if (this.wizardSteps.includes(this.currentStepId)
 					&& (
-						this.currentStepId === "Bitrix\\Wizard\\Steps\\SiteInstructionStep"
-						|| this.currentStepId === "Bitrix\\Wizard\\Steps\\BackupStep"
+						this.currentStepId === "Bitrix\\Sale\\CrmSiteMaster\\Steps\\SiteInstructionStep"
+						|| this.currentStepId === "Bitrix\\Sale\\CrmSiteMaster\\Steps\\BackupStep"
 					)
 				)
 				{
@@ -120,7 +122,7 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 					key: key
 				},
 			}).then(function (response) {
-				that.autoSubmit();
+				that.checkUpdateSystem();
 			}, function (response) {
 				that.keyButtonNode.disabled = false;
 				BX.removeClass(that.keyButtonNode, "ui-btn-disabled");
@@ -181,6 +183,19 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 			return str;
 		},
 
+		checkUpdateSystem: function()
+		{
+			var that = this;
+
+			BX.ajax.runComponentAction('bitrix:sale.crm.site.master', 'checkUpdateSystem', {
+				mode: 'ajax'
+			}).then(function (response) {
+				that.autoSubmit();
+			}, function (response) {
+				console.log(response);
+			});
+		},
+
 		autoSubmit: function ()
 		{
 			if (this.nextButtonNode)
@@ -199,7 +214,7 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 
 				inputWrap.insertAdjacentHTML(
 					'afterend',
-					'<div class="adm-site-master-errors">' + $error + '</div>'
+					'<div class="adm-crm-site-master-errors">' + $error + '</div>'
 				);
 			}
 		},
@@ -213,7 +228,7 @@ BX.namespace('BX.Sale.CrmSiteMasterComponent');
 				BX.removeClass(inputWrap, "ui-ctl-danger");
 				BX.addClass(inputWrap, "ui-ctl-active");
 
-				var errorBlock = BX(this.keyInputBlockNode.querySelector(".adm-site-master-errors"));
+				var errorBlock = BX(this.keyInputBlockNode.querySelector(".adm-crm-site-master-errors"));
 				if (errorBlock !== undefined)
 				{
 					BX.remove(errorBlock);

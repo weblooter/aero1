@@ -108,6 +108,8 @@ class UIPageSliderWrapperComponent extends \CBitrixComponent
 			$this->arParams['RELOAD_PAGE_AFTER_SAVE'] = false;
 		}
 
+		$this->arResult["SKIP_NOTIFICATION"] = $this->request->get("notifyAfterSave") === "N";
+
 		if (
 			Loader::includeModule("intranet")
 			&& $this->arParams["POPUP_COMPONENT_USE_BITRIX24_THEME"] === "Y"

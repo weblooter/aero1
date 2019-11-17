@@ -420,7 +420,19 @@ class LandingBaseComponent extends \CBitrixComponent
 			!isset($params['filter']['=TYPE'])
 		)
 		{
-			$params['filter']['=TYPE'] = $this->arParams['TYPE'];
+			if (
+				Manager::isExtendedSMN() &&
+				$this->arParams['TYPE'] == 'STORE')
+			{
+				$params['filter']['=TYPE'] = [
+					$this->arParams['TYPE'],
+					'SMN'
+				];
+			}
+			else
+			{
+				$params['filter']['=TYPE'] = $this->arParams['TYPE'];
+			}
 		}
 		return $this->getItems('Site', $params);
 	}

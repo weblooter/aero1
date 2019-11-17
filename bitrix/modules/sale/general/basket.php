@@ -58,7 +58,7 @@ class CAllSaleBasket
 	{
 		CSaleBasket::_ClearProductSubscribe($LID);
 
-		return "CSaleBasket::ClearProductSubscribe(".$LID.");";
+		return "CSaleBasket::ClearProductSubscribe('".$LID."');";
 	}
 
 	/**
@@ -1021,6 +1021,14 @@ class CAllSaleBasket
 
 					$orderBasketPool[$arItem["ID"]] = array("ORDER_ID" => $orderId);
 
+					foreach(GetModuleEvents("sale", "OnBeforeBasketUpdateAfterCheck", true) as $event)
+					{
+						if (ExecuteModuleEventEx($event, array($arItem["ID"], &$fields)) === false)
+						{
+							return false;
+						}
+					}
+
 					/** @var \Bitrix\Sale\Result $r */
 					$r = \Bitrix\Sale\Compatible\BasketCompatibility::update($arItem["ID"], $fields);
 
@@ -1687,6 +1695,14 @@ class CAllSaleBasket
 
 			if ($isOrderConverted != 'N')
 			{
+				foreach(GetModuleEvents("sale", "OnBeforeBasketUpdateAfterCheck", true) as $event)
+				{
+					if (ExecuteModuleEventEx($event, array($ID, &$arFields)) === false)
+					{
+						return false;
+					}
+				}
+
 				/** @var \Bitrix\Sale\Result $r */
 				$r = \Bitrix\Sale\Compatible\BasketCompatibility::update($ID, $arFields);
 				if (!$r->isSuccess())

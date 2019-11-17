@@ -976,8 +976,13 @@
 			var result = [];
 
 			fields = fields.filter(function(current) {
-				return !!current;
-			});
+				return (
+					!!current
+					&& this.parent.params.FIELDS.some(function(currentField) {
+						return current.NAME === currentField.NAME;
+					})
+				);
+			}, this);
 
 			fields.map(function(current) {
 				value = null;

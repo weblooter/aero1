@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main\Localization\Loc;
 
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
  * Class PersonTypeStep
  * Show person type info
  *
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class PersonTypeStep extends \CWizardStep
 {
@@ -23,7 +23,7 @@ class PersonTypeStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -44,7 +44,7 @@ class PersonTypeStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -74,7 +74,7 @@ class PersonTypeStep extends \CWizardStep
 	/**
 	 * @return bool
 	 */
-	function onPostForm()
+	public function onPostForm()
 	{
 		$wizard =& $this->GetWizard();
 		if ($wizard->IsPrevButtonClick())
@@ -96,7 +96,7 @@ class PersonTypeStep extends \CWizardStep
 	{
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph">
+		<div class="adm-crm-site-master-paragraph">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_PERSONTYPESTEP_NOTE", [
 				"#PERSON_TYPE_LINK#" => "/bitrix/admin/sale_person_type.php?lang=".LANGUAGE_ID
 			])?>

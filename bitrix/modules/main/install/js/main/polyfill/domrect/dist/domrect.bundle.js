@@ -1,7 +1,7 @@
 (function (exports) {
 	'use strict';
 
-	if (!window.DOMRect) {
+	if (!window.DOMRect || typeof DOMRect.prototype.toJSON !== 'function' || typeof DOMRect.fromRect !== 'function') {
 	  window.DOMRect =
 	  /*#__PURE__*/
 	  function () {

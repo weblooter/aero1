@@ -19,7 +19,7 @@ $this->setFrameMode(true);
 		?></div>
 		<div class="pagetitle">
 			<span id="pagetitle" class="pagetitle-item"><?=$APPLICATION->getTitle(false);?></span>
-			<span class="pagetitle-star" id="uiToolbarStar"></span>
+			<span class="ui-toolbar-star" id="uiToolbarStar"></span>
 		</div>
 		<?=$APPLICATION->getViewContent("inside_pagetitle")?>
 	</div>

@@ -1,0 +1,152 @@
+{
+    "hlblock": {
+        "NAME": "SettingsSocailnet",
+        "TABLE_NAME": "settings_socialnet",
+        "LANG": {
+            "ru": {
+                "NAME": "Настройки: Социальные сети"
+            },
+            "en": {
+                "NAME": "Настройки: Социальные сети"
+            }
+        }
+    },
+    "fields": [
+        {
+            "FIELD_NAME": "UF_SORT",
+            "USER_TYPE_ID": "double",
+            "XML_ID": "",
+            "SORT": "20",
+            "MULTIPLE": "N",
+            "MANDATORY": "Y",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "PRECISION": 4,
+                "SIZE": 20,
+                "MIN_VALUE": 0,
+                "MAX_VALUE": 0,
+                "DEFAULT_VALUE": 0
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "Сортировка",
+                "ru": "Сортировка"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "Сортировка",
+                "ru": "Сортировка"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "Сортировка",
+                "ru": "Сортировка"
+            },
+            "ERROR_MESSAGE": {
+                "en": "Сортировка",
+                "ru": "Сортировка"
+            },
+            "HELP_MESSAGE": {
+                "en": "Сортировка",
+                "ru": "Сортировка"
+            }
+        },
+        {
+            "FIELD_NAME": "UF_SOC_TYPE",
+            "USER_TYPE_ID": "enumeration",
+            "XML_ID": "",
+            "SORT": "30",
+            "MULTIPLE": "N",
+            "MANDATORY": "Y",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "DISPLAY": "LIST",
+                "LIST_HEIGHT": 1,
+                "CAPTION_NO_VALUE": "",
+                "SHOW_NO_VALUE": "Y"
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "Тип сети",
+                "ru": "Тип сети"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "Тип сети",
+                "ru": "Тип сети"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "Тип сети",
+                "ru": "Тип сети"
+            },
+            "ERROR_MESSAGE": {
+                "en": "Тип сети",
+                "ru": "Тип сети"
+            },
+            "HELP_MESSAGE": {
+                "en": "Тип сети",
+                "ru": "Тип сети"
+            },
+            "ENUM_VALUES": [
+                {
+                    "VALUE": "VK",
+                    "DEF": "N",
+                    "SORT": "500",
+                    "XML_ID": "vk"
+                },
+                {
+                    "VALUE": "Instagram",
+                    "DEF": "N",
+                    "SORT": "500",
+                    "XML_ID": "instagram"
+                },
+                {
+                    "VALUE": "YouYube",
+                    "DEF": "N",
+                    "SORT": "500",
+                    "XML_ID": "youtube"
+                }
+            ]
+        },
+        {
+            "FIELD_NAME": "UF_LINK",
+            "USER_TYPE_ID": "url",
+            "XML_ID": "",
+            "SORT": "40",
+            "MULTIPLE": "N",
+            "MANDATORY": "Y",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "Y",
+            "EDIT_IN_LIST": "Y",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "POPUP": "Y",
+                "SIZE": 20,
+                "MIN_LENGTH": 0,
+                "MAX_LENGTH": 0,
+                "DEFAULT_VALUE": ""
+            },
+            "EDIT_FORM_LABEL": {
+                "en": "Ссылка",
+                "ru": "Ссылка"
+            },
+            "LIST_COLUMN_LABEL": {
+                "en": "Ссылка",
+                "ru": "Ссылка"
+            },
+            "LIST_FILTER_LABEL": {
+                "en": "Ссылка",
+                "ru": "Ссылка"
+            },
+            "ERROR_MESSAGE": {
+                "en": "Ссылка",
+                "ru": "Ссылка"
+            },
+            "HELP_MESSAGE": {
+                "en": "Ссылка",
+                "ru": "Ссылка"
+            }
+        }
+    ]
+}

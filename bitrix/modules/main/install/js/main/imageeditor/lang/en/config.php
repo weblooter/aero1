@@ -34,7 +34,6 @@ $MESS["IMAGE_EDITOR_ERROR_IMAGE_LOADING_ERROR"] = "Cannot load image. The file m
 $MESS["IMAGE_EDITOR_ERROR_LOAD_STICKER"] = "Cannot load sticker \${path}";
 $MESS["IMAGE_EDITOR_ERROR_RENDERING_ERROR_DESCRIPTION"] = "Image rendering error";
 $MESS["IMAGE_EDITOR_ERROR_UNSUPPORTED_FILE_TYPE"] = "Files \${fileType} are not supported";
-$MESS["IMAGE_EDITOR_ERROR_WEBCAM_NOT_SUPPORTED"] = "Your browser does not support camera";
 $MESS["IMAGE_EDITOR_ERROR_WEBCAM_UNAVAILABLE"] = "Webcam is not available";
 $MESS["IMAGE_EDITOR_EXPORT"] = "Apply";
 $MESS["IMAGE_EDITOR_EXPORTING"] = "Exporting...";

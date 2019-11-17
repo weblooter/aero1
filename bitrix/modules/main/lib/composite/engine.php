@@ -614,6 +614,7 @@ final class Engine
 						"CONTENT" => $areaContent,
 						"HASH" => $areaContentMd5,
 						"PROPS" => array(
+							"ID" => $area->id,
 							"CONTAINER_ID" => $dynamicArea->getContainerId(),
 							"USE_BROWSER_STORAGE" => $dynamicArea->getBrowserStorage(),
 							"AUTO_UPDATE" => $dynamicArea->getAutoUpdate(),

@@ -28,7 +28,7 @@
 
 /**
  * @typedef {object} BX.SidePanel.Link
- * @property {string} href - URL
+ * @property {string} url - URL
  * @property {string} target - Target Attribute
  * @property {Element} anchor - Dom Node
  * @property {array} [matches] - RegExp Matches
@@ -847,6 +847,10 @@ BX.SidePanel.Manager.prototype =
 		}
 
 		var slider = event.getSlider();
+		if (slider.isDestroyed())
+		{
+			return;
+		}
 
 		if (this.getTopSlider())
 		{
@@ -899,6 +903,11 @@ BX.SidePanel.Manager.prototype =
 	 */
 	handleSliderClose: function(event)
 	{
+		if (event.getSlider() && event.getSlider().isDestroyed())
+		{
+			return;
+		}
+
 		var previousSlider = this.getPreviousSlider();
 		var topSlider = this.getTopSlider();
 
@@ -1296,7 +1305,7 @@ BX.SidePanel.Manager.prototype =
 
 		var rule = this.getUrlRule(link.url, link);
 
-		if (!this.isValidLink(rule, link.url))
+		if (!this.isValidLink(rule, link))
 		{
 			return;
 		}
@@ -1324,7 +1333,7 @@ BX.SidePanel.Manager.prototype =
 		};
 		var rule = this.getUrlRule(url, link);
 
-		if (!this.isValidLink(rule, url))
+		if (!this.isValidLink(rule, link))
 		{
 			BX.reload(url);
 		}
@@ -1388,17 +1397,17 @@ BX.SidePanel.Manager.prototype =
 	/**
 	 * @private
 	 * @param {BX.SidePanel.Rule} rule
-	 * @param {string} url
+	 * @param {BX.SidePanel.Link} link
 	 * @returns {boolean}
 	 */
-	isValidLink: function(rule, url)
+	isValidLink: function(rule, link)
 	{
 		if (!rule)
 		{
 			return false;
 		}
 
-		if (rule.allowCrossDomain !== true && BX.ajax.isCrossDomain(url))
+		if (rule.allowCrossDomain !== true && BX.ajax.isCrossDomain(link.url))
 		{
 			return false;
 		}
@@ -1408,7 +1417,7 @@ BX.SidePanel.Manager.prototype =
 			return false;
 		}
 
-		if (BX.type.isFunction(rule.validate) && !rule.validate(url))
+		if (BX.type.isFunction(rule.validate) && !rule.validate(link))
 		{
 			return false;
 		}

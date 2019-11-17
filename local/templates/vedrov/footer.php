@@ -128,5 +128,6 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 <?if($_SERVER['PHP_SELF'] === '/index.php'):?>
     <script src="<?=SITE_TEMPLATE_PATH?>/assets/js/preloader.js"></script>
 <?endif;?>
+<?include $_SERVER['DOCUMENT_ROOT'].'/.footer-inc.text';?>
 </body>
 </html>

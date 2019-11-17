@@ -37,6 +37,7 @@ $hooks = $arResult['HOOKS'];
 $tplRefs = $arResult['TEMPLATES_REF'];
 $context = \Bitrix\Main\Application::getInstance()->getContext();
 $request = $context->getRequest();
+$isSMN = $row['TYPE']['CURRENT'] == 'SMN';
 
 // title
 if ($arParams['SITE_ID'])
@@ -110,7 +111,7 @@ if ($arParams['SUCCESS_SAVE'])
 
 <form action="<?= \htmlspecialcharsbx($uriSave->getUri());?>" method="post" class="ui-form ui-form-gray-padding landing-form-collapsed landing-form-settings" id="landing-site-set-form">
 	<input type="hidden" name="fields[SAVE_FORM]" value="Y" />
-	<input type="hidden" name="fields[TYPE]" value="<?= $arParams['TYPE'];?>" />
+	<input type="hidden" name="fields[TYPE]" value="<?= $row['TYPE']['CURRENT'];?>" />
 	<input type="hidden" name="fields[CODE]" value="<?= $row['CODE']['CURRENT'];?>" />
 	<?= bitrix_sessid_post();?>
 
@@ -281,7 +282,7 @@ if ($arParams['SUCCESS_SAVE'])
 								<span class="landing-additional-alt-promo-text" data-landing-additional-option="lang"><?= Loc::getMessage('LANDING_TPL_ADDITIONAL_LANG');?></span>
 								<?endif;?>
 								<span class="landing-additional-alt-promo-text" data-landing-additional-option="404"><?= Loc::getMessage('LANDING_TPL_ADDITIONAL_404');?></span>
-								<?if (isset($hooks['ROBOTS'])):?>
+								<?if (isset($hooks['ROBOTS']) && !$isSMN):?>
 								<span class="landing-additional-alt-promo-text" data-landing-additional-option="robots"><?= Loc::getMessage('LANDING_TPL_ADDITIONAL_ROBOTS');?></span>
 								<?endif;?>
 								<?if (isset($hooks['SPEED'])):?>
@@ -638,7 +639,7 @@ if ($arParams['SUCCESS_SAVE'])
 						</div>
 					</td>
 				</tr>
-				<?if (isset($hooks['ROBOTS'])):
+				<?if (isset($hooks['ROBOTS']) && !$isSMN):
 					$pageFields = $hooks['ROBOTS']->getPageFields();
 					?>
 				<tr class="landing-form-hidden-row" data-landing-additional-detail="robots">

@@ -1,0 +1,18 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "conversion",
+            "NAME": "GENERATE_INITIAL_DATA",
+            "VALUE": "generated",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "conversion",
+            "NAME": "START_DATE_TIME",
+            "VALUE": "2019-10-19 09:36:12",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

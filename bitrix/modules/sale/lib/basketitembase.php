@@ -48,6 +48,14 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	}
 
 	/**
+	 * @return string|void
+	 */
+	public static function getRegistryEntity()
+	{
+		return Registry::ENTITY_BASKET_ITEM;
+	}
+
+	/**
 	 * @param $id
 	 * @return BasketItemBase|null
 	 * @throws Main\ArgumentNullException
@@ -154,14 +162,6 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	}
 
 	/**
-	 * @throws Main\NotImplementedException
-	 */
-	public static function getRegistryType()
-	{
-		throw new Main\NotImplementedException();
-	}
-
-	/**
 	 * @return array
 	 */
 	public static function getSettableFields()
@@ -170,13 +170,12 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 			"NAME", "LID", "SORT", "PRODUCT_ID", "PRODUCT_PRICE_ID", "PRICE_TYPE_ID",
 			"CATALOG_XML_ID", "PRODUCT_XML_ID", "DETAIL_PAGE_URL",
 			"BASE_PRICE", "PRICE", "DISCOUNT_PRICE", "CURRENCY", "CUSTOM_PRICE",
-			"QUANTITY", "WEIGHT", "DIMENSIONS",
-			"MEASURE_CODE", "MEASURE_NAME",
-			"DELAY", "CAN_BUY", "NOTES",
-			"VAT_RATE", "VAT_INCLUDED", "BARCODE_MULTI", "SUBSCRIBE",
-			"PRODUCT_PROVIDER_CLASS", "CALLBACK_FUNC", "ORDER_CALLBACK_FUNC", "CANCEL_CALLBACK_FUNC", "PAY_CALLBACK_FUNC",
-			"TYPE", "SET_PARENT_ID",
-			"DISCOUNT_NAME", "DISCOUNT_VALUE", "DISCOUNT_COUPON", "RECOMMENDATION", "XML_ID"
+			"QUANTITY", "WEIGHT", "DIMENSIONS",	"MEASURE_CODE", "MEASURE_NAME",
+			"DELAY", "CAN_BUY", "NOTES", "VAT_RATE", "VAT_INCLUDED", "BARCODE_MULTI",
+			"SUBSCRIBE", "PRODUCT_PROVIDER_CLASS", "CALLBACK_FUNC", "ORDER_CALLBACK_FUNC",
+			"CANCEL_CALLBACK_FUNC", "PAY_CALLBACK_FUNC", "TYPE", "SET_PARENT_ID",
+			"DISCOUNT_NAME", "DISCOUNT_VALUE", "DISCOUNT_COUPON", "RECOMMENDATION", "XML_ID",
+			"MARKING_CODE_GROUP"
 		);
 
 		return array_merge($result, static::getCalculatedFields());
@@ -221,19 +220,32 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	/**
 	 * @return array
 	 */
+	public static function getCustomizableFields() : array
+	{
+		return ['PRICE' => 'PRICE'];
+	}
+
+	/**
+	 * @return array
+	 */
 	protected static function getMeaningfulFields()
 	{
 		return array('QUANTITY', 'PRICE', 'CUSTOM_PRICE');
 	}
 
 	/**
-	 * @param array $fields				Data.
+	 * BasketItemBase constructor.
+	 * @param array $fields
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
 	 */
 	protected function __construct(array $fields = array())
 	{
-		$priceRoundedFields = ['BASE_PRICE', 'PRICE', 'DISCOUNT_PRICE'];
+		$priceFields = ['BASE_PRICE', 'PRICE', 'DISCOUNT_PRICE'];
 
-		foreach ($priceRoundedFields as $code)
+		foreach ($priceFields as $code)
 		{
 			if (isset($fields[$code]))
 			{
@@ -244,6 +256,9 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 		parent::__construct($fields);
 
 		$this->calculatedFields = new Internals\Fields();
+
+		$controller = Internals\CustomFieldsController::getInstance();
+		$controller->initialize($this);
 	}
 
 	/**
@@ -368,12 +383,12 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	 */
 	public function setField($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'BASE_PRICE' => 'BASE_PRICE',
 			'PRICE' => 'PRICE',
 			'DISCOUNT_PRICE' => 'DISCOUNT_PRICE',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -382,6 +397,18 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 		{
 			$this->calculatedFields->set($name, $value);
 			return new Result();
+		}
+
+		if ($name === 'CUSTOM_PRICE')
+		{
+			if ($value == 'Y')
+			{
+				$this->markFieldCustom('PRICE');
+			}
+			else
+			{
+				$this->unmarkFieldCustom('PRICE');
+			}
 		}
 
 		return parent::setField($name, $value);
@@ -397,12 +424,12 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	 */
 	public function setFieldNoDemand($name, $value)
 	{
-		$priceRoundedFields = array(
+		$priceFields = array(
 			'BASE_PRICE' => 'BASE_PRICE',
 			'PRICE' => 'PRICE',
 			'DISCOUNT_PRICE' => 'DISCOUNT_PRICE',
 		);
-		if (isset($priceRoundedFields[$name]))
+		if (isset($priceFields[$name]))
 		{
 			$value = PriceMaths::roundPrecision($value);
 		}
@@ -413,13 +440,26 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 			return;
 		}
 
+		if ($name === 'CUSTOM_PRICE')
+		{
+			if ($value === 'Y')
+			{
+				$this->markFieldCustom('PRICE');
+			}
+			else
+			{
+				$this->unmarkFieldCustom('PRICE');
+			}
+		}
+
 		parent::setFieldNoDemand($name, $value);
 	}
 
 	/**
 	 * @param $name
-	 * @return float|null|string
+	 * @return float|string|null
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function getField($name)
 	{
@@ -449,7 +489,25 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 			$value = PriceMaths::roundPrecision($this->getField('PRICE') + $this->getField('DISCOUNT_PRICE'));
 		}
 
+		if ($name === 'CUSTOM_PRICE')
+		{
+			return $this->isMarkedFieldCustom('PRICE') ? 'Y' : 'N';
+		}
+
 		return $value;
+	}
+
+	/**
+	 * @return array
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function getFieldValues()
+	{
+		$fields = parent::getFieldValues();
+
+		$fields['CUSTOM_PRICE'] = $this->isMarkedFieldCustom('PRICE') ? 'Y' : 'N';
+
+		return $fields;
 	}
 
 	/**
@@ -661,7 +719,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 			{
 				if (isset($providerData['PRICE_DATA']['CUSTOM_PRICE']))
 				{
-					$this->setField('CUSTOM_PRICE', $providerData['PRICE_DATA']['CUSTOM_PRICE']);
+					$this->markFieldCustom('PRICE');
 				}
 			}
 
@@ -705,7 +763,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 
 			if ((!$basket->getOrder() || $basket->getOrderId() == 0) && !($collection instanceof BundleCollection))
 			{
-				if ($this->getField("CUSTOM_PRICE") != "Y" && $value > 0)
+				if (!$this->isMarkedFieldCustom('PRICE') && $value > 0)
 				{
 					$r = $basket->refresh(RefreshFactory::createSingle($this->getBasketCode()));
 					if (!$r->isSuccess())
@@ -716,7 +774,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 				}
 			}
 
-			if ($this->getField("CUSTOM_PRICE") != "Y")
+			if (!$this->isMarkedFieldCustom('PRICE'))
 			{
 
 				$providerName = $this->getProviderName();
@@ -770,7 +828,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 
 			if (($name === 'BASE_PRICE') || ($name === 'DISCOUNT_PRICE'))
 			{
-				if ($this->getField('CUSTOM_PRICE') !== 'Y')
+				if (!$this->isCustomPrice())
 				{
 					$price = $this->getField('BASE_PRICE') - $this->getField('DISCOUNT_PRICE');
 					$r = $this->setField('PRICE', $price);
@@ -939,16 +997,17 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 
 	/**
 	 * @return bool
-	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function isCustomPrice()
 	{
-		return $this->getField('CUSTOM_PRICE') === 'Y';
+		return $this->isMarkedFieldCustom('PRICE');
 	}
 
 	/**
-	 * @return float|null|string
+	 * @return string
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function getCurrency()
 	{
@@ -1013,19 +1072,41 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	/**
 	 * @return bool
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	public function canBuy()
+	public function canBuy() : bool
 	{
-		return $this->getField('CAN_BUY') === "Y";
+		return $this->getField('CAN_BUY') === 'Y';
 	}
 
 	/**
 	 * @return bool
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	public function isDelay()
+	public function isDelay() : bool
 	{
-		return $this->getField('DELAY') === "Y";
+		return $this->getField('DELAY') === 'Y';
+	}
+
+	/**
+	 * @return bool
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function isSupportedMarkingCode() : bool
+	{
+		return $this->getMarkingCodeGroup() !== '';
+	}
+
+	/**
+	 * @return string
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function getMarkingCodeGroup() : string
+	{
+		return (string)$this->getField('MARKING_CODE_GROUP');
 	}
 
 	/**
@@ -1088,10 +1169,13 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	{
 		$result = new Result();
 
-		$r = $this->setField('CUSTOM_PRICE', ($custom ? 'Y' : 'N'));
-		if (!$r->isSuccess())
+		if ($custom)
 		{
-			$result->addErrors($r->getErrors());
+			$this->markFieldCustom('PRICE');
+		}
+		else
+		{
+			$this->unmarkFieldCustom('PRICE');
 		}
 
 		$r = $this->setField('PRICE', $value);
@@ -1170,6 +1254,9 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 				$id = $r->getId();
 			}
 		}
+
+		$controller = Internals\CustomFieldsController::getInstance();
+		$controller->save($this);
 
 		if (!$r->isSuccess())
 		{
@@ -1284,6 +1371,8 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 				$this->setFieldNoDemand('FUSER_ID', $fUserId);
 			}
 		}
+
+		$this->setFieldNoDemand('CUSTOM_PRICE', $this->isMarkedFieldCustom('PRICE') ? 'Y' : 'N');
 	}
 
 	/**
@@ -1502,13 +1591,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	 */
 	public static function load(BasketItemCollection $basketItemCollection, $data)
 	{
-		$fields = array(
-			'MODULE' => $data['MODULE'],
-			'PRODUCT_ID' => $data['PRODUCT_ID'],
-		);
-
-		$basketItem = static::createBasketItemObject($fields);
-		$basketItem->initFields($data);
+		$basketItem = static::createBasketItemObject($data);
 		$basketItem->setCollection($basketItemCollection);
 
 		return $basketItem;
@@ -1558,6 +1641,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	/**
 	 * @return bool
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function isCustom()
 	{
@@ -1573,6 +1657,7 @@ abstract class BasketItemBase extends Internals\CollectableEntity
 	 *
 	 * @return float
 	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
 	 */
 	public function getDefaultPrice()
 	{

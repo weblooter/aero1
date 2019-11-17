@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Wizard\Steps;
+namespace Bitrix\Sale\CrmSiteMaster\Steps;
 
 use Bitrix\Main,
 	Bitrix\Main\Application,
@@ -9,7 +9,7 @@ Loc::loadMessages(__FILE__);
 
 /**
  * Class ActivationKeyStep
- * @package Bitrix\Wizard\Steps
+ * @package Bitrix\Sale\CrmSiteMaster\Steps
  */
 class ActivationKeyStep extends \CWizardStep
 {
@@ -24,7 +24,7 @@ class ActivationKeyStep extends \CWizardStep
 	/**
 	 * Check step errors
 	 */
-	protected function setStepErrors()
+	private function setStepErrors()
 	{
 		$errors = $this->component->getWizardStepErrors($this->currentStepName);
 		if ($errors)
@@ -41,7 +41,7 @@ class ActivationKeyStep extends \CWizardStep
 	 *
 	 * @throws \ReflectionException
 	 */
-	protected function prepareButtons()
+	private function prepareButtons()
 	{
 		$steps = $this->component->getSteps($this->currentStepName);
 
@@ -88,30 +88,30 @@ class ActivationKeyStep extends \CWizardStep
 	{
 		ob_start();
 		?>
-		<div class="adm-site-master-paragraph" style="text-align: center;">
+		<div class="adm-crm-site-master-paragraph" style="text-align: center;">
 			<?=Loc::getMessage("SALE_CSM_WIZARD_ACTIVATIONKEYSTEP_CONTENT")?>
 		</div>
-		<div class="adm-site-master-separator" style="height: 50px;"></div>
+		<div class="adm-crm-site-master-separator" style="height: 50px;"></div>
 
-		<div class="adm-site-master-check-key">
-			<div class="adm-site-master-check-key-column" id="check_key">
+		<div class="adm-crm-site-master-check-key">
+			<div class="adm-crm-site-master-check-key-column" id="check_key">
 				<div class="ui-ctl ui-ctl-textbox ui-ctl-active">
 					<input type="text" class="ui-ctl-element" style="text-transform: uppercase" id="id_key" name="KEY">
 				</div>
 			</div>
-			<div class="adm-site-master-check-key-column">
+			<div class="adm-crm-site-master-check-key-column">
 				<button class="ui-btn ui-btn-primary" id="id_key_btn">
 					<?=Loc::getMessage("SALE_CSM_WIZARD_ACTIVATIONKEYSTEP_CHECK_BUTTON")?>
 				</button>
 			</div>
 		</div>
 
-		<div class="adm-site-master-separator" style="height: 50px;"></div>
+		<div class="adm-crm-site-master-separator" style="height: 50px;"></div>
 
-		<div class="adm-site-master-separator" style="height: 120px;"></div>
-		<div class="adm-site-master-buy-key-container">
-			<div class="adm-site-master-buy-key-block">
-				<div class="adm-site-master-buy-key-icon">
+		<div class="adm-crm-site-master-separator" style="height: 120px;"></div>
+		<div class="adm-crm-site-master-buy-key-container">
+			<div class="adm-crm-site-master-buy-key-block">
+				<div class="adm-crm-site-master-buy-key-icon">
 					<svg width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 						<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 							<g id="02" transform="translate(0, -57)" fill="#2FC6F6">
@@ -120,8 +120,8 @@ class ActivationKeyStep extends \CWizardStep
 						</g>
 					</svg>
 				</div>
-				<div class="adm-site-master-buy-key-link">
-					<a href="#" target="_blank"><?=Loc::getMessage("SALE_CSM_WIZARD_ACTIVATIONKEYSTEP_BUY_LINK")?></a>
+				<div class="adm-crm-site-master-buy-key-link">
+					<a href="https://www.bitrix24.ru/prices/self-hosted.php" target="_blank"><?=Loc::getMessage("SALE_CSM_WIZARD_ACTIVATIONKEYSTEP_BUY_LINK")?></a>
 				</div>
 			</div>
 		</div>

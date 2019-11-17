@@ -34,7 +34,7 @@ else if ($arParams['EDIT_MODE'] == 'Y')
 }
 else if ($arParams['ENABLED'] == 'Y' || $arParams['PREVIEW_MODE'] == 'Y')
 {
-	echo \htmlspecialcharsback($arParams['~HTML_CODE']);
+	echo $component->htmlspecialcharsback($arParams['~HTML_CODE']);
 }
 
 

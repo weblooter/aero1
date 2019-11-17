@@ -1,7 +1,7 @@
 ;(function(){
 	if (window["LHEPostForm"])
 		return;
-var repo = { controller : {}, handler : {}};
+var repo = { controller : {}, handler : {}, form : {}};
 BX.addCustomEvent(window, "BFileDLoadFormControllerWasBound", function(obj) { repo.controller[obj.id] = true;});
 BX.addCustomEvent(window, "WDLoadFormControllerInit", function(obj) { repo.controller[obj.CID] = obj; });
 BX.addCustomEvent(window, "WDLoadFormControllerWasBound", function(obj) { repo.controller[obj.CID] = true; });
@@ -949,6 +949,7 @@ var LHEPostForm = function(formID, params)
 	this.oEditorId = params['LHEJsObjId'];
 	this.__divId = (params['LHEJsObjName'] || params['LHEJsObjId']);
 	repo.handler[this.oEditorId] = this;
+	repo.form[this.formID] = this;
 	this.oEditor = LHEPostForm.getEditor(this.oEditorId);
 	this.urlPreview = this.initUrlPreview(params);
 
@@ -1719,8 +1720,10 @@ LHEPostForm.prototype = {
 
 		BX.addCustomEvent(editor, 'OnCtrlEnter', function() {
 			editor.SaveContent();
-			if (_this.params && _this.params['ctrlEnterHandler'] && typeof window[_this.params['ctrlEnterHandler']] == 'function')
+			if (BX.type.isNotEmptyString(_this.params['ctrlEnterHandler']) && typeof window[_this.params['ctrlEnterHandler']] == 'function')
 				window[_this.params['ctrlEnterHandler']]();
+			else if (BX.type.isFunction(_this.params['ctrlEnterHandler']))
+				_this.params['ctrlEnterHandler']();
 			else
 				BX.submit(BX(_this.formID));
 		});
@@ -2097,6 +2100,10 @@ LHEPostForm.getEditor = function(editor)
 LHEPostForm.getHandler = function(editor)
 {
 	return repo.handler[(typeof editor == "object" ? editor.id : editor)];
+};
+LHEPostForm.getHandlerByFormId = function(formId)
+{
+	return repo.form[formId];
 };
 LHEPostForm.unsetHandler = function(editor)
 {

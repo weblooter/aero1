@@ -250,6 +250,15 @@ class LandingPubComponent extends LandingBaseComponent
 		}
 		$requestedPage = trim($requestedPage, '/');
 		$requestedPageParts = explode('/', $requestedPage);
+		// @todo: for refactoring might be
+		if (
+			(!defined('LANDING_DISABLE_CLOUD') || LANDING_DISABLE_CLOUD !== true) &&
+			Manager::isExtendedSMN() &&
+			strpos($_SERVER['REAL_FILE_PATH'], '/pub/site/') === 0
+		)
+		{
+			Manager::forceB24disable(true);
+		}
 		if (Manager::isB24())
 		{
 			$siteUrl = array_shift($requestedPageParts);
@@ -272,10 +281,7 @@ class LandingPubComponent extends LandingBaseComponent
 							'=SMN_SITE_ID' => SITE_ID,
 							'=TYPE' => 'SMN',
 							'CHECK_PERMISSIONS' => 'N'
-						],
-				'order' => array(
-					'ID' => 'desc'
-				)
+						]
 			));
 			if ($row = $res->fetch())
 			{

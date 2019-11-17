@@ -186,14 +186,17 @@ while ($arChangeRecord = $dbRecords->Fetch())
 	$row->AddField("USER_ID", GetFormatedUserName($arChangeRecord["USER_ID"], false));
 	$arRecord = CSaleOrderChange::GetRecordDescription($arChangeRecord["TYPE"], $arChangeRecord["DATA"]);
 	$row->AddField("TYPE", $arRecord["NAME"]);
+
+	$arRecord["INFO"] = str_replace('&nbsp;', ' ', $arRecord["INFO"]);
+
 	$row->AddField("DATA", htmlspecialcharsbx($arRecord["INFO"]));
 	if (!isset($entity) && intval($arChangeRecord["ENTITY_ID"]) > 0)
 	{
 		if ($arChangeRecord["ENTITY"] == 'SHIPMENT')
 		{
-			$shipment = $shipmentCollection->getItemById($arChangeRecord["ENTITY_ID"]);
-			if ($shipment)
-				$entityName = $shipment->getField('DELIVERY_NAME');
+			$shipmentEntity = $shipmentCollection->getItemById($arChangeRecord["ENTITY_ID"]);
+			if ($shipmentEntity)
+				$entityName = $shipmentEntity->getField('DELIVERY_NAME');
 		}
 		else if ($arChangeRecord["ENTITY"] == 'PAYMENT')
 		{

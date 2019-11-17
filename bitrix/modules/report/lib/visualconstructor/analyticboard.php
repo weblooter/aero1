@@ -4,7 +4,6 @@ namespace Bitrix\Report\VisualConstructor;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Report\VisualConstructor\Helper\Filter;
 
-
 /**
  * Class AnalyticBoard
  * @package Bitrix\Report\VisualConstructor
@@ -22,8 +21,8 @@ class AnalyticBoard
 	private $stepperIds = [];
 	private $limited = false;
 	private $limitComponentParams = [];
-
-
+private $isExternal = false;
+	private $externalUrl = "";
 	public function __construct($boardId = '')
 	{
 		if ($boardId)
@@ -195,7 +194,6 @@ class AnalyticBoard
 		$this->disabled = $disabled;
 	}
 
-
 	public function addFeedbackButton()
 	{
 		$feedbackButton = new BoardComponentButton('bitrix:ui.feedback.form', '', [
@@ -287,5 +285,62 @@ class AnalyticBoard
 	{
 		$this->limitComponentParams = $limitComponentParams;
 		$this->limited = $limit;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isExternal(): bool
+	{
+		return $this->isExternal;
+	}
+
+	/**
+	 * @param bool $isExternal
+	 */
+	public function setExternal(bool $isExternal): void
+	{
+		$this->isExternal = $isExternal;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getExternalUrl(): string
+	{
+		return $this->externalUrl;
+	}
+
+	/**
+	 * @param string $externalUrl
+	 */
+	public function setExternalUrl(string $externalUrl): void
+	{
+		$this->externalUrl = $externalUrl;
+	}
+
+	public function getDisplayComponentName()
+	{
+		return 'bitrix:report.visualconstructor.board.base';
+	}
+
+	public function getDisplayComponentParams()
+	{
+		return [
+			'BOARD_ID' => $this->getBoardKey(),
+			'IS_DEFAULT_MODE_DEMO' => false,
+			'IS_BOARD_DEFAULT' => true,
+			'FILTER' => $this->getFilter(),
+			'IS_ENABLED_STEPPER' => $this->isStepperEnabled(),
+			'STEPPER_IDS' => $this->getStepperIds()
+		];
+	}
+
+	/**
+	 * Special actions to perform with board reset, required by some boards
+	 */
+	public function resetToDefault()
+	{
+		// nothing here
 	}
 }

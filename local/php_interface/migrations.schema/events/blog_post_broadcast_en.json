@@ -1,0 +1,61 @@
+{
+    "event": "BLOG_POST_BROADCAST",
+    "type": {
+        "LID": "en",
+        "EVENT_TYPE": "email",
+        "NAME": "New post added",
+        "DESCRIPTION": [
+            "",
+            "#MESSAGE_TITLE# - Post subject",
+            "#MESSAGE_TEXT# - Post text ",
+            "#MESSAGE_PATH# - Post URL",
+            "#AUTHOR# - Post author",
+            "#EMAIL_TO# - E-mail recipient"
+        ],
+        "SORT": "100"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#DEFAULT_EMAIL_FROM#",
+            "EMAIL_TO": "#EMAIL_TO#",
+            "SUBJECT": "#SITE_NAME#: #MESSAGE_TITLE#",
+            "MESSAGE": [
+                "Информационное сообщение сайта #SITE_NAME#",
+                "------------------------------------------",
+                "",
+                "На сайте добавлено новое сообщение.",
+                "",
+                "Тема:",
+                "#MESSAGE_TITLE#",
+                "",
+                "Автор: #AUTHOR#",
+                "",
+                "Текст сообщения:",
+                "#MESSAGE_TEXT#",
+                "",
+                "Адрес сообщения:",
+                "#MESSAGE_PATH#",
+                "",
+                "Сообщение сгенерировано автоматически."
+            ],
+            "BODY_TYPE": "text",
+            "BCC": null,
+            "REPLY_TO": null,
+            "CC": null,
+            "IN_REPLY_TO": null,
+            "PRIORITY": null,
+            "FIELD1_NAME": null,
+            "FIELD1_VALUE": null,
+            "FIELD2_NAME": null,
+            "FIELD2_VALUE": null,
+            "SITE_TEMPLATE_ID": null,
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": null,
+            "EVENT_TYPE": "[ BLOG_POST_BROADCAST ] Добавлено новое сообщение"
+        }
+    ]
+}

@@ -109,7 +109,7 @@ class CashboxOrangeData extends Cashbox implements IPrintImmediately, ICheckable
 				$vat = $this->getValueFromSettings('VAT', 'NOT_VAT');
 			}
 
-			$result['content']['positions'][] = array(
+			$position = array(
 				'text' => $item['name'],
 				'quantity' => $item['quantity'],
 				'price' => $item['price'],
@@ -117,6 +117,13 @@ class CashboxOrangeData extends Cashbox implements IPrintImmediately, ICheckable
 				'paymentMethodType' => $checkType[$check::getType()],
 				'paymentSubjectType' => $paymentObjectMap[$item['payment_object']]
 			);
+
+			if (isset($item['nomenclature_code']))
+			{
+				$position['nomenclatureCode'] = base64_encode($item['nomenclature_code']);
+			}
+
+			$result['content']['positions'][] = $position;
 		}
 
 		$paymentTypeMap = $this->getPaymentTypeMap();

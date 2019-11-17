@@ -700,10 +700,6 @@ class BasketCompatibility extends Internals\EntityCompatibility
 
 		$registry = Sale\Registry::getInstance(static::getRegistryType());
 
-		foreach(GetModuleEvents("sale", "OnBeforeBasketUpdateAfterCheck", true) as $event)
-			if (ExecuteModuleEventEx($event, array($id, &$fields))===false)
-				return false;
-
 		/** @var Sale\Result $itemResult */
 		$itemResult = static::loadEntityFromBasket($id);
 		if ($itemResult->isSuccess())

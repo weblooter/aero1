@@ -1,0 +1,11 @@
+{
+    "items": [
+        {
+            "MODULE_ID": "perfmon",
+            "NAME": "tables_show_time",
+            "VALUE": "0",
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        }
+    ]
+}

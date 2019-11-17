@@ -35,7 +35,7 @@
             <div class="col-xs-12 col-md-6 infoMedia__item post-left">
                 <div class="title-preview"><? $APPLICATION->IncludeFile('include/main-patients-col1-title.php', false, ['MODE' => 'text']) ?></div>
                 <p><? $APPLICATION->IncludeFile('include/main-patients-col1-text.php', false, ['MODE' => 'text']) ?></p>
-                <div class="more"><a href="/poleznoe/dovolnye-patsienty/" class="arrow">Смотреть фото</a></div>
+                <div class="more"><a href="/foto-rabot/" class="arrow">Смотреть фото</a></div>
             </div>
             <div class="col-xs-12 col-md-6 infoMedia__item post-right">
                 <div class="title-preview"><? $APPLICATION->IncludeFile('include/main-patients-col2-title.php', false, ['MODE' => 'text']) ?></div>

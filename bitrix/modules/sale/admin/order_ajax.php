@@ -37,7 +37,7 @@ Loc::loadMessages(__FILE__);
 
 global $USER;
 $arResult = array();
-$result = new \Bitrix\Main\Entity\Result();
+$result = new \Bitrix\Main\Result();
 $saleModulePermissions = $APPLICATION->GetGroupRight("sale");
 
 if(!isset($_REQUEST["action"]))
@@ -90,14 +90,17 @@ else
 	}
 }
 
-if ($result->hasWarnings())
+if($result instanceof Result)
 {
-	$arResult["WARNING"] = implode("\n", $result->getWarningMessages());
-	$arResult["WARNINGS"] = array();
-
-	foreach($result->getWarningMessages() as $warning)
+	if ($result->hasWarnings())
 	{
-		$arResult["WARNINGS"][] = $warning;
+		$arResult["WARNING"] = implode("\n", $result->getWarningMessages());
+		$arResult["WARNINGS"] = array();
+
+		foreach ($result->getWarningMessages() as $warning)
+		{
+			$arResult["WARNINGS"][] = $warning;
+		}
 	}
 }
 
@@ -729,6 +732,13 @@ class AjaxProcessor
 			{
 				$result['DELIVERY_ERROR'] = implode("\n", $calcResult->getErrorMessages());
 			}
+
+			if (!isset($data['SHIPMENT_DATA']['DELIVERY_WEIGHT']))
+			{
+				$result['DELIVERY_WEIGHT'] = $shipment->getWeight() / Admin\Blocks\OrderShipment::getWeightKoef($order->getSiteId());
+			}
+
+			$result["CALCULATED_WEIGHT"] = $shipment->getShipmentItemCollection()->getWeight() / Admin\Blocks\OrderShipment::getWeightKoef($order->getSiteId());
 
 			if (!isset($data['SHIPMENT_DATA']['DELIVERY_SERVICE_LIST']))
 			{
@@ -1844,6 +1854,7 @@ class AjaxProcessor
 			$result['DELIVERY_ERROR'] = implode("\n", $calcResult->getErrorMessages());
 		}
 
+		$result["CALCULATED_WEIGHT"] = $shipment->getShipmentItemCollection()->getWeight() / Admin\Blocks\OrderShipment::getWeightKoef($order->getSiteId());
 		$this->addResultData("SHIPMENT_DATA", $result);
 
 		$this->formDataChanged = true;

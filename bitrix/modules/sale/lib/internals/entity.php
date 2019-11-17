@@ -5,6 +5,8 @@ use Bitrix\Main;
 use Bitrix\Sale\Result;
 use Bitrix\Sale\ResultError;
 
+Main\Localization\Loc::loadMessages(__FILE__);
+
 abstract class Entity
 {
 	/** @var Fields */
@@ -18,6 +20,24 @@ abstract class Entity
 	}
 
 	/**
+	 * @throws Main\NotImplementedException
+	 * @return string
+	 */
+	public static function getRegistryType()
+	{
+		throw new Main\NotImplementedException('The method '.__METHOD__.' is not overridden in '.static::class);
+	}
+
+	/**
+	 * @throws Main\NotImplementedException
+	 * @return string
+	 */
+	public static function getRegistryEntity()
+	{
+		throw new Main\NotImplementedException('The method '.__METHOD__.' is not overridden in '.static::class);
+	}
+
+	/**
 	 * @return array
 	 *
 	 * @throws Main\NotImplementedException
@@ -27,6 +47,18 @@ abstract class Entity
 		throw new Main\NotImplementedException();
 	}
 
+	/**
+	 * @return array
+	 */
+	public static function getCustomizableFields() : array
+	{
+		return [];
+	}
+
+	/**
+	 * @return array|null
+	 * @throws Main\NotImplementedException
+	 */
 	public static function getAvailableFieldsMap()
 	{
 		static $fieldsMap = null;
@@ -528,7 +560,9 @@ abstract class Entity
 	public function initFields(array $values)
 	{
 		foreach ($values as $key => $value)
+		{
 			$this->initField($key, $value);
+		}
 	}
 
 	/**
@@ -602,6 +636,55 @@ abstract class Entity
 	public function isChanged()
 	{
 		return (bool)$this->fields->getChangedValues();
+	}
+
+	/**
+	 * @param string $name
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function markFieldCustom(string $name)
+	{
+		$fields = static::getCustomizableFields();
+		if (!isset($fields[$name]))
+		{
+			throw new Main\ArgumentOutOfRangeException(
+				Main\Localization\Loc::getMessage(
+					'SALE_INTERNALS_ENTITY_FIELD_IS_NOT_CUSTOMIZABLE',
+					['#FIELD#' => $name]
+				)
+			);
+		}
+
+		$this->fields->markCustom($name);
+	}
+
+	/**
+	 * @param string $name
+	 * @throws Main\ArgumentOutOfRangeException
+	 */
+	public function unmarkFieldCustom(string $name)
+	{
+		$fields = static::getCustomizableFields();
+		if (!isset($fields[$name]))
+		{
+			throw new Main\ArgumentOutOfRangeException(
+				Main\Localization\Loc::getMessage(
+					'SALE_INTERNALS_ENTITY_FIELD_IS_NOT_CUSTOMIZABLE',
+					['#FIELD#' => $name]
+				)
+			);
+		}
+
+		$this->fields->unmarkCustom($name);
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function isMarkedFieldCustom(string $name) : bool
+	{
+		return $this->fields->isMarkedCustom($name);
 	}
 
 	/**

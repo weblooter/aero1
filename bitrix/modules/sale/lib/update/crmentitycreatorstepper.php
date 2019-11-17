@@ -7,6 +7,7 @@ use Bitrix\Main,
 	Bitrix\Crm\Settings,
 	Bitrix\Crm\Timeline,
 	Bitrix\Crm\Order\Matcher,
+	Bitrix\Crm\Order\OrderStatus,
 	Bitrix\Main\Config\Option,
 	Bitrix\Main\Update\Stepper,
 	Bitrix\Main\Localization\Loc;
@@ -19,10 +20,10 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\Sale\Update
  */
-class CrmEntityCreator
+final class CrmEntityCreator
 {
 	/** @var Order\Order $order */
-	protected $order;
+	private $order;
 
 	/**
 	 * CrmEntityCreator constructor
@@ -42,34 +43,32 @@ class CrmEntityCreator
 	 * @throws Main\NotImplementedException
 	 * @throws \Exception
 	 */
-	public function add()
+	public function create()
 	{
 		$result = new Sale\Result();
 
 		$contactCompanyCollection = $this->order->getContactCompanyCollection();
 		if ($contactCompanyCollection->isEmpty())
 		{
-			$res = $this->addContactCompany();
-			if (!$res->isSuccess())
-			{
-				return $res;
-			}
-
-			$this->setContactCompanyRequisites();
-
-			if (!$this->isSetResponsible())
-			{
-				$this->setResponsible();
-			}
-
-			$res = $this->order->save();
-			if (!$res->isSuccess())
-			{
-				$result->addErrors($res->getErrors());
-			}
-
-			$this->addTimeLines();
+			$this->addContactCompany();
 		}
+
+		$this->setContactCompanyRequisites();
+
+		if (!$this->isSetResponsible())
+		{
+			$this->setResponsible();
+		}
+
+		$this->createDealBinding();
+
+		$saveOrderResult = $this->order->save();
+		if (!$saveOrderResult->isSuccess())
+		{
+			$result->addErrors($saveOrderResult->getErrors());
+		}
+
+		$this->addTimeLines();
 
 		return $result;
 	}
@@ -77,15 +76,17 @@ class CrmEntityCreator
 	/**
 	 * @return bool
 	 */
-	protected function isSetResponsible()
+	private function isSetResponsible()
 	{
 		return $this->order->getField("RESPONSIBLE_ID") ? true : false;
 	}
 
 	/**
+	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\NotImplementedException
 	 */
-	protected function setResponsible()
+	private function setResponsible()
 	{
 		$this->order->setFieldNoDemand(
 			'RESPONSIBLE_ID',
@@ -94,17 +95,15 @@ class CrmEntityCreator
 	}
 
 	/**
-	 * @return Sale\Result
+	 * @return void
 	 * @throws Main\ArgumentException
 	 * @throws Main\ArgumentOutOfRangeException
 	 * @throws Main\ArgumentTypeException
 	 * @throws Main\NotImplementedException
-	 * @throws \Exception
+	 * @throws Main\SystemException
 	 */
-	protected function addContactCompany()
+	private function addContactCompany()
 	{
-		$result = new Sale\Result();
-
 		$matches = Matcher\EntityMatchManager::getInstance()->match($this->order);
 		if ($matches)
 		{
@@ -130,8 +129,6 @@ class CrmEntityCreator
 				$communication->addItem($company);
 			}
 		}
-
-		return $result;
 	}
 
 	/**
@@ -141,7 +138,7 @@ class CrmEntityCreator
 	 * @throws Main\NotImplementedException
 	 * @throws Main\SystemException
 	 */
-	protected function setContactCompanyRequisites()
+	private function setContactCompanyRequisites()
 	{
 		$collection = $this->order->getContactCompanyCollection();
 
@@ -177,84 +174,17 @@ class CrmEntityCreator
 	}
 
 	/**
+	 * @return void
 	 * @throws Main\ArgumentException
-	 * @return void;
+	 * @throws Main\SystemException
 	 */
-	protected function addTimelineEntryOnCreate()
+	private function createDealBinding()
 	{
-		Timeline\OrderController::getInstance()->onCreate(
-			(int)$this->order->getId(),
-			[
-				'FIELDS' => [
-					'ID' => (int)$this->order->getId(),
-					'CREATED_BY' => $this->order->getField('CREATED_BY'),
-					'RESPONSIBLE_ID' => $this->order->getField('RESPONSIBLE_ID'),
-					'DATE_INSERT' => $this->order->getField('DATE_INSERT'),
-					'PRICE' => $this->order->getField('PRICE'),
-					'CURRENCY' => $this->order->getField('CURRENCY')
-				]
-			]
-		);
-	}
-
-	/**
-	 * @throws Main\ArgumentException
-	 * @return void;
-	 */
-	protected function addTimelineEntryOnCancel()
-	{
-		if ($this->order->getField('CANCELED') !== 'Y')
-			return;
-
-		$fields = [
-			'ID' => $this->order->getId(),
-			'CANCELED' => $this->order->getField('CANCELED'),
-		];
-
-		$fields['REASON_CANCELED'] = $this->order->getField('REASON_CANCELED');
-		$fields['EMP_CANCELED_ID'] = $this->order->getField('EMP_CANCELED_ID');
-
-		Timeline\OrderController::getInstance()->onCancel($this->order->getId(), ['FIELDS' => $fields]);
-	}
-
-	/**
-	 * @param $prevStatus
-	 * @param $currentStatus
-	 * @return void;
-	 * @throws Main\ArgumentException
-	 */
-	protected function addTimelineEntryOnStatusModify($prevStatus, $currentStatus)
-	{
-		$modifyParams = array(
-			'PREVIOUS_FIELDS' => array('STATUS_ID' => $prevStatus),
-			'CURRENT_FIELDS' => array(
-				'STATUS_ID' => $currentStatus,
-				'EMP_STATUS_ID' => $this->order->getField('EMP_STATUS_ID') // ?
-			),
-		);
-
-		Timeline\OrderController::getInstance()->onModify($this->order->getId(), $modifyParams);
-	}
-
-	/**
-	 * @param $currentPrice
-	 * @return void;
-	 * @throws Main\ArgumentException
-	 */
-	protected function updateTimelineCreationEntity($currentPrice)
-	{
-		$fields = $this->order->getFields();
-		$selectedFields =[
-			'DATE_INSERT_TIMESTAMP' => $fields['DATE_INSERT']->getTimestamp(),
-			'PRICE' => $currentPrice,
-			'CURRENCY' => $fields['CURRENCY']
-		];
-
-		Timeline\OrderController::getInstance()->updateSettingFields(
-			$this->order->getId(),
-			Timeline\TimelineType::CREATION,
-			$selectedFields
-		);
+		$dealBinding = $this->order->getDealBinding();
+		if (!$dealBinding->isExist())
+		{
+			$dealBinding->create();
+		}
 	}
 
 	/**
@@ -262,7 +192,7 @@ class CrmEntityCreator
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function addTimeLines()
+	private function addTimeLines()
 	{
 		// add
 		$this->addTimelineEntryOnCreate();
@@ -284,6 +214,90 @@ class CrmEntityCreator
 
 		// cancel
 		$this->addTimelineEntryOnCancel();
+
+		// deal
+		$this->addTimelineDealBinding();
+	}
+
+	/**
+	 * @throws Main\ArgumentException
+	 * @return void;
+	 */
+	private function addTimelineEntryOnCreate()
+	{
+		Timeline\OrderController::getInstance()->onCreate(
+			(int)$this->order->getId(),
+			[
+				'FIELDS' => [
+					'ID' => (int)$this->order->getId(),
+					'CREATED_BY' => $this->order->getField('CREATED_BY'),
+					'RESPONSIBLE_ID' => $this->order->getField('RESPONSIBLE_ID'),
+					'DATE_INSERT' => $this->order->getField('DATE_INSERT'),
+					'PRICE' => $this->order->getField('PRICE'),
+					'CURRENCY' => $this->order->getField('CURRENCY')
+				]
+			]
+		);
+	}
+
+	/**
+	 * @throws Main\ArgumentException
+	 * @return void;
+	 */
+	private function addTimelineEntryOnCancel()
+	{
+		if ($this->order->getField('CANCELED') !== 'Y')
+			return;
+
+		$fields = [
+			'ID' => $this->order->getId(),
+			'CANCELED' => $this->order->getField('CANCELED'),
+		];
+
+		$fields['REASON_CANCELED'] = $this->order->getField('REASON_CANCELED');
+		$fields['EMP_CANCELED_ID'] = $this->order->getField('EMP_CANCELED_ID');
+
+		Timeline\OrderController::getInstance()->onCancel($this->order->getId(), ['FIELDS' => $fields]);
+	}
+
+	/**
+	 * @param $prevStatus
+	 * @param $currentStatus
+	 * @return void;
+	 * @throws Main\ArgumentException
+	 */
+	private function addTimelineEntryOnStatusModify($prevStatus, $currentStatus)
+	{
+		$modifyParams = array(
+			'PREVIOUS_FIELDS' => array('STATUS_ID' => $prevStatus),
+			'CURRENT_FIELDS' => array(
+				'STATUS_ID' => $currentStatus,
+				'EMP_STATUS_ID' => $this->order->getField('EMP_STATUS_ID') // ?
+			),
+		);
+
+		Timeline\OrderController::getInstance()->onModify($this->order->getId(), $modifyParams);
+	}
+
+	/**
+	 * @param $currentPrice
+	 * @return void;
+	 * @throws Main\ArgumentException
+	 */
+	private function updateTimelineCreationEntity($currentPrice)
+	{
+		$fields = $this->order->getFields();
+		$selectedFields =[
+			'DATE_INSERT_TIMESTAMP' => $fields['DATE_INSERT']->getTimestamp(),
+			'PRICE' => $currentPrice,
+			'CURRENCY' => $fields['CURRENCY']
+		];
+
+		Timeline\OrderController::getInstance()->updateSettingFields(
+			$this->order->getId(),
+			Timeline\TimelineType::CREATION,
+			$selectedFields
+		);
 	}
 
 	/**
@@ -292,7 +306,7 @@ class CrmEntityCreator
 	 * @throws Main\ObjectPropertyException
 	 * @throws Main\SystemException
 	 */
-	protected function getHistoryChanges()
+	private function getHistoryChanges()
 	{
 		$arHistoryData = [];
 		$bUseOldHistory = false;
@@ -384,6 +398,52 @@ class CrmEntityCreator
 
 		return $result;
 	}
+
+	/**
+	 * @throws Main\ArgumentException
+	 * @throws Main\SystemException
+	 */
+	private function addTimelineDealBinding()
+	{
+		$dealBinding = $this->order->getDealBinding();
+		if ($dealBinding->isExist())
+		{
+			$authorId = (int)$this->order->getField('RESPONSIBLE_ID');
+
+			Timeline\OrderEntry::create([
+				'ENTITY_ID' => $this->order->getId(),
+				'TYPE_CATEGORY_ID' => Timeline\TimelineType::CREATION,
+				'AUTHOR_ID' => $authorId,
+				'SETTINGS' => [
+					'FIELDS' => [
+						'PAID' => $this->order->getField('PAYED'),
+						'DONE' => ($this->order->getField('STATUS_ID') === OrderStatus::getFinalStatus())
+							? 'Y'
+							: 'N',
+						'CANCELED' => $this->order->getField('CANCELED'),
+					]
+				],
+				'BINDINGS' => [
+					[
+						'ENTITY_TYPE_ID' => \CCrmOwnerType::Deal,
+						'ENTITY_ID' => $dealBinding->getDealId(),
+					]
+				],
+			]);
+
+			Timeline\LinkEntry::create([
+				'ENTITY_TYPE_ID' => \CCrmOwnerType::Order,
+				'ENTITY_ID' => $this->order->getId(),
+				'AUTHOR_ID' => $authorId,
+				'BINDINGS' => [
+					[
+						'ENTITY_TYPE_ID' => \CCrmOwnerType::Deal,
+						'ENTITY_ID' => $dealBinding->getDealId(),
+					]
+				]
+			]);
+		}
+	}
 }
 
 /**
@@ -399,12 +459,14 @@ final class CrmEntityCreatorStepper extends Stepper
 
 	/** @var string */
 	const IS_SALE_CRM_SITE_MASTER_STUB = "~IS_SALE_CRM_SITE_MASTER_STUB";
+	const IS_SALE_BSM_SITE_MASTER_STUB = "~IS_SALE_BSM_SITE_MASTER_STUB";
 
 	/** @var string */
 	const ORDER_CONVERT_IS_FINISH = "~ORDER_CONVERT_IS_FINISH";
 
-	/** @var string Has the last step been reached? */
+	/** @var string */
 	const IS_SALE_CRM_SITE_MASTER_FINISH = "~IS_SALE_CRM_SITE_MASTER_FINISH";
+	const IS_SALE_BSM_SITE_MASTER_FINISH = "~IS_SALE_BSM_SITE_MASTER_FINISH";
 
 	/** @var string */
 	const WIZARD_SITE_ID = "~CRM_WIZARD_SITE_ID";
@@ -417,9 +479,9 @@ final class CrmEntityCreatorStepper extends Stepper
 
 	protected static $moduleId = "sale";
 
-	protected $orderList =  array();
+	private $orderList =  array();
 
-	protected $params = [];
+	private $params = [];
 
 	/**
 	 * @param array &$result
@@ -476,7 +538,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	/**
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function createCrmEntity()
+	private function createCrmEntity()
 	{
 		$timeStart = Main\Diag\Helper::getCurrentMicrotime();
 		foreach ($this->orderList as $order)
@@ -484,7 +546,7 @@ final class CrmEntityCreatorStepper extends Stepper
 			try
 			{
 				$crmEntity = new CrmEntityCreator($order);
-				$resultAdd = $crmEntity->add();
+				$resultAdd = $crmEntity->create();
 				if (!$resultAdd->isSuccess())
 				{
 					$errorMessages = $resultAdd->getErrorMessages();
@@ -510,7 +572,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function initParams()
+	private function initParams()
 	{
 		$params = Option::get(self::$moduleId, self::STEPPER_PARAMS, "");
 		$params = ($params !== "" ? @unserialize($params) : array());
@@ -529,7 +591,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @param $orderId
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function updateParams($orderId)
+	private function updateParams($orderId)
 	{
 		$this->params["last_order_id"] = $orderId;
 		$this->params["updated_order_count"]++;
@@ -542,7 +604,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @throws Main\ArgumentException
 	 * @throws Main\NotImplementedException
 	 */
-	protected function getOrders()
+	private function getOrders()
 	{
 		$parameters = [
 			'select' => ['*'],
@@ -552,9 +614,8 @@ final class CrmEntityCreatorStepper extends Stepper
 		{
 			$parameters['filter'] = ['<ID' => $this->params["last_order_id"]];
 		}
-		$orderList = Order\Order::loadByFilter($parameters);
 
-		return $orderList;
+		return Order\Order::loadByFilter($parameters);
 	}
 
 	/**
@@ -562,7 +623,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @throws Main\ArgumentException
 	 * @throws Main\SystemException
 	 */
-	protected function getOrderCount()
+	private function getOrderCount()
 	{
 		return Order\Order::getList(array(
 			'select' => array('CNT'),
@@ -603,6 +664,12 @@ final class CrmEntityCreatorStepper extends Stepper
 		{
 			return true;
 		}
+		elseif ((Main\Config\Option::get("sale", self::IS_SALE_BSM_SITE_MASTER_STUB, "N") === "Y")
+			&& (Main\Config\Option::get("sale", self::IS_SALE_BSM_SITE_MASTER_FINISH, "N") === "Y")
+		)
+		{
+			return true;
+		}
 
 		return false;
 	}
@@ -626,7 +693,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 */
 	public static function showProgressBar()
 	{
-		if (SITE_TEMPLATE_ID !== "bitrix24")
+		if (defined("SITE_TEMPLATE_ID") && SITE_TEMPLATE_ID !== "bitrix24")
 		{
 			return;
 		}
@@ -658,7 +725,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 */
 	public static function bindAgent()
 	{
-		if (SITE_TEMPLATE_ID !== "bitrix24")
+		if (defined("SITE_TEMPLATE_ID") && SITE_TEMPLATE_ID !== "bitrix24")
 		{
 			return;
 		}
@@ -678,13 +745,14 @@ final class CrmEntityCreatorStepper extends Stepper
 		)
 		{
 			include_once $_SERVER["DOCUMENT_ROOT"].BX_ROOT."/components/bitrix/sale.crm.site.master/tools/sitepatcher.php";
-			$sitePatcher = \Bitrix\Wizard\Tools\SitePatcher::getInstance();
+			$sitePatcher = \Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher::getInstance();
 			$sitePatcher->setCrmUserGroups();
 			$sitePatcher->setCrmGroupRights();
 
 			// delete options
-			$sitePatcher->deleteEmployeesGroupId();
-			$sitePatcher->deleteCompanyDepartmentId();
+			\Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher::deleteEmployeesGroupId();
+			\Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher::deleteCompanyDepartmentId();
+			\Bitrix\Sale\CrmSiteMaster\Tools\SitePatcher::retrieveConfig1C();
 
 			// create agent
 			self::bind(5);
@@ -717,7 +785,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @param $errorMessage
 	 * @throws \Exception
 	 */
-	protected function addError($orderId, $errorMessage)
+	private function addError($orderId, $errorMessage)
 	{
 		Sale\Internals\OrderConverterCrmErrorTable::add([
 			"ORDER_ID" => $orderId,
@@ -740,7 +808,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	/**
 	 * @param $message
 	 */
-	protected function addAdminNormalNotify($message)
+	private function addAdminNormalNotify($message)
 	{
 		$this->addAdminNotify($message, \CAdminNotify::TYPE_NORMAL);
 	}
@@ -748,7 +816,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	/**
 	 * @param $message
 	 */
-	protected function addAdminErrorNotify($message)
+	private function addAdminErrorNotify($message)
 	{
 		$this->addAdminNotify($message, \CAdminNotify::TYPE_ERROR);
 	}
@@ -758,7 +826,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @param $message
 	 * @param $notifyType
 	 */
-	protected function addAdminNotify($message, $notifyType)
+	private function addAdminNotify($message, $notifyType)
 	{
 		\CAdminNotify::Add([
 			'MODULE_ID' => 'sale',
@@ -774,7 +842,7 @@ final class CrmEntityCreatorStepper extends Stepper
 	 * @throws Main\ArgumentNullException
 	 * @throws Main\ArgumentOutOfRangeException
 	 */
-	protected function getCrmSiteId()
+	private function getCrmSiteId()
 	{
 		return Option::get(self::$moduleId, self::WIZARD_SITE_ID);
 	}

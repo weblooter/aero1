@@ -411,8 +411,14 @@ class CPullChannel
 				$i = 0;
 				foreach($channelId as $channel)
 				{
+					if (!isset($arGroup[$i]))
+					{
+						$arGroup[$i] = [];
+					}
 					if (count($arGroup[$i]) == $commandPerHit)
+					{
 						$i++;
+					}
 
 					$arGroup[$i][] = $channel;
 				}

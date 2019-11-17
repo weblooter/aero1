@@ -149,7 +149,10 @@ class ConsultDetailComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
 
         $GLOBALS['APPLICATION']->SetTitle(htmlspecialchars_decode($strTitle));
         $GLOBALS['APPLICATION']->SetPageProperty('title', htmlspecialchars_decode($strTitle));
-        $GLOBALS['APPLICATION']->SetPageProperty('description', (new Local\Core\Text\Format\FormatStripTags())->format($this->arResult['SEO']['ELEMENT_META_DESCRIPTION']));
+
+        $strDescr = $this->arResult['ITEM']['MAIN_SECTION']['NAME'].' - ответ на вопрос «'.( mb_strimwidth( (new Local\Core\Text\Format\FormatStripTags())->format($this->arResult['SEO']['ELEMENT_META_DESCRIPTION']), 0, 150, '...') ).'». Отвечает пластический хирург Ведров О. В.';
+
+        $GLOBALS['APPLICATION']->SetPageProperty('description', $strDescr);
         $GLOBALS['APPLICATION']->SetPageProperty('keywords', htmlspecialchars_decode($this->arResult['SEO']['ELEMENT_META_KEYWORDS']));
     }
 }

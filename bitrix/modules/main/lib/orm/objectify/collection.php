@@ -19,6 +19,7 @@ use Bitrix\Main\NotImplementedException;
 use Bitrix\Main\ORM\Fields\FieldTypeMask;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\Text\StringHelper;
+use Bitrix\Main\Web\Json;
 
 /**
  * Collection of entity objects. Used to hold 1:N and N:M object collections.
@@ -216,7 +217,8 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 			return;
 		}
 
-		$this->removeByPrimary($object->primary);
+		$srPrimary = $this->sysGetPrimaryKey($object);
+		$this->sysRemove($srPrimary);
 	}
 
 	/**
@@ -229,6 +231,11 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 		$normalizedPrimary = $this->sysNormalizePrimary($primary);
 		$srPrimary = $this->sysSerializePrimaryKey($normalizedPrimary);
 
+		$this->sysRemove($srPrimary);
+	}
+
+	public function sysRemove($srPrimary)
+	{
 		$object = $this->_objects[$srPrimary];
 		unset($this->_objects[$srPrimary]);
 
@@ -869,6 +876,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 	 * @param $primary
 	 *
 	 * @return false|mixed|string
+	 * @throws ArgumentException
 	 */
 	protected function sysSerializePrimaryKey($primary)
 	{
@@ -877,7 +885,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
 			return current($primary);
 		}
 
-		return json_encode(array_values($primary));
+		return Json::encode(array_values($primary));
 	}
 
 	/**

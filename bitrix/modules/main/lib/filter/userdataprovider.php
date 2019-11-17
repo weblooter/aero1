@@ -293,6 +293,10 @@ class UserDataProvider extends EntityDataProvider
 				'whiteList' => 'DATE_REGISTER',
 				'options' => [ 'type' => 'date' ]
 			],
+			'LAST_ACTIVITY_DATE' => [
+				'whiteList' => 'LAST_ACTIVITY_DATE',
+				'options' => [ 'type' => 'date' ]
+			],
 			'BIRTHDAY' => [
 				'whiteList' => 'PERSONAL_BIRTHDAY',
 				'options' => [ 'type' => 'date' ]

@@ -638,6 +638,7 @@
 					BX.onCustomEvent(this, "onFormSubmitted", [data.text, data.attachedFiles, data.extraData]);
 				},
 				cancelExtendedForm : function() {
+					BX.onCustomEvent(this, "onCancelComment", []); // Service event for controllers
 					this.stopCheckWriting();
 				},
 				show : function(text, attachments) {
@@ -738,6 +739,7 @@
 				//BX.addCustomEvent(this.simpleForm, 'onFileSubmitted', BX.delegate(this.submitBase64, this));
 				BX.addCustomEvent(this.simpleForm, 'onUserIsWriting', BX.delegate(this.writing, this));
 				BX.addCustomEvent(this.extendedForm, 'onFormSubmitted', BX.delegate(this.submitExtended, this));
+				BX.addCustomEvent(this.extendedForm, 'onCancelComment', this.cancel.bind(this));
 			},
 			initControllers : function(controllers) {
 				if (controllers || typeof controllers == "object")

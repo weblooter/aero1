@@ -1,0 +1,67 @@
+{
+    "event": "FORUM_NEW_MESSAGE_MAIL",
+    "type": {
+        "LID": "en",
+        "EVENT_TYPE": "email",
+        "NAME": "New message at the forum (e-mail messaging mode)",
+        "DESCRIPTION": [
+            "#FORUM_NAME# - Forum name",
+            "#AUTHOR# - Message author",
+            "#FROM_EMAIL# - E-Mail in the &amp;From&amp; field",
+            "#RECIPIENT# - Message recipient",
+            "#TOPIC_TITLE# - Message subject",
+            "#MESSAGE_TEXT# - Message text",
+            "#PATH2FORUM# - Message URL",
+            "#MESSAGE_DATE# - Message date",
+            "#FORUM_EMAIL# - E-Mail to add messages to the forum ",
+            "#FORUM_ID# - Forum ID",
+            "#TOPIC_ID# - Topic ID ",
+            "#MESSAGE_ID# - Message ID",
+            "#TAPPROVED# - Topic approved and published",
+            "#MAPPROVED# - Message approved and published",
+            ""
+        ],
+        "SORT": "100"
+    },
+    "messages": [
+        {
+            "LID": [
+                "s1"
+            ],
+            "ACTIVE": "Y",
+            "EMAIL_FROM": "#FROM_EMAIL#",
+            "EMAIL_TO": "#RECIPIENT#",
+            "SUBJECT": "#TOPIC_TITLE#",
+            "MESSAGE": [
+                "#MESSAGE_TEXT#",
+                "",
+                "------------------------------------------  ",
+                "Вы получили это сообщение, так как выподписаны на форум #FORUM_NAME#.",
+                "",
+                "Ответить на сообщение можно по электронной почте или через форму на сайте:",
+                "http:\/\/#SERVER_NAME##PATH2FORUM#",
+                "",
+                "Написать новое сообщение: #FORUM_EMAIL#",
+                "",
+                "Автор сообщения: #AUTHOR#",
+                "",
+                "Сообщение сгенерировано автоматически на сайте #SITE_NAME#.",
+                ""
+            ],
+            "BODY_TYPE": "text",
+            "BCC": null,
+            "REPLY_TO": null,
+            "CC": null,
+            "IN_REPLY_TO": null,
+            "PRIORITY": null,
+            "FIELD1_NAME": null,
+            "FIELD1_VALUE": null,
+            "FIELD2_NAME": null,
+            "FIELD2_VALUE": null,
+            "SITE_TEMPLATE_ID": null,
+            "ADDITIONAL_FIELD": [],
+            "LANGUAGE_ID": null,
+            "EVENT_TYPE": "[ FORUM_NEW_MESSAGE_MAIL ] Новое сообщение на форуме в режиме общения по E-Mail"
+        }
+    ]
+}

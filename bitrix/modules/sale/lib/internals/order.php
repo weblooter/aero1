@@ -514,7 +514,16 @@ class OrderTable extends Main\Entity\DataManager
 				'BY_RECOMMENDATION',
 				"(SELECT (CASE WHEN MAX(BR.RECOMMENDATION) IS NULL OR MAX(BR.RECOMMENDATION) = '' THEN 'N' ELSE 'Y' END) FROM b_sale_basket BR WHERE BR.ORDER_ID=%s GROUP BY BR.ORDER_ID)",
 				array('ID')
-			)
+			),
+
+			new Main\Entity\ReferenceField(
+				'TRADING_PLATFORM',
+				\Bitrix\Sale\TradingPlatform\OrderTable::getEntity(),
+				array(
+					'=ref.ORDER_ID' => 'this.ID',
+				),
+				array('join_type' => 'LEFT')
+			),
 		);
 	}
 
