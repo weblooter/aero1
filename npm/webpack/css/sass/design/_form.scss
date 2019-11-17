@@ -1,38 +1,39 @@
-input[type="text"],
-input[type="password"],input[type="tel"],input[type="pnone"],input[type="number"],input[type="email"],
-textarea,.input {
-	border: 1px solid $color_border;
-	height: 48px;
-	@include font(14,16,400,$font1);
-	color: $color_grey;
-	padding: 0px 15px;
-	width: 100%;
-	@include box-sizing(border-box);
-	@include transition(all .25s ease);	
-	margin:0;
-	background: #fff;
-	display: inline-block;
-	@include breakpoint(tablet-portrait) {
+.formField {
+	input[type="text"],
+	input[type="password"],input[type="tel"],input[type="pnone"],input[type="number"],input[type="email"],
+	textarea,.input {
+		border: 1px solid $color_border;
+		height: 48px;
+		@include font(14,16,400,$font1);
+		color: $color_grey;
+		padding: 0px 15px;
+		width: 100%;
+		@include box-sizing(border-box);
+		@include transition(all .25s ease);	
+		margin:0;
+		background: #fff;
+		display: inline-block;
+		@include breakpoint(tablet-portrait) {
+		}
+		&::-webkit-input-placeholder {color:$color_grey;@include opacity(1);}
+				&::-moz-placeholder       {color:$color_grey;@include opacity(1);}
+				&:-moz-placeholder        {color:$color_grey;@include opacity(1);}
+				&:-ms-input-placeholder   {color:$color_grey;@include opacity(1);}
+		&:focus {
+			color: #000;
+			border-color:$color_link;
+		}
 	}
-	&::-webkit-input-placeholder {color:$color_grey;@include opacity(1);}
-			&::-moz-placeholder       {color:$color_grey;@include opacity(1);}
-			&:-moz-placeholder        {color:$color_grey;@include opacity(1);}
-			&:-ms-input-placeholder   {color:$color_grey;@include opacity(1);}
-	&:focus {
-		color: #000;
-		border-color:$color_link;
+
+	textarea {
+		height: 110px;
+		padding: 10px 15px;
+		line-height: normal;
 	}
 }
-
-textarea {
-	height: 110px;
-	padding: 10px 15px;
-	line-height: normal;
-}
-
-input[type=submit],
-input[type=button],
-button,
+.form input[type=submit],.formbutton input[type=submit],.consultation input[type=submit],.formField input[type=submit],
+.form input[type=button],.formbutton input[type=button],.consultation input[type=button],.formField input[type=button],
+.form button,.formbutton button,.consultation button,.formField button, 
 .btn {
 	display: inline-block;
 	@include box-sizing(border-box);

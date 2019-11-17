@@ -1,3 +1,4 @@
+//jshint esversion: 6
 import 'jquery';
 (function($, undefined) {
 	$(document).ready(function() {
@@ -50,9 +51,9 @@ import 'jquery';
 		$(document).on("click", function(event) {
 			var $target = $(event.target);
 			if (!$target.is("#nav_dropdown") && !$target.closest(".menuTop").length) {
-				if (window.innerWidth < 992 && $("#nav_dropdown").hasClass("active"))  {
-					$("#nav_dropdown").trigger("click");
-				}
+				// if (window.innerWidth < 992 && $("#nav_dropdown").hasClass("active"))  {
+				// 	$("#nav_dropdown").trigger("click");
+				// }
 				if (window.innerWidth >= 992 && (window.TouchEvent && navigator.maxTouchPoints > 1)) { 
 					event.stopPropagation();
 					$(".menuTop li.clicked").removeClass("clicked");

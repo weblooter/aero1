@@ -4620,6 +4620,8 @@ body {
               filter: invert(84%) sepia(68%) saturate(1642%) hue-rotate(193deg) brightness(89%) contrast(104%); } }
   .main.stickTop .header__inner .phone .name {
     color: #032a58; }
+  .main.stickTop .header__inner .phone .awards a i {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='23' height='24' vieBox='0 0 23 24' fill='%23032a58'%3E%3Cpath d='M16.272,17.485c0.086,0.029,0.208,0.067,0.352,0.058c0.238-0.01,0.455-0.105,0.627-0.275 c0.183-0.181,0.276-0.416,0.267-0.663c-0.018-1.583,0.989-2.966,2.493-3.441c0.105-0.028,0.209-0.086,0.284-0.143 c0.2-0.151,0.324-0.368,0.363-0.596c0.048-0.247-0.021-0.493-0.172-0.702c-0.951-1.27-0.951-2.975-0.009-4.235l0.065-0.076 c0.038-0.048,0.058-0.085,0.076-0.143c0.01-0.009,0.019-0.047,0.019-0.057c0.077-0.237,0.049-0.493-0.057-0.702 c-0.114-0.227-0.313-0.388-0.552-0.463c-1.502-0.474-2.512-1.849-2.492-3.421c0-0.114-0.02-0.228-0.057-0.322 c-0.076-0.228-0.247-0.417-0.476-0.531c-0.229-0.104-0.466-0.113-0.695-0.038c-0.371,0.123-0.761,0.189-1.15,0.189 c-1.161-0.019-2.256-0.577-2.92-1.516c-0.067-0.095-0.144-0.17-0.22-0.218c-0.418-0.294-1.008-0.199-1.303,0.218 c-0.666,0.938-1.759,1.497-2.911,1.497c-0.39,0-0.78-0.066-1.132-0.189c-0.314-0.113-0.723-0.028-0.97,0.228 c-0.182,0.18-0.276,0.417-0.268,0.663c0.02,1.583-0.989,2.957-2.492,3.431c-0.105,0.029-0.2,0.076-0.305,0.151 C2.23,6.492,2.145,7.08,2.449,7.487c0.952,1.27,0.952,2.975,0,4.246c-0.057,0.085-0.105,0.18-0.133,0.265 c-0.076,0.236-0.058,0.474,0.067,0.712c0.123,0.217,0.313,0.377,0.542,0.453c1.512,0.483,2.51,1.868,2.492,3.423 c-0.009,0.112,0.01,0.226,0.047,0.341c0.076,0.227,0.248,0.418,0.476,0.53c0.219,0.104,0.476,0.114,0.704,0.038 c0.38-0.125,0.771-0.19,1.161-0.19c1.16,0,2.216,0.551,2.901,1.498c0.057,0.087,0.134,0.161,0.218,0.219 c0.164,0.113,0.344,0.171,0.542,0.171c0.058,0,0.106-0.01,0.164-0.01c0.246-0.048,0.465-0.182,0.599-0.38 C13.151,17.515,14.778,16.982,16.272,17.485z M11.477,18.263c-0.846-1.185-2.216-1.896-3.662-1.896 c-0.495,0-0.99,0.085-1.456,0.246c0.028-1.99-1.237-3.733-3.138-4.33c1.198-1.603,1.198-3.764-0.01-5.355 c1.912-0.597,3.187-2.341,3.148-4.322c0.466,0.162,0.952,0.237,1.447,0.237c1.455,0,2.834-0.71,3.661-1.895 c0.848,1.185,2.217,1.895,3.684,1.895c0.493,0,0.979-0.085,1.436-0.237c-0.019,1.981,1.246,3.715,3.148,4.293l-0.009,0.009 c-1.198,1.602-1.189,3.762,0.02,5.355c-1.913,0.596-3.188,2.339-3.159,4.332h-0.01C14.684,15.959,12.619,16.622,11.477,18.263z'/%3E%3Cpath d='M11.477,5.336c-2.359,0-4.28,1.914-4.28,4.265c0,2.35,1.921,4.266,4.28,4.266 c2.36,0,4.281-1.916,4.281-4.266C15.758,7.25,13.837,5.336,11.477,5.336z M11.477,12.936c-1.845,0-3.339-1.497-3.339-3.326 c0-1.829,1.503-3.327,3.339-3.327c1.836,0,3.339,1.498,3.339,3.327C14.816,11.439,13.313,12.936,11.477,12.936z'/%3E%3Cpath d='M8.271,18.89c-0.219-0.145-0.514-0.087-0.656,0.132l-2.273,3.477l-1.17-2.378 c-0.076-0.161-0.238-0.267-0.419-0.267l-2.406-0.009l2.378-3.629C3.772,16.14,3.8,16.054,3.8,15.959l0,0 c0-0.256-0.21-0.464-0.475-0.464c-0.171,0-0.324,0.095-0.399,0.227l-2.845,4.342c-0.095,0.144-0.105,0.331-0.02,0.483 c0.086,0.151,0.238,0.246,0.409,0.246l2.987,0.01l1.408,2.861c0.076,0.152,0.229,0.256,0.39,0.266c0.01,0,0.019,0,0.028,0 c0.162,0,0.305-0.076,0.391-0.209l2.73-4.169C8.557,19.324,8.49,19.03,8.271,18.89z'/%3E%3Cpath d='M22.874,20.063l-2.863-4.371c-0.143-0.216-0.437-0.272-0.656-0.132c-0.219,0.143-0.275,0.437-0.133,0.655 l2.388,3.638l-2.416,0.011c-0.183,0-0.343,0.104-0.42,0.266l-1.17,2.379l-2.282-3.479c-0.144-0.219-0.438-0.274-0.657-0.133 c-0.22,0.143-0.274,0.436-0.134,0.654l2.74,4.169c0.086,0.133,0.238,0.209,0.391,0.209c0.01,0,0.02,0,0.027,0 c0.172-0.01,0.323-0.113,0.393-0.266l1.397-2.861l2.986-0.01c0.172,0,0.333-0.095,0.409-0.246 C22.978,20.385,22.97,20.207,22.874,20.063z'/%3E%3C/svg%3E"); }
 
 .header {
   padding: 0px;
@@ -6107,9 +6109,9 @@ body {
     .safari #body .submenu__item li a::before, .safari #body .submenu__item li span::before {
       top: -30px; } }
 
-input[type="text"],
-input[type="password"], input[type="tel"], input[type="pnone"], input[type="number"], input[type="email"],
-textarea, .input {
+.formField input[type="text"],
+.formField input[type="password"], .formField input[type="tel"], .formField input[type="pnone"], .formField input[type="number"], .formField input[type="email"],
+.formField textarea, .formField .input {
   border: 1px solid #f1f1f1;
   height: 48px;
   font-weight: 400;
@@ -6124,40 +6126,40 @@ textarea, .input {
   margin: 0;
   background: #fff;
   display: inline-block; }
-  input[type="text"]::-webkit-input-placeholder,
-  input[type="password"]::-webkit-input-placeholder, input[type="tel"]::-webkit-input-placeholder, input[type="pnone"]::-webkit-input-placeholder, input[type="number"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder,
-  textarea::-webkit-input-placeholder, .input::-webkit-input-placeholder {
+  .formField input[type="text"]::-webkit-input-placeholder,
+  .formField input[type="password"]::-webkit-input-placeholder, .formField input[type="tel"]::-webkit-input-placeholder, .formField input[type="pnone"]::-webkit-input-placeholder, .formField input[type="number"]::-webkit-input-placeholder, .formField input[type="email"]::-webkit-input-placeholder,
+  .formField textarea::-webkit-input-placeholder, .formField .input::-webkit-input-placeholder {
     color: #747d87;
     opacity: 1; }
-  input[type="text"]::-moz-placeholder,
-  input[type="password"]::-moz-placeholder, input[type="tel"]::-moz-placeholder, input[type="pnone"]::-moz-placeholder, input[type="number"]::-moz-placeholder, input[type="email"]::-moz-placeholder,
-  textarea::-moz-placeholder, .input::-moz-placeholder {
+  .formField input[type="text"]::-moz-placeholder,
+  .formField input[type="password"]::-moz-placeholder, .formField input[type="tel"]::-moz-placeholder, .formField input[type="pnone"]::-moz-placeholder, .formField input[type="number"]::-moz-placeholder, .formField input[type="email"]::-moz-placeholder,
+  .formField textarea::-moz-placeholder, .formField .input::-moz-placeholder {
     color: #747d87;
     opacity: 1; }
-  input[type="text"]:-moz-placeholder,
-  input[type="password"]:-moz-placeholder, input[type="tel"]:-moz-placeholder, input[type="pnone"]:-moz-placeholder, input[type="number"]:-moz-placeholder, input[type="email"]:-moz-placeholder,
-  textarea:-moz-placeholder, .input:-moz-placeholder {
+  .formField input[type="text"]:-moz-placeholder,
+  .formField input[type="password"]:-moz-placeholder, .formField input[type="tel"]:-moz-placeholder, .formField input[type="pnone"]:-moz-placeholder, .formField input[type="number"]:-moz-placeholder, .formField input[type="email"]:-moz-placeholder,
+  .formField textarea:-moz-placeholder, .formField .input:-moz-placeholder {
     color: #747d87;
     opacity: 1; }
-  input[type="text"]:-ms-input-placeholder,
-  input[type="password"]:-ms-input-placeholder, input[type="tel"]:-ms-input-placeholder, input[type="pnone"]:-ms-input-placeholder, input[type="number"]:-ms-input-placeholder, input[type="email"]:-ms-input-placeholder,
-  textarea:-ms-input-placeholder, .input:-ms-input-placeholder {
+  .formField input[type="text"]:-ms-input-placeholder,
+  .formField input[type="password"]:-ms-input-placeholder, .formField input[type="tel"]:-ms-input-placeholder, .formField input[type="pnone"]:-ms-input-placeholder, .formField input[type="number"]:-ms-input-placeholder, .formField input[type="email"]:-ms-input-placeholder,
+  .formField textarea:-ms-input-placeholder, .formField .input:-ms-input-placeholder {
     color: #747d87;
     opacity: 1; }
-  input[type="text"]:focus,
-  input[type="password"]:focus, input[type="tel"]:focus, input[type="pnone"]:focus, input[type="number"]:focus, input[type="email"]:focus,
-  textarea:focus, .input:focus {
+  .formField input[type="text"]:focus,
+  .formField input[type="password"]:focus, .formField input[type="tel"]:focus, .formField input[type="pnone"]:focus, .formField input[type="number"]:focus, .formField input[type="email"]:focus,
+  .formField textarea:focus, .formField .input:focus {
     color: #000;
     border-color: #dcbe84; }
 
-textarea {
+.formField textarea {
   height: 110px;
   padding: 10px 15px;
   line-height: normal; }
 
-input[type=submit],
-input[type=button],
-button,
+.form input[type=submit], .formbutton input[type=submit], .consultation input[type=submit], .formField input[type=submit],
+.form input[type=button], .formbutton input[type=button], .consultation input[type=button], .formField input[type=button],
+.form button, .formbutton button, .consultation button, .formField button,
 .btn {
   display: inline-block;
   box-sizing: border-box;
@@ -6176,9 +6178,9 @@ button,
   border: none;
   text-align: center;
   transition: all 0.25s ease; }
-  input[type=submit]:after,
-  input[type=button]:after,
-  button:after,
+  .form input[type=submit]:after, .formbutton input[type=submit]:after, .consultation input[type=submit]:after, .formField input[type=submit]:after,
+  .form input[type=button]:after, .formbutton input[type=button]:after, .consultation input[type=button]:after, .formField input[type=button]:after,
+  .form button:after, .formbutton button:after, .consultation button:after, .formField button:after,
   .btn:after {
     content: "";
     /*font-size: 22px;
@@ -6191,25 +6193,25 @@ button,
     margin: 4px 0 0 10px;
     transition: all 0.25s ease;
     transform: translate(0, 0); }
-  input[type=submit]:hover,
-  input[type=button]:hover,
-  button:hover,
+  .form input[type=submit]:hover, .formbutton input[type=submit]:hover, .consultation input[type=submit]:hover, .formField input[type=submit]:hover,
+  .form input[type=button]:hover, .formbutton input[type=button]:hover, .consultation input[type=button]:hover, .formField input[type=button]:hover,
+  .form button:hover, .formbutton button:hover, .consultation button:hover, .formField button:hover,
   .btn:hover {
     background: #b39253;
     color: #fff !important;
     text-decoration: none; }
-    input[type=submit]:hover:after,
-    input[type=button]:hover:after,
-    button:hover:after,
+    .form input[type=submit]:hover:after, .formbutton input[type=submit]:hover:after, .consultation input[type=submit]:hover:after, .formField input[type=submit]:hover:after,
+    .form input[type=button]:hover:after, .formbutton input[type=button]:hover:after, .consultation input[type=button]:hover:after, .formField input[type=button]:hover:after,
+    .form button:hover:after, .formbutton button:hover:after, .consultation button:hover:after, .formField button:hover:after,
     .btn:hover:after {
       transform: translate(10px, 0); }
-  input[type=submit]:hover, input[type=submit]:focus, input[type=submit]:active,
-  input[type=button]:hover,
-  input[type=button]:focus,
-  input[type=button]:active,
-  button:hover,
-  button:focus,
-  button:active,
+  .form input[type=submit]:hover, .form input[type=submit]:focus, .form input[type=submit]:active, .formbutton input[type=submit]:hover, .formbutton input[type=submit]:focus, .formbutton input[type=submit]:active, .consultation input[type=submit]:hover, .consultation input[type=submit]:focus, .consultation input[type=submit]:active, .formField input[type=submit]:hover, .formField input[type=submit]:focus, .formField input[type=submit]:active,
+  .form input[type=button]:hover,
+  .form input[type=button]:focus,
+  .form input[type=button]:active, .formbutton input[type=button]:hover, .formbutton input[type=button]:focus, .formbutton input[type=button]:active, .consultation input[type=button]:hover, .consultation input[type=button]:focus, .consultation input[type=button]:active, .formField input[type=button]:hover, .formField input[type=button]:focus, .formField input[type=button]:active,
+  .form button:hover,
+  .form button:focus,
+  .form button:active, .formbutton button:hover, .formbutton button:focus, .formbutton button:active, .consultation button:hover, .consultation button:focus, .consultation button:active, .formField button:hover, .formField button:focus, .formField button:active,
   .btn:hover,
   .btn:focus,
   .btn:active {
@@ -7116,7 +7118,8 @@ h4,
   line-height: 24px;
   font-family: "Cera Pro";
   color: #032a58;
-  margin: 60px 0px; }
+  margin: 60px 0px;
+  overflow: visible; }
   @media (max-width: 990px) {
     .info {
       margin: 40px 0px;
@@ -7540,6 +7543,8 @@ p.indent {
         margin: 20px 0; } }
     .content ol.sitemap {
       text-transform: uppercase; }
+      .content ol.sitemap ol {
+        text-transform: none; }
     .content ol li {
       padding: 0;
       position: relative;
@@ -7558,9 +7563,21 @@ p.indent {
       .content ol li ol {
         margin: 10px 0 10px 35px;
         counter-reset: li2; }
-        .content ol li ol li:before {
-          counter-increment: li2;
-          content: counter(li1) "." counter(li2); }
+        .content ol li ol:before {
+          left: 30px;
+          top: 4px;
+          bottom: 0px; }
+        .content ol li ol li {
+          margin: 0 0 10px;
+          padding-left: 42px;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 18px;
+          font-family: "Cera Pro"; }
+          .content ol li ol li:before {
+            counter-increment: li2;
+            content: counter(li1) "." counter(li2);
+            width: 30px; }
   .content table {
     width: 100%;
     border: none;
@@ -12664,13 +12681,13 @@ Modules
     .consultList__item .question .ico-faq {
       width: 40px;
       height: 40px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='40px' height='40px' viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'%3E%3Ccircle fill='none' stroke='%23dcbe84' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' cx='20' cy='20' r='18.84'/%3E%3Crect x='0.375' y='0.375' fill='none' width='39.25' height='39.25'/%3E%3Cg%3E%3Cpath fill='%23dcbe84' d='M18.849,24.244v-1.153c0-1.127,0.253-1.717,0.843-2.535l1.888-2.59c0.983-1.352,1.321-1.999,1.321-2.956 c0-1.605-1.125-2.619-2.731-2.619c-1.576,0-2.59,0.957-2.928,2.675c-0.028,0.168-0.14,0.253-0.31,0.225l-1.773-0.31 c-0.169-0.028-0.253-0.141-0.227-0.311c0.424-2.702,2.367-4.476,5.295-4.476c3.04,0,5.094,1.999,5.094,4.786 c0,1.352-0.477,2.337-1.436,3.661L22,21.231c-0.562,0.761-0.73,1.154-0.73,2.109v0.901c0,0.17-0.114,0.281-0.282,0.281H19.13 C18.96,24.527,18.849,24.413,18.849,24.244z M18.708,26.948c0-0.168,0.112-0.281,0.282-0.281h2.14c0.168,0,0.28,0.113,0.28,0.281 v2.42c0,0.171-0.113,0.282-0.28,0.282h-2.14c-0.17,0-0.282-0.111-0.282-0.282V26.948z'/%3E%3C/g%3E%3C/svg%3E");
       background-repeat: no-repeat;
       position: absolute;
       left: 0;
       top: 7px; }
       @media (max-width: 700px) {
         .consultList__item .question .ico-faq {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='40px' height='40px' viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'%3E%3Ccircle fill='none' stroke='%23dcbe84' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' cx='20' cy='20' r='18.84'/%3E%3Crect x='0.375' y='0.375' fill='none' width='39.25' height='39.25'/%3E%3Cg%3E%3Cpath fill='%23dcbe84' d='M18.849,24.244v-1.153c0-1.127,0.253-1.717,0.843-2.535l1.888-2.59c0.983-1.352,1.321-1.999,1.321-2.956 c0-1.605-1.125-2.619-2.731-2.619c-1.576,0-2.59,0.957-2.928,2.675c-0.028,0.168-0.14,0.253-0.31,0.225l-1.773-0.31 c-0.169-0.028-0.253-0.141-0.227-0.311c0.424-2.702,2.367-4.476,5.295-4.476c3.04,0,5.094,1.999,5.094,4.786 c0,1.352-0.477,2.337-1.436,3.661L22,21.231c-0.562,0.761-0.73,1.154-0.73,2.109v0.901c0,0.17-0.114,0.281-0.282,0.281H19.13 C18.96,24.527,18.849,24.413,18.849,24.244z M18.708,26.948c0-0.168,0.112-0.281,0.282-0.281h2.14c0.168,0,0.28,0.113,0.28,0.281 v2.42c0,0.171-0.113,0.282-0.28,0.282h-2.14c-0.17,0-0.282-0.111-0.282-0.282V26.948z'/%3E%3C/g%3E%3C/svg%3E");
           background-size: 30px auto; } }
       .consultList__item .question .ico-faq:before {
         display: block;
@@ -12683,6 +12700,9 @@ Modules
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='40px' height='40px' viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'%3E%3Ccircle fill='none' stroke='%23dcbe84' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' cx='20' cy='20' r='18.84'/%3E%3Crect x='0.375' y='0.375' fill='none' width='39.25' height='39.25'/%3E%3Cg%3E%3Cpath fill='%23dcbe84' d='M18.849,24.244v-1.153c0-1.127,0.253-1.717,0.843-2.535l1.888-2.59c0.983-1.352,1.321-1.999,1.321-2.956 c0-1.605-1.125-2.619-2.731-2.619c-1.576,0-2.59,0.957-2.928,2.675c-0.028,0.168-0.14,0.253-0.31,0.225l-1.773-0.31 c-0.169-0.028-0.253-0.141-0.227-0.311c0.424-2.702,2.367-4.476,5.295-4.476c3.04,0,5.094,1.999,5.094,4.786 c0,1.352-0.477,2.337-1.436,3.661L22,21.231c-0.562,0.761-0.73,1.154-0.73,2.109v0.901c0,0.17-0.114,0.281-0.282,0.281H19.13 C18.96,24.527,18.849,24.413,18.849,24.244z M18.708,26.948c0-0.168,0.112-0.281,0.282-0.281h2.14c0.168,0,0.28,0.113,0.28,0.281 v2.42c0,0.171-0.113,0.282-0.28,0.282h-2.14c-0.17,0-0.282-0.111-0.282-0.282V26.948z'/%3E%3C/g%3E%3C/svg%3E");
         background-repeat: no-repeat;
         transition: all 0.25s ease; }
+        @media (max-width: 700px) {
+          .consultList__item .question .ico-faq:before {
+            display: none; } }
       .consultList__item .question .ico-faq:after {
         display: block;
         position: absolute;
@@ -12695,6 +12715,9 @@ Modules
         background-repeat: no-repeat;
         opacity: 0;
         transition: all 0.25s ease; }
+        @media (max-width: 700px) {
+          .consultList__item .question .ico-faq:after {
+            display: none; } }
     .consultList__item .question:hover a.ico-faq:before {
       opacity: 0; }
     .consultList__item .question:hover a.ico-faq:after {

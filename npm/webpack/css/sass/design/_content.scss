@@ -204,12 +204,15 @@
 		}
 		&.sitemap {
 			text-transform: uppercase;
+			ol {
+				text-transform: none;
+			}
 		}
 		li {
 			padding: 0;
 			position: relative;
 			margin: 0 0 20px;
-			padding-left: 36px;
+			padding-left: 36px;					
 			&:before {
 				@include twins;
 				width:18px;
@@ -222,10 +225,19 @@
 			ol {
 				margin: 10px 0 10px 35px;
 				counter-reset: li2;
+				&:before {
+					left:30px;
+					top: 4px;
+					bottom: 0px;
+				}
 				li {					
+					margin:0 0 10px;
+					padding-left: 42px;
+					@include font(14,18);	
 					&:before {
 						counter-increment: li2;
 						content: counter(li1)'.'counter(li2);
+						width:30px;
 						//color:#000;
 						//font-weight: 400;
 					}
