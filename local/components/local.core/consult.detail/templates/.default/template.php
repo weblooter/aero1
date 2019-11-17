@@ -41,8 +41,8 @@
                 </div>
                 <div class="consult-tags">
                     <span>Теги:</span>
-                    <? foreach ($arResult['ITEM']['SECTIONS'] as $arItem): ?>
-                        <a href="<?=$arResult['TAGS'][$arItem['ID']]['SECTION_PAGE_URL']?>"><?=$arResult['TAGS'][$arItem['ID']]['NAME']?></a>
+                    <? foreach ($arResult['ITEM']['SECTIONS'] as $intSectID): ?>
+                        <a href="<?=$arResult['TAGS'][$intSectID]['SECTION_PAGE_URL']?>"><?=$arResult['TAGS'][$intSectID]['NAME']?></a>
                     <? endforeach; ?>
                 </div>
             </div>
