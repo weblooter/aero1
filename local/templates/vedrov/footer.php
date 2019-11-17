@@ -3,7 +3,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 ?>
-<? if (preg_match('/^\/poleznoe($|\/)/', \Bitrix\Main\Application::getInstance()
+<? if (
+    preg_match('/^\/poleznoe($|\/)/', \Bitrix\Main\Application::getInstance()
         ->getContext()
         ->getRequest()
         ->getRequestedPageDirectory()) === 1
@@ -14,7 +15,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 <footer class="footer post-up">
     <div class="container">
         <div class="footer__logos">
-            <? $APPLICATION->IncludeComponent('local.core:footer.review-slider', '.default', [])?>
+            <? $APPLICATION->IncludeComponent('local.core:footer.review-slider', '.default', []) ?>
         </div>
         <div class="footer__contacts row row-f">
             <div class="footer__contacts__item col-xs-12 col-sm-6">
@@ -33,7 +34,74 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             </div>
         </div>
         <div class="row footer__menu">
-            <? $APPLICATION->IncludeComponent('local.core:footer.service-menu', '.default', [])?>
+            <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-4", Array(
+                "ALLOW_MULTI_SELECT" => "N",
+                "CHILD_MENU_TYPE" => "left",
+                "DELAY" => "N",
+                "MAX_LEVEL" => "1",
+                "MENU_CACHE_GET_VARS" => array(
+                    0 => "",
+                ),
+                "MENU_CACHE_TIME" => "3600",
+                "MENU_CACHE_TYPE" => "N",
+                "MENU_CACHE_USE_GROUPS" => "Y",
+                "ROOT_MENU_TYPE" => "bottom41",
+                "USE_EXT" => "N",
+                'INCLUDE_AREA' => 'footer-service-menu-1'
+            ),
+                false
+            ); ?>
+            <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-4", Array(
+                "ALLOW_MULTI_SELECT" => "N",
+                "CHILD_MENU_TYPE" => "left",
+                "DELAY" => "N",
+                "MAX_LEVEL" => "1",
+                "MENU_CACHE_GET_VARS" => array(
+                    0 => "",
+                ),
+                "MENU_CACHE_TIME" => "3600",
+                "MENU_CACHE_TYPE" => "N",
+                "MENU_CACHE_USE_GROUPS" => "Y",
+                "ROOT_MENU_TYPE" => "bottom42",
+                "USE_EXT" => "N",
+                'INCLUDE_AREA' => 'footer-service-menu-2'
+            ),
+                false
+            ); ?>
+            <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-4", Array(
+                "ALLOW_MULTI_SELECT" => "N",
+                "CHILD_MENU_TYPE" => "left",
+                "DELAY" => "N",
+                "MAX_LEVEL" => "1",
+                "MENU_CACHE_GET_VARS" => array(
+                    0 => "",
+                ),
+                "MENU_CACHE_TIME" => "3600",
+                "MENU_CACHE_TYPE" => "N",
+                "MENU_CACHE_USE_GROUPS" => "Y",
+                "ROOT_MENU_TYPE" => "bottom43",
+                "USE_EXT" => "N",
+                'INCLUDE_AREA' => 'footer-service-menu-3'
+            ),
+                false
+            ); ?>
+            <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-4", Array(
+                "ALLOW_MULTI_SELECT" => "N",
+                "CHILD_MENU_TYPE" => "left",
+                "DELAY" => "N",
+                "MAX_LEVEL" => "1",
+                "MENU_CACHE_GET_VARS" => array(
+                    0 => "",
+                ),
+                "MENU_CACHE_TIME" => "3600",
+                "MENU_CACHE_TYPE" => "N",
+                "MENU_CACHE_USE_GROUPS" => "Y",
+                "ROOT_MENU_TYPE" => "bottom44",
+                "USE_EXT" => "N",
+                'INCLUDE_AREA' => 'footer-service-menu-4'
+            ),
+                false
+            ); ?>
 
             <div class="col-xs-12 col-md-9">
                 <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-3", Array(
@@ -125,9 +193,9 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 \Local\Core\Page::getInstance()
     ->footerInit();
 ?>
-<?if($_SERVER['PHP_SELF'] === '/index.php'):?>
+<? if ($_SERVER['PHP_SELF'] === '/index.php'): ?>
     <script src="<?=SITE_TEMPLATE_PATH?>/assets/js/preloader.js"></script>
-<?endif;?>
-<?include $_SERVER['DOCUMENT_ROOT'].'/.footer-inc.text';?>
+<? endif; ?>
+<? include $_SERVER['DOCUMENT_ROOT'].'/.footer-inc.text'; ?>
 </body>
 </html>
