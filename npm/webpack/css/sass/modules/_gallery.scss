@@ -166,7 +166,7 @@
 						text-decoration: none;
 						&:before {
 							@include opacity(.8);
-						}						
+						}
 						.arrow {
 							@include transform(translate(0,0px));
 							z-index: 2;
@@ -263,6 +263,7 @@
 					@include breakpoint(tablet-small-portrait) {
 						height: 250px;
 					}
+					display: block;
 				}
 			}
 	}
@@ -383,7 +384,7 @@
 						text-decoration: none;
 						&:before {
 							@include opacity(.8);
-						}						
+						}
 						.arrow {
 							@include transform(translate(0,0px));
 							z-index: 2;

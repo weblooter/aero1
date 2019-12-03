@@ -27,7 +27,7 @@
 			}
 			@include breakpoint(tablet-portrait) {
 				@include font(30, 32, 700);
-			}	
+			}
 			@include breakpoint(tablet-small-portrait1) {
 				@include font(24, 26, 700);
 			}
@@ -53,7 +53,7 @@
 		.social {
 			@include breakpoint(tablet-portrait) {
 				margin: 0 0 30px;
-			}			
+			}
 			a {
 				@include opacity(1);
 
@@ -113,7 +113,7 @@
 					margin-right: 10px;
 				}
 			}
-	}	
+	}
 	
 	a[href^="tel:"] {
 		color: $color_text;
@@ -253,7 +253,7 @@
 		margin: 10px 0 40px;
 		@include breakpoint(tablet-small-portrait1) {
 			margin: 10px 0 20px;
-		}		
+		}
 		@include breakpoint(tablet-small-portrait1) {
 			@include display-flex;
 			@include flex-wrap(wrap);
@@ -275,7 +275,7 @@
 				}
 				p {
 					margin: 0;
-				}				
+				}
 			}
 			td {
 				padding: 15px 20px;
@@ -290,7 +290,7 @@
 					@include box-shadow(none);
 					text-align: left;
 					padding: 10px 0 0;
-				}				
+				}
 				&:before {
 					@include breakpoint(tablet-small-portrait1) {
 					content: attr(data-head);
@@ -332,7 +332,7 @@
 			position: absolute;
 			top: -9999px;
 			left: -9999px;
-		}	
+		}
 	}
 	.video {
 		iframe {
@@ -343,7 +343,7 @@
 	
 	&.before-text {
 		@include font(14,26);
-		color:$color_grey;		
+		color:$color_grey;
 	}
 	&.after-text {
 		margin:30px 0;	

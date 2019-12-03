@@ -9,7 +9,7 @@
 		position: relative;
 		@include breakpoint(tablet-windows) {
 			margin: 0 0 50px;
-		}	
+		}
 		@include breakpoint(phone-landscape1) {
 			width: 100%;
 		}

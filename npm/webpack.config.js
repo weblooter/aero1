@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production', //development
     entry: './webpack/webpack.js',
     output: {
         path: path.resolve(__dirname, '../local/templates/vedrov/assets/js/'), // в какую папку выгружать - ./js
@@ -18,10 +18,11 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
-                        loader: 'css-loader',
+                        loader: 'css-loader?url=false',
                         options: {
                             importLoaders: 2,
-                            sourceMap: true
+                            sourceMap: true,
+							url: false
                         }
                     },
                     {

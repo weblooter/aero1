@@ -8,7 +8,7 @@
 			margin: 80px auto;
 		}
 		h2,.h2 {
-			margin-top:0; 
+			margin-top:0;
 		}
 	}
 	.row {
@@ -232,7 +232,7 @@
 						margin: 20px 0 30px;
 						padding-left: 10px;
 						width: 100%;
-					}					
+					}
 					@include breakpoint(tablet-small-portrait) {
 						padding-left: 0;
 					}
@@ -688,7 +688,7 @@
 						color: $color_blue_light;
 						text-decoration: none;
 					}
-				}			
+				}
 			}
 		}
 }

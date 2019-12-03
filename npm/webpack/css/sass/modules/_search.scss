@@ -24,7 +24,7 @@
 				border-bottom:1px solid #D8D8D8;	
 				@include breakpoint(tablet-portrait) {	
 					@include font(20,23,300);
-				}		
+				}
 			}
 			&:hover {
 				text-decoration: none;
@@ -68,12 +68,12 @@
 		cursor: pointer;
 		position: absolute;
 		top:17px;
-		right:20px; 
+		right:20px;
 		padding: 0;
 		text-indent:-9999px;
 		overflow:hidden;
 		@include breakpoint(tablet-portrait) {
-			right:15px; 
+			right:15px;
 			top:10px;
 		}
 		&:hover {			

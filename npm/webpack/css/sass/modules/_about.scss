@@ -20,7 +20,7 @@
 			@include breakpoint(tablet-portrait) {
 				margin: 0 0 40px;				
 				padding-bottom: 20px;
-			}				
+			}
 		}
 		.col-xs-11 {
 			@include breakpoint(tablet-small-portrait) {
@@ -171,7 +171,7 @@
 	@include breakpoint(phone-landscape) {
 		width: 300px;
 		height: 300px;
-	}	
+	}
 		li {
 			border-radius: 50%;
 			position: absolute!important;

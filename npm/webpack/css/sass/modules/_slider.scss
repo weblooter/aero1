@@ -38,7 +38,7 @@
 			@include breakpoint(tablet-small-portrait) {
 				padding: 0 15px;
 		}
-		}		
+		}
 		&:before {
 		@include twins;
 		top: 0;
@@ -173,7 +173,7 @@
 		right: 0;
 		z-index: 0;
 		background-repeat:no-repeat;
-		background-size:cover;		
+		background-size:cover;
 		@include breakpoint(tablet-portrait) {
 			background-position: center bottom;
 			background-size: auto calc(100vh + 15px);
@@ -501,7 +501,7 @@
 				button {
 					background: none;
 				}
-			}		
+			}
 
 	}
 }
@@ -542,7 +542,7 @@
 	top:0;
 	left:0;
 	right:0;
-	bottom:0;	
+	bottom:0;
 	@include transition(all .3s ease);
 	animation: fadeIn .3s alternate ease;
 	.slick-list,.slick-track {
@@ -688,8 +688,8 @@
 }
 .str_move { 
 	white-space:nowrap;
-	position:absolute; 
-	top:0; 
+	position:absolute;
+	top:0;
 	left:0;
 	cursor:move;
 	@include display-flex;
@@ -718,7 +718,7 @@
 	//display:inline;
 	//zoom:1;
 	vertical-align:top;
-	position:absolute; 
+	position:absolute;
 	left:100%;
 	top:0;
 	@include display-flex;

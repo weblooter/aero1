@@ -197,7 +197,7 @@
 					@include simple-gradient(to bottom, $color_blue, 0%, transparent, 100%);
 					@include twins;
 					@include opacity(.8);
-				}			
+				}
 				.title-preview {
 					top:30px;
 					left: 5px;
@@ -223,7 +223,7 @@
 						left: 30px;
 						right: 30px;
 						@include font(24,26);
-					}					
+					}
 					@include breakpoint(tablet-small-portrait) {
 						display: none;
 					}

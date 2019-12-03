@@ -18,7 +18,7 @@
 			@include breakpoint(tablet-portrait) {
 				width:auto;
 			}
-		}		
+		}
 		.column {
 			width: 50%;
 			float: left;
@@ -41,7 +41,7 @@
 		.social {
 			@include breakpoint(tablet-portrait) {
 				margin: 0 0 30px;
-			}			
+			}
 			a {
 				@include opacity(1);
 				width:30px;
@@ -167,7 +167,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	}
 	@include breakpoint(tablet-portrait) {
 		margin-left:-15px;
-	}	
+	}
 	iframe {
 		width:100%!important;
 		@include breakpoint(tablet-portrait) {
@@ -221,7 +221,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 				color:$color_link;
 			}
 		}
-	}	
+	}
 }
 
 .contactsInfo {
@@ -275,7 +275,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 						}
 				}
 				&:hover {
-					color:$color_link;					
+					color:$color_link;
 				}
 			 }
 		 }

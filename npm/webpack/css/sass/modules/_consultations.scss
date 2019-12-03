@@ -14,7 +14,7 @@
 			@include breakpoint(tablet-small-portrait) {
 			margin: 0 0 20px;
 		}
-		}		
+		}
 	}
 	.text {
 		@include breakpoint(tablet-small-portrait) {
@@ -46,7 +46,7 @@
 			margin-top:10px;
 			text-align:right;
 			@include font(10,12);
-			color:$color_grey;				
+			color:$color_grey;
 		}
 		.link {
 			color:$color_h;
@@ -155,7 +155,7 @@
 			color:$color_link;
 			a {			
 				text-decoration:none!important;
-				color:$color_link!important;					
+				color:$color_link!important;
 					&:hover {
 						text-decoration:none;
 						color:$color_link_hover!important;
@@ -164,8 +164,8 @@
 			span {
 				display:inline-block;
 				margin:0 5px;
-			}			
-		}	
+			}
+		}
 	.question {
 		padding-left:98px;
 		position:relative;

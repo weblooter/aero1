@@ -39,11 +39,19 @@
 				@include transform (translate(0,0));
 			}
 		}
+		
 		.newsSlider {
 			overflow: hidden;
 			margin: 0 -5px;
 			padding-bottom: 40px;
 			@include box-sizing(border-box);
+				.slick-track {
+					@include display-flex;
+					@include flex-direction(row-reverse);
+					@include breakpoint(tablet-small-portrait) {
+						@include flex-direction(row);
+					}
+				}
 				.slide {
 					padding: 0 5px;
 				}
