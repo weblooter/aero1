@@ -1,15 +1,15 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Контакты", 
-		"/kontakty/", 
+		"Увеличение груди", 
+		"/uslugi/grud/uvelichenie-grudi/", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
-		"лицензии", 
-		"/litsenzii/", 
+		"", 
+		"", 
 		Array(), 
 		Array(), 
 		"" 

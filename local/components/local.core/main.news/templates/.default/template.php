@@ -26,7 +26,7 @@
                                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="news__item">
                                     <span class="title"><?=$arItem['NAME']?></span>
                                     <span class="arrow">Подробнее</span>
-                                    <span class="image" style="background-image: url(<?=$arItem['PREVIEW_PICTURE']?>);"></span>
+                                    <span class="image" style="background-image: url(<?=$arItem['IMG']?>);"></span>
                                 </a>
                             </div>
                         <? endforeach; ?>

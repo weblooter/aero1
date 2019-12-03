@@ -39,13 +39,49 @@ class MainNewsComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 
             while ($ar = $rsElems->GetNext())
             {
-                if( $ar['PREVIEW_PICTURE'] > 0 )
+                $arResult['ITEMS'][$ar['ID']] = $ar;
+            }
+
+
+            if( !empty( $arResult['ITEMS'] ) )
+            {
+                $rsElemMainPhotos = \Local\Core\Model\Bitrix\ElementPropertyTable::getList([
+                    'filter' => [
+                        'IBLOCK_ELEMENT_ID' => array_keys($arResult['ITEMS']),
+                        'IBLOCK_PROPERTY_ID' => \Local\Core\Assistant\Iblock\ElementProperty::getIdByCode(
+                            \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'useful_news'),
+                            'MAIN_PAGE_PHOTO'
+                        ),
+                        '!VALUE' => false
+                    ],
+                    'select' => [
+                        'ELEMENT_ID' => 'IBLOCK_ELEMENT_ID',
+                        'VALUE'
+                    ]
+                ]);
+                while ($ar = $rsElemMainPhotos->fetch())
                 {
-                    $ar['PREVIEW_PICTURE'] = \CFile::ResizeImageGet($ar['PREVIEW_PICTURE'], ['width' => 250, 'height' => 450], false,false,false, 75);
-                    $ar['PREVIEW_PICTURE'] = $ar['PREVIEW_PICTURE']['src'];
+
+                    if( $ar['VALUE'] > 0 )
+                    {
+                        $ar['IMG'] = \CFile::ResizeImageGet($ar['VALUE'], ['width' => 250, 'height' => 450], false,false,false, 75);
+                        $ar['IMG'] = $ar['IMG']['src'];
+                        $arResult['ITEMS'][$ar['ELEMENT_ID']]['IMG'] = $ar['IMG'];
+                    }
                 }
 
-                $arResult['ITEMS'][] = $ar;
+                foreach ($arResult['ITEMS'] as &$arItem)
+                {
+                    if( empty($arItem['IMG']) )
+                    {
+                        if( $arItem['PREVIEW_PICTURE'] > 0 )
+                        {
+                            $arTmp['PREVIEW_PICTURE'] = \CFile::ResizeImageGet($arItem['PREVIEW_PICTURE'], ['width' => 250, 'height' => 450], false,false,false, 75);
+                            $arItem['IMG'] = $arTmp['PREVIEW_PICTURE']['src'];
+                        }
+                    }
+                }
+                unlink($arItem);
             }
 
         } catch (\Exception $e) {
