@@ -21,7 +21,14 @@
         </div>
         <div class="row row-f">
             <div class="review__source col-xs-12 col-sm-6 col-md-3 col-md-offset-6">
+                <?if(
+                    (int)$arResult['ITEM']['PROPERTIES']['EXTERNAL_REVIEW_LOGO']['VALUE'] > 0
+                    && !empty( trim($arResult['ITEM']['PROPERTIES']['EXTERNAL_REVIEW_LINK']['VALUE'])  )
+                ):?>
+                    <a href="<?=trim($arResult['ITEM']['PROPERTIES']['EXTERNAL_REVIEW_LINK']['VALUE'])?>" target="_blank" rel="nofollow"><img src="<?=\CFile::GetPath($arResult['ITEM']['PROPERTIES']['EXTERNAL_REVIEW_LOGO']['VALUE'])?>" /></a>
+                <?else:?>
                 &nbsp;
+                <?endif;?>
             </div>
             <div class="review__author col-xs-12 col-sm-6 col-md-3">
                 <?=$arResult['ITEM']['PROPERTIES']['REVIEW_NAME']['VALUE']?>

@@ -12,7 +12,7 @@
                 <strong>Адрес</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'html'])?>
             </p>
             <p>
-                <strong>Телефон</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-address.php', false, ['MODE' => 'html'])?>
+                <strong>Телефон</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-phones.php', false, ['MODE' => 'html'])?>
             </p>
             <p>
                 <strong>Режим работы</strong><br /><? $GLOBALS['APPLICATION']->IncludeFile('include/contacts-work-time.php', false, ['MODE' => 'html'])?>

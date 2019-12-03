@@ -1,5 +1,5 @@
 <?
-if( preg_match('/^\/uslugi\/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)\//', $_SERVER['SCRIPT_URL']) === 1 )
+if( preg_match('/^\/uslugi\/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)\//', $_SERVER['REQUEST_URI']) === 1 )
 {
     define('MAIN_PAGE', true);
 }

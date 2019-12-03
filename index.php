@@ -2,7 +2,9 @@
 define('MAIN_PAGE', true);
 define('DISABLE_BREADCRUMBS', true);
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
-$APPLICATION->SetTitle('Главная');
+$APPLICATION->SetPageProperty("TITLE", "Ведров Олег Вячеславович - пластический хирург");
+$APPLICATION->SetPageProperty("description", "Ведров Олег Вячеславович - пластический хирург");
+$APPLICATION->SetTitle("Главная");
 ?>
 <? $APPLICATION->IncludeFile('include/main-first-block.php', false, ['SHOW_BORDER' => false])?>
 <? $APPLICATION->IncludeFile('include/main-video-block.php', false, ['SHOW_BORDER' => false])?>
