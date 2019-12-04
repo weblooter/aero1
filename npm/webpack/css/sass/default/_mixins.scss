@@ -127,6 +127,10 @@
 	-webkit-flex-basis: $flex-basis;
 	flex-basis: $flex-basis;
 }
+@mixin flex-direction($flex-direction) {
+	-webkit-flex-direction: $flex-direction;
+	flex-direction: $flex-direction;
+}
 
 @mixin align-items($align-items) {
 	-ms-flex-align-items: $align-items;

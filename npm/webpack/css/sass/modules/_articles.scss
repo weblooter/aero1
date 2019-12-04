@@ -32,7 +32,7 @@
 				width: 100%;
 				@include flex-all(0 0 100%);
 			}
-		}		
+		}
 		h2,.h2 {
 			margin-top: 0;
 			@include breakpoint(tablet-small-portrait) {

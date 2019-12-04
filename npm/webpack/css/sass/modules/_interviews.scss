@@ -3,7 +3,7 @@
 	text-align:center;
 		img {
 			max-width:190px;
-		}	
+		}
 	@include breakpoint(tablet-small-portrait) {
 		text-align:right;
 	}

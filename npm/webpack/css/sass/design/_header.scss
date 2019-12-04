@@ -264,7 +264,7 @@
 		.container {
 			position: relative;
 			z-index: 4;
-		}		
+		}
 			&:after {
 				content:"";
 				width: 90%;
@@ -285,7 +285,7 @@
 					top: 100%;
 					left:0;
 				}
-			}				
+			}
 			&:hover {
 				background: #fff;
 				+.shadow {
@@ -481,7 +481,7 @@
 								@include breakpoint(tablet-portrait) {
 									display: none;
 								}
-							}	
+							}
 							&:hover {
 								overflow: visible;
 								span {

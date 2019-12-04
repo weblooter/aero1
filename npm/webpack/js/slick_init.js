@@ -1,4 +1,3 @@
-import 'jquery';
 (function($, undefined) {
 	$(function() {
 		if ($.fn.slick) {
@@ -25,7 +24,7 @@ import 'jquery';
 				var frames = Math.ceil(slick.slideCount / slick.options.slidesToScroll);
 				var currentFrame = (nextSlide || 0) / slick.options.slidesToScroll;
 				// console.log(frames, currentFrame);
-			
+
 				$navContainer.removeClass("active")
 					.eq(currentFrame).addClass("active");
 				$indicatorsContainer.removeClass("active")
@@ -76,7 +75,7 @@ import 'jquery';
 						autoplaySpeed: 6000,
 						slidesToShow: 2,
 						slidesToScroll: 1
-					}					
+					}
 				},
 				{
 					breakpoint: 415,
@@ -85,7 +84,7 @@ import 'jquery';
 						autoplaySpeed: 6000,
 						slidesToShow: 1,
 						slidesToScroll: 1
-					}					
+					}
 				}
 			]});
 
@@ -95,7 +94,7 @@ import 'jquery';
 				slidesToShow: 1,
 				slidesToScroll: 1
 			});
-			
+
 
 			$('.js-slider-examples-works')
 			.on("init beforeChange", fnSetCounter)
@@ -123,7 +122,7 @@ import 'jquery';
 			]});
 
 			$(".js-slider-examples")
-			.on("init beforeChange", function(event) { event.stopPropagation(); }) // отменяем срабатываение наружнего fnSetCounter  
+			.on("init beforeChange", function(event) { event.stopPropagation(); }) // отменяем срабатываение наружнего fnSetCounter
 			.on("init reinit", function(event, slick) {
 				slick.$slider.find(".twentytwenty-container[data-orientation!='vertical']").twentytwenty();
 			})
@@ -135,24 +134,31 @@ import 'jquery';
 				swipe: false,
 			});
 
-			
+
 
 			$('.js-slider-news')
+			.on("init", function(event, slick, currentSlide, nextSlide){
+				if (slick.options.invert) {
+					slick.goTo(slick.slideCount-slick.options.slidesToShow);
+				}
+			 })
 			.slick({
 				infinite: false,
 				speed: 500,
 				slidesToShow: 4,
 				slidesToScroll: 1,
+				invert: true,
 				responsive: [{
 					breakpoint: 992,
 					settings: {
 						slidesToShow: 3,
 						slidesToScroll: 1
 					}
-				},				
+				},
 				{
 					breakpoint: 700,
 					settings: {
+						invert: false,
 						slidesToShow: 2,
 						slidesToScroll: 1
 					}
@@ -160,6 +166,7 @@ import 'jquery';
 				{
 					breakpoint: 480,
 					settings: {
+						invert: false,
 						slidesToShow: 1,
 						slidesToScroll: 1
 					}
@@ -179,7 +186,7 @@ import 'jquery';
 						slidesToShow: 2,
 						slidesToScroll: 2
 					}
-				},				
+				},
 				{
 					breakpoint: 480,
 					settings: {
@@ -212,7 +219,7 @@ import 'jquery';
 						slidesToShow: 2,
 						slidesToScroll: 2
 					}
-				},				
+				},
 				{
 					breakpoint: 600,
 					settings: {
@@ -225,7 +232,7 @@ import 'jquery';
 				}
 			]});
 
-			
+
 			$(".js-slider-with-nav").each(function(){
 				var $self = $(this),
 					$slider = $self.find(".js-slider-for"),
@@ -257,7 +264,7 @@ import 'jquery';
 						slidesToShow: 4,
 						slidesToScroll: 4
 					}
-				},				
+				},
 				{
 					breakpoint: 600,
 					settings: {
@@ -268,19 +275,19 @@ import 'jquery';
 				}
 			]});
 
-			$(".js-slider-consult")	.slick({
-				infinite: false,
-				fade: true,
-				pauseOnHover: false,
-				slidesToShow: 1,
-				slidesToScroll: 1,
-			});
-
 			$(".js-slider-gal")	.slick({
 				autoplay: true,
 				autoplaySpeed: 6000,
 				fade: true,
 				infinite: true,
+				pauseOnHover: false,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+			});
+
+			$(".js-slider-consult")	.slick({
+				infinite: false,
+				fade: true,
 				pauseOnHover: false,
 				slidesToShow: 1,
 				slidesToScroll: 1,
@@ -310,6 +317,8 @@ import 'jquery';
 				}
 			]
 			});
+
+
 		} else {
 			console.log("$.slick is not defined!");
 		}

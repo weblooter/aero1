@@ -325,7 +325,7 @@ button {
       background-position:center;
       background-repeat:no-repeat;
       @include opacity(.6);
-    }   
+    }
 
   }
 
@@ -450,15 +450,15 @@ button {
     width: 100%;    
     cursor: auto;
   }
-  .mfp-img-group 	
-    .mfp-image-holder 
+  .mfp-img-group
+    .mfp-image-holder
       .mfp-bottom-bar {
         display: none!important;
 
   }
-  .mfp-text-group 	
+  .mfp-text-group
     .mfp-container
-    .mfp-content 
+    .mfp-content
       .mfp-text {
         position:relative;
         margin-right:15px;

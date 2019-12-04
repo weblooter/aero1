@@ -16,7 +16,7 @@
 		&:hover {
 			color: $color_link;
 			text-decoration: none;
-		}		
+		}
 	}
 	span {
 		margin: 0 3px;
@@ -75,7 +75,7 @@
 			}*/
 			&:after {
 				display: none;
-			}			
+			}
 			&:before {
 				content:"";
 				width:20px;
@@ -409,7 +409,7 @@ $button-transistion-duration: 0.3s; // The transition duration
 	.c-hamburger--htx.is-active span::before,
 	#nav_dropdown.active span::before {
 		background: $color_h;
-	}	
+	}
 }
 
 .c-hamburger--htx.is-active span::after,
@@ -422,7 +422,7 @@ $button-transistion-duration: 0.3s; // The transition duration
 	.c-hamburger--htx.is-active span::after,
 	#nav_dropdown.active span::after {
 		background: $color_h;
-	}	
+	}
 }
 
 .c-hamburger--htx.is-active span::before,

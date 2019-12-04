@@ -3,11 +3,11 @@
 		margin: 80px auto;
 		@include breakpoint(tablet-windows) {
 			margin: 130px auto;
-		}		
+		}
 		@include breakpoint(tablet-small-portrait1) {					
 			margin: 50px auto;
 		}
-	}	
+	}
 
 		ul {
 			list-style: none;

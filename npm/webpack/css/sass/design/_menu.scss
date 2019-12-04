@@ -42,7 +42,7 @@
 		overflow: hidden;
 		overflow-y: auto;
 		@include transform(translate(-150%,0px));
-	}	
+	}
 	&.nav-active {
 		@include breakpoint(tablet-portrait) {
 			@include transform(translate(0,0));
@@ -442,7 +442,7 @@
 			& > a,& > span {
 				color:$color_link;
 			}
-		}	
+		}
 		
 		&:hover {
 			a,span {
