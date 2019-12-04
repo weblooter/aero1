@@ -55,7 +55,7 @@
             <a href="<?=$arResult['ABOUT_OPERATION']?>" class="arrow">Об операции</a>
             <span class="arrow js-open-callback-form">Бесплатная консультация</span>
             <? if (!empty($arResult['ITEM']['PROPERTIES']['REVIEW_LINK']['VALUE'])): ?>
-                <a href="<?=$arResult['ITEM']['PROPERTIES']['REVIEW_LINK']['VALUE']?>" target="_blank" class="arrow">Подробная история</a>
+                <a href="<?=$arResult['ITEM']['PROPERTIES']['REVIEW_LINK']['VALUE']?>" class="arrow"><?=( !empty( trim( $arResult['ITEM']['PROPERTIES']['INNER_LINK_TEXT']['VALUE'] ) ) ? $arResult['ITEM']['PROPERTIES']['INNER_LINK_TEXT']['VALUE'] : 'Подробная история' )?></a>
             <? endif; ?>
         </div>
 
