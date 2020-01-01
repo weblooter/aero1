@@ -48,6 +48,13 @@ $aMenuLinks = Array(
 		Array(), 
 		Array(), 
 		"" 
+	),
+	Array(
+		"СМИ", 
+		"/poleznoe/smi/", 
+		Array(), 
+		Array(), 
+		"" 
 	)
 );
 ?>

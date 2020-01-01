@@ -18,10 +18,9 @@ if ($arResult['PROPERTIES']['FAQ_USER_PHOTO']['VALUE'] > 0) {
     $arResult['PROPERTIES']['FAQ_USER_PHOTO']['VALUE'] = $arTmp['src'];
 }
 
-
-$arResult['PROPERTIES']['START_TEXT']['VALUE']['TEXT'] = (new Format\FormatCommon())->format($arResult['PROPERTIES']['START_TEXT']['VALUE']['TEXT']);
-if (mb_strtoupper($arResult['PROPERTIES']['START_TEXT']['VALUE']['TYPE']) == 'TEXT') {
-    $arResult['PROPERTIES']['START_TEXT']['VALUE']['TEXT'] = '<p>'.$arResult['PROPERTIES']['START_TEXT']['VALUE']['TEXT'].'</p>';
+$arResult['PROPERTIES']['START_TEXT']['~VALUE']['TEXT'] = (new Format\FormatCommon())->format($arResult['PROPERTIES']['START_TEXT']['~VALUE']['TEXT']);
+if (mb_strtoupper($arResult['PROPERTIES']['START_TEXT']['~VALUE']['TYPE']) == 'TEXT') {
+    $arResult['PROPERTIES']['START_TEXT']['~VALUE']['TEXT'] = '<p>'.$arResult['PROPERTIES']['START_TEXT']['~VALUE']['TEXT'].'</p>';
 }
 
 $arResult['PROPERTIES']['FAQ_TEXT']['VALUE'] = array_map(function ($v)

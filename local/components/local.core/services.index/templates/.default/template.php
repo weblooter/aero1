@@ -46,7 +46,7 @@
         <? endif; ?>
 
         <div class="more">
-            <a href="/foto-rabot/" class="arrow">СМОТРЕТЬ ВСЕ РАБОТЫ</a>
+            <a href="<?=\Bitrix\Main\Application::getInstance()->getContext()->getRequest()->getRequestUri()?>photo/" class="arrow">СМОТРЕТЬ ВСЕ РАБОТЫ</a>
             <span class="arrow js-open-callback-form">Бесплатная консультация</span>
         </div>
 

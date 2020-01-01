@@ -199,3 +199,13 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 <? include $_SERVER['DOCUMENT_ROOT'].'/.footer-inc.text'; ?>
 </body>
 </html>
+<?
+$oAsset = \Bitrix\Main\Page\Asset::getInstance();
+$oAsset->addString('<meta property="og:title" content="'.addcslashes($APPLICATION->GetPageProperty('title'), '\'').'">');
+$oAsset->addString('<meta property="og:description" content="'.addcslashes($APPLICATION->GetPageProperty('description'), '\'').'">');
+$oAsset->addString('<meta property="og:type" content="article">');
+$oAsset->addString('<meta property="og:url" content="https://dr-vedrov.ru'.\Bitrix\Main\Application::getInstance()->getContext()->getRequest()->getRequestUri().'">');
+$oAsset->addString('<meta property="og:locale" content="ru_RU">');
+$oAsset->addString('<meta property="og:site_name" content="dr-Vedrov.ru">');
+$oAsset->addString('<meta property="og:image" content="https://dr-vedrov.ru/img/open_graph_logo.png">');
+?>

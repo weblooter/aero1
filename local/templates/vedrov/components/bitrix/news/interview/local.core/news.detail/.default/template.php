@@ -21,7 +21,7 @@ $this->setFrameMode(true);
 
     <div class="row">
         <div class="text col-xs-12 col-sm-9">
-            <?=$arResult['PROPERTIES']['START_TEXT']['VALUE']['TEXT']?>
+            <?=$arResult['PROPERTIES']['START_TEXT']['~VALUE']['TEXT']?>
         </div>
         <div class="col-xs-12 col-sm-3 interview__source">
             <a href="<?=$arResult['PROPERTIES']['START_LOGO_LINK']['VALUE']?>"
