@@ -29,7 +29,7 @@
                                     <?
                                     $intPrice = array_sum($arItem['PROPERTIES']['PRICE']['VALUE']);
                                     ?>
-                                    <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? 'от ' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.</span>
+                                    <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.</span>
                                     <div class="price__text">
                                         <table>
                                             <? foreach ($arItem['PROPERTIES']['PRICE']['VALUE'] as $k => $v): ?>
@@ -40,7 +40,7 @@
                                             <? endforeach; ?>
                                             <tr>
                                                 <td>ИТОГО</td>
-                                                <td style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? 'от ' : ''?><?=number_format($intPrice, 0, '.', '.')?> руб.</td>
+                                                <td style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($intPrice, 0, '.', '.')?> руб.</td>
                                             </tr>
                                         </table>
                                     </div>
