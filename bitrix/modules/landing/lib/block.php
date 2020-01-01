@@ -7,6 +7,7 @@ use \Bitrix\Main\Web\DOM;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Landing\Internals;
 use \Bitrix\Landing\Assets;
+use \Bitrix\Landing\Node\Type as NodeType;
 use \Bitrix\Landing\PublicAction\Utils as UtilsAction;
 
 Loc::loadMessages(__FILE__);
@@ -2293,8 +2294,8 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 			if (strpos($this->content, '/upload/') !== false)
 			{
 				$this->content = preg_replace(
-					'#//[^\'^"]+/upload/#',
-					'/upload/',
+					'#"//[^\'^"]+/upload/#',
+					'"/upload/',
 					$this->content
 				);
 			}
@@ -2915,10 +2916,9 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 						$disableUpdate = true;
 						continue;
 					}
-					Manager::setPageTitle(
-						$source->getSeoTitle(),
-						true
-					);
+					$pageTitle = $source->getSeoTitle();
+					Manager::setPageTitle($pageTitle, true);
+					Landing\Seo::changeValue('title', $pageTitle);
 				}
 				// element list
 				else
@@ -2952,14 +2952,14 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 					$fieldCode = $field['id'];
 					$fieldType = isset($manifest['nodes'][$selector]['type'])
 								? $manifest['nodes'][$selector]['type']
-								: \Bitrix\Landing\Node\Type::TEXT;
+								: NodeType::TEXT;
 					// fill ever selector with data, if data exist
 					foreach ($sourceData as $dataItem)
 					{
 						// set link to the card
 						// @todo: need refactoring
 						if (
-							$fieldType == 'link' &&
+							$fieldType == NodeType::LINK &&
 							isset($field['action'])
 						)
 						{
@@ -3002,20 +3002,39 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 								: '';
 							// @todo: refactor
 							if (
-								$fieldType == 'img' &&
-								is_array($value)
+								$fieldType == NodeType::IMAGE ||
+								$fieldType == NodeType::TEXT
 							)
 							{
-								$urlPicture = $getDetailPage(
-									$detailPage,
-									$filterId,
-									$dataItem['ID']
-								);
-								if ($urlPicture)
+								if (isset($field['link']))
 								{
-									unset($urlPicture['text']);
-									$urlPicture['enabled'] = true;
-									$value['url'] = $urlPicture;
+									if ($fieldType == NodeType::IMAGE)
+									{
+										$value = (array) $value;
+									}
+									else
+									{
+										$value = [
+											'text' => (string) $value
+										];
+									}
+									$value['url'] = [
+										'enabled' => false
+									];
+									if (UtilsAction::isTrue($field['link']))
+									{
+										$urlPicture = $getDetailPage(
+											$detailPage,
+											$filterId,
+											$dataItem['ID']
+										);
+										if ($urlPicture)
+										{
+											unset($urlPicture['text']);
+											$urlPicture['enabled'] = true;
+											$value['url'] = $urlPicture;
+										}
+									}
 								}
 							}
 
@@ -3750,6 +3769,69 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 	}
 
 	/**
+	 * Collects and returns allowed attributes ([selector] => [data-test, data-test2]).
+	 * @param string $selector Selector, if attr have't own selector.
+	 * @param array &$allowed Array for collecting.
+	 * @return void
+	 */
+	protected static function collectAllowedAttrs(array $mixed, array &$allowed, $selector = null)
+	{
+		foreach ($mixed as $itemSelector => $item)
+		{
+			if (!is_string($itemSelector))
+			{
+				$itemSelector = $selector;
+			}
+			if (
+				isset($item['attrs']) &&
+				is_array($item['attrs'])
+			)
+			{
+				self::collectAllowedAttrs($item['attrs'], $allowed, $itemSelector);
+			}
+			else if (
+				isset($item['additional']['attrs']) &&
+				is_array($item['additional']['attrs'])
+			)
+			{
+				self::collectAllowedAttrs($item['additional']['attrs'], $allowed, $itemSelector);
+			}
+			else if (
+				isset($item['additional']) &&
+				is_array($item['additional'])
+			)
+			{
+				self::collectAllowedAttrs($item['additional'], $allowed, $itemSelector);
+			}
+			else if (
+				isset($item['attribute']) &&
+				is_string($item['attribute'])
+			)
+			{
+				if (
+					isset($item['selector']) &&
+					is_string($item['selector'])
+				)
+				{
+					$itemSelector = trim($item['selector']);
+				}
+				if ($itemSelector)
+				{
+					if (!$allowed[$itemSelector])
+					{
+						$allowed[$itemSelector] = [];
+					}
+					$allowed[$itemSelector][] = $item['attribute'];
+				}
+			}
+			else if (is_array($item))
+			{
+				self::collectAllowedAttrs($item, $allowed, $itemSelector);
+			}
+		}
+	}
+
+	/**
 	 * Set attributes to nodes of block.
 	 * @param array $data Attrs data array.
 	 * @return void
@@ -3767,165 +3849,75 @@ class Block extends \Bitrix\Landing\Internals\BaseTable
 
 		$doc = $this->getDom();
 		$manifest = $this->getManifest();
-
-		// wrapper (not realy exist)
 		$wrapper = '#' . $this->getAnchor($this->id);
 
-		// find available nodes by manifest from data
-		$attrs = $manifest['attrs'];
-		$attrs[$wrapper] = array(
-			//
-		);
+		// collect allowed attrs
+		$allowedAttrs = [];
+		self::collectAllowedAttrs($manifest['style']['nodes'], $allowedAttrs);
+		self::collectAllowedAttrs($manifest['attrs'], $allowedAttrs);
+		self::collectAllowedAttrs($manifest['cards'], $allowedAttrs);
 
-		// find attrs in style key
-		if (isset($manifest['style']['nodes']))
+		// update attrs
+		if ($allowedAttrs)
 		{
-			foreach ($manifest['style']['nodes'] as $selector => $item)
+			// all allowed attrs from manifest with main selector ([selector] => [data-test, data-test2])
+			foreach ($allowedAttrs as $selector => $allowed)
 			{
-				if (
-					isset($item['additional']['attrs']) &&
-					is_array($item['additional']['attrs'])
-				)
+				// it's not interesting for us, if there is no new data for this selector
+				if (isset($data[$selector]) && is_array($data[$selector]))
 				{
-					foreach ($item['additional']['attrs'] as $attr)
+					// set attrs to the block
+					if ($selector == $wrapper)
 					{
-						if (!isset($attrs[$selector]))
+						$resultList = [array_pop($doc->getChildNodesArray())];
+					}
+					// or by selector
+					else
+					{
+						$resultList = $doc->querySelectorAll($selector);
+					}
+					// external data for changing in allowed attrs
+					foreach ($data[$selector] as $attrKey => $attrData)
+					{
+						// if key without position (compatibility)
+						if (!($attrKey == (string)(int)$attrKey))
 						{
-							$attrs[$selector] = array();
+							$attrData = [$attrKey => $attrData];
+							$attrKey = -1;
 						}
-						$attrs[$selector][] = $attr;
-					}
-				}
-			}
-		}
-		// and in block styles
-		if (
-			isset($manifest['style']['block']['additional']['attrs']) &&
-			is_array($manifest['style']['block']['additional']['attrs'])
-		)
-		{
-			foreach ($manifest['style']['block']['additional']['attrs'] as $attr)
-			{
-				if (!isset($attrs[$wrapper]))
-				{
-					$attrs[$wrapper] = array();
-				}
-				$attrs[$wrapper][] = $attr;
-			}
-		}
-
-		// and in cards key
-		if (isset($manifest['cards']))
-		{
-			foreach ($manifest['cards'] as $selector => $item)
-			{
-				if (
-					isset($item['additional']['attrs']) &&
-					is_array($item['additional']['attrs'])
-				)
-				{
-					foreach ($item['additional']['attrs'] as $attr)
-					{
-						if (!isset($attrs[$selector]))
+						if (!is_array($attrData))
 						{
-							$attrs[$selector] = array();
+							continue;
 						}
-						$attrs[$selector][] = $attr;
-					}
-				}
-			}
-		}
-
-		foreach ($attrs as $selector => $item)
-		{
-			if (isset($data[$selector]))
-			{
-				// not multi
-				if (!isset($item[0]))
-				{
-					$item = array($item);
-				}
-				// prepare attrs (and group attrs)
-				$attrItems = array();
-				foreach ($item as $key => $val)
-				{
-					if (
-						isset($val['attrs']) &&
-						is_array($val['attrs'])
-					)
-					{
-						foreach ($val['attrs'] as $groupAttr)
+						// attrs new data in each selector ([data-test] => value)
+						foreach ($attrData as $key => $val)
 						{
-							$item[] = $groupAttr;
-						}
-						unset($item[$key]);
-					}
-				}
-				foreach ($item as $val)
-				{
-					if (!isset($val['attribute']))
-					{
-						continue;
-					}
-					if (!isset($attrItems[$val['attribute']]))
-					{
-						$attrItems[$val['attribute']] = array();
-					}
-					if (isset($data[$selector][$val['attribute']]))
-					{
-						$attrItems[$val['attribute']][-1] = $data[$selector][$val['attribute']];
-					}
-					// cards
-					else if (is_array($data[$selector]))
-					{
-						foreach ($data[$selector] as $pos => $card)
-						{
-							if (isset($card[$val['attribute']]))
+							if (!in_array($key, $allowed))
 							{
-								$attrItems[$val['attribute']][$pos] = $card[$val['attribute']];
+								continue;
+							}
+							// result nodes by main selector
+							foreach ($resultList as $pos => $resultNode)
+							{
+								// if position of node that we try to find
+								if ($attrKey == -1 || $attrKey == $pos)
+								{
+									// update node
+									$resultNode->setAttribute(
+										\htmlspecialcharsbx($key),
+										is_array($val)
+											? json_encode($val)
+											: $val
+									);
+								}
 							}
 						}
 					}
 				}
-				// set attrs to the block
-				if ($selector == $wrapper)
-				{
-					$resultList = array(
-						array_pop($doc->getChildNodesArray())
-					);
-				}
-				// or by selector
-				else
-				{
-					$resultList = $doc->querySelectorAll($selector);
-				}
-				foreach ($resultList as $pos => $resultNode)
-				{
-					foreach ($attrItems as $code => $val)
-					{
-						if (isset($val[-1]))
-						{
-							$val = $val[-1];
-						}
-						else if (isset($val[$pos]))
-						{
-							$val = $val[$pos];
-						}
-						else
-						{
-							continue;
-						}
-						$resultNode->setAttribute(
-							\htmlspecialcharsbx($code),
-							is_array($val)
-							? json_encode($val)
-							: $val
-						);
-					}
-				}
 			}
 		}
-		// save rebuild html as text
+
+		// save result
 		$this->saveContent($doc->saveHTML());
 	}
 

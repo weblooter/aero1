@@ -191,5 +191,5 @@ this.BX = this.BX || {};
 
 	exports.ImageEditor = ImageEditor;
 
-}((this.BX.Landing = this.BX.Landing || {}),BX,BX));
+}((this.BX.Landing = this.BX.Landing || {}),BX.Main,BX));
 //# sourceMappingURL=imageeditor.bundle.js.map

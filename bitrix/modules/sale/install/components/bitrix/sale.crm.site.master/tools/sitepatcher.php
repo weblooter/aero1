@@ -1377,4 +1377,90 @@ class SitePatcher
 	{
 		Option::delete("sale", ["name" => "regular_archive_active"]);
 	}
+
+	/**
+	 * @throws Main\ArgumentException
+	 * @throws Main\ArgumentNullException
+	 * @throws Main\ArgumentOutOfRangeException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
+	 */
+	public function addSiteToCatalog()
+	{
+		$siteId = self::getCrmSiteId();
+		if (!$siteId)
+			return;
+
+		$catalogIblocIdkList = $this->getCatalogIblockIdList();
+		if (!$catalogIblocIdkList)
+			return;
+
+		foreach ($catalogIblocIdkList as $catalogIblockId)
+		{
+			$siteList = $this->getIblockSiteList($catalogIblockId);
+			$siteList[$catalogIblockId][] = $siteId;
+
+			$iblock = new \CIBlock();
+			$iblock->Update($catalogIblockId,
+				[
+					"LID" => $siteList[$catalogIblockId]
+				]
+			);
+		}
+	}
+
+	/**
+	 * @return array
+	 * @throws Main\ArgumentException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
+	 */
+	private function getCatalogIblockIdList()
+	{
+		$catalogIblocIdkList = [];
+		$catalogResult = Catalog\CatalogIblockTable::getList([
+			'select' => ['IBLOCK_ID', 'PRODUCT_IBLOCK_ID']
+		]);
+		while ($row = $catalogResult->fetch())
+		{
+			$row['IBLOCK_ID'] = (int)$row['IBLOCK_ID'];
+			$row['PRODUCT_IBLOCK_ID'] = (int)$row['PRODUCT_IBLOCK_ID'];
+
+			$catalogIblocIdkList[$row['IBLOCK_ID']] = $row['IBLOCK_ID'];
+			if ($row['PRODUCT_IBLOCK_ID'] > 0)
+			{
+				$catalogIblocIdkList[$row['PRODUCT_IBLOCK_ID']] = $row['PRODUCT_IBLOCK_ID'];
+			}
+		}
+
+		return $catalogIblocIdkList;
+	}
+
+	/**
+	 * @param $catalogIblocIdkList
+	 * @return array
+	 * @throws Main\ArgumentException
+	 * @throws Main\ObjectPropertyException
+	 * @throws Main\SystemException
+	 */
+	private function getIblockSiteList($catalogIblocIdkList)
+	{
+		$siteList = [];
+		$iblockSiteResult = \Bitrix\Iblock\IblockSiteTable::getList([
+			'select' => ['IBLOCK_ID', 'SITE_ID'],
+			'filter' => ['@IBLOCK_ID' => $catalogIblocIdkList]
+		]);
+		while ($row = $iblockSiteResult->fetch())
+		{
+			$row['IBLOCK_ID'] = (int)$row['IBLOCK_ID'];
+			if (!isset($siteList[$row['IBLOCK_ID']]))
+			{
+				$siteList[$row['IBLOCK_ID']] = [];
+			}
+
+			$siteList[$row['IBLOCK_ID']][] = $row['SITE_ID'];
+		}
+
+		return $siteList;
+	}
 }

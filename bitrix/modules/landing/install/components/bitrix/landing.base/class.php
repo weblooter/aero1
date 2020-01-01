@@ -734,6 +734,21 @@ class LandingBaseComponent extends \CBitrixComponent
 				$this->restProxy();
 			}
 		}
+		else if (
+			$action &&
+			check_bitrix_sessid() &&
+			$this->request('actionType') == 'json' &&
+			is_callable(array($this, 'action' . $action))
+		)
+		{
+			Manager::getApplication()->restartBuffer();
+			header('Content-Type: application/json');
+			echo \Bitrix\Main\Web\Json::encode(
+				$this->{'action' . $action}($param, $additional)
+			);
+			\CMain::finalActions();
+			die();
+		}
 		else if ($action && is_callable(array($this, 'action' . $action)))
 		{
 			if (

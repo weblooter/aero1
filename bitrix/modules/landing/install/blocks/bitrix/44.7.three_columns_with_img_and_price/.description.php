@@ -29,7 +29,7 @@ return array(
 		'.landing-block-node-card-img' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_44.7.THREE_COLUMNS_WITH_IMG_AND_PRICE_NODES_LANDINGBLOCKNODECARDIMG'),
 			'type' => 'img',
-			'dimensions' => array('width' => 740, 'height' => 380),
+			'dimensions' => array('width' => 540),
 		),
 		'.landing-block-node-card-price-subtitle' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_44.7.THREE_COLUMNS_WITH_IMG_AND_PRICE_NODES_LANDINGBLOCKNODECARDPRICESUBTITLE'),

@@ -26,7 +26,7 @@ return array(
 			
 			'name' => Loc::getMessage('LANDING_BLOCK_28.PERSONAL_SLIDER_NODES_LANDINGBLOCKNODEPERSONPHOTO'),
 			'type' => 'img',
-			'dimensions' => array('width' => 400, 'height' => 450),
+			'dimensions' => array('width' => 370, 'height' => 400),
 		),
 		'.landing-block-node-person-post' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_28.PERSONAL_SLIDER_NODES_LANDINGBLOCKNODEPERSONPOST'),
@@ -64,7 +64,11 @@ return array(
 			),
 			'.landing-block-node-person-photo' => array(
 				'name' => Loc::getMessage('LANDING_BLOCK_28.PERSONAL_SLIDER_NODES_LANDINGBLOCKNODEPERSONPHOTO'),
-				'type' => 'background-size',
+				'type' => array('background-size','align-self'),
+			),
+			'.landing-block-card-person' => array(
+				'name' => Loc::getMessage('LANDING_BLOCK_28.PERSONAL_SLIDER_CARDS_LANDINGBLOCKCARDPERSON'),
+				'type' => 'align-self',
 			),
 		),
 	),

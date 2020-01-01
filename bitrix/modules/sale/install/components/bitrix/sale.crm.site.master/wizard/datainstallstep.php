@@ -324,5 +324,6 @@ class DataInstallStep extends \DataInstallStep
 
 		$sitePatcher->createDepartment(Loc::getMessage("SALE_CSM_WIZARD_DATAINSTALLSTEP_DEPARTMENT_NAME"));
 		$sitePatcher->prepareCrmCatalog();
+		$sitePatcher->addSiteToCatalog();
 	}
 }

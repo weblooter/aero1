@@ -29,7 +29,7 @@ return array(
 		'.landing-block-node-card-img' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_11.2.THREE_COLS_FIX_TARIFFS_BLACK_NODES_LANDINGBLOCKNODECARD_IMG'),
 			'type' => 'img',
-			'dimensions' => array('width' => 370, 'height' => 200),
+			'dimensions' => array('width' => 540),
 		),
 		'.landing-block-node-card-icon' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_11.2.THREE_COLS_FIX_TARIFFS_BLACK_NODES_LANDINGBLOCKNODECARD_ICON'),

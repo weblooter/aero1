@@ -626,19 +626,17 @@ function deleteAccessRow(link)
 
 		var arrowContainer = document.querySelector('.landing-form-select-buttons');
 		var layoutContainer = document.querySelector('.landing-form-list-inner');
-		var layoutWithoutRight = BX('layout-radio-6');
-		arrowContainer.addEventListener('click', handleArrowClick.bind(this));
+		arrowContainer.addEventListener('click', handlerOnArrowClick.bind(this));
 
-		function handleArrowClick(event) {
-			if(event.target.classList.contains('landing-form-select-next')) {
+		function handlerOnArrowClick(event) {
+			if (event.target.classList.contains('landing-form-select-next'))
+			{
 				layoutContainer.classList.add('landing-form-list-inner-prev');
-			} else {
+			}
+			else
+			{
 				layoutContainer.classList.remove('landing-form-list-inner-prev');
 			}
-		}
-
-		if(layoutWithoutRight.checked) {
-			layoutContainer.classList.add('landing-form-list-inner-prev');
 		}
 	};
 
@@ -652,7 +650,8 @@ function deleteAccessRow(link)
 		var inputGaClick = BX('field-gacounter_send_click-use');
 		var inputGaShow = BX('field-gacounter_send_show-use');
 
-		if(inputGa.value === '') {
+		if (inputGa.value === '')
+		{
 			inputGaClick.disabled = true;
 			inputGaShow.disabled = true;
 		}
@@ -660,13 +659,16 @@ function deleteAccessRow(link)
 		inputGa.addEventListener('input', onInput.bind(this));
 
 		function onInput() {
-			if(inputGa.value === '') {
+			if (inputGa.value === '')
+			{
 				inputGaClick.disabled = true;
 				inputGaClick.checked = false;
 
 				inputGaShow.disabled = true;
 				inputGaShow.checked = false;
-			} else {
+			}
+			else
+			{
 				inputGaClick.disabled = false;
 				inputGaShow.disabled = false;
 			}
@@ -701,9 +703,12 @@ function deleteAccessRow(link)
 	BX.Landing.IblockSelect.prototype = {
 
 		init: function(section) {
-			if(!BX("settings_iblock_id").value) {
+			if (!BX("settings_iblock_id").value)
+			{
 				section.classList.add("landing-form-field-section-hidden");
-			} else {
+			}
+			else
+			{
 				section.classList.remove("landing-form-field-section-hidden");
 			}
 		}

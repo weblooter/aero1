@@ -8,6 +8,7 @@ use \Bitrix\Main\Entity;
 use \Bitrix\Landing\Hook;
 use \Bitrix\Landing\Manager;
 use \Bitrix\Landing\Landing;
+use \Bitrix\Landing\Domain;
 use \Bitrix\Landing\Site;
 use \Bitrix\Landing\Syspage;
 use \Bitrix\Landing\TemplateRef;
@@ -164,7 +165,7 @@ class LandingPubComponent extends LandingBaseComponent
 		}
 		if ($partnerId === null)
 		{
-			$partnerId = Option::get('bitrix24', 'partner_id', 0);
+			$partnerId = (int)Option::get('bitrix24', 'partner_id', 0);
 		}
 
 		// base part
@@ -189,6 +190,13 @@ class LandingPubComponent extends LandingBaseComponent
 	 */
 	public function getRefLink($type, $addAdvCode = true)
 	{
+		static $partnerId = null;
+
+		if ($partnerId === null)
+		{
+			$partnerId = (int)Option::get('bitrix24', 'partner_id', 0);
+		}
+
 		$link = 'https://' . $this->getParentDomain();
 		$link .= $this->getCopyLinkPath($type);
 
@@ -196,6 +204,11 @@ class LandingPubComponent extends LandingBaseComponent
 		{
 			$link .= (strpos($link, '?') === false) ? '?' : '&amp;';
 			$link .= $this->getAdvCode($type);
+		}
+		else if ($partnerId)
+		{
+			$link .= (strpos($link, '?') === false) ? '?' : '&amp;';
+			$link .= 'p=' . $partnerId;
 		}
 
 		return $link;
@@ -436,7 +449,21 @@ class LandingPubComponent extends LandingBaseComponent
 			{
 				list($serverHost, ) = explode(':', $serverHost);
 			}
-			$filter['=DOMAIN.DOMAIN'] = $serverHost;
+			// set www alias
+			if (substr($serverHost, 0, 4) == 'www.')
+			{
+				$filter['=DOMAIN.DOMAIN'] = [
+					$serverHost,
+					substr($serverHost, 4)
+				];
+			}
+			else
+			{
+				$filter['=DOMAIN.DOMAIN'] = [
+					$serverHost,
+					'www.' . $serverHost
+				];
+			}
 		}
 		$filter['CHECK_PERMISSIONS'] = 'N';
 		$res = Site::getList(array(
@@ -1016,6 +1043,40 @@ class LandingPubComponent extends LandingBaseComponent
 	}
 
 	/**
+	 * Sets canonical url.
+	 * @param Landing $landing Landing instance.
+	 * @return void
+	 */
+	protected function setCanonical(Landing $landing)
+	{
+		// we need to know real domain name
+		$domainName = '';
+		$landingUrl = $landing->getPublicUrl();
+		if (substr($landingUrl, 0, 1) == '/')
+		{
+			$domainName = Domain::getHostUrl();
+		}
+		else
+		{
+			$landingUrlParts = parse_url($landingUrl);
+			if (
+				isset($landingUrlParts['scheme']) &&
+				isset($landingUrlParts['host'])
+			)
+			{
+				$domainName = $landingUrlParts['scheme'] . '://';
+				$domainName .= $landingUrlParts['host'];
+			}
+		}
+		$canonical = $domainName . Manager::getApplication()->getCurDir();
+		Manager::setPageView(
+			'MetaOG',
+			'<meta name="og:url" content="' . $canonical . '" />' . "\n" .
+			'<link rel="canonical" href="' . $canonical . '"/>'
+		);
+	}
+
+	/**
 	 * Base executable method.
 	 * @return void
 	 */
@@ -1153,6 +1214,8 @@ class LandingPubComponent extends LandingBaseComponent
 						}
 						die();
 					}
+					// set og url
+					$this->setCanonical($landing);
 				}
 				// else errors
 				$this->setErrors(
@@ -1183,12 +1246,6 @@ class LandingPubComponent extends LandingBaseComponent
 						\Bitrix\Crm\UI\Webpack\CallTracker::instance()->getEmbeddedScript()
 					);
 				}
-				// set og url
-				Manager::setPageView(
-					'MetaOG',
-					'<meta name="og:url" content="' . $landing->getPublicUrl() . '" />' . "\n" .
-					'<link rel="canonical" href="' . $landing->getPublicUrl() . '"/>'
-				);
 			}
 			else
 			{

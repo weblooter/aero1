@@ -19,10 +19,15 @@ return array(
 		'.landing-block-node-img' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_FORM_33.16_NODE_IMG'),
 			'type' => 'img',
-			'dimensions' => array('width' => 570, 'height' => 510),
+			'dimensions' => array('width' => 570),
 		),
 	),
-	'style' => array(),
+	'style' => array(
+		'.landing-block-node-img' => array(
+			'name' => Loc::getMessage('LANDING_BLOCK_FORM_33.16_NODE_IMG'),
+			'type' => 'background-size',
+		),
+	),
 	'assets' => array(
 		'ext' => array('landing_form'),
 	),

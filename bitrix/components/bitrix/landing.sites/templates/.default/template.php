@@ -531,7 +531,7 @@ Manager::setPageView(
 					offsetLeft: -55,
 					className: 'landing-popup-menu',
 					events: {
-						onPopupClose() {
+						onPopupClose: function onPopupClose() {
 							menu.destroy();
 							isMenuShown = false;
 						},

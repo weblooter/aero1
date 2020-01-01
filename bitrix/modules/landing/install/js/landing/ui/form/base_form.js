@@ -243,10 +243,16 @@
 			var instance = new this.constructor(clone(data || this.data));
 
 			this.fields.forEach(function(field) {
-				var newFieldData = clone(field.data);
-				delete newFieldData.content;
-				newFieldData.selector = instance.selector;
-				instance.addField(field.clone());
+				if (field instanceof BX.Landing.UI.Field.Date)
+				{
+					var newFieldData = clone(field.data);
+					newFieldData.selector = instance.selector;
+					instance.addField(field.clone(newFieldData));
+				}
+				else
+				{
+					instance.addField(field.clone());
+				}
 			});
 
 			return instance;

@@ -45,9 +45,9 @@ class Link extends \Bitrix\Landing\Node
 
 		foreach ($data as $pos => $value)
 		{
-			$text = isset($value['text']) ? trim($value['text']) : '';
-			$href = isset($value['href']) ? trim($value['href']) : '';
-			$target = isset($value['target']) ? trim(strtolower($value['target'])) : '';
+			$text = (isset($value['text']) && is_string($value['text'])) ? trim($value['text']) : '';
+			$href = (isset($value['href']) && is_string($value['href'])) ? trim($value['href']) : '';
+			$target = (isset($value['target']) && is_string($value['target'])) ? trim(strtolower($value['target'])) : '';
 			$attrs = isset($value['attrs']) ? (array)$value['attrs'] : array();
 			$skipContent = isset($value['skipContent']) ? (boolean)$value['skipContent'] : false;
 

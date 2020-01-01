@@ -30,6 +30,7 @@ return array(
 	'separator' => Loc::getMessage('LD_BLOCK_SECTION_SEPARATOR'),
 	
 	'menu' => Loc::getMessage('LD_BLOCK_SECTION_MENU_NEW'),
+	'sidebar' => Loc::getMessage('LD_BLOCK_SECTION_SIDEBAR'),
 	'footer' => Loc::getMessage('LD_BLOCK_SECTION_FOOTER'),
 	
 	'forms' => Loc::getMessage('LD_BLOCK_SECTION_FORMS'),

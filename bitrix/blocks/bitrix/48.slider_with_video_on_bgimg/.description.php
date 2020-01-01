@@ -67,6 +67,10 @@ return array(
 				'name' => Loc::getMessage('LANDING_BLOCK_48.SLIDER_WITH_VIDEO_ON_BGIMG_NODES_LANDINGBLOCKNODECARDBUTTON'),
 				'type' => array('text-align'),
 			),
+			'.landing-block-node-card' => array(
+				'name' => Loc::getMessage('LANDING_BLOCK_48.SLIDER_WITH_VIDEO_ON_BGIMG_CARDS_LANDINGBLOCKNODECARD'),
+				'type' => array('align-self'),
+			),
 		),
 	),
 	'assets' => array(

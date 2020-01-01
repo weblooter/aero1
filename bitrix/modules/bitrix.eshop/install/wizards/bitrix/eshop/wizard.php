@@ -28,7 +28,7 @@ class SelectTemplateStep extends CSelectTemplateWizardStep
 	function OnPostForm()
 	{
 		$wizard =& $this->GetWizard();
-
+		
 		$proactive = COption::GetOptionString("statistic", "DEFENCE_ON", "N");
 		if ($proactive == "Y")
 		{
@@ -37,20 +37,20 @@ class SelectTemplateStep extends CSelectTemplateWizardStep
 		}
 		else
 		{
-			$wizard->SetVar("proactive", "N");
+			$wizard->SetVar("proactive", "N");			
 		}
 
 		if ($wizard->IsNextButtonClick())
 		{
-			$arTemplates = array("eshop_bootstrap_v4");
+			$arTemplates = array("eshop_bootstrap");
 
 			$templateID = $wizard->GetVar("wizTemplateID");
 
 			if (!in_array($templateID, $arTemplates))
 				$this->SetError(GetMessage("wiz_template"));
 
-			if (in_array($templateID,  array("eshop_bootstrap_v4")))
-				$wizard->SetVar("templateID", "eshop_bootstrap_v4");
+			if (in_array($templateID,  array("eshop_bootstrap")))
+				$wizard->SetVar("templateID", "eshop_bootstrap");
 		}
 	}
 
@@ -63,21 +63,21 @@ class SelectTemplateStep extends CSelectTemplateWizardStep
 
 		$arTemplateOrder = array();
 
-		if (in_array("eshop_bootstrap_v4", array_keys($arTemplates)))
+		if (in_array("eshop_bootstrap", array_keys($arTemplates)))
 		{
-			$arTemplateOrder[] = "eshop_bootstrap_v4";
+			$arTemplateOrder[] = "eshop_bootstrap";
 		}
 
-		$defaultTemplateID = COption::GetOptionString("main", "wizard_template_id", "eshop_bootstrap_v4", $wizard->GetVar("siteID"));
-		if (!in_array($defaultTemplateID, array("eshop_bootstrap_v4"))) $defaultTemplateID = "eshop_bootstrap_v4";
+		$defaultTemplateID = COption::GetOptionString("main", "wizard_template_id", "eshop_bootstrap", $wizard->GetVar("siteID"));
+		if (!in_array($defaultTemplateID, array("eshop_bootstrap"))) $defaultTemplateID = "eshop_bootstrap";
 		$wizard->SetDefaultVar("wizTemplateID", $defaultTemplateID);
 
 		$arTemplateInfo = array(
-			"eshop_bootstrap_v4" => array(
+			"eshop_bootstrap" => array(
 				"NAME" => GetMessage("WIZ_TEMPLATE_ADAPT_HORIZONTAL"),
 				"DESCRIPTION" => "",
-				"PREVIEW" => $wizard->GetPath()."/site/templates/eshop_bootstrap_v4/images/".LANGUAGE_ID."/preview_horizontal.gif",
-				"SCREENSHOT" => $wizard->GetPath()."/site/templates/eshop_bootstrap_v4/images/".LANGUAGE_ID."/screen_horizontal.gif",
+				"PREVIEW" => $wizard->GetPath()."/site/templates/eshop_bootstrap/images/".LANGUAGE_ID."/preview_horizontal.gif",
+				"SCREENSHOT" => $wizard->GetPath()."/site/templates/eshop_bootstrap/images/".LANGUAGE_ID."/screen_horizontal.gif",
 			),
 		);
 
@@ -115,7 +115,7 @@ class SelectTemplateStep extends CSelectTemplateWizardStep
 
 class SelectThemeStep extends CSelectThemeWizardStep
 {
-
+	
 }
 
 class SiteSettingsStep extends CSiteSettingsWizardStep
@@ -132,12 +132,8 @@ class SiteSettingsStep extends CSiteSettingsWizardStep
 		$siteID = $wizard->GetVar("siteID");
 		$isWizardInstalled = COption::GetOptionString("eshop", "wizard_installed", "N", $siteID) == "Y";
 
-		if((COption::GetOptionString("eshop", "wizard_installed", "N", $siteID) == "Y" && !WIZARD_INSTALL_DEMO_DATA)
-			|| defined("ADDITIONAL_INSTALL")
-		)
-		{
-			$this->SetNextStep("shop_settings");
-		}
+		if(COption::GetOptionString("eshop", "wizard_installed", "N", $siteID) == "Y" && !WIZARD_INSTALL_DEMO_DATA)
+			$this->SetNextStep("data_install");
 		else
 		{
 			$this->SetNextStep("catalog_settings");
@@ -147,10 +143,10 @@ class SiteSettingsStep extends CSiteSettingsWizardStep
 		$themeID = $wizard->GetVar($templateID."_themeID");
 
 		$wizard->SetDefaultVars(Array(
-			"siteLogo" => file_exists(WIZARD_SITE_PATH."include/logo.png") ? WIZARD_SITE_DIR."include/logo.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap_v4/themes/".$themeID."/images/logo.png"),
-			"siteLogoRetina" => file_exists(WIZARD_SITE_PATH."include/logo_retina.png") ? WIZARD_SITE_DIR."include/logo_retina.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap_v4/themes/".$themeID."/images/logo_retina.png"),
-			"siteLogoMobile" => file_exists(WIZARD_SITE_PATH."include/logo_mobile.png") ? WIZARD_SITE_DIR."include/logo_mobile.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap_v4/themes/".$themeID."/images/logo_mobile.png"),
-			"siteLogoMobileRetina" => file_exists(WIZARD_SITE_PATH."include/logo_mobile_retina.png") ? WIZARD_SITE_DIR."include/logo_mobile_retina.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap_v4/themes/".$themeID."/images/logo_mobile_retina.png")
+			"siteLogo" => file_exists(WIZARD_SITE_PATH."include/logo.png") ? WIZARD_SITE_DIR."include/logo.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap/themes/".$themeID."/images/logo.png"),
+			"siteLogoRetina" => file_exists(WIZARD_SITE_PATH."include/logo_retina.png") ? WIZARD_SITE_DIR."include/logo_retina.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap/themes/".$themeID."/images/logo_retina.png"),
+			"siteLogoMobile" => file_exists(WIZARD_SITE_PATH."include/logo_mobile.png") ? WIZARD_SITE_DIR."include/logo_mobile.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap/themes/".$themeID."/images/logo_mobile.png"),
+			"siteLogoMobileRetina" => file_exists(WIZARD_SITE_PATH."include/logo_mobile_retina.png") ? WIZARD_SITE_DIR."include/logo_mobile_retina.png" : ($isWizardInstalled ? "" : "/bitrix/wizards/bitrix/eshop/site/templates/eshop_bootstrap/themes/".$themeID."/images/logo_mobile_retina.png")
 		));
 
 		$wizard->SetDefaultVars(
@@ -165,7 +161,7 @@ class SiteSettingsStep extends CSiteSettingsWizardStep
 				"installEshopApp" => COption::GetOptionString("eshop", "installEshopApp", "Y", $siteID),
 			)
 		);
-
+		
 	}
 
 	function ShowStep()
@@ -218,26 +214,26 @@ class SiteSettingsStep extends CSiteSettingsWizardStep
 			<label for="siteTelephone" class="wizard-input-title">'.GetMessage("WIZ_COMPANY_TELEPHONE").'</label>
 			'.$this->ShowInputField('text', 'siteTelephone', array("id" => "siteTelephone", "class" => "wizard-field")).'
 		</div>';
-
+		
 		if(LANGUAGE_ID != "ru")
 		{
 			$this->content .= '<div class="wizard-input-form-block">
 				<label for="shopEmail" class="wizard-input-title">'.GetMessage("WIZ_SHOP_EMAIL").'</label>
 				'.$this->ShowInputField('text', 'shopEmail', array("id" => "shopEmail", "class" => "wizard-field")).'
-			</div>';
+			</div>';	
 		}
 		$this->content .= '
 		<div class="wizard-input-form-block">
 			<label for="siteSchedule" class="wizard-input-title">'.GetMessage("WIZ_COMPANY_SCHEDULE").'</label>
 			'.$this->ShowInputField('textarea', 'siteSchedule', array("rows"=>"3", "id" => "siteSchedule", "class" => "wizard-field")).'
-		</div>';
+		</div>';	
 		$this->content .= '
 		<div class="wizard-input-form-block">
 			<label for="siteCopy" class="wizard-input-title">'.GetMessage("WIZ_COMPANY_COPY").'</label>
 			'.$this->ShowInputField('textarea', 'siteCopy', array("rows"=>"3", "id" => "siteCopy", "class" => "wizard-field")).'
 		</div>';
 
-		$firstStep = COption::GetOptionString("main", "wizard_first" . substr($wizard->GetID(), 7)  . "_" . $wizard->GetVar("siteID"), false, $wizard->GetVar("siteID"));
+		$firstStep = COption::GetOptionString("main", "wizard_first" . substr($wizard->GetID(), 7)  . "_" . $wizard->GetVar("siteID"), false, $wizard->GetVar("siteID")); 
 		$styleMeta = 'style="display:block"';
 		if($firstStep == "Y") $styleMeta = 'style="display:none"';
 
@@ -254,15 +250,15 @@ class SiteSettingsStep extends CSiteSettingsWizardStep
 				'.$this->ShowInputField('text', 'siteMetaKeywords', array("id" => "siteMetaKeywords", "class" => "wizard-field")).'
 			</div>
 		</div>';
-
-//install Demo data
+		
+//install Demo data		
 		if($firstStep == "Y")
 		{
 			$this->content .= '
 			<div class="wizard-input-form-block"'.(LANGUAGE_ID != "ru" ? ' style="display:none"' : '').'>
 				'.$this->ShowCheckboxField(
-							"installDemoData",
-							"Y",
+							"installDemoData", 
+							"Y", 
 							(array("id" => "installDemoData", "onClick" => "if(this.checked == true){document.getElementById('bx_metadata').style.display='block';}else{document.getElementById('bx_metadata').style.display='none';}"))
 						).'
 				<label for="installDemoData">'.GetMessage("wiz_structure_data").'</label>
@@ -326,7 +322,7 @@ class CatalogSettings extends CWizardStep
 
 		$wizard =& $this->GetWizard();
 		$siteID = $wizard->GetVar("siteID");
-
+		
 		$subscribe = COption::GetOptionString("sale", "subscribe_prod", "");
 		$arSubscribe = unserialize($subscribe);
 
@@ -387,20 +383,11 @@ class ShopSettings extends CWizardStep
 		$this->SetNextCaption(GetMessage("NEXT_BUTTON"));
 		$this->SetPrevCaption(GetMessage("PREVIOUS_BUTTON"));
 
-		if (defined("ADDITIONAL_INSTALL"))
-		{
-			$this->SetNextStep("data_install");
-			if (defined("NEED_PERSON_TYPE"))
-			{
-				$this->SetNextStep("person_type");
-			}
-		}
-
 		$wizard =& $this->GetWizard();
 
 		$siteStamp =$wizard->GetPath()."/site/templates/minimal/images/pechat.gif";
 		$siteID = $wizard->GetVar("siteID");
-
+		
 		$wizard->SetDefaultVars(
 			Array(
 				"shopLocalization" => COption::GetOptionString("eshop", "shopLocalization", "ru", $siteID),
@@ -479,13 +466,13 @@ class ShopSettings extends CWizardStep
 					<label class="wizard-input-title" for="shopOfName">'.GetMessage("WIZ_SHOP_OF_NAME").'</label>'
 					.$this->ShowInputField('text', 'shopOfName', array("id" => "shopOfName", "class" => "wizard-field")).'
 				</div>';
-
+	
 			$this->content .= '
 				<div class="wizard-input-form-block">
 					<label class="wizard-input-title" for="shopLocation">'.GetMessage("WIZ_SHOP_LOCATION").'</label>'
 					.$this->ShowInputField('text', 'shopLocation', array("id" => "shopLocation", "class" => "wizard-field")).'
 				</div>';
-
+	
 			$this->content .= '
 				<div class="wizard-input-form-block">
 					<label class="wizard-input-title" for="shopAdr">'.GetMessage("WIZ_SHOP_ADR").'</label>'
@@ -615,7 +602,7 @@ class ShopSettings extends CWizardStep
 					</div>';
 				}
 			}
-
+			
 			$this->content .= '</div>';
 
 			$this->content .= '
@@ -632,7 +619,7 @@ class ShopSettings extends CWizardStep
 			';
 		}
 	}
-
+	
 	function OnPostForm()
 	{
 		$wizard =& $this->GetWizard();
@@ -651,12 +638,6 @@ class PersonType extends CWizardStep
 		$this->SetPrevStep("shop_settings");
 		$this->SetNextCaption(GetMessage("NEXT_BUTTON"));
 		$this->SetPrevCaption(GetMessage("PREVIOUS_BUTTON"));
-
-		if (defined("ADDITIONAL_INSTALL"))
-		{
-			$this->SetNextStep("data_install");
-			$this->SetPrevStep("site_settings");
-		}
 
 		$wizard =& $this->GetWizard();
 		$shopLocalization = $wizard->GetVar("shopLocalization", true);
@@ -716,7 +697,7 @@ class PersonType extends CWizardStep
 		</div>';
 		$this->content .= '</div>';
 	}
-
+	
 	function OnPostForm()
 	{
 		$wizard = &$this->GetWizard();
@@ -786,11 +767,11 @@ class PaySystem extends CWizardStep
 			$wizard->SetDefaultVars(
 				Array(
 					"paysystem" => Array(
-						"cash" => "Y",
+						"cash" => "Y",	
 						"paypal" => "Y",
-					),
+					),			
 					"delivery" => Array(
-						"courier" => "Y",
+						"courier" => "Y",	
 						"self" => "Y",
 						"dhl" => "Y",
 						"ups" => "Y",
@@ -799,7 +780,7 @@ class PaySystem extends CWizardStep
 			);
 		}
 	}
-
+	
 	function OnPostForm()
 	{
 		$wizard = &$this->GetWizard();
@@ -830,11 +811,11 @@ class PaySystem extends CWizardStep
 
 		$wizard =& $this->GetWizard();
 		$shopLocalization = $wizard->GetVar("shopLocalization", true);
-		$personType = $wizard->GetVar("personType");
-		$arAutoDeliveries = array();
-		$isModuleSaleIncluded = \Bitrix\Main\Loader::includeModule("sale");
 
-		if ($isModuleSaleIncluded)
+		$personType = $wizard->GetVar("personType");
+
+		$arAutoDeliveries = array();
+		if (CModule::IncludeModule("sale"))
 		{
 			$dbRes = \Bitrix\Sale\Delivery\Services\Table::getList(array(
 				'filter' => array(
@@ -956,7 +937,7 @@ class PaySystem extends CWizardStep
 			{
 				if ($shopLocalization == "ru")
 				{
-					if ($arAutoDeliveries["ruspost"] != "Y" && $isModuleSaleIncluded)
+					if ($arAutoDeliveries["ruspost"] != "Y")
 					{
 						\Bitrix\Sale\Delivery\Services\Manager::getHandlersList();
 						$res = \Sale\Handlers\Delivery\AdditionalHandler::getSupportedServicesList();
@@ -1107,20 +1088,10 @@ class DataInstallStep extends CDataInstallWizardStep
 		else
 			$this->repeatCurrentService = false;
 
-		$arServices = $this->prepareServices($arServices);
-	}
-
-	public function prepareServices($arServices)
-	{
-		if (defined("ADDITIONAL_INSTALL"))
+		$wizard =& $this->GetWizard();
+		if($wizard->GetVar("installDemoData") != "Y")
 		{
-			// sale
-			unset($arServices["sale"]["STAGES"]["locations.php"]);
-			unset($arServices["sale"]["STAGES"]["step2.php"]);
-			unset($arServices["sale"]["STAGES"]["step3.php"]);
 		}
-
-		return $arServices;
 	}
 }
 
@@ -1131,25 +1102,25 @@ class FinishStep extends CFinishWizardStep
 		$this->SetStepID("finish");
 		$this->SetNextStep("finish");
 		$this->SetTitle(GetMessage("FINISH_STEP_TITLE"));
-		$this->SetNextCaption(GetMessage("wiz_go"));
+		$this->SetNextCaption(GetMessage("wiz_go"));  
 	}
 
 	function ShowStep()
 	{
-		$wizard =& $this->GetWizard();
+		$wizard =& $this->GetWizard();		   
 		if ($wizard->GetVar("proactive") == "Y")
 			COption::SetOptionString("statistic", "DEFENCE_ON", "Y");
-
+		
 		$siteID = WizardServices::GetCurrentSiteID($wizard->GetVar("siteID"));
 		$rsSites = CSite::GetByID($siteID);
-		$siteDir = "/";
+		$siteDir = "/"; 
 		if ($arSite = $rsSites->Fetch())
-			$siteDir = $arSite["DIR"];
+			$siteDir = $arSite["DIR"]; 
 
 		$wizard->SetFormActionScript(str_replace("//", "/", $siteDir."/?finish"));
 
 		$this->CreateNewIndex();
-
+		
 		COption::SetOptionString("main", "wizard_solution", $wizard->solutionName, false, $siteID);
 
 		$this->content .=

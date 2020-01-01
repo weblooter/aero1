@@ -20,3 +20,4 @@ $MESS["SALE_BSM_WIZARD_SITESTEP_DANGER_DESCR"] = "Вероятно, вы заб�
 $MESS["SALE_BSM_WIZARD_SITESTEP_DANGER_BACK"] = "Назад к инструкции";
 $MESS["SALE_BSM_WIZARD_SITESTEP_INDEX_ACCESS_ERROR"] = "Ошибка запуска мастера. Файл /index.php недоступен для записи";
 $MESS["SALE_BSM_WIZARD_SITESTEP_COPY_ACCESS_ERROR"] = "Не удаётся скопировть файл /.access.php в корень сайта";
+$MESS["SALE_BSM_WIZARD_SITESTEP_DOC_ROOT_ERROR"] = "Путь к корневой папке веб-сервера для Битрикс24 не может совпадать с текущим корневым путем";

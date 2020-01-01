@@ -25,6 +25,7 @@ class Selector
 
 	/* selector type */
 	const SOURCE_TYPE_COMPONENT = 'C'; // component selector
+	const SOURCE_TYPE_PRESET = 'P'; // without selector - fixed preset
 
 	/* transfer type source filter after selecting items to display */
 	const ACTION_TYPE_EVENT = 'event';	// use javascript event directly
@@ -117,6 +118,17 @@ class Selector
 			}
 			unset($source, $row, $list, $module);
 			unset($eventResult, $resultList);
+
+			if (!empty($this->sourceList))
+			{
+/*				Main\Type\Collection::sortByColumn(
+					$this->sourceList,
+					['TYPE' => SORT_ASC, 'TITLE' => SORT_ASC],
+					'',
+					null,
+					true
+				); */
+			}
 		}
 		unset($event);
 	}
@@ -155,13 +167,21 @@ class Selector
 			$row = [
 				'id' => $source['INDEX'],
 				'name' => $source['TITLE'],
-				'url' => [
-					'filter' => $uri->getUri(),
-					'create' => ''
-				],
 				'sort' => $source['DATA_SETTINGS']['ORDER'],
 				'references' => $source['DATA_SETTINGS']['FIELDS']
 			];
+			switch ($source['TYPE'])
+			{
+				case self::SOURCE_TYPE_COMPONENT:
+					$row['url'] = [
+						'filter' => $uri->getUri(),
+						'create' => ''
+					];
+					break;
+				case self::SOURCE_TYPE_PRESET:
+					$row['preset'] = $source['SETTINGS']['PRESET'];
+					break;
+			}
 
 			$result[$source['INDEX']] = $row;
 		}
@@ -564,7 +584,7 @@ class Selector
 
 		$index = self::getSourceIndex($module, $parameters['SOURCE_ID']);
 		$prepared = [];
-		if (!preg_match('/^[a-z][a-z\.]+:[A-Za-z][A-Za-z0-9]*$/', $index, $prepared))
+		if (!preg_match('/^[a-z][a-z.]+:[A-Za-z][A-Za-z0-9]*$/', $index, $prepared))
 		{
 			return null;
 		}
@@ -599,6 +619,9 @@ class Selector
 		{
 			case self::SOURCE_TYPE_COMPONENT:
 				$settings = $this->checkComponentSettings($parameters['SETTINGS']);
+				break;
+			case self::SOURCE_TYPE_PRESET:
+				$settings = $this->checkPresetSettings($parameters['SETTINGS']);
 				break;
 		}
 		if ($settings === null)
@@ -684,6 +707,34 @@ class Selector
 				'WRAPPER' => true
 			]
 		);
+	}
+
+	/**
+	 * Check fixed block filter.
+	 *
+	 * @param array $settings
+	 * @return array|null
+	 */
+	protected function checkPresetSettings(array $settings)
+	{
+		if (empty($settings))
+		{
+			return null;
+		}
+		if (empty($settings['PRESET']) || !is_array($settings['PRESET']))
+		{
+			return null;
+		}
+
+		$preset = array_filter($settings['PRESET'], ['\Bitrix\Landing\Source\BlockFilter', 'checkPreparedRow']);
+		if (empty($preset))
+		{
+			return null;
+		}
+
+		return [
+			'PRESET' => $preset
+		];
 	}
 
 	/**
@@ -841,6 +892,12 @@ class Selector
 		{
 			$result['template'] = SITE_TEMPLATE_ID;
 		}
+		$request = Main\Context::getCurrent()->getRequest();
+		if ($request->isAdminSection())
+		{
+			$request['admin_section'] = 'Y';
+		}
+		unset($request);
 		return $result;
 	}
 

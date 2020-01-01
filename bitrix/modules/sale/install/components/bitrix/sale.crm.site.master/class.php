@@ -167,6 +167,10 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 				"name" => Loc::getMessage("SALE_CSM_MODULE_INTRANET_NAME"),
 				"version" => "19.0.600"
 			],
+			"calendar" => [
+				"name" => Loc::getMessage("SALE_CSM_MODULE_CALENDAR_NAME"),
+				"version" => ""
+			],
 			"crm" => [
 				"name" => Loc::getMessage("SALE_CSM_MODULE_CRM_NAME"),
 				"version" => "19.0.300"
@@ -179,17 +183,9 @@ class SaleCrmSiteMaster extends \CBitrixComponent
 				"name" => Loc::getMessage("SALE_CSM_MODULE_DISK_NAME"),
 				"version" => ""
 			],
-			"calendar" => [
-				"name" => Loc::getMessage("SALE_CSM_MODULE_CALENDAR_NAME"),
-				"version" => ""
-			],
 			"im" => [
 				"name" => Loc::getMessage("SALE_CSM_MODULE_IM_NAME"),
 				"version" => "16.5.0"
-			],
-			"webdav" => [
-				"name" => Loc::getMessage("SALE_CSM_MODULE_WEBDAV_NAME"),
-				"version" => ""
 			],
 			"dav" => [
 				"name" => Loc::getMessage("SALE_CSM_MODULE_DAV_NAME"),

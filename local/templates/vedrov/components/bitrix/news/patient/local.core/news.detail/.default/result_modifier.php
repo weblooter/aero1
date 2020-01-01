@@ -7,7 +7,7 @@ if (mb_strtoupper($arResult['DETAIL_TEXT_TYPE']) == 'TEXT') {
     $arResult['DETAIL_TEXT'] = '<p>'.$arResult['DETAIL_TEXT'].'</p>';
 }
 
-$arResult = array_merge($arResult, \Local\Core\Assistant\Useful::getPrevNexPages($arParams['IBLOCK_ID'], $arResult['ID']));
+$arResult = array_merge($arResult, \Local\Core\Assistant\Useful::getPrevNexPagesPatients($arParams['IBLOCK_ID'], $arResult['ID']));
 
 if (!empty($arResult['PROPERTIES']['PHOTOS']['VALUE'])) {
     $arResult['PROPERTIES']['PHOTOS']['VALUE'] = array_map(function ($v)

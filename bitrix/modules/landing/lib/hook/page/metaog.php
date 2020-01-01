@@ -2,9 +2,12 @@
 namespace Bitrix\Landing\Hook\Page;
 
 use \Bitrix\Landing\File;
+use Bitrix\Landing\Landing;
 use \Bitrix\Landing\Manager;
 use \Bitrix\Landing\Field;
 use \Bitrix\Landing\PublicAction;
+use \Bitrix\Landing\Domain;
+use \Bitrix\Landing\Landing\Seo;
 use \Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
@@ -114,8 +117,8 @@ class MetaOg extends \Bitrix\Landing\Hook\Page
 
 		$output = '';
 		$og = array(
-			'title' => \htmlspecialcharsbx(trim($this->fields['TITLE'])),
-			'description' => \htmlspecialcharsbx(trim($this->fields['DESCRIPTION'])),
+			'title' => \htmlspecialcharsbx(Seo::processValue('title', $this->fields['TITLE'])),
+			'description' => \htmlspecialcharsbx(Seo::processValue('description', $this->fields['DESCRIPTION'])),
 			'image' => trim($this->fields['IMAGE']),
 			'type' => 'website'
 		);
@@ -147,6 +150,10 @@ class MetaOg extends \Bitrix\Landing\Hook\Page
 				else
 				{
 					$output .= '<meta property="og:' . $key . '" content="' . $val . '" />';
+				}
+				if ($key == 'url')
+				{
+					$output .= '<link rel="canonical" href="' . $curUrl . '"/>';
 				}
 			}
 		}

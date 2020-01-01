@@ -296,6 +296,10 @@ class Demos
 			{
 				$fields['LANG'] = serialize($fields['LANG']);
 			}
+			else
+			{
+				unset($fields['LANG']);
+			}
 			if (isset($item['fields']['ADDITIONAL_FIELDS']))
 			{
 				unset($item['fields']['ADDITIONAL_FIELDS']);

@@ -483,6 +483,10 @@ class LandingTable extends Entity\DataManager
 					'replace_space' => '',
 					'replace_other' => ''
 				));
+			if (!$fields['CODE'])
+			{
+				$fields['CODE'] = randString(12);
+			}
 			$modifyFields['CODE'] = $fields['CODE'];
 		}
 

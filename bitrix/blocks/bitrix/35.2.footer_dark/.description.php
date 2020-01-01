@@ -67,6 +67,10 @@ return array(
 			'name' => Loc::getMessage('LANDING_BLOCK_35.2.FOOTER_LIGHT_STYLE_LANDINGBLOCKNODETITLE'),
 			'type' => 'typo',
 		),
+		'.landing-block-card-contact' => array(
+			'name' => Loc::getMessage('LANDING_BLOCK_35.2.FOOTER_LIGHT_CARDS_LANDINGBLOCKCARDCONTACT'),
+			'type' => 'row-align',
+		),
 		'.landing-block-node-card' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_35.2.FOOTER_LIGHT_STYLE_LANDINGBLOCKNODECARD'),
 			'type' => 'animation',

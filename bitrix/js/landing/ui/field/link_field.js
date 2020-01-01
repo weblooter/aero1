@@ -234,9 +234,6 @@
 		{
 			var type = this.hrefInput.getPlaceholderType();
 
-			[].slice.call(this.layout.querySelectorAll('.landing-ui-field-edit-link'))
-				.forEach(BX.remove);
-
 			if (type === "landing")
 			{
 				var value = this.hrefInput.getValue();
@@ -252,6 +249,9 @@
 							var href = urlMask
 								.replace("#site_show#", result.siteId)
 								.replace("#landing_edit#", result.id);
+
+							[].slice.call(this.layout.querySelectorAll('.landing-ui-field-edit-link'))
+								.forEach(BX.remove);
 
 							this.editLink = this.createEditLink(
 								BX.Landing.Loc.getMessage("LANDING_LINK_FILED__EDIT_PAGE_LINK_LABEL"),

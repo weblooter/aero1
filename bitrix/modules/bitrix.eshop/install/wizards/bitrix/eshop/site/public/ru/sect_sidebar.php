@@ -1,7 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?if ($APPLICATION->GetCurPage(true) == SITE_DIR."index.php"):?>
-<div class="mb-5">
-	<?$APPLICATION->IncludeComponent("bitrix:search.title", "bootstrap_v4", array(
+<div class="bx-sidebar-block">
+	<?$APPLICATION->IncludeComponent("bitrix:search.title", "visual", array(
 			"NUM_CATEGORIES" => "1",
 			"TOP_COUNT" => "5",
 			"CHECK_DATES" => "N",
@@ -31,8 +31,7 @@
 </div>
 <?endif?>
 
-<div class="mb-5">
-	<h3>Мы в соцсетях</h3>
+<div class="bx-sidebar-block">
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.include",
 		"",
@@ -47,7 +46,7 @@
 	);?>
 </div>
 
-<div class="mb-5 d-block d-sm-none">
+<div class="bx-sidebar-block hidden-xs">
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.include",
 		"",
@@ -62,7 +61,7 @@
 	);?>
 </div>
 
-<div class="mb-5">
+<div class="bx-sidebar-block">
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.include",
 		"",
@@ -77,7 +76,7 @@
 	);?>
 </div>
 
-<div class="mb-5">
+<div class="bx-sidebar-block">
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.include",
 		"",
@@ -92,7 +91,7 @@
 	);?>
 </div>
 
-<div class="mb-5">
+<div class="bx-sidebar-block">
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.include",
 		"",

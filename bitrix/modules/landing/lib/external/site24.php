@@ -54,7 +54,7 @@ class Site24
         $params['keysign'] = md5(\CUpdateClient::GetLicenseKey());
         $params['host']= \Bitrix\Main\Config\Option::get('intranet', 'portal_url', null);
 
-        if ($params['host'] === null)
+        if (!$params['host'])
 		{
 			$params['host']= \Bitrix\Main\Config\Option::get(
 				'landing',
@@ -63,9 +63,22 @@ class Site24
 			);
 		}
 
-		$params['host'] = parse_url($params['host'])['host'];
+		if (!$params['host'])
+		{
+			$params['host'] = $_SERVER['HTTP_HOST'];
+		}
 
-        if (!isset($params['lang']) || !$params['lang'])
+		$params['host'] = trim($params['host']);
+
+		if (
+			strpos($params['host'], 'http://') === 0 ||
+			strpos($params['host'], 'https://') === 0
+		)
+		{
+			$params['host'] = parse_url($params['host'])['host'];
+		}
+
+		if (!isset($params['lang']) || !$params['lang'])
 		{
 			unset($params['lang']);
 		}

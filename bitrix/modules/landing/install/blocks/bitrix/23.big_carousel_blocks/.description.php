@@ -21,7 +21,7 @@ return array(
 		'.landing-block-node-img' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_8_BIG_CAROUSEL_BLOCKS_NODES_LANDINGBLOCKNODEIMG'),
 			'type' => 'img',
-			'dimensions' => array('width' => 500, 'height' => 500),
+			'dimensions' => array('width' => 100),
 		),
 		'.landing-block-node-title' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_8_BIG_CAROUSEL_BLOCKS_NODES_LANDINGBLOCKNODETITLE'),

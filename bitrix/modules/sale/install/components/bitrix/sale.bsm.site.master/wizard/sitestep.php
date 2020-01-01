@@ -260,6 +260,12 @@ class SiteStep extends \CWizardStep
 	 */
 	private function checkSite()
 	{
+		if ($this->request->get("DOC_ROOT") === $_SERVER["DOCUMENT_ROOT"])
+		{
+			$error = Loc::getMessage("SALE_BSM_WIZARD_SITESTEP_DOC_ROOT_ERROR");
+			throw new Main\SystemException($error);
+		}
+
 		if ($this->request->get("BSM_SITE") !== "new")
 		{
 			$site = $this->getSiteDataById($this->request->get("BSM_SITE"));
@@ -611,7 +617,11 @@ class SiteStep extends \CWizardStep
 	{
 		return Main\SiteTable::getList([
 			"select" => ["*"],
-			"filter" => ["ACTIVE" => "Y"]
+			"filter" => [
+				"ACTIVE" => "Y",
+				"!DEF" => "Y",
+				"!DOC_ROOT" => $_SERVER["DOCUMENT_ROOT"],
+			]
 		])->fetchAll();
 	}
 
@@ -795,17 +805,20 @@ class SiteStep extends \CWizardStep
 			"CULTURE_ID" => "",
 		];
 
-		$siteList = $this->getSiteList();
-		foreach ($siteList as $site)
+		$site = Main\SiteTable::getList([
+			"select" => ["*"],
+			"filter" => [
+				"ACTIVE" => "Y",
+				"DEF" => "Y",
+			]
+		])->fetch();
+		if ($site["DEF"] === "Y")
 		{
-			if ($site["DEF"] === "Y")
-			{
-				$param = [
-					"EMAIL" => $site["EMAIL"],
-					"LANGUAGE_ID" => $site["LANGUAGE_ID"],
-					"CULTURE_ID" => $site["CULTURE_ID"],
-				];
-			}
+			$param = [
+				"EMAIL" => $site["EMAIL"],
+				"LANGUAGE_ID" => $site["LANGUAGE_ID"],
+				"CULTURE_ID" => $site["CULTURE_ID"],
+			];
 		}
 
 		if (!$param["EMAIL"])

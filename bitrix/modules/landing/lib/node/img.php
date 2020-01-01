@@ -32,9 +32,9 @@ class Img extends \Bitrix\Landing\Node
 		{
 			// 2x - this for retina support
 
-			$src = isset($value['src']) ? trim($value['src']) : '';
-			$src2x = isset($value['src2x']) ? trim($value['src2x']) : '';
-			$alt = isset($value['alt']) ? trim($value['alt']) : '';
+			$src = (isset($value['src']) && is_string($value['src'])) ? trim($value['src']) : '';
+			$src2x = (isset($value['src2x']) && is_string($value['src2x'])) ? trim($value['src2x']) : '';
+			$alt = (isset($value['alt']) && is_string($value['alt'])) ? trim($value['alt']) : '';
 			$id = isset($value['id']) ? intval($value['id']) : 0;
 			$id2x = isset($value['id2x']) ? intval($value['id2x']) : 0;
 

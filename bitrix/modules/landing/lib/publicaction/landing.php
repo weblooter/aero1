@@ -755,6 +755,24 @@ class Landing
 			{
 				$folderId = $landingRow['FOLDER_ID'];
 			}
+			// check if folder in the same site
+			if ($folderId)
+			{
+				$check = LandingCore::getList([
+					'select' => [
+						'ID'
+					],
+					'filter' => [
+						'SITE_ID' => $toSiteId,
+						'ID' => $folderId
+					]
+				]);
+				if (!$check->fetch())
+				{
+					$folderId = null;
+				}
+			}
+			// create new page
 			$res = LandingCore::add(array(
 				'CODE' => $landingRow['CODE'],
 				'ACTIVE' => 'N',
@@ -898,7 +916,7 @@ class Landing
 	/**
 	 * Set some content to the Head section.
 	 * @param int $lid Landing id.
-	 * @param $content Some content.
+	 * @param string $content Some content.
 	 * @return \Bitrix\Landing\PublicActionResult
 	 */
 	public static function updateHead($lid, $content)

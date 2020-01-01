@@ -12,7 +12,6 @@ $MESS["SALE_CSM_MODULE_TASKS_NAME"] = "Задачи";
 $MESS["SALE_CSM_MODULE_DISK_NAME"] = "Диск";
 $MESS["SALE_CSM_MODULE_CALENDAR_NAME"] = "Календарь событий";
 $MESS["SALE_CSM_MODULE_IM_NAME"] = "Веб-мессенджер";
-$MESS["SALE_CSM_MODULE_WEBDAV_NAME"] = "Библиотека документов";
 $MESS["SALE_CSM_MODULE_DAV_NAME"] = "DAV";
 $MESS["SALE_CSM_MODULE_TIMEMAN_NAME"] = "Учет рабочего времени";
 $MESS["SALE_CSM_MODULE_MEETING_NAME"] = "Планерки и собрания";

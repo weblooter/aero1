@@ -2619,7 +2619,7 @@
 			{
 				var value = data(element, fieldOptions.attribute);
 
-				if (value && isString(value))
+				if (!isString(value))
 				{
 					value = attr(element, fieldOptions.attribute);
 				}
@@ -3269,8 +3269,6 @@
 						nodes.add(this.nodes.getBySelector(selector));
 					}, this);
 
-
-
 					batch.updateNodes = {
 						action: "Block::updateNodes",
 						data: updateNodesData,
@@ -3298,6 +3296,29 @@
 							additional: cardsNodesAdditionalValues
 						}
 					};
+				}
+
+				if (data.cardsFirst)
+				{
+					var oldBatch = batch;
+					batch = {};
+
+					if (oldBatch.changeAnchor)
+					{
+						batch.changeAnchor = oldBatch.changeAnchor;
+					}
+
+					if (oldBatch.updateCards)
+					{
+						batch.updateCards = oldBatch.updateCards;
+					}
+
+					if (oldBatch.updateNodes)
+					{
+						batch.updateNodes = oldBatch.updateNodes;
+					}
+
+					delete data.cardsFirst;
 				}
 
 				return BX.Landing.Backend.getInstance()
@@ -3356,7 +3377,7 @@
 				});
 			});
 
-			fetchFields(attrFields, all)
+			fetchFields(attrFields, true)
 				.reduce(proxy(this.appendAttrFieldValue, this), requestData);
 
 			forms.cards
@@ -3504,6 +3525,15 @@
 				contentPanel.hide();
 
 				this.fetchRequestData(contentPanel)
+					.then(function(requestData) {
+						return Object.assign(
+							{},
+							requestData,
+							{
+								cardsFirst: true
+							}
+						);
+					})
 					.then(this.updateBlockState.bind(this));
 			}
 		},
@@ -4120,7 +4150,12 @@
 			return fields.map(function(field) {
 				var type = this.getFieldType(field);
 
-				if (type !== "text" && type !== "img" && type !== "link")
+				if (
+					type !== "text"
+					&& type !== "img"
+					&& type !== "link"
+					&& type !== "link_ref"
+				)
 				{
 					return field;
 				}
@@ -4164,12 +4199,13 @@
 					});
 				}
 
-				return new BX.Landing.UI.Field.Dropdown({
+				return new BX.Landing.UI.Field.DynamicDropdown({
 					title: field.title,
 					selector: field.selector,
-					items: dropDownItems,
-					content: BX.type.isPlainObject(value) ? value.id : value
-				})
+					dropdownItems: dropDownItems,
+					value: BX.type.isString(value) ? {id: value} : value,
+					hideCheckbox: cardCode === "wrapper" || type === "link_ref"
+				});
 			}, this);
 		},
 
@@ -4183,11 +4219,14 @@
 				help = helps.DYNAMIC_BLOCKS;
 			}
 
+			var cardManifest = this.manifest.cards[options.code] || {};
+
 			var dynamicForm = new BX.Landing.UI.Form.DynamicCardsForm({
 				title: options.title,
 				code: options.code,
 				type: "dynamicCards",
 				dynamicParams: options.dynamicParams,
+				detailPage: cardManifest.detailPage !== false,
 				headerCheckbox: {
 					text: BX.Landing.Loc.getMessage("LANDING_CARDS__MAKE_A_DYNAMIC"),
 					onChange: this.onCardsFormTypeChange.bind(this),

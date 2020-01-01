@@ -20,3 +20,4 @@ $MESS["SALE_CSM_WIZARD_SITESTEP_REQUIRED_FILE_ERROR"] = "Отсутствуют 
 $MESS["SALE_CSM_WIZARD_SITESTEP_DOC_ROOT_NOT_EXISTS"] = "Путь к корневой папке веб-сервера не найден";
 $MESS["SALE_CSM_WIZARD_SITESTEP_DANGER_DESCR"] = "Вероятно, вы забыли сделать что-то на предыдущем шаге";
 $MESS["SALE_CSM_WIZARD_SITESTEP_DANGER_BACK"] = "Назад к инструкции";
+$MESS["SALE_CSM_WIZARD_SITESTEP_DOC_ROOT_ERROR"] = "Путь к корневой папке веб-сервера для Битрикс24 не может совпадать с текущим корневым путем";

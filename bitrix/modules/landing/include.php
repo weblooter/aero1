@@ -3,12 +3,14 @@
 use Bitrix\Landing\Manager;
 
 $pathJS = '/bitrix/js/landing';
-$pathTemplate24 = '/bitrix/templates/';
+$pathTemplate24 = 'templates/';
 $pathTemplate24 .= Manager::getTemplateId(
 	Manager::getMainSiteId()
 );
+$pathTemplate24 = getLocalPath($pathTemplate24);
 $pathCSS = '/bitrix/js/landing/css';
 $pathLang = BX_ROOT . '/modules/landing/lang/' . LANGUAGE_ID;
+
 
 $jsConfig = array(
 	'landing_master' => array(
@@ -119,6 +121,7 @@ $jsConfig = array(
 			$pathJS . '/ui/field/source_field.js',
 			$pathJS . '/ui/field/block_source_field.js',
 			$pathJS . '/ui/field/dynamic_image_field.js',
+			$pathJS . '/ui/field/dynamic_dropdown_field.js',
 			$pathJS . '/ui/field/pages_field.js',
 			$pathJS . '/ui/field/click_action_field.js',
 			$pathJS . '/ui/style_node.js',
@@ -314,6 +317,7 @@ $jsConfig = array(
 		),
 		'rel' => [
 			'landing.utils',
+			'landing.loc'
 		],
 	),
 

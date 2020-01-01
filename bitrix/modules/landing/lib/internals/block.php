@@ -46,7 +46,8 @@ class BlockTable extends Entity\DataManager
 				'required' => true
 			)),
 			'INITIATOR_APP_CODE' => new Entity\StringField('INITIATOR_APP_CODE', array(
-				'title' => Loc::getMessage('LANDING_TABLE_FIELD_INITIATOR_APP_CODE')
+				'title' => Loc::getMessage('LANDING_TABLE_FIELD_INITIATOR_APP_CODE'),
+				'default_value' => ''
 			)),
 			'ANCHOR' => new Entity\StringField('ANCHOR', array(
 				'title' => Loc::getMessage('LANDING_TABLE_FIELD_ANCHOR')

@@ -122,13 +122,11 @@
 						</li>
 						<li class="landing-block-node-menu-list-item nav-item g-mx-15--lg g-mb-7 g-mb-0--lg">
 							<a href="#specialOffers"
-							   class="landing-block-node-menu-list-item-link nav-link p-0">Special
-								offers</a>
+							   class="landing-block-node-menu-list-item-link nav-link p-0">Special offers</a>
 						</li>
 						<li class="landing-block-node-menu-list-item nav-item g-mx-15--lg g-mb-7 g-mb-0--lg">
 							<a href="#ourHouses"
-							   class="landing-block-node-menu-list-item-link nav-link p-0">Our
-								houses</a>
+							   class="landing-block-node-menu-list-item-link nav-link p-0">Our houses</a>
 						</li>
 						<li class="landing-block-node-menu-list-item nav-item g-mx-15--lg g-mb-7 g-mb-0--lg">
 							<a href="#gallery"

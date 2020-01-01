@@ -80,7 +80,6 @@ abstract class Builder
 	{
 		foreach($this->resources->getStrings() as $string)
 		{
-			// Main\Page\Asset::getInstance()->addString($string);
 			Main\Page\Asset::getInstance()->addString($string, false, Main\Page\AssetLocation::AFTER_JS);
 		}
 	}

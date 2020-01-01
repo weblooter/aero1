@@ -1,5 +1,5 @@
 <?php
-$MESS["SALE_CSM_WIZARD_BITRIXVMSTEP_TITLE"] = "Битрикс веб-окружение";
+$MESS["SALE_CSM_WIZARD_BITRIXVMSTEP_TITLE"] = "1С-Битрикс: Веб-окружение";
 $MESS["SALE_CSM_WIZARD_BITRIXVMSTEP_NEXT"] = "Продолжить";
 $MESS["SALE_CSM_WIZARD_BITRIXVMSTEP_PREV"] = "Назад";
 $MESS["SALE_CSM_WIZARD_BITRIXVMSTEP_INFO"] = "Настоятельно рекомендуем перейти на «1С-Битрикс: Веб-окружение»";

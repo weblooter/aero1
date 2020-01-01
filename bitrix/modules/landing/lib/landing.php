@@ -682,9 +682,10 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 	 * @param int|array $id Landing id (id array), optional.
 	 * @param boolean $absolute Full url.
 	 * @param bool $createPubPath Create pub path (checking and create).
+	 * @param array $fullUrl Returns full url of landings.
 	 * @return string
 	 */
-	public function getPublicUrl($id = false, $absolute = true, $createPubPath = false)
+	public function getPublicUrl($id = false, $absolute = true, $createPubPath = false, &$fullUrl = [])
 	{
 		if ($id === false)
 		{
@@ -696,7 +697,6 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 		$bitrix24originalVar = $bitrix24;
 		$disableCloud = defined('LANDING_DISABLE_CLOUD') &&
 						LANDING_DISABLE_CLOUD === true;
-
 		$domainDefault = null;
 		$data = array();
 		$res = Landing::getList(array(
@@ -787,15 +787,17 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 			}
 			if ($disableCloud)
 			{
-				$data[$row['ID']] = $pubPath .
+				$fullUrl[$row['ID']] = $pubPath .
 									$row['SITE_ID'] .
 									(self::$previewMode ? 'preview/' . Site::getPublicHash($row['SITE_ID_ORIG'], $row['SITE_DOMAIN']) . '/' : '') .
-									($row['FOLDER_CODE'] ? $row['FOLDER_CODE'] . '/' : '') .
+									($row['FOLDER_CODE'] ? $row['FOLDER_CODE'] . '/' : '');
+				$data[$row['ID']] = $fullUrl[$row['ID']] .
 									(($row['ID'] == $row['SITE_ID_INDEX']) ? '' : $row['CODE'] . '/');
+				$fullUrl[$row['ID']] .= $row['CODE'] . '/';
 			}
 			else
 			{
-				$data[$row['ID']] = (
+				$fullUrl[$row['ID']] = (
 									$absolute
 										? (
 											$row['SITE_PROTOCOL'] . '://' .
@@ -807,8 +809,10 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 									((self::$previewMode && !$bitrix24) ? '/preview/' . Site::getPublicHash($row['SITE_ID_ORIG'], $row['SITE_DOMAIN']) : '') .
 									(($domainReplace && $bitrix24) ? $row['SITE_ID'] : '/') .
 									((self::$previewMode && $bitrix24) ? 'preview/' . Site::getPublicHash($row['SITE_ID_ORIG'], $row['SITE_DOMAIN']) . '/' : '') .
-									($row['FOLDER_CODE'] ? $row['FOLDER_CODE'] . '/' : '') .
+									($row['FOLDER_CODE'] ? $row['FOLDER_CODE'] . '/' : '');
+				$data[$row['ID']] = $fullUrl[$row['ID']] .
 									(($row['ID'] == $row['SITE_ID_INDEX']) ? '' : $row['CODE'] . '/');
+				$fullUrl[$row['ID']] .= $row['CODE'] . '/';
 			}
 
 		}
@@ -957,10 +961,12 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 
 		// then content
 		ob_start();
+		Landing\Seo::beforeLandingView();
 		foreach ($this->blocks as $block)
 		{
 			$block->view($blockEditMode, $this);
 		}
+		Landing\Seo::afterLandingView();
 		if ($this->mainInstance)
 		{
 			$this->execHooks();
@@ -1247,10 +1253,16 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 				}
 			}
 			$anchorsPublicId += $anchorsId;
+			$landingFull = [];
 			// get landing and blocks urls
 			if (!empty($urls['LANDING']))
 			{
-				$urls['LANDING'] = $this->getPublicUrl($urls['LANDING']);
+				$urls['LANDING'] = $this->getPublicUrl(
+					$urls['LANDING'],
+					true,
+					false,
+					$landingFull
+				);
 			}
 			if (!empty($urls['BLOCK']))
 			{
@@ -1272,7 +1284,7 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 				krsort($urls['LANDING']);
 				$content = preg_replace_callback(
 					$pattern,
-					function($matches) use($urls)
+					function($matches) use($urls, $landingFull)
 					{
 						$dynamicPart = '';
 						$matches[2] = strtoupper($matches[2]);
@@ -1291,10 +1303,15 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 						{
 							if ($dynamicPart)
 							{
+								$landingUrl = $urls[$matches[2]][$matches[3]];
+								if (isset($landingFull[$matches[3]]))
+								{
+									$landingUrl = $landingFull[$matches[3]];
+								}
 								$url = substr(
-									$urls[$matches[2]][$matches[3]],
+									$landingUrl,
 									0,
-									strlen($urls[$matches[2]][$matches[3]]) - 1
+									strlen($landingUrl) - 1
 								);
 								$url .= $dynamicPart . '/';
 							}
@@ -1432,6 +1449,15 @@ class Landing extends \Bitrix\Landing\Internals\BaseTable
 	public function canPublication()
 	{
 		return in_array(Rights::ACCESS_TYPES['public'], $this->rights);
+	}
+
+	/**
+	 * Gets folder id of current landing.
+	 * @return int
+	 */
+	public function getFolderId()
+	{
+		return $this->folderId;
 	}
 
 	/**

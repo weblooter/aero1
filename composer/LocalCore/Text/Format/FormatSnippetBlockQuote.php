@@ -45,7 +45,7 @@ class FormatSnippetBlockQuote extends BaseFormat
         $strTextBlock
     </div>
     <div class="image">
-        <a href="javascript:void(0)">
+        <a href="/o-doktore/" target="_blank">
             <img src="$strUserImg" />
                $strUserName
             <span>$strUserDesc</span>

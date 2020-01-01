@@ -545,7 +545,6 @@ if ($arParams['SUCCESS_SAVE'])
 											?>id="layout-radio-<?= $i + 1;?>"<?
 											?><?if ($tpl['ID'] == $row['TPL_ID']['CURRENT']){?> checked="checked"<?}?>>
 										<?endforeach;?>
-										<input class="layout-switcher" data-layout="without_right" name="fields[TPL_ID]" id="layout-radio-6" type="radio">
 										<div class="landing-form-list">
 											<div class="landing-form-list-container">
 												<div class="landing-form-list-inner">

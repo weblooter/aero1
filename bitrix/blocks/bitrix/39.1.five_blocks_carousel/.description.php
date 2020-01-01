@@ -33,7 +33,7 @@ return array(
 		'.landing-block-node-card-img' => array(
 			'name' => Loc::getMessage('LANDING_BLOCK_5_BLOCKS_CAROUSEL_NODES_LANDINGBLOCKNODECARDIMG'),
 			'type' => 'img',
-			'dimensions' => array('width' => 500, 'height' => 334),
+			'dimensions' => array('width' => 369),
 		),
 		'.landing-block-node-card-icon' => array(
 			// deprecated

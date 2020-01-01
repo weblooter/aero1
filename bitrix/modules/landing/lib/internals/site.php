@@ -168,6 +168,7 @@ class SiteTable extends Entity\DataManager
 				'!ID' => $currentId,
 				'DOMAIN_ID' => $domainId,
 				'=CODE' => $code,
+				'=DELETED' => ['Y', 'N'],
 				'CHECK_PERMISSIONS' => 'N'
 			)
 		));
@@ -537,6 +538,10 @@ class SiteTable extends Entity\DataManager
 					? $fields['TITLE'] : 'site',
 					LANGUAGE_ID
 				);
+				if (!$fields['CODE'])
+				{
+					$fields['CODE'] = randString(12);
+				}
 			}
 			// only digits is disallowed
 			if (preg_match('/^[\d]+$/', $fields['CODE']))

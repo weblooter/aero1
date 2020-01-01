@@ -71,10 +71,13 @@
 		 */
 		setValue: function(value)
 		{
-			this.input.innerText = BX.date.format(this.getFormat(), new Date(value * 1000));
-			this.hiddenInput.value = this.formatValue(value);
-			this.onValueChangeHandler(this);
-			fireCustomEvent(this, "BX.Landing.UI.Field:change", [this.getValue()]);
+			if (value)
+			{
+				this.input.innerText = BX.date.format(this.getFormat(), new Date(value * 1000));
+				this.hiddenInput.value = this.formatValue(value);
+				this.onValueChangeHandler(this);
+				fireCustomEvent(this, "BX.Landing.UI.Field:change", [this.getValue()]);
+			}
 		},
 
 		/**
@@ -116,6 +119,23 @@
 		getValue: function()
 		{
 			return this.formatValue(this.formatDateToValue(this.hiddenInput.value));
+		},
+
+		clone: function(fieldData)
+		{
+			var data = Object.assign(
+				{},
+				fieldData || this.data,
+				{content: (new Date()).getTime()}
+			);
+			var field = new this.constructor(data);
+
+			if (this.type)
+			{
+				field.type = this.type;
+			}
+
+			return field;
 		}
 	}
 })();

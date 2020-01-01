@@ -825,10 +825,7 @@ class LandingSiteDemoComponent extends LandingBaseComponent
 			);
 			if ($landingId)
 			{
-				if (!$this->redirectToLanding($landingId))
-				{
-					return false;
-				}
+				return $this->redirectToLanding($landingId);
 			}
 			else
 			{

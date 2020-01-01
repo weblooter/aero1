@@ -30,7 +30,28 @@ class Text extends \Bitrix\Landing\Node
 
 		foreach ($data as $pos => $value)
 		{
+			if (isset($value['url']))
+			{
+				$url = is_array($value['url'])
+					? json_encode($value['url'])
+					: $value['url'];
+				if (isset($value['text']))
+				{
+					$value = $value['text'];
+				}
+			}
+			else
+			{
+				$url = '';
+			}
+
+			if (!is_string($value))
+			{
+				continue;
+			}
+
 			$value = trim($value);
+
 			if (isset($resultList[$pos]))
 			{
 				if ($additional['sanitize'])
@@ -45,6 +66,10 @@ class Text extends \Bitrix\Landing\Node
 					$value
 				);
 				$resultList[$pos]->setInnerHTML(!$value ? ' ' : $value);
+				if ($url)
+				{
+					$resultList[$pos]->setAttribute('data-pseudo-url', $url);
+				}
 			}
 		}
 	}

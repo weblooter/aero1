@@ -203,11 +203,16 @@
 
 		openSourceFilterSlider: function(url)
 		{
+			var siteId = BX.Landing.Env.getInstance().getOptions().site_id;
+
 			BX.SidePanel.Instance.open(url, {
 				cacheable: false,
 				requestMethod: "post",
 				requestParams: {
-					filter: this.getValue().filter
+					filter: this.getValue().filter,
+					landingParams: {
+						siteId: siteId
+					}
 				}
 			});
 		},

@@ -23,11 +23,15 @@
 
 		this.addField(this.createSourceField());
 		this.addField(this.createPagesField());
-		this.addCard(
-			this.createFieldsGroup([
-				this.createLinkField()
-			])
-		);
+
+		if (data.detailPage)
+		{
+			this.addCard(
+				this.createFieldsGroup([
+					this.createLinkField()
+				])
+			);
+		}
 	};
 
 	BX.Landing.UI.Form.DynamicCardsForm.prototype = {
@@ -46,7 +50,7 @@
 					return {
 						name: item.name,
 						value: item.id,
-						url: item.url.filter,
+						url: item.url ? item.url.filter : '',
 						filter: item.filter,
 						sort: {
 							items: item.sort.map(function(sortItem) {
