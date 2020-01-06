@@ -74,7 +74,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
             # tag mode format
             if ($this->_mode === self::MODE_TAG) {
                 $arResult['SECTION']['DESCRIPTION'] = (new Format\FormatCommon())->format($arResult['SECTION']['DESCRIPTION']);
-                $arResult['SECTION']['SEO_VALUES']['SECTION_META_DESCRIPTION'] = (new Format\FormatTrim(new Format\FormatStripTags((new Format\FormatCommon()))))->format($arResult['SECTION']['DESCRIPTION']);
+//                $arResult['SECTION']['SEO_VALUES']['SECTION_META_DESCRIPTION'] = (new Format\FormatTrim(new Format\FormatStripTags((new Format\FormatCommon()))))->format($arResult['SECTION']['DESCRIPTION']);
 
                 if ($arResult['SECTION']['UF_VIDEO_IMG'] > 0) {
                     $arResult['SECTION']['UF_VIDEO_IMG'] = \CFile::ResizeImageGet($arResult['SECTION']['UF_VIDEO_IMG'], ['width' => 570, 'height' => 570], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75);
@@ -219,6 +219,7 @@ class ConsultSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
 
     protected function setSeo()
     {
+
         $GLOBALS['APPLICATION']->SetPageProperty('h1', htmlspecialchars_decode($this->arResult['SECTION']['SEO_VALUES']['SECTION_PAGE_TITLE']));
         if ($this->_mode === self::MODE_TAG) {
             $GLOBALS['APPLICATION']->AddChainItem($this->arResult['MAIN_SECTION']['NAME'], $this->arResult['MAIN_SECTION']['SECTION_PAGE_URL']);
