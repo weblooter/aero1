@@ -24,6 +24,7 @@ class FormatCommon extends BaseFormat
         $obFormat = new FormatSnippetAnatationBlock($obFormat);
         $obFormat = new FormatSnippetBlockQuote($obFormat);
         $obFormat = new FormatSnippetInfoBlock($obFormat);
+        $obFormat = new FormatSnippetServiceVideo($obFormat);
 
         $strText = $obFormat->format($strText);
 

@@ -43,9 +43,9 @@ class ServicesHeaderComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
                 'LINK' => $this->arParams['DATA']['MAIN']['ELEMENT']['DETAIL_PAGE_URL'].'review/',
                 'PRE_H1' => 'ОТЗЫВЫ'
             ],
-            'contacts' => [
+            'klinika' => [
                 'NAME' => 'КЛИНИКА',
-                'LINK' => $this->arParams['DATA']['MAIN']['ELEMENT']['DETAIL_PAGE_URL'].'contacts/',
+                'LINK' => $this->arParams['DATA']['MAIN']['ELEMENT']['DETAIL_PAGE_URL'].'klinika/',
                 'PRE_H1' => 'КЛИНИКА'
             ],
             'consultation' => [
@@ -68,6 +68,11 @@ class ServicesHeaderComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
      */
     protected function extractH1()
     {
+
+        if ($this->arParams['ACTIVE'] == 'klinika') {
+            $this->arParams['ACTIVE'] = 'contacts';
+        }
+
         $arH1 = [
             'H1' => \Local\Core\Register\ServicesComponent::getH1() ?? $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_H1']['VALUE'],
             'AFTER_H1' => \Local\Core\Register\ServicesComponent::getAfterH1() ?? $this->arParams['DATA']['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->arParams['ACTIVE']).'_AFTER_H1']['VALUE'],

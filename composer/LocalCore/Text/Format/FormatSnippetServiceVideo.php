@@ -45,7 +45,30 @@ class FormatSnippetServiceVideo extends BaseFormat
 
                 list($strTitle, $strHeader, $strImg, $strLink, $strDescription) = $arTmp;
 
-                $arReplaceTo[] = <<<DOCHERE
+                if (preg_match('/^\/uslugi\/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)$/', \Bitrix\Main\Application::getInstance()
+                        ->getContext()
+                        ->getRequest()
+                        ->getRequestedPageDirectory()) === 1
+                ) {
+                    $arReplaceTo[] = <<<DOCHERE
+<div class="video">
+<div class="video__item">
+    <div class="video__item__text">
+        <div class="title-preview">$strTitle</div>
+        <div class="h2">$strHeader</div>
+    </div>
+    <div class="link">
+        <div class="title-preview">$strTitle</div>
+        <div class="h2">$strHeader</div>
+        <img src="$strImg"/>
+        <a data-mfp-src="$strLink" class="video-ico js-video-popup"></a>
+    </div>
+</div>
+<p>$strDescription</p>
+</div>
+DOCHERE;
+                } else {
+                    $arReplaceTo[] = <<<DOCHERE
 <div class="videoList__item">
     <div class="videoList__item__text">
         <div class="title-preview">$strTitle</div>
@@ -60,6 +83,7 @@ class FormatSnippetServiceVideo extends BaseFormat
 </div>
 <p>$strDescription</p>
 DOCHERE;
+                }
             }
 
             $strText = str_replace($arReplaceFrom, $arReplaceTo, $strText);

@@ -83,7 +83,7 @@ $obRequest = \Bitrix\Main\Application::getInstance()
         </div>
         <div class="shadow"></div>
         <?
-        if( $obRequest->getRequestedPageDirectory() == '/kontakty' )
+        if ($obRequest->getRequestedPageDirectory() == '/contacts')
         {
             $APPLICATION->ShowViewContent("contacts_header");
         }

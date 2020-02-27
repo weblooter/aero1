@@ -42,8 +42,8 @@ class OnAfterIBlockElementUpdate
                     $arData = $rsElemData->GetNext();
 
                     \Local\Core\TriggerMail\Consult::sendAnswerToUse([
-                        'FIO' => $arData['PROPERTY_ASKER_EMAIL_VALUE'],
-                        'EMAIL' => $arData['PROPERTY_ASKER_NAME_VALUE'],
+                        'FIO' => $arData['PROPERTY_ASKER_NAME_VALUE'],
+                        'EMAIL' => $arData['PROPERTY_ASKER_EMAIL_VALUE'],
                         'QUESTION' => ((new Format\FormatTrim(new Format\FormatStripTags()))->format($arData['PREVIEW_TEXT'])),
                         'ANSWER_LINK' => $arData['DETAIL_PAGE_URL']
                     ]);

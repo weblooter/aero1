@@ -13,6 +13,13 @@ class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
         }
 
         try {
+            if ($this->componentTemplate == 'contacts') {
+                LocalRedirect(str_replace('contacts', 'klinika', \Bitrix\Main\Application::getInstance()
+                    ->getContext()
+                    ->getRequest()
+                    ->getRequestedPageDirectory()), false, '301 Moved permanently');
+            }
+
             $this->includeComponentTemplate($this->componentTemplate);
         } catch (Services\ExceptionEmptyData $e) {
             $this->_show404Page();
