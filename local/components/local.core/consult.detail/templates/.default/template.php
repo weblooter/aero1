@@ -39,12 +39,14 @@
                         <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arResult['ITEM']['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
-                <div class="consult-tags">
-                    <span>Теги:</span>
-                    <? foreach ($arResult['ITEM']['SECTIONS'] as $intSectID): ?>
-                        <a href="<?=$arResult['TAGS'][$intSectID]['SECTION_PAGE_URL']?>"><?=$arResult['TAGS'][$intSectID]['NAME']?></a>
-                    <? endforeach; ?>
-                </div>
+                <? if (!empty(array_intersect(array_keys($arResult['ITEM']['SECTIONS']), array_keys($arResult['TAGS'])))): ?>
+                    <div class="consult-tags">
+                        <span>Теги:</span>
+                        <? foreach ($arResult['ITEM']['SECTIONS'] as $intSectID): ?>
+                            <a href="<?=$arResult['TAGS'][$intSectID]['SECTION_PAGE_URL']?>"><?=$arResult['TAGS'][$intSectID]['NAME']?></a>
+                        <? endforeach; ?>
+                    </div>
+                <? endif; ?>
             </div>
         </div>
 

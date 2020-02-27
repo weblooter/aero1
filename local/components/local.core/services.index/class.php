@@ -49,9 +49,14 @@ class ServicesIndexComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                     $arResult['OPERATION_ICONS'][] = [
                         'IMG' => $arOperationsProps[$v]['IMG'],
                         'NAME' => $arOperationsProps[$v]['NAME'],
-                        'VALUE' => $arData['PROPERTIES']['INDEX_OPETAION_PROPS_VAL']['VALUE'][$k]
+                        'VALUE' => $arData['PROPERTIES']['INDEX_OPETAION_PROPS_VAL']['VALUE'][$k],
+                        'XML_ID' => $v
                     ];
                 }
+            }
+
+            if (!empty(trim($arData['PROPERTIES']['INDEX_OPETAION_PROPS_DISCOUNT']['VALUE']))) {
+                $arResult['OPETAION_PROPS_DISCOUNT'] = $arData['PROPERTIES']['INDEX_OPETAION_PROPS_DISCOUNT']['VALUE'];
             }
 
             # photos
