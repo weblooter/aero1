@@ -237,6 +237,11 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
     $arFilter["ID"] = $arParams["ELEMENT_ID"];
     $arFilter["SHOW_HISTORY"] = $WF_SHOW_HISTORY;
 
+    if( !empty($arParams['FILTER_NAME']) )
+    {
+        $arFilter = array_merge($arFilter, $GLOBALS[$arParams['FILTER_NAME']]);
+    }
+
     $rsElement = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
     $rsElement->SetUrlTemplates($arParams["DETAIL_URL"], "", $arParams["IBLOCK_URL"]);
     if ($obElement = $rsElement->GetNextElement()) {

@@ -93,6 +93,7 @@ class ComposerStaticInit73ce08e6b9ba2b72ef01c3a5d083983d
         'Local\\Core\\Text\\Format\\FormatCommon' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatCommon.php',
         'Local\\Core\\Text\\Format\\FormatNewLine' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatNewLine.php',
         'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlock' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetAnatationBlock.php',
+        'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlockConsult' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetAnatationBlockConsult.php',
         'Local\\Core\\Text\\Format\\FormatSnippetBlockQuote' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetBlockQuote.php',
         'Local\\Core\\Text\\Format\\FormatSnippetInfoBlock' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetInfoBlock.php',
         'Local\\Core\\Text\\Format\\FormatSnippetPhotoGallery' => __DIR__ . '/../..' . '/LocalCore/Text/Format/FormatSnippetPhotoGallery.php',

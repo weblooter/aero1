@@ -7,8 +7,9 @@ $SNIPPETS['Общие/snippet0003.snp'] = Array('title' => 'Фотогалере
 $SNIPPETS['Услуги/snippet0002.snp'] = Array('title' => 'Видео в услугах');
 $SNIPPETS['Общие/snippet0004.snp'] = Array('title' => 'Цитата');
 $SNIPPETS['Общие/snippet0005.snp'] = Array('title' => 'Информационный блок');
-$SNIPPETS['Общие/snippet0006.snp'] = Array('title' => 'Блок с анатацией');
+$SNIPPETS['Общие/snippet0006.snp'] = Array('title' => 'Блок с аннотацией');
 $SNIPPETS['Услуги/snippet0001.snp'] = Array('title' => 'Вывод блока с довольными пациентами');
 $SNIPPETS['Услуги/snippet0003.snp'] = Array('title' => 'Вывод блока вопросов по консультации');
 $SNIPPETS['Услуги/snippet0004.snp'] = Array('title' => 'Вывод блока с отзывами');
+$SNIPPETS['Общие/snippet0007.snp'] = Array('title' => 'Блок с аннотацией (с тегами)');
 ?>

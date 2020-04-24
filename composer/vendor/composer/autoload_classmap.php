@@ -38,6 +38,7 @@ return array(
     'Local\\Core\\Text\\Format\\FormatCommon' => $baseDir . '/LocalCore/Text/Format/FormatCommon.php',
     'Local\\Core\\Text\\Format\\FormatNewLine' => $baseDir . '/LocalCore/Text/Format/FormatNewLine.php',
     'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlock' => $baseDir . '/LocalCore/Text/Format/FormatSnippetAnatationBlock.php',
+    'Local\\Core\\Text\\Format\\FormatSnippetAnatationBlockConsult' => $baseDir . '/LocalCore/Text/Format/FormatSnippetAnatationBlockConsult.php',
     'Local\\Core\\Text\\Format\\FormatSnippetBlockQuote' => $baseDir . '/LocalCore/Text/Format/FormatSnippetBlockQuote.php',
     'Local\\Core\\Text\\Format\\FormatSnippetInfoBlock' => $baseDir . '/LocalCore/Text/Format/FormatSnippetInfoBlock.php',
     'Local\\Core\\Text\\Format\\FormatSnippetPhotoGallery' => $baseDir . '/LocalCore/Text/Format/FormatSnippetPhotoGallery.php',

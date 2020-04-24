@@ -6,6 +6,11 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 $obRequest = \Bitrix\Main\Application::getInstance()
     ->getContext()
     ->getRequest();
+
+if( empty($_SERVER['HTTPS']) )
+{
+    header('Location: https://dr-vedrov.ru'.$obRequest->getRequestedPageDirectory().'/');
+}
 ?>
 <!DOCTYPE html>
 <html>

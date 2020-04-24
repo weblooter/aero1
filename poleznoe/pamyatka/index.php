@@ -1,12 +1,12 @@
 <?
 define('DISABLE_BREADCRUMBS', true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Довольные пациенты");
-$APPLICATION->SetPageProperty("h1", "Пациенты хирурга всегда рады поделиться своими эмоциями");
-$APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
+$APPLICATION->SetTitle("Памятка");
+$APPLICATION->SetPageProperty("h1", "Памятка");
+$APPLICATION->SetPageProperty("pre-h1", "Памятка");
 ?><?$APPLICATION->IncludeComponent(
 	"bitrix:news",
-	"patient",
+	"sovet",
 	Array(
 		"ADD_ELEMENT_CHAIN" => "Y",
 		"ADD_SECTIONS_CHAIN" => "N",
@@ -28,17 +28,17 @@ $APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
 		"DETAIL_PAGER_SHOW_ALL" => "N",
 		"DETAIL_PAGER_TEMPLATE" => ".default",
 		"DETAIL_PAGER_TITLE" => "Страница",
-		"DETAIL_PROPERTY_CODE" => array("OPERATION_PROPS",""),
+		"DETAIL_PROPERTY_CODE" => array("","START_TEXT",""),
 		"DETAIL_SET_CANONICAL_URL" => "N",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_DATE" => "N",
 		"DISPLAY_NAME" => "Y",
-		"DISPLAY_PICTURE" => "N",
+		"DISPLAY_PICTURE" => "Y",
 		"DISPLAY_PREVIEW_TEXT" => "N",
 		"DISPLAY_TOP_PAGER" => "N",
 		"FILE_404" => "/404.php",
 		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
-		"IBLOCK_ID" => "19",
+		"IBLOCK_ID" => "26",
 		"IBLOCK_TYPE" => "main_ved",
 		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
 		"LIST_ACTIVE_DATE_FORMAT" => "m.d.Y",
@@ -47,7 +47,7 @@ $APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
 		"MESSAGE_404" => "",
 		"META_DESCRIPTION" => "-",
 		"META_KEYWORDS" => "-",
-		"NEWS_COUNT" => "3000",
+		"NEWS_COUNT" => "30",
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
@@ -56,7 +56,7 @@ $APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
 		"PAGER_TEMPLATE" => ".default",
 		"PAGER_TITLE" => "Новости",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"SEF_FOLDER" => "/poleznoe/dovolnye-patsienty/",
+		"SEF_FOLDER" => "/poleznoe/pamyatka/",
 		"SEF_MODE" => "Y",
 		"SEF_URL_TEMPLATES" => Array("detail"=>"#ELEMENT_CODE#/","news"=>"","section"=>""),
 		"SET_LAST_MODIFIED" => "N",
@@ -69,11 +69,11 @@ $APPLICATION->SetPageProperty("pre-h1", "Довольные пациенты");
 		"SORT_ORDER2" => "ASC",
 		"STRICT_SECTION_CHECK" => "N",
 		"USE_CATEGORIES" => "N",
-		"USE_FILTER" => "Y",
+		"USE_FILTER" => "N",
 		"USE_PERMISSIONS" => "N",
 		"USE_RATING" => "N",
 		"USE_RSS" => "N",
 		"USE_SEARCH" => "N",
 		"USE_SHARE" => "N"
 	)
-);?><? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); ?>
+);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

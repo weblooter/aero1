@@ -92,9 +92,9 @@
                 <?
                 if (!empty($arResult['OPERATION'])):?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>"><?=$arResult['OPERATION']['NAME']?></a>". </p>
-                <? else:?>
+                <? else: ?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<?=$arResult['MAIN_SECTION']['NAME']?>". </p>
-                <?endif; ?>
+                <? endif; ?>
             </div>
             <?
             break;
@@ -135,12 +135,14 @@
                         <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
-                <div class="consult-tags">
-                    <span>Теги:</span>
-                    <? foreach ($arItem['SECTIONS'] as $intId): ?>
-                        <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
-                    <? endforeach; ?>
-                </div>
+                <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arItem['TAG'])))): ?>
+                    <div class="consult-tags">
+                        <span>Теги:</span>
+                        <? foreach ($arItem['SECTIONS'] as $intId): ?>
+                            <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
+                        <? endforeach; ?>
+                    </div>
+                <? endif; ?>
             </div>
         <? endforeach; ?>
     </div>

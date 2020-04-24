@@ -1,591 +1,674 @@
 
 .content {
-	position: relative;	
-	line-height: 24px;
-	+.line {
-		margin-bottom:0;
-	}
-	.text {
-		+.line {
-			margin-bottom:0;
-		}
-	}
-	&.service,&.inner {
-		margin: 80px 0 0;
-		@include breakpoint(tablet-windows) {
-			margin: 110px 0 0;
-		}
-		@include breakpoint(tablet-small-portrait1) {					
-			margin: 50px 0 0;
-		}
-		h2,.h2 {
-			margin: 30px 0;
-			@include font(36, 48, 700);
-			color: $color_h;
-			@include breakpoint(tablet-windows) {
-				margin: 35px 0;
-			}
-			@include breakpoint(tablet-portrait) {
-				@include font(30, 32, 700);
-			}
-			@include breakpoint(tablet-small-portrait1) {
-				@include font(24, 26, 700);
-			}
-		}
-		.paging {
-			margin-top:100px;
-			@include breakpoint(tablet-windowscape) {
-				margin-top:50px;
-			}
-		}
-		.gallerySlider {
-			margin-top: 50px;
-			position: relative;
-			margin-bottom:50px;
-			@include breakpoint(tablet-windowscape) {
-				margin-top: 50px;
-				margin-bottom:50px;
-			}
-			@include breakpoint(tablet-small-portrait) {
-				margin-top: 0px;
-			}
-		}
-		.social {
-			@include breakpoint(tablet-portrait) {
-				margin: 0 0 30px;
-			}
-			a {
-				@include opacity(1);
+  position: relative;
+  line-height: 24px;
 
-				img,svg {
-					@include transition(all .3s ease);
-				}
-				&:hover {
-					img,svg {@include transform(translate(0,-2px));}
-					
-				}
-			}
-		}
-		a[href^="mailto:"] {
-			color: $color_link;
-			text-decoration: none;
-			&:hover {
-				color: $color_link_hover;
-			}
-		}
-	}
-	&.review {
-		h2,.h2 {
-			margin: 30px 0 40px;
-			max-width:70%;
-			@include breakpoint(tablet-windows) {
-				margin: 35px 0 70px;
-				max-width:50%;
-			}
-			@include breakpoint(tablet-portrait) {
-				width:auto;
-			}
-		}
-	}
-	.all {
-		margin:50px 0;
-		margin-top:-130px;
-		padding: 25px 0;
-		border-bottom: 1px solid #f1f1f1;
-		@include breakpoint(tablet-portrait) {
-					margin-top:-65px;
-			}
-			@include breakpoint(tablet-small-portrait) {
-				margin-top:-50px;
-		}
-	}
-	.more {
-		padding: 25px 0;
-		border-top:1px solid #e5e5e5;
-		border-bottom:1px solid #e5e5e5;
-		margin:50px 0;
-			a,span {
-				margin-right: 70px;
-				@include breakpoint(tablet-small-portrait1) {
-					margin-right: 15px;
-				}
-				@include breakpoint(phone-landscape1) {
-					margin-right: 10px;
-				}
-			}
-	}
-	
-	a[href^="tel:"] {
-		color: $color_text;
-		text-decoration: none;
-	}
-	a {
-		color: $color_h;
-		text-decoration: underline;
-		&:hover {
-			color: $color_link_hover;
-			text-decoration: none;
-		}
-		&:hover,
-		&:focus,
-		&:active {
-			outline: none;
-			outline: 0;
-		}
-	}
-	h2 {
-		@include font(30, 34);
-		color: $color_h;
-		margin: 40px 0 30px;
-		@include breakpoint(tablet-portrait) {
-			@include font(26, 28);
-			margin: 30px 0 30px;
-		}
-		@include breakpoint(phone-landscape) {
-			@include font(22, 24);
-			margin: 30px 0 20px;
-		}
-	}
-	.row {
-		.h2,h2 {
-			@include font(36, 38, 700);
-	color: $color_h;
-	margin: 40px 0 30px;
-	@include breakpoint(tablet-portrait) {
-		@include font(30, 32, 700);
-		margin: 30px 0 30px;
-	}
-	@include breakpoint(phone-landscape) {
-		@include font(24, 26, 700);
-		margin: 30px 0 20px;
-	}
-		}
-	}
-	ul {
-		margin: 30px 0px;
-		padding: 0;
-		@include breakpoint(tablet-portrait) {
-			//margin: 20px 0;
-		}
-		li {
-			list-style: none;
-			margin: 0 0 20px;
-			padding: 0 0 0 32px;
-			position: relative;
-			strong {
-				font-weight:400;
-			}
-			&:before {
-				@include twins;
-				width: 8px;
-				height: 8px;
-				border-radius:50%;
-				background: $color_h;
-				left: 0;
-				top: 8px;
-			}
-		}
-	}
-	ol {
-		list-style: none;
-		counter-reset: li1;
-		margin: 30px 0;
-		padding: 0;		
-		position: relative;
-			&:before {
-				@include twins;
-				border-left:1px solid $color_h;
-				top:7px;
-				left:18px;
-				bottom: 5px;
-			}
-		@include breakpoint(tablet-portrait) {
-			margin: 20px 0;
-		}
-		&.sitemap {
-			text-transform: uppercase;
-			ol {
-				text-transform: none;
-			}
-		}
-		li {
-			padding: 0;
-			position: relative;
-			margin: 0 0 20px;
-			padding-left: 36px;					
-			&:before {
-				@include twins;
-				width:18px;
-				left:0;
-				top:0;
-				color:$color_h;
-				counter-increment: li1;
-				content: counter(li1)'.';
-			}
-			ol {
-				margin: 10px 0 10px 35px;
-				counter-reset: li2;
-				&:before {
-					left:30px;
-					top: 4px;
-					bottom: 0px;
-				}
-				li {					
-					margin:0 0 10px;
-					padding-left: 42px;
-					@include font(14,18);	
-					&:before {
-						counter-increment: li2;
-						content: counter(li1)'.'counter(li2);
-						width:30px;
-						//color:#000;
-						//font-weight: 400;
-					}
-				}
-			}
-		}
-	}
+  + .line {
+    margin-bottom: 0;
+  }
 
-	table {
-		width: 100%;
-		border: none;
-		position: relative;
-		margin: 10px 0 40px;
-		@include breakpoint(tablet-small-portrait1) {
-			margin: 10px 0 20px;
-		}
-		@include breakpoint(tablet-small-portrait1) {
-			@include display-flex;
-			@include flex-wrap(wrap);
-		}
-	
-		tr {
-			@include breakpoint(tablet-small-portrait1) {
-				margin: 0 0 20px;
-			}
-			th {
-				@include font(12,14,600);
-				color: #006992;
-				padding: 15px 20px;
-				background: #fff;
-				text-align: left;
-				border: none;
-				@include breakpoint(tablet-small-portrait1) {
-					padding: 5px 0;
-				}
-				p {
-					margin: 0;
-				}
-			}
-			td {
-				padding: 15px 20px;
-				border: none;
-				border-top: 2px solid #dfe7ec;
-				color: #000;
-				@include font(16,18,300);
-				position: relative;
-				@include breakpoint(tablet-small-portrait1) {
-					border: none;
-					margin: 0;
-					@include box-shadow(none);
-					text-align: left;
-					padding: 10px 0 0;
-				}
-				&:before {
-					@include breakpoint(tablet-small-portrait1) {
-					content: attr(data-head);
-					display: block;
-					background: none;
-					text-align: left;
-					padding: 0;
-					color: $color_border;
-					@include transition(all .25s ease);	
-					@include font(12,16,400);
-					text-transform: uppercase;
-					}
-				}
-			}
-			&:last-child {
-				th,td {
-					border-top: 2px solid #dfe7ec;
-					@include breakpoint(tablet-small-portrait1) {
-						border: none;
-					}
-				}
-			}
-		}
-	}
-	@media (max-width: 600px) {
-		table,
-		thead,
-		tbody,
-		th,
-		td,
-		tr {
-			display: block;
-		}
-		table {
-			border: none;
-			@include box-shadow(none);
-		}
-		table thead tr {
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
-		}
-	}
-	.video {
-		iframe {
-			width: 100%!important;
-			margin-top: 7px;
-		}
-	}
-	
-	&.before-text {
-		@include font(14,26);
-		color:$color_grey;
-	}
-	&.after-text {
-		margin:30px 0;	
-	}
-	p {
-		margin: 0 0 25px;
-		@include breakpoint(tablet-portrait) {
-			margin: 0 0 20px; 
-		}
-		@include breakpoint(tablet-small-portrait) {
-			margin: 0 0 15px;
-		}
-	}
-	.center {
-		width: 100%;
-	}
-	.image-right {
-		max-width:50%;
-		margin:5px 0 30px 30px;
-		float:right;
-		@include breakpoint(tablet-small-portrait) {
-			max-width:inherit;
-			width:100%;
-			text-align:center;
-			margin:0 0 20px;
-			float:none;
-		}
-	}
-	.image-left {
-		max-width:50%;
-		margin:5px 30px 30px 0;
-		float:left;
-		@include breakpoint(tablet-small-portrait) {
-			width:100%;
-			max-width:inherit;
-			text-align:center;
-			margin:0 0 20px;
-			float:none;
-		}
-	}
-	
+  .text {
+    + .line {
+      margin-bottom: 0;
+    }
+  }
+
+  &.service, &.inner {
+    margin: 80px 0 0;
+    @include breakpoint(tablet-windows) {
+      margin: 110px 0 0;
+    }
+    @include breakpoint(tablet-small-portrait1) {
+      margin: 50px 0 0;
+    }
+
+    h2, .h2 {
+      margin: 30px 0;
+      @include font(36, 48, 700);
+      color: $color_h;
+      @include breakpoint(tablet-windows) {
+        margin: 35px 0;
+      }
+      @include breakpoint(tablet-portrait) {
+        @include font(30, 32, 700);
+      }
+      @include breakpoint(tablet-small-portrait1) {
+        @include font(24, 26, 700);
+      }
+    }
+
+    .paging {
+      margin-top: 100px;
+      @include breakpoint(tablet-windowscape) {
+        margin-top: 50px;
+      }
+    }
+
+    .gallerySlider {
+      margin-top: 50px;
+      position: relative;
+      margin-bottom: 50px;
+      @include breakpoint(tablet-windowscape) {
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+      @include breakpoint(tablet-small-portrait) {
+        margin-top: 0px;
+      }
+    }
+
+    .social {
+      @include breakpoint(tablet-portrait) {
+        margin: 0 0 30px;
+      }
+
+      a {
+        @include opacity(1);
+
+        img, svg {
+          @include transition(all .3s ease);
+        }
+
+        &:hover {
+          img, svg {
+            @include transform(translate(0, -2px));
+          }
+
+        }
+      }
+    }
+
+    a[href^="mailto:"] {
+      color: $color_link;
+      text-decoration: none;
+
+      &:hover {
+        color: $color_link_hover;
+      }
+    }
+  }
+
+  &.review {
+    h2, .h2 {
+      margin: 30px 0 40px;
+      max-width: 70%;
+      @include breakpoint(tablet-windows) {
+        margin: 35px 0 70px;
+        max-width: 50%;
+      }
+      @include breakpoint(tablet-portrait) {
+        width: auto;
+      }
+    }
+  }
+
+  .all {
+    margin: 50px 0;
+    margin-top: -130px;
+    padding: 25px 0;
+    border-bottom: 1px solid #f1f1f1;
+    @include breakpoint(tablet-portrait) {
+      margin-top: -65px;
+    }
+    @include breakpoint(tablet-small-portrait) {
+      margin-top: -50px;
+    }
+  }
+
+  .more {
+    padding: 25px 0;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    margin: 50px 0;
+
+    a, span {
+      margin-right: 70px;
+      @include breakpoint(tablet-small-portrait1) {
+        margin-right: 15px;
+      }
+      @include breakpoint(phone-landscape1) {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  a[href^="tel:"] {
+    color: $color_text;
+    text-decoration: none;
+  }
+
+  a {
+    color: $color_h;
+    text-decoration: underline;
+
+    &:hover {
+      color: $color_link_hover;
+      text-decoration: none;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      outline: none;
+      outline: 0;
+    }
+  }
+
+  h2 {
+    @include font(30, 34);
+    color: $color_h;
+    margin: 40px 0 30px;
+    @include breakpoint(tablet-portrait) {
+      @include font(26, 28);
+      margin: 30px 0 30px;
+    }
+    @include breakpoint(phone-landscape) {
+      @include font(22, 24);
+      margin: 30px 0 20px;
+    }
+  }
+
+  .row {
+    .h2, h2 {
+      @include font(36, 38, 700);
+      color: $color_h;
+      margin: 40px 0 30px;
+      @include breakpoint(tablet-portrait) {
+        @include font(30, 32, 700);
+        margin: 30px 0 30px;
+      }
+      @include breakpoint(phone-landscape) {
+        @include font(24, 26, 700);
+        margin: 30px 0 20px;
+      }
+    }
+  }
+
+  ul {
+    margin: 30px 0px;
+    padding: 0;
+    @include breakpoint(tablet-portrait) {
+      //margin: 20px 0;
+    }
+
+    li {
+      list-style: none;
+      margin: 0 0 20px;
+      padding: 0 0 0 32px;
+      position: relative;
+
+      strong {
+        font-weight: 400;
+      }
+
+      &:before {
+        @include twins;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $color_h;
+        left: 0;
+        top: 8px;
+      }
+    }
+  }
+
+  ol {
+    list-style: none;
+    counter-reset: li1;
+    margin: 30px 0;
+    padding: 0;
+    position: relative;
+
+    &:before {
+      @include twins;
+      border-left: 1px solid $color_h;
+      top: 7px;
+      left: 18px;
+      bottom: 5px;
+    }
+
+    @include breakpoint(tablet-portrait) {
+      margin: 20px 0;
+    }
+
+    &.sitemap {
+      text-transform: uppercase;
+
+      ol {
+        text-transform: none;
+      }
+    }
+
+    li {
+      padding: 0;
+      position: relative;
+      margin: 0 0 20px;
+      padding-left: 36px;
+
+      &:before {
+        @include twins;
+        width: 18px;
+        left: 0;
+        top: 0;
+        color: $color_h;
+        counter-increment: li1;
+        content: counter(li1) '.';
+      }
+
+      ol {
+        margin: 10px 0 10px 35px;
+        counter-reset: li2;
+
+        &:before {
+          left: 30px;
+          top: 4px;
+          bottom: 0px;
+        }
+
+        li {
+          margin: 0 0 10px;
+          padding-left: 42px;
+          @include font(14, 18);
+
+          &:before {
+            counter-increment: li2;
+            content: counter(li1) '.' counter(li2);
+            width: 30px;
+            //color:#000;
+            //font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border: none;
+    position: relative;
+    margin: 10px 0 40px;
+    @include breakpoint(tablet-small-portrait1) {
+      margin: 10px 0 20px;
+    }
+    @include breakpoint(tablet-small-portrait1) {
+      @include display-flex;
+      @include flex-wrap(wrap);
+    }
+
+    tr {
+      @include breakpoint(tablet-small-portrait1) {
+        margin: 0 0 20px;
+      }
+
+      th {
+        @include font(12, 14, 600);
+        color: #006992;
+        padding: 15px 20px;
+        background: #fff;
+        text-align: left;
+        border: none;
+        @include breakpoint(tablet-small-portrait1) {
+          padding: 5px 0;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+
+      td {
+        padding: 15px 20px;
+        border: none;
+        border-top: 2px solid #dfe7ec;
+        color: #000;
+        @include font(16, 18, 300);
+        position: relative;
+        @include breakpoint(tablet-small-portrait1) {
+          border: none;
+          margin: 0;
+          @include box-shadow(none);
+          text-align: left;
+          padding: 10px 0 0;
+        }
+
+        &:before {
+          @include breakpoint(tablet-small-portrait1) {
+            content: attr(data-head);
+            display: block;
+            background: none;
+            text-align: left;
+            padding: 0;
+            color: $color_border;
+            @include transition(all .25s ease);
+            @include font(12, 16, 400);
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      &:last-child {
+        th, td {
+          border-top: 2px solid #dfe7ec;
+          @include breakpoint(tablet-small-portrait1) {
+            border: none;
+          }
+        }
+      }
+    }
+
+    &.format {
+      text-transform: none;
+
+      tr {
+
+        th {
+          font-size: 16px;
+          color: #032a58;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+    table {
+      border: none;
+      @include box-shadow(none);
+    }
+    table thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  }
+
+  .video {
+    iframe {
+      width: 100% !important;
+      margin-top: 7px;
+    }
+  }
+
+  &.before-text {
+    @include font(14, 26);
+    color: $color_grey;
+  }
+
+  &.after-text {
+    margin: 30px 0;
+  }
+
+  p {
+    margin: 0 0 25px;
+    @include breakpoint(tablet-portrait) {
+      margin: 0 0 20px;
+    }
+    @include breakpoint(tablet-small-portrait) {
+      margin: 0 0 15px;
+    }
+  }
+
+  .center {
+    width: 100%;
+  }
+
+  .image-right {
+    max-width: 50%;
+    margin: 5px 0 30px 30px;
+    float: right;
+    @include breakpoint(tablet-small-portrait) {
+      max-width: inherit;
+      width: 100%;
+      text-align: center;
+      margin: 0 0 20px;
+      float: none;
+    }
+  }
+
+  .image-left {
+    max-width: 50%;
+    margin: 5px 30px 30px 0;
+    float: left;
+    @include breakpoint(tablet-small-portrait) {
+      width: 100%;
+      max-width: inherit;
+      text-align: center;
+      margin: 0 0 20px;
+      float: none;
+    }
+  }
+
 }
 
 img[align="left"] {
-	float: left;
-	margin: 5px 30px 5px 0;
-	@include breakpoint(phone-landscape) {
-		float: none;
-		margin: 0 0 15px;
-		display: block;
-	}
+  float: left;
+  margin: 5px 30px 5px 0;
+  @include breakpoint(phone-landscape) {
+    float: none;
+    margin: 0 0 15px;
+    display: block;
+  }
 }
+
 img[align="right"] {
-	float: right;
-	margin: 5px 0px 5px 30px;
-	@include breakpoint(phone-landscape) {
-		float: none;
-		margin: 0 0 15px;
-		display: block;
-	}
+  float: right;
+  margin: 5px 0px 5px 30px;
+  @include breakpoint(phone-landscape) {
+    float: none;
+    margin: 0 0 15px;
+    display: block;
+  }
 }
 
 .title-preview {
-	padding:0 0 0 50px;
-	text-transform: uppercase;
-	color: $color_link;
-	margin: 0 0 35px;
-	position: relative;
-	@include breakpoint(tablet-small-portrait) {
-		margin: 0 0 20px;
-		padding: 0 0 0 30px;
-		font-size: 13px;
-	}
-	+h2,+.h2 {
-		@include breakpoint(tablet-small-portrait) {
-			margin-top: 0;
-		}
-	}
-		&:before {
-			@include twins;
-			width:30px;
-			height: 1px;
-			left: 0;
-			@include transform(translate(0,-50%));
-			top:50%;
-			background: $color_link;
-			@include breakpoint(tablet-small-portrait) {
-				width: 20px;
-			}
-		}
-		.ico {
-			position: absolute;
-			width: 82px;
-			right: 100%;
-			margin-right: 15px;
-			text-align: center;
-			top: 8px;
-			@include breakpoint(tablet-portrait) {
-				width: 55px;
-			}
-				&:before {
-					content:"";
-					display: inline-block;
-					@include icons;
-				}
-				&.ico-hat {
-					&:before {
-					width: 45px;
-					height: 36px;
-					background-position: 0 0;
-					}
-				}
-				&.ico-man {
-					&:before {
-					width: 45px;
-					height: 56px;
-					background-position: 0 -37px;
-					}
-				}
-				&.ico-cup {
-					&:before {
-					width: 45px;
-					height: 53px;
-					background-position: -46px 0;
-					}
-				}
-				&.ico-hand {
-					&:before {
-					width: 45px;
-					height: 50px;
-					background-position: -45px -53px;
-					}
-				}
-		}
+  padding: 0 0 0 50px;
+  text-transform: uppercase;
+  color: $color_link;
+  margin: 0 0 35px;
+  position: relative;
+  @include breakpoint(tablet-small-portrait) {
+    margin: 0 0 20px;
+    padding: 0 0 0 30px;
+    font-size: 13px;
+  }
+
+  + h2, + .h2 {
+    @include breakpoint(tablet-small-portrait) {
+      margin-top: 0;
+    }
+  }
+
+  &:before {
+    @include twins;
+    width: 30px;
+    height: 1px;
+    left: 0;
+    @include transform(translate(0, -50%));
+    top: 50%;
+    background: $color_link;
+    @include breakpoint(tablet-small-portrait) {
+      width: 20px;
+    }
+  }
+
+  .ico {
+    position: absolute;
+    width: 82px;
+    right: 100%;
+    margin-right: 15px;
+    text-align: center;
+    top: 8px;
+    @include breakpoint(tablet-portrait) {
+      width: 55px;
+    }
+
+    &:before {
+      content: "";
+      display: inline-block;
+      @include icons;
+    }
+
+    &.ico-hat {
+      &:before {
+        width: 45px;
+        height: 36px;
+        background-position: 0 0;
+      }
+    }
+
+    &.ico-man {
+      &:before {
+        width: 45px;
+        height: 56px;
+        background-position: 0 -37px;
+      }
+    }
+
+    &.ico-cup {
+      &:before {
+        width: 45px;
+        height: 53px;
+        background-position: -46px 0;
+      }
+    }
+
+    &.ico-hand {
+      &:before {
+        width: 45px;
+        height: 50px;
+        background-position: -45px -53px;
+      }
+    }
+  }
 }
 
 .col2 {
-	&:after { @include clear;}
-	margin:0 0 15px;
-	.column {
-		width: 50%;
-		float: left;
-		@include box-sizing(border-box);
-		padding-right: 15px;
-		@include breakpoint(tablet-small-portrait1) {
-			width: 100%;
-			padding: 0;
-		}
-		&:last-child {
-			padding-left: 15px;
-			@include breakpoint(tablet-small-portrait1) {					
-				padding: 0;
-			}
-		}
-	}
+  &:after {
+    @include clear;
+  }
+
+  margin: 0 0 15px;
+
+  .column {
+    width: 50%;
+    float: left;
+    @include box-sizing(border-box);
+    padding-right: 15px;
+    @include breakpoint(tablet-small-portrait1) {
+      width: 100%;
+      padding: 0;
+    }
+
+    &:last-child {
+      padding-left: 15px;
+      @include breakpoint(tablet-small-portrait1) {
+        padding: 0;
+      }
+    }
+  }
 }
 
 .quote {
-	position:relative;
-	@include font(20,24);
-	color:$color_grey;
-	font-style:italic;
-	margin:50px 0;
-	@include display-flex;
-	@include align-items(center);
-	@include align-content(center);
-	@include flex-wrap(wrap);
-	@include breakpoint(tablet-small-portrait) {
-		margin:30px 0;
-		@include font(18,22);
-	}
-	@include breakpoint(phone-landscape) {
-		@include font(16,20);
-	}
-		
-		.text {
-			@include flex-all(1 1);
-			position: relative;
-			padding-left:98px;
-			@include breakpoint(tablet-portrait) {
-				padding-left:66px;
-			}
-			@include breakpoint(tablet-small-portrait) {
-				padding-left:50px;
-			}
-			@include breakpoint(tablet-small-portrait) {
-				@include flex-all(1 1 100%);
-			}
-			
-			&:before {
-				@include twins;
-				font-family: "Georgia";
-				font-size: 76px;
-				line-height: 64px;
-				font-style:normal;
-				left: 0px;
-				top: 7px;
-				color:$color_h;
-				content: "\201c";
-				@include breakpoint(tablet-small-portrait) {
-					font-size: 50px;
-					line-height: 40px;
-					top: 5px;
-				}
-				@include breakpoint(phone-landscape) {
-				
-				}
-			}
-			p {
-				margin:0;
-			}
-		}
-		.image {
-			@include flex-all(0 0 165px);
-			margin-left: 30px;
-			text-align:center;
-			@include font(14,20);
-			color:$color_grey;
-			@include breakpoint(tablet-small-portrait) {
-				position:relative;
-				margin-top:15px;
-			}
-				img {
-					display:block;
-					border-radius:50%;
-					margin:0 auto 10px;
-					width: 128px;
-				}
-				span {
-					display:block;
-					color:$color_h;
-				}
-				a {
-					color:$color_grey;
-					text-decoration:none!important;
-					span {
-						color:$color_h;
-					}
-					&:hover {
-						text-decoration:none;
-						color:$color_link;
-					}
-				}
-		}
-	}
+  position: relative;
+  @include font(20, 24);
+  color: $color_grey;
+  font-style: italic;
+  margin: 50px 0;
+  @include display-flex;
+  @include align-items(center);
+  @include align-content(center);
+  @include flex-wrap(wrap);
+  @include breakpoint(tablet-small-portrait) {
+    margin: 30px 0;
+    @include font(18, 22);
+  }
+  @include breakpoint(phone-landscape) {
+    @include font(16, 20);
+  }
+
+  .text {
+    @include flex-all(1 1);
+    position: relative;
+    padding-left: 98px;
+    @include breakpoint(tablet-portrait) {
+      padding-left: 66px;
+    }
+    @include breakpoint(tablet-small-portrait) {
+      padding-left: 50px;
+    }
+    @include breakpoint(tablet-small-portrait) {
+      @include flex-all(1 1 100%);
+    }
+
+    &:before {
+      @include twins;
+      font-family: "Georgia";
+      font-size: 76px;
+      line-height: 64px;
+      font-style: normal;
+      left: 0px;
+      top: 7px;
+      color: $color_h;
+      content: "\201c";
+      @include breakpoint(tablet-small-portrait) {
+        font-size: 50px;
+        line-height: 40px;
+        top: 5px;
+      }
+      @include breakpoint(phone-landscape) {
+
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .image {
+    @include flex-all(0 0 165px);
+    margin-left: 30px;
+    text-align: center;
+    @include font(14, 20);
+    color: $color_grey;
+    @include breakpoint(tablet-small-portrait) {
+      position: relative;
+      margin-top: 15px;
+    }
+
+    img {
+      display: block;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      width: 128px;
+    }
+
+    span {
+      display: block;
+      color: $color_h;
+    }
+
+    a {
+      color: $color_grey;
+      text-decoration: none !important;
+
+      span {
+        color: $color_h;
+      }
+
+      &:hover {
+        text-decoration: none;
+        color: $color_link;
+      }
+    }
+  }
+}

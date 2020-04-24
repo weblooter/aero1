@@ -70,12 +70,14 @@
                             <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                         </div>
                     </div>
-                    <div class="consult-tags">
-                        <span>Теги:</span>
-                        <? foreach ($arItem['SECTIONS'] as $intId): ?>
-                            <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
-                        <? endforeach; ?>
-                    </div>
+                    <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
+                        <div class="consult-tags">
+                            <span>Теги:</span>
+                            <? foreach ($arItem['SECTIONS'] as $intId): ?>
+                                <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
+                            <? endforeach; ?>
+                        </div>
+                    <? endif; ?>
                 </div>
             <? endforeach; ?>
         </div>

@@ -1,0 +1,10 @@
+{{ANATATIONBLOCKCONSULT}}<br/>
+{{TITLE}}
+Краткий заголовок
+{{/TITLE}}<br/>
+{{COLUMN1}}
+<h2>Заголовок в колонке 1</h2>
+<p>Текст колонки 1</p>
+{{/COLUMN1}}<br/>
+{{CONSULT_ID}}84{{/CONSULT_ID}}
+{{/ANATATIONBLOCKCONSULT}}

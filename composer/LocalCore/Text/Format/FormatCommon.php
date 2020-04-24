@@ -22,6 +22,7 @@ class FormatCommon extends BaseFormat
         $obFormat = new FormatSnippetTwoColumn($obFormat);
         $obFormat = new FormatSnippetPhotoGallery($obFormat);
         $obFormat = new FormatSnippetAnatationBlock($obFormat);
+        $obFormat = new FormatSnippetAnatationBlockConsult($obFormat);
         $obFormat = new FormatSnippetBlockQuote($obFormat);
         $obFormat = new FormatSnippetInfoBlock($obFormat);
         $obFormat = new FormatSnippetServiceVideo($obFormat);

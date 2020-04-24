@@ -66,6 +66,7 @@ class Useful
     public static function getPrevNexPagesPatients($intIblockId, $intElemId)
     {
         $arResult = [];
+        $isCurrentIdPassed = false;
         $rsElems = \CIBlockElement::GetList(
             ['ACTIVE_FROM' => 'DESC', 'SORT' => 'ASC'],
             [
@@ -78,11 +79,22 @@ class Useful
             ['ID', 'NAME', 'IBLOCK_ID', 'DETAIL_PAGE_URL']
         );
         while ($ar = $rsElems->GetNext()) {
-            if ($ar['ID'] < $intElemId) {
-                $arResult['PREV'] = $ar['DETAIL_PAGE_URL'];
-                break;
-            } elseif ($ar['ID'] > $intElemId) {
-                $arResult['NEXT'] = $ar['DETAIL_PAGE_URL'];
+
+            if( $ar['ID'] == $intElemId )
+            {
+                $isCurrentIdPassed = true;
+            }
+            else
+            {
+                if( !$isCurrentIdPassed )
+                {
+                    $arResult['PREV'] = $ar['DETAIL_PAGE_URL'];
+                }
+                else
+                {
+                    $arResult['NEXT'] = $ar['DETAIL_PAGE_URL'];
+                    break;
+                }
             }
         }
 
