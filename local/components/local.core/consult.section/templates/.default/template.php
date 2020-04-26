@@ -135,7 +135,7 @@
                         <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
-                <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arItem['TAG'])))): ?>
+                <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
                     <div class="consult-tags">
                         <span>Теги:</span>
                         <? foreach ($arItem['SECTIONS'] as $intId): ?>

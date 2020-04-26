@@ -67,7 +67,7 @@ class FormatSnippetAnatationBlockConsult extends BaseFormat
 
 
                 $arReplaceTo[] = <<<DOCHERE
-<div class="row row-f">
+<div class="row">
     <div class="col-xs-12 col-md-6">
         <div class="title-preview">$strTitle</div>
         $strColumn1
