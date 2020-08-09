@@ -16,6 +16,30 @@
         },
         {
             "MODULE_ID": "landing",
+            "NAME": "new_blocks",
+            "VALUE": {
+                "date": 1574269259,
+                "items": [
+                    "32.12.img_grid_no_gallery_1row",
+                    "32.13.img_grid_no_gallery_2x1",
+                    "32.14.img_grid_no_gallery_1x2",
+                    "58.1.news_sidebar_1",
+                    "58.2.news_sidebar_2",
+                    "58.3.news_sidebar_3",
+                    "20.4.text_3cols_with_bottom_information",
+                    "08.5.three_col_text_with_colorstrip_top",
+                    "08.6.fix_title_author_and_text",
+                    "31.5.two_cols_img_and_title_text_button",
+                    "31.6.two_cols_title_text_button_and_img",
+                    "31.7.img_with_title_and_text",
+                    "19.7.cover_with_img_text_and_standart_buttons"
+                ]
+            },
+            "DESCRIPTION": null,
+            "SITE_ID": null
+        },
+        {
+            "MODULE_ID": "landing",
             "NAME": "pub_path_s1",
             "VALUE": "\/lp\/",
             "DESCRIPTION": null,

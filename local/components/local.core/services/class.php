@@ -119,10 +119,16 @@ class ServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
      */
     protected function extractSeo()
     {
+        $sQ = $this->componentTemplate;
+        if( $sQ == 'klinika')
+        {
+            $sQ = 'CONTACTS';
+        }
+
         return [
-            'TITLE' => \Local\Core\Register\ServicesComponent::getTitle() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_TITLE']['VALUE'],
-            'DESCRIPTION' => \Local\Core\Register\ServicesComponent::getDescription() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_DESCRIPTION']['VALUE'],
-            'KEYWORDS' => \Local\Core\Register\ServicesComponent::getKeyword() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($this->componentTemplate).'_KEYWORDS']['VALUE'],
+            'TITLE' => \Local\Core\Register\ServicesComponent::getTitle() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($sQ).'_TITLE']['VALUE'],
+            'DESCRIPTION' => \Local\Core\Register\ServicesComponent::getDescription() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($sQ).'_DESCRIPTION']['VALUE'],
+            'KEYWORDS' => \Local\Core\Register\ServicesComponent::getKeyword() ?? $this->arResult['MAIN']['ELEMENT']['PROPERTIES'][mb_strtoupper($sQ).'_KEYWORDS']['VALUE'],
         ];
     }
 

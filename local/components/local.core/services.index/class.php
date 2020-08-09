@@ -55,7 +55,8 @@ class ServicesIndexComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
                 }
             }
 
-            if (!empty(trim($arData['PROPERTIES']['INDEX_OPETAION_PROPS_DISCOUNT']['VALUE']))) {
+            if( !empty(trim($arData['PROPERTIES']['INDEX_OPETAION_PROPS_DISCOUNT']['VALUE'])) )
+            {
                 $arResult['OPETAION_PROPS_DISCOUNT'] = $arData['PROPERTIES']['INDEX_OPETAION_PROPS_DISCOUNT']['VALUE'];
             }
 

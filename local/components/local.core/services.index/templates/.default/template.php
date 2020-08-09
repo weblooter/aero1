@@ -24,9 +24,9 @@
                         <div class="image"><img src="<?=$arItem['IMG']?>" /></div>
                         <div class="text">
                             <?=$arItem['NAME']?> <i><?=$arItem['VALUE']?></i>
-                            <? if ($arItem['XML_ID'] === 'vGj2csLe' && !empty($arResult['OPETAION_PROPS_DISCOUNT'])): ?>
+                            <?if( $arItem['XML_ID'] === 'vGj2csLe' && !empty($arResult['OPETAION_PROPS_DISCOUNT']) ):?>
                                 <i style="color:#f31217; margin-top: 0; text-align: right;"><?=$arResult['OPETAION_PROPS_DISCOUNT']?></i>
-                            <? endif; ?>
+                            <?endif;?>
                         </div>
                     </div>
                 <? endforeach; ?>

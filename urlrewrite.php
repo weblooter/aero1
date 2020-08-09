@@ -29,6 +29,13 @@ $arUrlRewrite = array(
 		"SORT" => "100",
 	),
 	array(
+		"CONDITION" => "#^/poleznoe/pamyatka/#",
+		"RULE" => "",
+		"ID" => "bitrix:news",
+		"PATH" => "/poleznoe/pamyatka/index.php",
+		"SORT" => "100",
+	),
+	array(
 		"CONDITION" => "#^/poleznoe/intervyu/#",
 		"RULE" => "",
 		"ID" => "bitrix:news",

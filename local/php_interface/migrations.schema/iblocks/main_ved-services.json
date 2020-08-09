@@ -497,6 +497,30 @@
             "HINT": ""
         },
         {
+            "NAME": "Параметры операции: текст скидки",
+            "ACTIVE": "Y",
+            "SORT": "1022",
+            "CODE": "INDEX_OPETAION_PROPS_DISCOUNT",
+            "DEFAULT_VALUE": "",
+            "PROPERTY_TYPE": "S",
+            "ROW_COUNT": "1",
+            "COL_COUNT": "30",
+            "LIST_TYPE": "L",
+            "MULTIPLE": "N",
+            "XML_ID": null,
+            "FILE_TYPE": "",
+            "MULTIPLE_CNT": "5",
+            "LINK_IBLOCK_ID": "0",
+            "WITH_DESCRIPTION": "N",
+            "SEARCHABLE": "N",
+            "FILTRABLE": "N",
+            "IS_REQUIRED": "N",
+            "VERSION": "1",
+            "USER_TYPE": null,
+            "USER_TYPE_SETTINGS": null,
+            "HINT": ""
+        },
+        {
             "NAME": "Фото до и после",
             "ACTIVE": "Y",
             "SORT": "1030",
@@ -1902,6 +1926,7 @@
             "PROPERTY_INDEX_FIRST_BLOCK": "Первый блок",
             "PROPERTY_INDEX_OPETAION_PROPS": "Параметры операции: Выводимые параметы",
             "PROPERTY_INDEX_OPETAION_PROPS_VAL": "Параметры операции: Значения",
+            "PROPERTY_INDEX_OPETAION_PROPS_DISCOUNT": "Параметры операции: текст скидки",
             "PROPERTY_INDEX_PHOTOS_BEFORE_AFTER": "Фото до и после",
             "PROPERTY_INDEX_SECOND_BLOCK": "Второй блок"
         },

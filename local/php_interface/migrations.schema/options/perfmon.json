@@ -3,7 +3,7 @@
         {
             "MODULE_ID": "perfmon",
             "NAME": "tables_show_time",
-            "VALUE": "0",
+            "VALUE": "1",
             "DESCRIPTION": null,
             "SITE_ID": null
         }

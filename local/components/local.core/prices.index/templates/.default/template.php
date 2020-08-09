@@ -34,9 +34,6 @@
                                         <?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.
                                         </span>
                                         <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0] - (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'], 0, '.', ' ')?> руб.</span>
-                                        <? if (!empty(trim($arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']))): ?>
-                                            <span class="price__discount-text"><?=$arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']?></span>
-                                        <? endif; ?>
                                     <? else: ?>
                                         <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.</span>
                                     <? endif; ?>
@@ -70,6 +67,9 @@
                                             </tr>
                                         </table>
                                     </div>
+                                    <? if (!empty(trim($arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']))): ?>
+                                        <span class="price__discount-text"><?=$arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']?></span>
+                                    <? endif; ?>
                                 </div>
                             </div>
                         </div>

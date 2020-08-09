@@ -31,7 +31,7 @@
       &__discount {
         @include font(18, 18, 700);
         color: $color_h;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         position: relative;
 
         &:before {
@@ -47,7 +47,7 @@
       &__discount-text {
         @include font(15, 15, 400);
         color: #f31217;
-        margin-top: 20px;
+        margin-top: 10px;
       }
 
       &__text {
@@ -62,6 +62,7 @@
         transition: all .25s ease;
         opacity: 0;
         z-index: 2;
+        top: -50%;
         @include breakpoint(tablet-windowscape) {
           width: 255px;
         }

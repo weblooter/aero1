@@ -115,14 +115,14 @@
         {
             "MODULE_ID": "fileman",
             "NAME": "ml_max_height",
-            "VALUE": "1024",
+            "VALUE": "1140",
             "DESCRIPTION": null,
             "SITE_ID": null
         },
         {
             "MODULE_ID": "fileman",
             "NAME": "ml_max_width",
-            "VALUE": "1024",
+            "VALUE": "1140",
             "DESCRIPTION": null,
             "SITE_ID": null
         },
@@ -192,7 +192,7 @@
         {
             "MODULE_ID": "fileman",
             "NAME": "search_max_open_file_size",
-            "VALUE": "1024",
+            "VALUE": "1140",
             "DESCRIPTION": null,
             "SITE_ID": null
         },
