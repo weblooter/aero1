@@ -9450,6 +9450,9 @@ p.indent {
     font-family: "Cera Pro";
     position: relative
 }
+.content table tr th {
+    border-top: 2px solid #dfe7ec;
+}
 
 @media (max-width: 600px) {
     .content table tr td {

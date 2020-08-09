@@ -308,6 +308,7 @@
         background: #fff;
         text-align: left;
         border: none;
+        border-top: 2px solid #dfe7ec;
         @include breakpoint(tablet-small-portrait1) {
           padding: 5px 0;
         }
@@ -350,6 +351,7 @@
       &:last-child {
         th, td {
           border-top: 2px solid #dfe7ec;
+          border-bottom: 2px solid #dfe7ec;
           @include breakpoint(tablet-small-portrait1) {
             border: none;
           }
