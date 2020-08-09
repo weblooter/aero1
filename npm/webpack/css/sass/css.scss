@@ -78,3 +78,66 @@ Modules
     }
   }
 }
+
+.slide-youtube {
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/img/svg/youtube-play.svg) 50% 50% no-repeat;
+    z-index: 2;
+    background-size: 30px;
+  }
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 1;
+  }
+}
+.works__item .js-slider-nav .slide.slide-youtube.slick-current a,
+.works__item .js-slider-nav .slide.slide-youtube.slick-current span {
+  border-color: #E82C00;
+}
+
+.gallery__item-youtube {
+  .gallery__item-youtube-link {
+    display: block;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: url(/img/svg/youtube-play.svg) 50% 50% no-repeat;
+      z-index: 2;
+      background-size: 120px;
+    }
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      z-index: 1;
+    }
+  }
+}

@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
 <section id="body" class="container">
@@ -22,18 +23,23 @@
         </div>
 
         <div class="videoList row row-f">
-            <? foreach ($arResult['ITEMS'] as $strVideoHtml): ?>
+            <?
+            foreach ($arResult['ITEMS'] as $strVideoHtml): ?>
                 <div class="col-xs-12 col-sm-6">
                     <?=$strVideoHtml?>
                 </div>
-            <? endforeach; ?>
+            <?
+            endforeach; ?>
         </div>
 
-        <? if (!empty($arResult['SECOND_BLOCK'])): ?>
+        <?
+        if (!empty($arResult['SECOND_BLOCK'])): ?>
             <?=$arResult['SECOND_BLOCK']?>
             <div class="line"></div>
-        <? endif; ?>
+        <?
+        endif; ?>
 
     </div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

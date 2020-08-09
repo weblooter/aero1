@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
 <section id="body" class="container">
@@ -23,7 +24,8 @@
 
         <div class="content">
             <div class="articles fadeup">
-                <? foreach ($arResult['ITEMS'] as $arItem): ?>
+                <?
+                foreach ($arResult['ITEMS'] as $arItem): ?>
                     <article class="articles__item">
                         <div class="image">
                             <a href="<?=$arItem['DETAIL_PAGE_URL']?>"><img src="<?=$arItem['PREVIEW_PICTURE']?>" /></a>
@@ -36,7 +38,8 @@
                             <div class="more"><a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="arrow">Подробнее</a></div>
                         </div>
                     </article>
-                <? endforeach; ?>
+                <?
+                endforeach; ?>
             </div>
         </div>
 
@@ -44,5 +47,6 @@
         <div class="line"></div>
 
     </div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

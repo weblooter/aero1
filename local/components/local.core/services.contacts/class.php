@@ -1,5 +1,6 @@
 <?
 
+use Bitrix\Main\Application;
 use Local\Core\Exception\Component\Services;
 
 class ServicesContactsComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
@@ -20,11 +21,11 @@ class ServicesContactsComponent extends \Local\Core\Inner\BxModified\CBitrixComp
 
         $arData = &$this->arParams['DATA']['MAIN']['ELEMENT'];
 
-        $obCache = \Bitrix\Main\Application::getInstance()
+        $obCache = Application::getInstance()
             ->getCache();
         if ($obCache->startDataCache(60 * 60 * 24, __FILE__.'#'.$arData['ID'])) {
-            /** @var $obServiceComponent \ServicesComponent */
-            $obServiceComponent = \CBitrixComponent::includeComponentClass('local.core:services');
+            /** @var $obServiceComponent ServicesComponent */
+            $obServiceComponent = CBitrixComponent::includeComponentClass('local.core:services');
             $arResult = $obServiceComponent::extractTextBlocks($arData, 'CONTACTS');
 
             $arResult['FB_TITLE'] = $arData['PROPERTIES']['CONTACTS_FB_TITLE']['VALUE'];
@@ -32,7 +33,7 @@ class ServicesContactsComponent extends \Local\Core\Inner\BxModified\CBitrixComp
 
             if (!empty($arData['PROPERTIES']['CONTACTS_PHOTOS']['VALUE'])) {
                 foreach ($arData['PROPERTIES']['CONTACTS_PHOTOS']['VALUE'] as $intId) {
-                    $arTmp = \CFile::ResizeImageGet($intId, ['width' => 900, 'height' => 600], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75);
+                    $arTmp = CFile::ResizeImageGet($intId, ['width' => 900, 'height' => 600], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75);
                     $arResult['PHOTO'][] = $arTmp['src'];
                 }
             }

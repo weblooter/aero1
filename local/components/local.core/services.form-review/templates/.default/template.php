@@ -9,10 +9,12 @@
  * @var string                      $templateFolder
  * @global CMain                    $APPLICATION
  */
+
 ?>
 
 <div class="before-text center">
-    <? $GLOBALS['APPLICATION']->IncludeFile('include/services-form-review.php', false, ['MODE' => 'HTML']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeFile('include/services-form-review.php', false, ['MODE' => 'HTML']) ?>
 </div>
 <div class="consult-form">
     <form action="" id="services-form-review" name="services-form-review">

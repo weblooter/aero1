@@ -15,8 +15,7 @@ class EmptyComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
     {
         $arResult = [];
         try {
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->abortResultCache();
         }
         $this->arResult = $arResult;

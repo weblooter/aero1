@@ -9,6 +9,7 @@
  * @var string                      $templateFolder
  * @global CMain                    $APPLICATION
  */
+
 ?>
 <div id="callbackForm">
     <div class="close fright js-close-callback-form "></div>
@@ -16,7 +17,8 @@
         <div class="h1-title">Консультация</div>
         <div class="h1">Бесплатная консультация</div>
         <p>
-            <? $GLOBALS['APPLICATION']->IncludeFile('include/consult-free-consult.php', false, ['MODE' => 'text']) ?>
+            <?
+            $GLOBALS['APPLICATION']->IncludeFile('include/consult-free-consult.php', false, ['MODE' => 'text']) ?>
         </p>
         <form action="" id="consult-free-consult" name="consult-free-consult">
             <div class="row">

@@ -9,6 +9,7 @@
  * @var string                      $templateFolder
  * @global CMain                    $APPLICATION
  */
+
 ?>
 <div class="consult-form content">
     <form id="form-send-ask" name="form-send-ask">
@@ -23,16 +24,21 @@
                         <span class="placeholder">(для отправки ответа, не публикуется на сайте)</span>
                     </div>
                     <div class="formField col-xs-12 col-sm-4 col-md-12">
-                        <? if ($arParams['SECTION_ID'] > 0): ?>
+                        <?
+                        if ($arParams['SECTION_ID'] > 0): ?>
                             <input type="hidden" name="CATEGORY_ID" value="<?=$arParams['SECTION_ID']?>" />
-                        <? else: ?>
+                        <?
+                        else: ?>
                             <select required name="CATEGORY_ID">
                                 <option selected disabled value="">Выберите раздел *</option>
-                                <? foreach ($arResult['SELECT_OPTIONS'] as $arItem): ?>
+                                <?
+                                foreach ($arResult['SELECT_OPTIONS'] as $arItem): ?>
                                     <option value="<?=$arItem['ID']?>"><?=$arItem['NAME']?></option>
-                                <? endforeach; ?>
+                                <?
+                                endforeach; ?>
                             </select>
-                        <? endif; ?>
+                        <?
+                        endif; ?>
                     </div>
                 </div>
             </div>

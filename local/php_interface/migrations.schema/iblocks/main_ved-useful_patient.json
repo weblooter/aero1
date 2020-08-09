@@ -66,7 +66,7 @@
         "ACTIVE_FROM": {
             "NAME": "Начало активности",
             "IS_REQUIRED": "Y",
-            "DEFAULT_VALUE": "=today"
+            "DEFAULT_VALUE": "=now"
         },
         "ACTIVE_TO": {
             "NAME": "Окончание активности",
@@ -574,6 +574,30 @@
             "HINT": ""
         },
         {
+            "NAME": "Корневая операция",
+            "ACTIVE": "Y",
+            "SORT": "380",
+            "CODE": "ROOT_OPERATION",
+            "DEFAULT_VALUE": "",
+            "PROPERTY_TYPE": "E",
+            "ROW_COUNT": "1",
+            "COL_COUNT": "30",
+            "LIST_TYPE": "L",
+            "MULTIPLE": "N",
+            "XML_ID": null,
+            "FILE_TYPE": "",
+            "MULTIPLE_CNT": "5",
+            "LINK_IBLOCK_ID": "main_ved:services",
+            "WITH_DESCRIPTION": "N",
+            "SEARCHABLE": "N",
+            "FILTRABLE": "N",
+            "IS_REQUIRED": "N",
+            "VERSION": "1",
+            "USER_TYPE": null,
+            "USER_TYPE_SETTINGS": null,
+            "HINT": "Корневая операция для редиректа с детальной страницы операции"
+        },
+        {
             "NAME": "H1",
             "ACTIVE": "Y",
             "SORT": "1010",
@@ -702,7 +726,8 @@
             "NAME": "Название",
             "CODE": "Символьный код",
             "PROPERTY_SHOW_ONLY_IN_SERVICES": "Выводить только в услугах",
-            "PROPERTY_REVIEW_LINK": "Ссылка на отзыв"
+            "PROPERTY_REVIEW_LINK": "Ссылка на отзыв",
+            "PROPERTY_ROOT_OPERATION": "Корневая операция"
         },
         "Анонс": {
             "PREVIEW_PICTURE": "Картинка для анонса"

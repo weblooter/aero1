@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
 <section id="body" class="container">
@@ -18,10 +19,12 @@
         <?=$arResult['FIRST_BLOCK']?>
         <div class="line"></div>
 
-        <? foreach ($arResult['SECTIONS'] as $arSection): ?>
+        <?
+        foreach ($arResult['SECTIONS'] as $arSection): ?>
             <div class="title-preview"><?=$arSection['NAME']?></div>
             <div class="prices">
-                <? foreach ($arResult['ITEMS'][$arSection['ID']] as $arItem): ?>
+                <?
+                foreach ($arResult['ITEMS'][$arSection['ID']] as $arItem): ?>
                     <div class="prices__item">
                         <h3><?=$arItem['NAME']?></h3>
                         <div class="row row-f">
@@ -33,47 +36,60 @@
                                     <?
                                     $intPrice = array_sum($arItem['PROPERTIES']['PRICE']['VALUE']);
                                     ?>
-                                    <? if ((int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
+                                    <?
+                                    if ((int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
                                         <span class="price__discount" style="white-space: nowrap">
                                         <?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.
                                         </span>
                                         <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0] - (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'], 0, '.', ' ')?> руб.</span>
-                                    <? else: ?>
+                                    <?
+                                    else: ?>
                                         <span class="price__link" style="white-space: nowrap"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($arItem['PROPERTIES']['PRICE']['VALUE'][0], 0, '.', ' ')?> руб.</span>
-                                    <? endif; ?>
+                                    <?
+                                    endif; ?>
                                     <div class="price__text">
                                         <table>
-                                            <? foreach ($arItem['PROPERTIES']['PRICE']['VALUE'] as $k => $v): ?>
+                                            <?
+                                            foreach ($arItem['PROPERTIES']['PRICE']['VALUE'] as $k => $v): ?>
                                                 <tr>
                                                     <td><?=$arItem['PROPERTIES']['PRICE']['DESCRIPTION'][$k]?></td>
                                                     <td>
-                                                        <? if ($k == 0 && (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
+                                                        <?
+                                                        if ($k == 0 && (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
                                                             <span class="price__text__del"><?=number_format($v, 0, '.', '.')?> руб.</span>
                                                             <br />
                                                             <?=number_format($v - (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'], 0, '.', '.')?> руб.
-                                                        <? else: ?>
+                                                        <?
+                                                        else: ?>
                                                             <?=number_format($v, 0, '.', '.')?> руб.
-                                                        <? endif; ?>
+                                                        <?
+                                                        endif; ?>
                                                     </td>
                                                 </tr>
-                                            <? endforeach; ?>
+                                            <?
+                                            endforeach; ?>
                                             <tr>
                                                 <td>ИТОГО</td>
                                                 <td style="white-space: nowrap">
-                                                    <? if ((int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
+                                                    <?
+                                                    if ((int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'] > 0): ?>
                                                         <span class="price__text__del"><?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($intPrice, 0, '.', '.')?> руб.</span>
                                                         <br />
                                                         <?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($intPrice - (int)$arItem['PROPERTIES']['DISCOUNT']['VALUE'], 0, '.', '.')?> руб.
-                                                    <? else: ?>
+                                                    <?
+                                                    else: ?>
                                                         <?=!empty($arItem['PROPERTIES']['PRINT_FROM']['VALUE']) ? '<font style="text-transform: lowercase">от </font>' : ''?><?=number_format($intPrice, 0, '.', '.')?> руб.
-                                                    <? endif; ?>
+                                                    <?
+                                                    endif; ?>
                                                 </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <? if (!empty(trim($arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']))): ?>
+                                    <?
+                                    if (!empty(trim($arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']))): ?>
                                         <span class="price__discount-text"><?=$arItem['PROPERTIES']['DISCOUNT_TITLE']['VALUE']?></span>
-                                    <? endif; ?>
+                                    <?
+                                    endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -82,15 +98,20 @@
                             <span class="arrow js-open-callback-form">Бесплатная консультация</span>
                         </div>
                     </div>
-                <? endforeach; ?>
+                <?
+                endforeach; ?>
             </div>
-        <? endforeach; ?>
+        <?
+        endforeach; ?>
 
-        <? if (!empty($arResult['SECOND_BLOCK'])): ?>
+        <?
+        if (!empty($arResult['SECOND_BLOCK'])): ?>
             <?=$arResult['SECOND_BLOCK']?>
             <div class="line"></div>
-        <? endif; ?>
+        <?
+        endif; ?>
 
     </div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

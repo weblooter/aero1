@@ -1,6 +1,6 @@
 <?
 
-class ContactsHeaderComponent extends \CBitrixComponent
+class ContactsHeaderComponent extends CBitrixComponent
 {
     public function executeComponent()
     {

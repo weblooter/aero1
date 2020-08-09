@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
 <section id="body" class="container">
@@ -19,7 +20,8 @@
         case $component::MODE_SECTION:
             ?>
             <div class="content before-text center">
-                <? $GLOBALS['APPLICATION']->IncludeFile('include/consult-before-form.php', false, ['MODE' => 'html']) ?>
+                <?
+                $GLOBALS['APPLICATION']->IncludeFile('include/consult-before-form.php', false, ['MODE' => 'html']) ?>
             </div>
             <?
             $GLOBALS['APPLICATION']->IncludeComponent(
@@ -35,9 +37,11 @@
                     Часто задаваемые вопросы для вашего удобства разбиты по тегам:
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <? foreach ($arResult['TAG'] as $arItem): ?>
+                    <?
+                    foreach ($arResult['TAG'] as $arItem): ?>
                         <a href="<?=$arItem['SECTION_PAGE_URL']?>"><?=$arItem['NAME']?></a>
-                    <? endforeach; ?>
+                    <?
+                    endforeach; ?>
                 </div>
             </div>
             <?
@@ -53,28 +57,33 @@
                                 <?
                                 if (!empty($arResult['SECTION']['UF_VIDOE_TITLE'])):?>
                                     <div class="title-preview"><?=$arResult['SECTION']['UF_VIDOE_TITLE']?></div>
-                                <? endif; ?>
+                                <?
+                                endif; ?>
                                 <?
                                 if (!empty($arResult['SECTION']['UF_VIDEO_NAME'])):?>
                                     <div class="h2"><?=$arResult['SECTION']['UF_VIDEO_NAME']?></div>
-                                <? endif; ?>
+                                <?
+                                endif; ?>
                             </div>
                             <div class="link">
                                 <?
                                 if (!empty($arResult['SECTION']['UF_VIDOE_TITLE'])):?>
                                     <div class="title-preview"><?=$arResult['SECTION']['UF_VIDOE_TITLE']?></div>
-                                <? endif; ?>
+                                <?
+                                endif; ?>
                                 <?
                                 if (!empty($arResult['SECTION']['UF_VIDEO_NAME'])):?>
                                     <div class="h2"><?=$arResult['SECTION']['UF_VIDEO_NAME']?></div>
-                                <? endif; ?>
+                                <?
+                                endif; ?>
                                 <img src="<?=$arResult['SECTION']['UF_VIDEO_IMG']?>" />
                                 <a data-mfp-src="<?=$arResult['SECTION']['UF_VIDEO_LINK']?>" class="video-ico js-video-popup"></a>
                             </div>
                             <?
                             if (!empty($arResult['SECTION']['UF_VIDEP_DESC'])):?>
                                 <p><?=$arResult['SECTION']['UF_VIDEP_DESC']?></p>
-                            <? endif; ?>
+                            <?
+                            endif; ?>
                         </div>
                     </div>
                 <?
@@ -92,9 +101,11 @@
                 <?
                 if (!empty($arResult['OPERATION'])):?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>"><?=$arResult['OPERATION']['NAME']?></a>". </p>
-                <? else: ?>
+                <?
+                else: ?>
                     <p>Здесь собраны все вопросы-ответы, по тегу <strong><?=$arResult['SECTION']['NAME']?></strong> в операции "<?=$arResult['MAIN_SECTION']['NAME']?>". </p>
-                <? endif; ?>
+                <?
+                endif; ?>
             </div>
             <?
             break;
@@ -103,16 +114,19 @@
 
 
     <div class="more">
-        <? if (!empty($arResult['OPERATION'])): ?>
+        <?
+        if (!empty($arResult['OPERATION'])): ?>
             <a href="<?=$arResult['OPERATION']['DETAIL_PAGE_URL']?>" class="arrow">Об операции</a>
-        <? endif; ?>
+        <?
+        endif; ?>
         <span class="arrow js-open-callback-form">Бесплатная консультация</span>
     </div>
 
     <div class="consultList">
-        <? foreach ($arResult['ITEMS'] as $arItem): ?>
+        <?
+        foreach ($arResult['ITEMS'] as $arItem): ?>
             <div class="consultList__item">
-                <div class="title-preview"><a href="<?=$arResult['MAIN_SECTION']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>">ВОПРОС №<?=$arItem['ID']?><span>/</span><?=$arItem['PROPERTY_ASKER_NAME_VALUE']?> (<?=\FormatDate('d F Y', strtotime($arItem['ACTIVE_FROM']))?> г.)</a></div>
+                <div class="title-preview"><a href="<?=$arResult['MAIN_SECTION']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>">ВОПРОС №<?=$arItem['ID']?><span>/</span><?=$arItem['PROPERTY_ASKER_NAME_VALUE']?> (<?=FormatDate('d F Y', strtotime($arItem['ACTIVE_FROM']))?> г.)</a></div>
                 <div class="question">
                     <a href="<?=$arResult['MAIN_SECTION']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>" class="ico-faq"></a>
                     <p><?=$arItem['PREVIEW_TEXT']?></p>
@@ -135,16 +149,21 @@
                         <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                     </div>
                 </div>
-                <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
+                <?
+                if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
                     <div class="consult-tags">
                         <span>Теги:</span>
-                        <? foreach ($arItem['SECTIONS'] as $intId): ?>
+                        <?
+                        foreach ($arItem['SECTIONS'] as $intId): ?>
                             <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
-                        <? endforeach; ?>
+                        <?
+                        endforeach; ?>
                     </div>
-                <? endif; ?>
+                <?
+                endif; ?>
             </div>
-        <? endforeach; ?>
+        <?
+        endforeach; ?>
     </div>
 
     <?
@@ -162,5 +181,6 @@
     ?>
 
     <div class="line"></div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

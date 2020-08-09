@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
 <div class="social">
@@ -24,6 +25,9 @@
                 break;
             case 'youtube':
                 $imgSrc = '/img/svg/yb.svg#white';
+                break;
+            case 'telegram':
+                $imgSrc = '/img/svg/telegram.svg#white';
                 break;
         }
         ?>

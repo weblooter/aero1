@@ -9,6 +9,7 @@
  * @var string                    $templateFolder
  * @global CMain                  $APPLICATION
  */
+
 ?>
 <div class="text col-xs-12 col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
     <div class="h3">Консультация онлайн</div>

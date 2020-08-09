@@ -9,5 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
-<? $GLOBALS['APPLICATION']->IncludeComponent('local.core:services.index', '.default', ['DATA' => $arResult]) ?>
+<?
+$GLOBALS['APPLICATION']->IncludeComponent('local.core:services.index', '.default', ['DATA' => $arResult]) ?>

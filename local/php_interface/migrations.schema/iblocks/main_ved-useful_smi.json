@@ -4,13 +4,13 @@
         "LID": [
             "s1"
         ],
-        "CODE": "workphoto",
-        "NAME": "Фото работ",
+        "CODE": "useful_smi",
+        "NAME": "Полезное: СМИ",
         "ACTIVE": "Y",
         "SORT": "500",
-        "LIST_PAGE_URL": "\/foto-rabot\/",
-        "DETAIL_PAGE_URL": "\/foto-rabot\/#SECTION_CODE#\/",
-        "SECTION_PAGE_URL": "\/foto-rabot\/#SECTION_CODE#\/",
+        "LIST_PAGE_URL": "\/poleznoe\/smi\/",
+        "DETAIL_PAGE_URL": "\/poleznoe\/smi\/#ELEMENT_CODE#\/",
+        "SECTION_PAGE_URL": "\/poleznoe\/smi\/",
         "CANONICAL_PAGE_URL": "",
         "PICTURE": null,
         "DESCRIPTION": "",
@@ -29,8 +29,8 @@
         "SECTION_CHOOSER": "L",
         "LIST_MODE": "C",
         "RIGHTS_MODE": "S",
-        "SECTION_PROPERTY": "N",
-        "PROPERTY_INDEX": "N",
+        "SECTION_PROPERTY": "Y",
+        "PROPERTY_INDEX": null,
         "VERSION": "1",
         "LAST_CONV_ELEMENT": "0",
         "SOCNET_GROUP_ID": null,
@@ -65,8 +65,8 @@
         },
         "ACTIVE_FROM": {
             "NAME": "Начало активности",
-            "IS_REQUIRED": "N",
-            "DEFAULT_VALUE": ""
+            "IS_REQUIRED": "Y",
+            "DEFAULT_VALUE": "=today"
         },
         "ACTIVE_TO": {
             "NAME": "Окончание активности",
@@ -85,12 +85,12 @@
         },
         "PREVIEW_PICTURE": {
             "NAME": "Картинка для анонса",
-            "IS_REQUIRED": "N",
+            "IS_REQUIRED": "Y",
             "DEFAULT_VALUE": {
                 "FROM_DETAIL": "N",
-                "SCALE": "N",
-                "WIDTH": "",
-                "HEIGHT": "",
+                "SCALE": "Y",
+                "WIDTH": 700,
+                "HEIGHT": 500,
                 "IGNORE_ERRORS": "N",
                 "METHOD": "resample",
                 "COMPRESSION": 95,
@@ -123,9 +123,9 @@
             "NAME": "Детальная картинка",
             "IS_REQUIRED": "N",
             "DEFAULT_VALUE": {
-                "SCALE": "N",
-                "WIDTH": "",
-                "HEIGHT": "",
+                "SCALE": "Y",
+                "WIDTH": 1024,
+                "HEIGHT": 756,
                 "IGNORE_ERRORS": "N",
                 "METHOD": "resample",
                 "COMPRESSION": 95,
@@ -159,10 +159,10 @@
         },
         "CODE": {
             "NAME": "Символьный код",
-            "IS_REQUIRED": "N",
+            "IS_REQUIRED": "Y",
             "DEFAULT_VALUE": {
-                "UNIQUE": "N",
-                "TRANSLITERATION": "N",
+                "UNIQUE": "Y",
+                "TRANSLITERATION": "Y",
                 "TRANS_LEN": 100,
                 "TRANS_CASE": "L",
                 "TRANS_SPACE": "-",
@@ -183,12 +183,12 @@
         },
         "SECTION_PICTURE": {
             "NAME": "Картинка для анонса",
-            "IS_REQUIRED": "Y",
+            "IS_REQUIRED": "N",
             "DEFAULT_VALUE": {
                 "FROM_DETAIL": "N",
-                "SCALE": "Y",
-                "WIDTH": 350,
-                "HEIGHT": 350,
+                "SCALE": "N",
+                "WIDTH": "",
+                "HEIGHT": "",
                 "IGNORE_ERRORS": "N",
                 "METHOD": "resample",
                 "COMPRESSION": 95,
@@ -214,7 +214,7 @@
         },
         "SECTION_DESCRIPTION": {
             "NAME": "Описание",
-            "IS_REQUIRED": "Y",
+            "IS_REQUIRED": "N",
             "DEFAULT_VALUE": ""
         },
         "SECTION_DETAIL_PICTURE": {
@@ -247,10 +247,10 @@
         },
         "SECTION_CODE": {
             "NAME": "Символьный код",
-            "IS_REQUIRED": "Y",
+            "IS_REQUIRED": "N",
             "DEFAULT_VALUE": {
-                "UNIQUE": "Y",
-                "TRANSLITERATION": "Y",
+                "UNIQUE": "N",
+                "TRANSLITERATION": "N",
                 "TRANS_LEN": 100,
                 "TRANS_CASE": "L",
                 "TRANS_SPACE": "-",
@@ -262,42 +262,10 @@
     },
     "props": [
         {
-            "NAME": "18+",
-            "ACTIVE": "Y",
-            "SORT": "100",
-            "CODE": "IS_18",
-            "DEFAULT_VALUE": "",
-            "PROPERTY_TYPE": "L",
-            "ROW_COUNT": "1",
-            "COL_COUNT": "30",
-            "LIST_TYPE": "C",
-            "MULTIPLE": "N",
-            "XML_ID": null,
-            "FILE_TYPE": "",
-            "MULTIPLE_CNT": "5",
-            "LINK_IBLOCK_ID": "0",
-            "WITH_DESCRIPTION": "N",
-            "SEARCHABLE": "N",
-            "FILTRABLE": "N",
-            "IS_REQUIRED": "N",
-            "VERSION": "1",
-            "USER_TYPE": null,
-            "USER_TYPE_SETTINGS": null,
-            "HINT": "",
-            "VALUES": [
-                {
-                    "VALUE": "Y",
-                    "DEF": "N",
-                    "SORT": "500",
-                    "XML_ID": "2dcb360afc50964b919d7ae17df2c849"
-                }
-            ]
-        },
-        {
             "NAME": "Фотографии",
             "ACTIVE": "Y",
-            "SORT": "200",
-            "CODE": "PHOTOS",
+            "SORT": "100",
+            "CODE": "PHOTO",
             "DEFAULT_VALUE": "",
             "PROPERTY_TYPE": "F",
             "ROW_COUNT": "1",
@@ -311,135 +279,45 @@
             "WITH_DESCRIPTION": "N",
             "SEARCHABLE": "N",
             "FILTRABLE": "N",
-            "IS_REQUIRED": "Y",
-            "VERSION": "1",
-            "USER_TYPE": null,
-            "USER_TYPE_SETTINGS": null,
-            "HINT": ""
-        },
-        {
-            "NAME": "Параметры операции: Выводимые параметы",
-            "ACTIVE": "Y",
-            "SORT": "300",
-            "CODE": "OPERATION_PROPS",
-            "DEFAULT_VALUE": "",
-            "PROPERTY_TYPE": "S",
-            "ROW_COUNT": "1",
-            "COL_COUNT": "30",
-            "LIST_TYPE": "L",
-            "MULTIPLE": "Y",
-            "XML_ID": null,
-            "FILE_TYPE": "",
-            "MULTIPLE_CNT": "5",
-            "LINK_IBLOCK_ID": "0",
-            "WITH_DESCRIPTION": "N",
-            "SEARCHABLE": "N",
-            "FILTRABLE": "N",
-            "IS_REQUIRED": "N",
-            "VERSION": "1",
-            "USER_TYPE": "directory",
-            "USER_TYPE_SETTINGS": {
-                "size": 1,
-                "width": 0,
-                "group": "N",
-                "multiple": "N",
-                "TABLE_NAME": "b_hlbd_opetationprops"
-            },
-            "HINT": ""
-        },
-        {
-            "NAME": "Параметры операции: Значения",
-            "ACTIVE": "Y",
-            "SORT": "310",
-            "CODE": "OPERATION_PROPS_VAL",
-            "DEFAULT_VALUE": "",
-            "PROPERTY_TYPE": "S",
-            "ROW_COUNT": "1",
-            "COL_COUNT": "30",
-            "LIST_TYPE": "L",
-            "MULTIPLE": "Y",
-            "XML_ID": null,
-            "FILE_TYPE": "",
-            "MULTIPLE_CNT": "5",
-            "LINK_IBLOCK_ID": "0",
-            "WITH_DESCRIPTION": "N",
-            "SEARCHABLE": "N",
-            "FILTRABLE": "N",
             "IS_REQUIRED": "N",
             "VERSION": "1",
             "USER_TYPE": null,
             "USER_TYPE_SETTINGS": null,
             "HINT": ""
-        },
-        {
-            "NAME": "Ссылки на youtube",
-            "ACTIVE": "Y",
-            "SORT": "320",
-            "CODE": "VIDEO",
-            "DEFAULT_VALUE": "",
-            "PROPERTY_TYPE": "S",
-            "ROW_COUNT": "1",
-            "COL_COUNT": "30",
-            "LIST_TYPE": "L",
-            "MULTIPLE": "Y",
-            "XML_ID": null,
-            "FILE_TYPE": "",
-            "MULTIPLE_CNT": "5",
-            "LINK_IBLOCK_ID": "0",
-            "WITH_DESCRIPTION": "N",
-            "SEARCHABLE": "N",
-            "FILTRABLE": "N",
-            "IS_REQUIRED": "N",
-            "VERSION": "1",
-            "USER_TYPE": null,
-            "USER_TYPE_SETTINGS": null,
-            "HINT": "Пример: https:\/\/www.youtube.com\/watch?v=Ko0ZPxzhB5w"
-        },
-        {
-            "NAME": "Фото для видео",
-            "ACTIVE": "Y",
-            "SORT": "330",
-            "CODE": "VIDEO_PREVIEW",
-            "DEFAULT_VALUE": "",
-            "PROPERTY_TYPE": "F",
-            "ROW_COUNT": "1",
-            "COL_COUNT": "30",
-            "LIST_TYPE": "L",
-            "MULTIPLE": "Y",
-            "XML_ID": null,
-            "FILE_TYPE": "",
-            "MULTIPLE_CNT": "5",
-            "LINK_IBLOCK_ID": "0",
-            "WITH_DESCRIPTION": "N",
-            "SEARCHABLE": "N",
-            "FILTRABLE": "N",
-            "IS_REQUIRED": "N",
-            "VERSION": "1",
-            "USER_TYPE": null,
-            "USER_TYPE_SETTINGS": null,
-            "HINT": "Сортировать в порядке видео"
         }
     ],
     "element_form": {
         "Элемент": {
             "ID": "ID",
             "ACTIVE": "Активность",
+            "ACTIVE_FROM": "Начало активности",
             "NAME": "Название",
-            "SORT": "Сортировка"
+            "CODE": "Символьный код",
+            "IBLOCK_ELEMENT_PROP_VALUE": "Значения свойств",
+            "PROPERTY_PHOTO": "Фотографии"
         },
         "Анонс": {
-            "PROPERTY_IS_18": "18+",
-            "PROPERTY_PHOTOS": "Фотографии",
-            "PROPERTY_OPERATION_PROPS": "Параметры операции: Выводимые параметы",
-            "PROPERTY_OPERATION_PROPS_VAL": "Параметры операции: Значения",
-            "PREVIEW_TEXT": "Описание для анонса"
+            "PREVIEW_PICTURE": "Картинка для анонса"
         },
-        "Видео": {
-            "PROPERTY_VIDEO": "Ссылки на youtube",
-            "PROPERTY_VIDEO_PREVIEW": "Фото для видео"
+        "Подробно": {
+            "DETAIL_PICTURE": "Детальная картинка",
+            "DETAIL_TEXT": "Детальное описание"
         },
-        "Разделы": {
-            "SECTIONS": "Разделы"
+        "SEO": {
+            "IPROPERTY_TEMPLATES_ELEMENT_META_TITLE": "Шаблон META TITLE",
+            "IPROPERTY_TEMPLATES_ELEMENT_META_KEYWORDS": "Шаблон META KEYWORDS",
+            "IPROPERTY_TEMPLATES_ELEMENT_META_DESCRIPTION": "Шаблон META DESCRIPTION",
+            "IPROPERTY_TEMPLATES_ELEMENT_PAGE_TITLE": "Заголовок элемента",
+            "IPROPERTY_TEMPLATES_ELEMENTS_PREVIEW_PICTURE": "Настройки для картинок анонса элементов",
+            "IPROPERTY_TEMPLATES_ELEMENT_PREVIEW_PICTURE_FILE_ALT": "Шаблон ALT",
+            "IPROPERTY_TEMPLATES_ELEMENT_PREVIEW_PICTURE_FILE_TITLE": "Шаблон TITLE",
+            "IPROPERTY_TEMPLATES_ELEMENT_PREVIEW_PICTURE_FILE_NAME": "Шаблон имени файла",
+            "IPROPERTY_TEMPLATES_ELEMENTS_DETAIL_PICTURE": "Настройки для детальных картинок элементов",
+            "IPROPERTY_TEMPLATES_ELEMENT_DETAIL_PICTURE_FILE_ALT": "Шаблон ALT",
+            "IPROPERTY_TEMPLATES_ELEMENT_DETAIL_PICTURE_FILE_TITLE": "Шаблон TITLE",
+            "IPROPERTY_TEMPLATES_ELEMENT_DETAIL_PICTURE_FILE_NAME": "Шаблон имени файла",
+            "SEO_ADDITIONAL": "Дополнительно",
+            "TAGS": "Теги"
         }
     }
 }

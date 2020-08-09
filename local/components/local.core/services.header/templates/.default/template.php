@@ -9,6 +9,7 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 <?
 $this->SetViewTarget('services_header');
@@ -16,9 +17,11 @@ $this->SetViewTarget('services_header');
 <section class="sliderTop contacts" style="background-image:url(/img/contacts.jpg);">
     <div class="submenu">
         <ul class="submenu__item">
-            <? foreach ($arResult['MENU'] as $arItem): ?>
+            <?
+            foreach ($arResult['MENU'] as $arItem): ?>
                 <li class="<?=$arItem['ACTIVE'] ? 'act' : ''?>"><a href="<?=$arItem['LINK']?>"><?=$arItem['NAME']?></a></li>
-            <? endforeach ?>
+            <?
+            endforeach ?>
         </ul>
     </div>
     <div class="container post-down">
@@ -29,7 +32,8 @@ $this->SetViewTarget('services_header');
             <p><?=$arResult['MENU_ACTIVE']['AFTER_H1']?></p>
         </div>
 
-        <? if ($arResult['ACTIVE_TYPE'] === 'contacts'): ?>
+        <?
+        if ($arResult['ACTIVE_TYPE'] === 'contacts'): ?>
             <div class="header__contacts row row-f">
                 <div class="header__contacts__item col-xs-12 col-sm-6">
                     <div class="ico ico-phone"></div>
@@ -46,7 +50,8 @@ $this->SetViewTarget('services_header');
                     </div>
                 </div>
             </div>
-        <? endif; ?>
+        <?
+        endif; ?>
 
     </div>
 </section>

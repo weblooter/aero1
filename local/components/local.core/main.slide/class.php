@@ -1,12 +1,12 @@
 <?
-use \Local\Core\Text\Format;
+
+use Local\Core\Text\Format;
 
 class MainSlideComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 {
     public function executeComponent()
     {
-        if( $this->startResultCache(60*60*24*7) )
-        {
+        if ($this->startResultCache(60 * 60 * 24 * 7)) {
             $this->fillResult();
             $this->endResultCache();
         }
@@ -17,9 +17,9 @@ class MainSlideComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
     {
         $arResult = [];
 
-        try
-        {
-            $rsElem = \CIBlockElement::GetList(['SORT' => 'ASC'],
+        try {
+            $rsElem = CIBlockElement::GetList(
+                ['SORT' => 'ASC'],
                 [
                     'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'main_slider'),
                     'ACTIVE' => 'Y'
@@ -33,14 +33,13 @@ class MainSlideComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
                     'PROPERTY_SLIDE_NAME',
                     'PROPERTY_LINK',
                     'PROPERTY_LINK_TEXT'
-                ]);
-            if( $rsElem->SelectedRowsCount() < 1 )
-            {
-                throw new \Exception();
+                ]
+            );
+            if ($rsElem->SelectedRowsCount() < 1) {
+                throw new Exception();
             }
 
-            while ($ar = $rsElem->GetNext())
-            {
+            while ($ar = $rsElem->GetNext()) {
                 $arResult['ITEMS'][] = [
                     'NAME' => $ar['NAME'],
                     'PREVIEW_TEXT' => (new Format\FormatTrim(new Format\FormatStripTags()))->format($ar['PREVIEW_TEXT']),
@@ -49,9 +48,7 @@ class MainSlideComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
                     'SLIDE_NAME' => $ar['PROPERTY_SLIDE_NAME_VALUE'],
                 ];
             }
-        }
-        catch (\Exception $e)
-        {
+        } catch (Exception $e) {
             $this->abortResultCache();
         }
 

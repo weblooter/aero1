@@ -1,30 +1,31 @@
 <?
+
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
 $arTemplateParameters = array(
-    "DISPLAY_DATE" => Array(
+    "DISPLAY_DATE" => array(
         "NAME" => GetMessage("T_IBLOCK_DESC_NEWS_DATE"),
         "TYPE" => "CHECKBOX",
         "DEFAULT" => "Y",
     ),
-    "DISPLAY_NAME" => Array(
+    "DISPLAY_NAME" => array(
         "NAME" => GetMessage("T_IBLOCK_DESC_NEWS_NAME"),
         "TYPE" => "CHECKBOX",
         "DEFAULT" => "Y",
     ),
-    "DISPLAY_PICTURE" => Array(
+    "DISPLAY_PICTURE" => array(
         "NAME" => GetMessage("T_IBLOCK_DESC_NEWS_PICTURE"),
         "TYPE" => "CHECKBOX",
         "DEFAULT" => "Y",
     ),
-    "DISPLAY_PREVIEW_TEXT" => Array(
+    "DISPLAY_PREVIEW_TEXT" => array(
         "NAME" => GetMessage("T_IBLOCK_DESC_NEWS_TEXT"),
         "TYPE" => "CHECKBOX",
         "DEFAULT" => "Y",
     ),
-    "USE_SHARE" => Array(
+    "USE_SHARE" => array(
         "NAME" => GetMessage("T_IBLOCK_DESC_NEWS_USE_SHARE"),
         "TYPE" => "CHECKBOX",
         "MULTIPLE" => "N",

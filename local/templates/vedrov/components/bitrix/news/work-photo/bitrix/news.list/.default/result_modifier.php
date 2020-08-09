@@ -18,6 +18,26 @@ foreach ($arResult['ITEMS'] as &$arItem) {
             $arTmp['THUMB'] = $arTmp['THUMB']['src'];
             return $arTmp;
         }, $arItem['PROPERTIES']['PHOTOS']['VALUE']);
+
+    if(
+        !empty($arItem['PROPERTIES']['VIDEO_PREVIEW']['VALUE'])
+        && !empty($arItem['PROPERTIES']['VIDEO']['VALUE'])
+    ) {
+
+        $arItem['PROPERTIES']['VIDEO_PREVIEW']['VALUE'] = array_map(function ($v)
+            {
+                $arTmp = [
+                    'BIG' => \CFile::ResizeImageGet($v, ['width' => 600, 'height' => 400], BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, 75),
+                    'THUMB' => \CFile::ResizeImageGet($v, ['width' => 75, 'height' => 50], BX_RESIZE_IMAGE_EXACT, false, false, false, 75)
+                ];
+                $arTmp['BIG'] = $arTmp['BIG']['src'];
+                $arTmp['THUMB'] = $arTmp['THUMB']['src'];
+                return $arTmp;
+            }, $arItem['PROPERTIES']['VIDEO_PREVIEW']['VALUE']);
+    }
+    else {
+        $arItem['PROPERTIES']['VIDEO_PREVIEW']['VALUE'] = [];
+    }
 }
 unset($arItem);
 

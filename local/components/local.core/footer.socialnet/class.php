@@ -1,6 +1,12 @@
 <?
 
-class FooterSocialNetComponent extends \CBitrixComponent
+use Bitrix\Main\Application;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
+use Bitrix\Main\ORM\Query\Join;
+use Local\Core\HighloadBlock\Entity;
+use Local\Core\HighloadBlock\FieldEnumTable;
+
+class FooterSocialNetComponent extends CBitrixComponent
 {
     public function executeComponent()
     {
@@ -12,22 +18,23 @@ class FooterSocialNetComponent extends \CBitrixComponent
     {
         $arResult = [];
 
-        $obCache = \Bitrix\Main\Application::getInstance()
+        $obCache = Application::getInstance()
             ->getCache();
         if ($obCache->startDataCache(60 * 60 * 12, __FILE__.__LINE__)) {
-
             try {
-                $classSocial = \Local\Core\HighloadBlock\Entity::getInstance(\Local\Core\HighloadBlock\Entity::SettingsSocailnet);
-                $rsSocial = $classSocial::getList([
-                    'order' => ['UF_SORT' => 'ASC'],
-                    'select' => [
-                        '*',
-                        'SOC_VALUE'
-                    ],
-                    'runtime' => [
-                        (new \Bitrix\Main\ORM\Fields\Relations\Reference('SOC_VALUE', \Local\Core\HighloadBlock\FieldEnumTable::class, \Bitrix\Main\ORM\Query\Join::on('this.UF_SOC_TYPE', 'ref.ID')))
+                $classSocial = Entity::getInstance(Entity::SettingsSocailnet);
+                $rsSocial = $classSocial::getList(
+                    [
+                        'order' => ['UF_SORT' => 'ASC'],
+                        'select' => [
+                            '*',
+                            'SOC_VALUE'
+                        ],
+                        'runtime' => [
+                            (new Reference('SOC_VALUE', FieldEnumTable::class, Join::on('this.UF_SOC_TYPE', 'ref.ID')))
+                        ]
                     ]
-                ]);
+                );
                 $arResult = [];
                 while ($obSocial = $rsSocial->fetchObject()) {
                     $arResult[] = [
@@ -38,7 +45,7 @@ class FooterSocialNetComponent extends \CBitrixComponent
                 }
 
                 $obCache->endDataCache($arResult);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $obCache->abortDataCache();
             }
         } else {

@@ -106,6 +106,12 @@
                     "DEF": "N",
                     "SORT": "500",
                     "XML_ID": "youtube"
+                },
+                {
+                    "VALUE": "Telegram",
+                    "DEF": "N",
+                    "SORT": "500",
+                    "XML_ID": "telegram"
                 }
             ]
         },

@@ -9,37 +9,46 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 <section class="sliderTop">
     <div class="js-slider-video">
-        <? foreach ($arResult['ITEMS'] as $arItem): ?>
+        <?
+        foreach ($arResult['ITEMS'] as $arItem): ?>
             <div class="slide">
                 <div class="text">
                     <div class="container">
                         <div class="title"><?=$arItem['NAME']?></div>
                         <p><?=$arItem['PREVIEW_TEXT']?></p>
-                        <? if (!empty($arItem['LINK'])): ?>
+                        <?
+                        if (!empty($arItem['LINK'])): ?>
                             <div class="more"><a href="<?=$arItem['LINK']?>" class="btn arrow"><?=$arItem['LINK_TEXT']?></a></div>
-                        <? endif; ?>
+                        <?
+                        endif; ?>
                     </div>
                 </div>
             </div>
-        <? endforeach; ?>
+        <?
+        endforeach; ?>
     </div>
     <div class="sliderTop__nav">
         <div class="container">
             <div class="slider-video-menu js-slider-video-nav">
-                <? foreach ($arResult['ITEMS'] as $k => $arItem): ?>
+                <?
+                foreach ($arResult['ITEMS'] as $k => $arItem): ?>
                     <div class="slide">
                         <span><?=($k < 9) ? '0'.($k + 1) : ($k + 1)?></span>
                         <span><?=(!empty($arItem['SLIDE_NAME'])) ? $arItem['SLIDE_NAME'] : $arItem['NAME']?></span>
                     </div>
-                <? endforeach; ?>
+                <?
+                endforeach; ?>
             </div>
             <div class="video-indicator js-slider-video-indicator">
-                <? foreach ($arResult['ITEMS'] as $k => $arItem): ?>
+                <?
+                foreach ($arResult['ITEMS'] as $k => $arItem): ?>
                     <div class="slide"></div>
-                <? endforeach; ?>
+                <?
+                endforeach; ?>
             </div>
         </div>
     </div>

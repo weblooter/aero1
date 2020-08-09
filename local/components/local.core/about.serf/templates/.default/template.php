@@ -9,12 +9,17 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
-<? if (!empty($arResult)): ?>
+<?
+if (!empty($arResult)): ?>
     <div class="title-preview">Сертификаты и дипломы</div>
     <div class="grid gallery">
-        <? foreach ($arResult as $arItem): ?>
+        <?
+        foreach ($arResult as $arItem): ?>
             <div class="grid__item gallery__item"><a href="<?=$arItem['BIG']?>"><img src="<?=$arItem['SMALL']?>" alt="" /></a></div>
-        <? endforeach; ?>
+        <?
+        endforeach; ?>
     </div>
-<? endif; ?>
+<?
+endif; ?>

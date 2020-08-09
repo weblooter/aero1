@@ -9,6 +9,7 @@
  * @var string                     $templateFolder
  * @global CMain                   $APPLICATION
  */
+
 ?>
 <?
 foreach ($arResult as $arItem) {

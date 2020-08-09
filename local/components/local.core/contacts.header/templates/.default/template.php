@@ -9,8 +9,10 @@
  * @var string                  $templateFolder
  * @global CMain                $APPLICATION
  */
+
 ?>
-<? $this->SetViewTarget("contacts_header", 100); ?>
+<?
+$this->SetViewTarget("contacts_header", 100); ?>
     <section class="sliderTop contacts" style="background-image:url(/img/contacts.jpg);">
 
         <div class="container post-down">
@@ -42,4 +44,5 @@
 
         </div>
     </section>
-<? $this->EndViewTarget(); ?>
+<?
+$this->EndViewTarget(); ?>

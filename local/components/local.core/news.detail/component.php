@@ -1,4 +1,5 @@
 <?
+
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
@@ -16,6 +17,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 use Bitrix\Iblock;
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Bitrix\Main\Type\Collection;
 use Bitrix\Main\Type\DateTime;
 
 CPageOption::SetOptionString("main", "nav_page_in_session", "N");
@@ -34,10 +36,14 @@ if ($arParams["ELEMENT_ID"] > 0 && $arParams["ELEMENT_ID"]."" != $arParams["~ELE
     if (Loader::includeModule("iblock")) {
         Iblock\Component\Tools::process404(
             trim($arParams["MESSAGE_404"]) ? : GetMessage("T_NEWS_DETAIL_NF")
-            , true
-            , $arParams["SET_STATUS_404"] === "Y"
-            , $arParams["SHOW_404"] === "Y"
-            , $arParams["FILE_404"]
+            ,
+            true
+            ,
+            $arParams["SET_STATUS_404"] === "Y"
+            ,
+            $arParams["SHOW_404"] === "Y"
+            ,
+            $arParams["FILE_404"]
         );
     }
     return;
@@ -140,7 +146,6 @@ if (!$bUSER_HAVE_ACCESS) {
 }
 
 if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParams["CACHE_GROUPS"] === "N" ? false : $USER->GetGroups()), $bUSER_HAVE_ACCESS, $arNavigation, $pagerParameters))) {
-
     if (!Loader::includeModule("iblock")) {
         $this->abortResultCache();
         ShowError(GetMessage("IBLOCK_MODULE_NOT_INSTALLED"));
@@ -183,10 +188,14 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
             $this->abortResultCache();
             Iblock\Component\Tools::process404(
                 trim($arParams["MESSAGE_404"]) ? : GetMessage("T_NEWS_DETAIL_NF")
-                , true
-                , $arParams["SET_STATUS_404"] === "Y"
-                , $arParams["SHOW_404"] === "Y"
-                , $arParams["FILE_404"]
+                ,
+                true
+                ,
+                $arParams["SET_STATUS_404"] === "Y"
+                ,
+                $arParams["SHOW_404"] === "Y"
+                ,
+                $arParams["FILE_404"]
             );
             return 0;
         }
@@ -208,21 +217,24 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
         $arParams["ELEMENT_ID"] = $WF_ELEMENT_ID;
     }
 
-    $arSelect = array_merge($arParams["FIELD_CODE"], array(
-        "ID",
-        "NAME",
-        "IBLOCK_ID",
-        "IBLOCK_SECTION_ID",
-        "DETAIL_TEXT",
-        "DETAIL_TEXT_TYPE",
-        "PREVIEW_TEXT",
-        "PREVIEW_TEXT_TYPE",
-        "DETAIL_PICTURE",
-        "TIMESTAMP_X",
-        "ACTIVE_FROM",
-        "LIST_PAGE_URL",
-        "DETAIL_PAGE_URL",
-    ));
+    $arSelect = array_merge(
+        $arParams["FIELD_CODE"],
+        array(
+            "ID",
+            "NAME",
+            "IBLOCK_ID",
+            "IBLOCK_SECTION_ID",
+            "DETAIL_TEXT",
+            "DETAIL_TEXT_TYPE",
+            "PREVIEW_TEXT",
+            "PREVIEW_TEXT_TYPE",
+            "DETAIL_PICTURE",
+            "TIMESTAMP_X",
+            "ACTIVE_FROM",
+            "LIST_PAGE_URL",
+            "DETAIL_PAGE_URL",
+        )
+    );
     $bGetProperty = count($arParams["PROPERTY_CODE"]) > 0
                     || $arParams["BROWSER_TITLE"] != "-"
                     || $arParams["META_KEYWORDS"] != "-"
@@ -237,8 +249,7 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
     $arFilter["ID"] = $arParams["ELEMENT_ID"];
     $arFilter["SHOW_HISTORY"] = $WF_SHOW_HISTORY;
 
-    if( !empty($arParams['FILTER_NAME']) )
-    {
+    if (!empty($arParams['FILTER_NAME'])) {
         $arFilter = array_merge($arFilter, $GLOBALS[$arParams['FILTER_NAME']]);
     }
 
@@ -403,10 +414,15 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
             }
 
             if ($arParams["SET_BROWSER_TITLE"] === 'Y') {
-                $browserTitle = \Bitrix\Main\Type\Collection::firstNotEmpty(
-                    $arResult["PROPERTIES"], array($arParams["BROWSER_TITLE"], "VALUE")
-                    , $arResult, $arParams["BROWSER_TITLE"]
-                    , $arResult["IPROPERTY_VALUES"], "ELEMENT_META_TITLE"
+                $browserTitle = Collection::firstNotEmpty(
+                    $arResult["PROPERTIES"],
+                    array($arParams["BROWSER_TITLE"], "VALUE")
+                    ,
+                    $arResult,
+                    $arParams["BROWSER_TITLE"]
+                    ,
+                    $arResult["IPROPERTY_VALUES"],
+                    "ELEMENT_META_TITLE"
                 );
                 $arResult["META_TAGS"]["BROWSER_TITLE"] = (
                 is_array($browserTitle)
@@ -416,9 +432,12 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
                 unset($browserTitle);
             }
             if ($arParams["SET_META_KEYWORDS"] === 'Y') {
-                $metaKeywords = \Bitrix\Main\Type\Collection::firstNotEmpty(
-                    $arResult["PROPERTIES"], array($arParams["META_KEYWORDS"], "VALUE")
-                    , $arResult["IPROPERTY_VALUES"], "ELEMENT_META_KEYWORDS"
+                $metaKeywords = Collection::firstNotEmpty(
+                    $arResult["PROPERTIES"],
+                    array($arParams["META_KEYWORDS"], "VALUE")
+                    ,
+                    $arResult["IPROPERTY_VALUES"],
+                    "ELEMENT_META_KEYWORDS"
                 );
                 $arResult["META_TAGS"]["KEYWORDS"] = (
                 is_array($metaKeywords)
@@ -428,9 +447,12 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
                 unset($metaKeywords);
             }
             if ($arParams["SET_META_DESCRIPTION"] === 'Y') {
-                $metaDescription = \Bitrix\Main\Type\Collection::firstNotEmpty(
-                    $arResult["PROPERTIES"], array($arParams["META_DESCRIPTION"], "VALUE")
-                    , $arResult["IPROPERTY_VALUES"], "ELEMENT_META_DESCRIPTION"
+                $metaDescription = Collection::firstNotEmpty(
+                    $arResult["PROPERTIES"],
+                    array($arParams["META_DESCRIPTION"], "VALUE")
+                    ,
+                    $arResult["IPROPERTY_VALUES"],
+                    "ELEMENT_META_DESCRIPTION"
                 );
                 $arResult["META_TAGS"]["DESCRIPTION"] = (
                 is_array($metaDescription)
@@ -448,10 +470,14 @@ if ($arParams["SHOW_WORKFLOW"] || $this->startResultCache(false, array(($arParam
         $this->abortResultCache();
         Iblock\Component\Tools::process404(
             trim($arParams["MESSAGE_404"]) ? : GetMessage("T_NEWS_DETAIL_NF")
-            , true
-            , $arParams["SET_STATUS_404"] === "Y"
-            , $arParams["SHOW_404"] === "Y"
-            , $arParams["FILE_404"]
+            ,
+            true
+            ,
+            $arParams["SET_STATUS_404"] === "Y"
+            ,
+            $arParams["SHOW_404"] === "Y"
+            ,
+            $arParams["FILE_404"]
         );
     }
 }
@@ -480,7 +506,7 @@ if (isset($arResult["ID"])) {
                     $arResult["IBLOCK_ID"],
                     $arResult["ID"],
                     $arResult["IBLOCK_SECTION_ID"],
-                    Array(
+                    array(
                         "RETURN_URL" => $arReturnUrl,
                         "SECTION_BUTTONS" => false,
                     )

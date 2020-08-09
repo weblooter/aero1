@@ -4,8 +4,7 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
 {
     public function executeComponent()
     {
-        if( $this->startResultCache(60*60*24*7) )
-        {
+        if ($this->startResultCache(60 * 60 * 24 * 7)) {
             $this->fillResult();
             $this->endResultCache();
         }
@@ -16,9 +15,9 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
     {
         $arResult = [];
 
-        try
-        {
-            $rsSections = \CIBlockSection::GetList(['SORT' => 'ASC'],
+        try {
+            $rsSections = CIBlockSection::GetList(
+                ['SORT' => 'ASC'],
                 [
                     'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'),
                     'ACTIVE' => 'Y'
@@ -27,25 +26,25 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
                 [
                     '*',
                     'UF_*'
-                ]);
-            if( $rsSections->SelectedRowsCount() < 1 )
-            {
-                throw new \Exception();
+                ]
+            );
+            if ($rsSections->SelectedRowsCount() < 1) {
+                throw new Exception();
             }
 
             $arSections = [];
 
-            while ($ar = $rsSections->GetNext())
-            {
+            while ($ar = $rsSections->GetNext()) {
                 $arSections[$ar['ID']] = [
-                    'NAME' => ( !empty($ar['UF_MAIN_NAME']) ? $ar['UF_MAIN_NAME'] : $ar['NAME'] ),
-                    'PICTURE' => ( $ar['UF_MAIN_IMG'] > 0 ? \CFile::GetPath($ar['UF_MAIN_IMG']) : '' ),
+                    'NAME' => (!empty($ar['UF_MAIN_NAME']) ? $ar['UF_MAIN_NAME'] : $ar['NAME']),
+                    'PICTURE' => ($ar['UF_MAIN_IMG'] > 0 ? CFile::GetPath($ar['UF_MAIN_IMG']) : ''),
                     'LINK' => $ar['SECTION_PAGE_URL'],
                     'ITEMS' => []
                 ];
             }
 
-            $rsElems = \CIBlockElement::GetList(['SORT' => 'ASC'],
+            $rsElems = CIBlockElement::GetList(
+                ['SORT' => 'ASC'],
                 [
                     'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'),
                     'ACTIVE' => 'Y',
@@ -59,14 +58,13 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
                     'IBLOCK_SECTION_ID',
                     'NAME',
                     'DETAIL_PAGE_URL'
-                ]);
-            if( $rsElems->SelectedRowsCount() < 1 )
-            {
-                throw new \Exception();
+                ]
+            );
+            if ($rsElems->SelectedRowsCount() < 1) {
+                throw new Exception();
             }
-            while ($ar = $rsElems->GetNext())
-            {
-                $arSections[ $ar['IBLOCK_SECTION_ID'] ]['ITEMS'][] = [
+            while ($ar = $rsElems->GetNext()) {
+                $arSections[$ar['IBLOCK_SECTION_ID']]['ITEMS'][] = [
                     'NAME' => $ar['NAME'],
                     'DETAIL_PAGE_URL' => $ar['DETAIL_PAGE_URL'],
                 ];
@@ -74,9 +72,7 @@ class MainServicesComponent extends \Local\Core\Inner\BxModified\CBitrixComponen
 
             $arResult['ITEMS'] = $arSections;
             unset($arSections);
-        }
-        catch (\Exception $e)
-        {
+        } catch (Exception $e) {
             $this->abortResultCache();
         }
 

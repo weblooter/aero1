@@ -68,7 +68,6 @@ class ServicesHeaderComponent extends \Local\Core\Inner\BxModified\CBitrixCompon
      */
     protected function extractH1()
     {
-
         if ($this->arParams['ACTIVE'] == 'klinika') {
             $this->arParams['ACTIVE'] = 'contacts';
         }

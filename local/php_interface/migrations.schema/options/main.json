@@ -216,7 +216,7 @@
         {
             "MODULE_ID": "main",
             "NAME": "bx_fast_download",
-            "VALUE": "N",
+            "VALUE": "Y",
             "DESCRIPTION": null,
             "SITE_ID": null
         },

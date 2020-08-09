@@ -9,16 +9,21 @@
  * @var string                     $templateFolder
  * @global CMain                   $APPLICATION
  */
+
 ?>
-<? foreach ($arResult['SERVICES'] as $arSection): ?>
+<?
+foreach ($arResult['SERVICES'] as $arSection): ?>
     <div class="col-xs-6 col-md-3">
         <div class="footer__title">
             <?=$arSection['NAME']?>
         </div>
         <ul>
-            <? foreach ($arSection['CHILD'] as $arChild): ?>
+            <?
+            foreach ($arSection['CHILD'] as $arChild): ?>
                 <li><a href="<?=$arChild['DETAIL_PAGE_URL']?>"><?=$arChild['NAME']?></a></li>
-            <? endforeach; ?>
+            <?
+            endforeach; ?>
         </ul>
     </div>
-<? endforeach; ?>
+<?
+endforeach; ?>

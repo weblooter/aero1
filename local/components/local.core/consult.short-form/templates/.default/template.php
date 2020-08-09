@@ -9,6 +9,7 @@
  * @var string                    $templateFolder
  * @global CMain                  $APPLICATION
  */
+
 ?>
 <section class="consultation container post-up">
     <div class="title-preview">Консультация у хирурга</div>

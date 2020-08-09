@@ -9,6 +9,7 @@
  * @var string                        $templateFolder
  * @global CMain                      $APPLICATION
  */
+
 ?>
 
 <section id="body" class="container">
@@ -17,7 +18,8 @@
 
         <div class="title-preview">КОНСУЛЬТАЦИЯ ОНЛАЙН</div>
         <div class="before-text center">
-            <? $GLOBALS['APPLICATION']->IncludeFile('include/consult-before-form.php', false, ['MODE' => 'html']) ?>
+            <?
+            $GLOBALS['APPLICATION']->IncludeFile('include/consult-before-form.php', false, ['MODE' => 'html']) ?>
         </div>
         <?
         $GLOBALS['APPLICATION']->IncludeComponent(
@@ -33,9 +35,11 @@
                 Часто задаваемые вопросы для вашего удобства разбиты по тегам:
             </div>
             <div class="col-xs-12 col-md-6">
-                <? foreach ($arResult['TAG'] as $arItem): ?>
+                <?
+                foreach ($arResult['TAG'] as $arItem): ?>
                     <a href="<?=$arItem['SECTION_PAGE_URL']?>"><?=$arItem['NAME']?></a>
-                <? endforeach; ?>
+                <?
+                endforeach; ?>
             </div>
         </div>
 
@@ -45,9 +49,10 @@
         </div>
 
         <div class="consultList">
-            <? foreach ($arResult['ITEMS'] as $arItem): ?>
+            <?
+            foreach ($arResult['ITEMS'] as $arItem): ?>
                 <div class="consultList__item">
-                    <div class="title-preview"><a href="<?=$arResult['MAIN_CONSULT_SECTION_DATA']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>">ВОПРОС №<?=$arItem['ID']?><span>/</span><?=$arItem['PROPERTY_ASKER_NAME_VALUE']?> (<?=\FormatDate('d F Y', strtotime($arItem['ACTIVE_FROM']))?> г.)</a></div>
+                    <div class="title-preview"><a href="<?=$arResult['MAIN_CONSULT_SECTION_DATA']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>">ВОПРОС №<?=$arItem['ID']?><span>/</span><?=$arItem['PROPERTY_ASKER_NAME_VALUE']?> (<?=FormatDate('d F Y', strtotime($arItem['ACTIVE_FROM']))?> г.)</a></div>
                     <div class="question">
                         <a href="<?=$arResult['MAIN_CONSULT_SECTION_DATA']['SECTION_PAGE_URL'].$arItem['ID'].'/'?>" class="ico-faq"></a>
                         <p><?=$arItem['PREVIEW_TEXT']?></p>
@@ -70,26 +75,34 @@
                             <div class="title"><a href="/o-doktore/"><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['FIO']?> <span><?=$arResult['USER'][$arItem['PROPERTY_CONSULTANT_VALUE']]['WORK_POSITION']?></span></a></div>
                         </div>
                     </div>
-                    <? if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
+                    <?
+                    if (!empty(array_intersect($arItem['SECTIONS'], array_keys($arResult['TAG'])))): ?>
                         <div class="consult-tags">
                             <span>Теги:</span>
-                            <? foreach ($arItem['SECTIONS'] as $intId): ?>
+                            <?
+                            foreach ($arItem['SECTIONS'] as $intId): ?>
                                 <a href="<?=$arResult['TAG'][$intId]['SECTION_PAGE_URL']?>"><?=$arResult['TAG'][$intId]['NAME']?></a>
-                            <? endforeach; ?>
+                            <?
+                            endforeach; ?>
                         </div>
-                    <? endif; ?>
+                    <?
+                    endif; ?>
                 </div>
-            <? endforeach; ?>
+            <?
+            endforeach; ?>
         </div>
         <div class="more">
             <a href="<?=$arResult['MAIN_CONSULT_SECTION_DATA']['SECTION_PAGE_URL']?>" class="arrow">Все вопросы</a>
         </div>
 
-        <? if (!empty($arResult['SECOND_BLOCK'])): ?>
+        <?
+        if (!empty($arResult['SECOND_BLOCK'])): ?>
             <?=$arResult['SECOND_BLOCK']?>
             <div class="line"></div>
-        <? endif; ?>
+        <?
+        endif; ?>
 
     </div>
-    <? $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeComponent('local.core:consult.free-consult', '.default', [], false, ['HIDE_ICONS' => 'Y']) ?>
 </section>

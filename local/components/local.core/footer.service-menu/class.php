@@ -1,5 +1,7 @@
 <?
 
+use Bitrix\Main\Application;
+
 class FooterServiceMenuComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 {
     public function executeComponent()
@@ -12,10 +14,10 @@ class FooterServiceMenuComponent extends \Local\Core\Inner\BxModified\CBitrixCom
     {
         $arResult = [];
 
-        $obCacheServices = \Bitrix\Main\Application::getInstance()
+        $obCacheServices = Application::getInstance()
             ->getCache();
         if ($obCacheServices->startDataCache(60 * 60 * 24, __FILE__.'#'.__LINE__)) {
-            $rsSections = \CIBlockSection::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y'], false, ['ID', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
+            $rsSections = CIBlockSection::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y'], false, ['ID', 'IBLOCK_ID', 'SECTION_PAGE_URL']);
             while ($ar = $rsSections->GetNext()) {
                 $arResult['SERVICES'][$ar['ID']] = [
                     'NAME' => $ar['NAME'],
@@ -23,7 +25,7 @@ class FooterServiceMenuComponent extends \Local\Core\Inner\BxModified\CBitrixCom
                     'CHILD' => []
                 ];
             }
-            $rsElems = \CIBlockElement::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y'], false, false, ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'NAME', 'IBLOCK_SECTION_ID']);
+            $rsElems = CIBlockElement::GetList(['SORT' => 'ASC', 'NAME' => 'ASC'], ['IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'), 'ACTIVE' => 'Y'], false, false, ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'NAME', 'IBLOCK_SECTION_ID']);
             while ($ar = $rsElems->GetNext()) {
                 $arResult['SERVICES'][$ar['IBLOCK_SECTION_ID']]['CHILD'][] = [
                     'NAME' => $ar['NAME'],

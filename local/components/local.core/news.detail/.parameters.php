@@ -1,4 +1,5 @@
 <?
+
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
@@ -16,7 +17,7 @@ while ($arRes = $db_iblock->Fetch()) {
 }
 
 $arProperty_LNS = array();
-$rsProp = CIBlockProperty::GetList(array("sort" => "asc", "name" => "asc"), Array("ACTIVE" => "Y", "IBLOCK_ID" => (isset($arCurrentValues["IBLOCK_ID"]) ? $arCurrentValues["IBLOCK_ID"] : $arCurrentValues["ID"])));
+$rsProp = CIBlockProperty::GetList(array("sort" => "asc", "name" => "asc"), array("ACTIVE" => "Y", "IBLOCK_ID" => (isset($arCurrentValues["IBLOCK_ID"]) ? $arCurrentValues["IBLOCK_ID"] : $arCurrentValues["ID"])));
 while ($arr = $rsProp->Fetch()) {
     $arProperty[$arr["CODE"]] = "[".$arr["CODE"]."] ".$arr["NAME"];
     if (in_array($arr["PROPERTY_TYPE"], array("L", "N", "S"))) {

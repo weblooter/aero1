@@ -184,7 +184,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     </a>
 </div>
 
-<script src="<?=SITE_TEMPLATE_PATH?>/assets/js/_bundle.js"></script>
+<script src="<?=SITE_TEMPLATE_PATH?>/assets/js/_bundle.js?id=20200809"></script>
 <script type="text/javascript">
     var $ = jQuery = myApp.$;
 </script>

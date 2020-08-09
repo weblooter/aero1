@@ -1,15 +1,15 @@
 <?
 
+use Bitrix\Iblock\InheritedProperty\SectionValues;
+use Bitrix\Main\Application;
+
 class ServicesSectionComponent extends \Local\Core\Inner\BxModified\CBitrixComponent
 {
     public function executeComponent()
     {
-        try
-        {
+        try {
             $this->fillResult();
-        }
-        catch (\Exception $e)
-        {
+        } catch (Exception $e) {
             $this->_show404Page();
         }
         $this->includeComponentTemplate();
@@ -19,28 +19,35 @@ class ServicesSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompo
     {
         $arResult = [];
 
-        $obCache = \Bitrix\Main\Application::getInstance()
+        $obCache = Application::getInstance()
             ->getCache();
-        $obRequest = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
+        $obRequest = Application::getInstance()
+            ->getContext()
+            ->getRequest();
 
         if ($obCache->startDataCache(60 * 60 * 24, __FILE__.__LINE__.'#'.$obRequest->get('SECTION_CODE'))) {
-
-            $rsSections = \CIBlockSection::GetList([],
+            $rsSections = CIBlockSection::GetList(
+                [],
                 [
                     'CODE' => $obRequest->get('SECTION_CODE'),
                     'IBLOCK_ID' => \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'),
                     'ACTIVE' => 'Y',
                 ],
                 false,
-                ['ID', 'NAME']);
-            if( $rsSections->SelectedRowsCount() < 1 )
-            {
-                throw new \Exception();
+                ['ID', 'NAME']
+            );
+            if ($rsSections->SelectedRowsCount() < 1) {
+                throw new Exception();
             }
             $arSection = $rsSections->GetNext();
+            $arSection['SEO'] = (new SectionValues(
+                \Local\Core\Assistant\Iblock::getIdByCode('main_ved', 'services'),
+                $arSection["ID"]
+            ))->getValues();
             $arResult['SECTION'] = $arSection;
 
-            $rsElems = \CIBlockElement::GetList(
+
+            $rsElems = CIBlockElement::GetList(
                 [
                     'SORT' => 'ASC'
                 ],
@@ -63,13 +70,13 @@ class ServicesSectionComponent extends \Local\Core\Inner\BxModified\CBitrixCompo
             while ($ar = $rsElems->GetNext()) {
                 $arImg = ['src' => ''];
                 if ($ar['PREVIEW_PICTURE'] > 0) {
-                    $arImg = \CFile::ResizeImageGet($ar['PREVIEW_PICTURE'], ['width' => 350, 'height' => 350], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
+                    $arImg = CFile::ResizeImageGet($ar['PREVIEW_PICTURE'], ['width' => 350, 'height' => 350], BX_RESIZE_IMAGE_EXACT, false, false, false, 75);
                 }
                 $arResult['ITEMS'][] = [
                     'NAME' => $ar['NAME'],
                     'IMG' => $arImg['src'],
                     'DETAIL_PAGE_URL' => $ar['DETAIL_PAGE_URL'],
-                    'DESC' => ( new Local\Core\Text\Format\FormatCommon() )->format($ar['PREVIEW_TEXT']),
+                    'DESC' => (new Local\Core\Text\Format\FormatCommon())->format($ar['PREVIEW_TEXT']),
                 ];
             }
 

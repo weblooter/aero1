@@ -1,5 +1,6 @@
 <?
 
+use Bitrix\Main\Application;
 use Local\Core\Exception\Component\Services;
 use Local\Core\Text\Format;
 
@@ -21,11 +22,11 @@ class ServicesVideoComponent extends \Local\Core\Inner\BxModified\CBitrixCompone
 
         $arData = &$this->arParams['DATA']['MAIN']['ELEMENT'];
 
-        $obCache = \Bitrix\Main\Application::getInstance()
+        $obCache = Application::getInstance()
             ->getCache();
         if ($obCache->startDataCache(60 * 60 * 24, __FILE__.'#'.$arData['ID'])) {
-            /** @var $obServiceComponent \ServicesComponent */
-            $obServiceComponent = \CBitrixComponent::includeComponentClass('local.core:services');
+            /** @var $obServiceComponent ServicesComponent */
+            $obServiceComponent = CBitrixComponent::includeComponentClass('local.core:services');
             $arResult = $obServiceComponent::extractTextBlocks($arData, 'VIDEO');
 
             if (!empty($arData['PROPERTIES']['VIDEO_VIDEOS']['VALUE'])) {

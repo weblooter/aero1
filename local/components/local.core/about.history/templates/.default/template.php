@@ -9,9 +9,11 @@
  * @var string                   $templateFolder
  * @global CMain                 $APPLICATION
  */
+
 ?>
 
-<? foreach ($arResult as $arSection): ?>
+<?
+foreach ($arResult as $arSection): ?>
     <?
     $strIcon = false;
     switch ($arSection['CODE']) {
@@ -30,15 +32,19 @@
     ?>
     <div class="title-preview"><?=$arSection['NAME']?> <?=($strIcon) ? '<span class="'.$strIcon.'"></span>' : ''?></div>
     <table>
-        <? foreach ($arSection['ITEMS'] as $arItem): ?>
+        <?
+        foreach ($arSection['ITEMS'] as $arItem): ?>
             <tr>
                 <td><?=$arItem['NAME']?></td>
                 <td><?=$arItem['PREVIEW_TEXT']?></td>
             </tr>
-        <? endforeach; ?>
+        <?
+        endforeach; ?>
     </table>
-<? endforeach; ?>
+<?
+endforeach; ?>
 <div class="title-preview">Проводимые операции <span class="ico ico-hand"></span></div>
 <div class="balls">
-    <? $GLOBALS['APPLICATION']->IncludeFile('include/about-operations.php', false, ['MODE' => 'html']) ?>
+    <?
+    $GLOBALS['APPLICATION']->IncludeFile('include/about-operations.php', false, ['MODE' => 'html']) ?>
 </div>

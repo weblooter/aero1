@@ -1,6 +1,6 @@
 <?
 
-class ConsultShortFormComponent extends \CBitrixComponent
+class ConsultShortFormComponent extends CBitrixComponent
 {
     public function executeComponent()
     {
