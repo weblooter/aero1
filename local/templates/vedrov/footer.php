@@ -137,7 +137,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             <div class="col-xs-3 col-sm-2 col-md-2 logo">
                 <a href="/"><img src="/img/logo-wht.png" alt="" /></a>
             </div>
-            <div class="col-xs-12 col-sm-5 col-md-3 col-md-offset-2 links">
+            <div class="col-xs-12 col-sm-5 col-md-4 col-md-offset-1 links">
                 <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-2.1", Array(
                     "ALLOW_MULTI_SELECT" => "N",
                     "CHILD_MENU_TYPE" => "left",

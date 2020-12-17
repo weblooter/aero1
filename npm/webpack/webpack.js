@@ -28,6 +28,7 @@ import './js/project.js';
 import './js/menu.js';
 import './js/slick_init.js';
 import './js/viewportchecker_init.js';
+import './js/tinyscrollbar_init';
 
 import './css/jquery.jscrollpane.css';
 import './css/sass/css.scss';
