@@ -66,7 +66,7 @@
 
 
 					if (!$('.str_move', strWrap).length) {
-						strWrap.wrapInner($('<div>').addClass('str_move'));
+						strWrap.wrapInner($('<div />').addClass('str_move'));
 					}
 
 					var
@@ -370,7 +370,7 @@
 							for (var i = 0; i < xmlTextLength; i++) {
 								var xmlElActive = xmlTextEl.eq(i);
 								var xmlElContent = xmlElActive.text();
-								var xmlItemEl = $('<span>').text(xmlElContent).appendTo(strWrap);
+								var xmlItemEl = $('<span />').text(xmlElContent).appendTo(strWrap);
 
 								if (p.direction == 'left' || p.direction == 'right') {
 									xmlItemEl.css({ display: 'inline-block', textAlign: 'right' });

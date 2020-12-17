@@ -24,7 +24,7 @@ if( empty($_SERVER['HTTPS']) )
     <meta name="format-detection" content="telephone=no" />
     <meta name="format-detection" content="address=no" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&subset=latin-ext" rel="stylesheet" />
-    <link rel="stylesheet" href="<?=SITE_TEMPLATE_PATH?>/assets/css/_bundle.css?id=20200809" />
+    <link rel="stylesheet" href="<?=SITE_TEMPLATE_PATH?>/assets/css/_bundle.css?id=20201217" />
 
     <script src="<?=SITE_TEMPLATE_PATH?>/assets/js/LocalCore.js"></script>
     <script type="text/javascript">

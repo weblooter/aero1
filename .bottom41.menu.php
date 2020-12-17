@@ -29,6 +29,13 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
+		"Удаление геля, вазелина из груди", 
+		"/uslugi/grud/udalenie-gelya-vazelina-iz-grudi/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
 		"Удаление груди (мастэктомия)", 
 		"/uslugi/grud/mastektomiya/", 
 		Array(), 

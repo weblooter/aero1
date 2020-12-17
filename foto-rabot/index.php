@@ -57,7 +57,7 @@ $APPLICATION->SetTitle("Фото работ");
 		"PREVIEW_TRUNCATE_LEN" => "",
 		"SEF_FOLDER" => "/foto-rabot/",
 		"SEF_MODE" => "Y",
-		"SEF_URL_TEMPLATES" => Array("detail"=>"","news"=>"","section"=>"#SECTION_CODE#/"),
+		"SEF_URL_TEMPLATES" => Array("detail"=>"#SECTION_CODE#/#ELEMENT_ID#/","news"=>"/foto-rabot/","section"=>"#SECTION_CODE#/"),
 		"SET_LAST_MODIFIED" => "N",
 		"SET_STATUS_404" => "Y",
 		"SET_TITLE" => "Y",

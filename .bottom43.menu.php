@@ -8,7 +8,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Верхняя блефаропалстика", 
+		"Верхняя блефаропластика", 
 		"/uslugi/litso/verhnyaya-blefaroplastica/", 
 		Array(), 
 		Array(), 
@@ -22,7 +22,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Трансконъюнктивальная блефаропаластика", 
+		"Трансконъюнктивальная блефаропластика", 
 		"/uslugi/litso/transkonyunktivalnaya-blefaroplastica/", 
 		Array(), 
 		Array(), 

@@ -138,7 +138,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
                 <a href="/"><img src="/img/logo-wht.png" alt="" /></a>
             </div>
             <div class="col-xs-12 col-sm-5 col-md-3 col-md-offset-2 links">
-                <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-2", Array(
+                <? $APPLICATION->IncludeComponent("bitrix:menu", "bottom-menu-2.1", Array(
                     "ALLOW_MULTI_SELECT" => "N",
                     "CHILD_MENU_TYPE" => "left",
                     "DELAY" => "N",
@@ -158,6 +158,15 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         </div>
     </div>
 </footer>
+
+    <div id="selectCityForm">
+        <div class="close fright js-close-geo-form "></div>
+        <div class="scrollbar js-tinyscrollbar" data-options='{"axis" : "y"}'>
+            <div class="form">
+                <? $GLOBALS['APPLICATION']->INcludeFile('include/main-city-aside.php', false, ['MODE' => 'html'])?>
+            </div>
+        </div>
+    </div>
 
 
 <div id="text" class="mfp-text mfp-hide">
@@ -184,7 +193,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     </a>
 </div>
 
-<script src="<?=SITE_TEMPLATE_PATH?>/assets/js/_bundle.js?id=20200809"></script>
+<script src="<?=SITE_TEMPLATE_PATH?>/assets/js/_bundle.js?id=20201217"></script>
 <script type="text/javascript">
     var $ = jQuery = myApp.$;
 </script>

@@ -18,11 +18,13 @@
 		}
 	}
 }
-.callbackFormActive {
-	position: fixed;
-	overflow: hidden;
-	width: 100%;
+.callbackFormActive,
+.selectCityFormActive {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
 }
+
 
 .menuTop {
 	@include display-flex;

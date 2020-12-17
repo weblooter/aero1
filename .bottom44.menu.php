@@ -22,6 +22,13 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
+		"Липосакция живота", 
+		"/uslugi/lipo/liposakciya-zhivota/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
 		"Липосакция бедер", 
 		"/uslugi/lipo/liposaktsiya-beder/", 
 		Array(), 

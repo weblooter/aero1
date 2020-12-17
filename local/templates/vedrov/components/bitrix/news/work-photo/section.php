@@ -1,4 +1,5 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+<?
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @var array $arParams */
@@ -13,12 +14,27 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+if (
+    (\CIBlockSection::GetList(
+        [],
+        [
+            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+            '=CODE' => $arResult['VARIABLES']['SECTION_CODE']
+        ]
+    ))->SelectedRowsCount() < 1
+) {
+    \Bitrix\Main\Loader::includeModule('iblock');
+    \Bitrix\Iblock\Component\Tools::process404('', true, true, true, "");
+}
+
 ?>
-<? $APPLICATION->ShowViewContent("foto-rabot-header"); ?>
-<? $APPLICATION->IncludeComponent(
+<?
+$APPLICATION->ShowViewContent("foto-rabot-header"); ?>
+<?
+$APPLICATION->IncludeComponent(
     "bitrix:news.list",
     "",
-    Array(
+    array(
         "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
         "IBLOCK_ID" => $arParams["IBLOCK_ID"],
         "NEWS_COUNT" => $arParams["NEWS_COUNT"],
@@ -73,9 +89,11 @@ $this->setFrameMode(true);
     ),
     $component
 ); ?>
-<? $this->SetViewTarget("foto-rabot-header", 100); ?>
+<?
+$this->SetViewTarget("foto-rabot-header", 100); ?>
 <section class="container">
     <div class="h1-title"><?=$GLOBALS['APPLICATION']->GetPageProperty('pre-h1')?></div>
     <h1><?=$GLOBALS['APPLICATION']->GetPageProperty('h1')?></h1>
 </section>
-<? $this->EndViewTarget(); ?>
+<?
+$this->EndViewTarget(); ?>

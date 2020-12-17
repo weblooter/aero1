@@ -243,7 +243,7 @@
 					asNavFor: $sliderNav
 				});
 				$sliderNav.slick({
-					slidesToShow: 18,
+					slidesToShow: 6,
 					slidesToScroll: 1,
 					asNavFor: $slider,
 					focusOnSelect: true

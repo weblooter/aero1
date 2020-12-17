@@ -1,4 +1,3 @@
-import 'jquery';
 (function($, undefined) {
 	$(function() {
 		if (window.innerWidth > 992) {
