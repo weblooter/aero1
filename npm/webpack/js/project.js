@@ -1,3 +1,4 @@
+/*jshint -W014 */
 (function ($, undefined) {
 	window.isSafari = (function () {
 		var ua = navigator.userAgent.toLowerCase();
@@ -79,7 +80,7 @@
 				$(this).find(".gallerySquare__item a").squareBox();
 			});
 
-			/*if ($.fn.masonry) {
+			if ($.fn.masonry) {
 				$('.grid').masonry({
 					//gutter: 15,
 					columnWidth: '.grid__item',
@@ -88,7 +89,7 @@
 				});
 			} else {
 				console.log("$.masonry is not defined!");
-			}*/
+			}
 			// video on main
 			var $videos = $(".js-video video");
 			if (window.innerWidth > 992) {
@@ -117,7 +118,7 @@
 
 		// Бегущая строка (логотипов партнёров)
 		if ($.fn.liMarquee) {
-			$('.js-slider-logos').imagesLoaded(function(){
+			$('.js-slider-logos').imagesLoaded(function () {
 				$('.js-slider-logos').liMarquee({
 					direction: 'left',
 					loop: -1,
@@ -144,6 +145,12 @@
 			console.log("$.styler is not defined");
 		}
 
+		if ($.mask) {
+			$("#phone").mask("+7 (999) 999-99-99");
+			$("input[name=PHONE], input[type=tel], .phone input").mask("+7 (999) 999-99-99");
+		} else {
+			console.log("$.mask is not defined!");
+		}
 
 		if ($.fn.autocolumnlist) {
 			$('.col2').autocolumnlist({
@@ -247,8 +254,8 @@
 		// при клике ВНЕ #callbackForm - сворачиваем его
 		$(document).on("click", function (event) {
 			var $target = $(event.target);
-			if ($("#callbackForm").hasClass("active") 
-				&& !$target.closest("#callbackForm").length 
+			if ($("#callbackForm").hasClass("active")
+				&& !$target.closest("#callbackForm").length
 				&& !$target.is(".js-open-callback-form")
 				&& !$target.is(".js-close-callback-form")
 			) {
@@ -281,8 +288,8 @@
 		// при клике ВНЕ #selectCityForm - сворачиваем его
 		$(document).on("click", function (event) {
 			var $target = $(event.target);
-			if ($("#selectCityForm").hasClass("active") 
-				&& !$target.closest("#selectCityForm").length 
+			if ($("#selectCityForm").hasClass("active")
+				&& !$target.closest("#selectCityForm").length
 				&& !$target.is(".js-open-geo-form")
 				&& !$target.is(".js-close-geo-form")
 			) {

@@ -12,3 +12,4 @@ page.php
 *.txt
 *.log
 logs/*
+npm/node_modules/.cache/terser-webpack-plugin
